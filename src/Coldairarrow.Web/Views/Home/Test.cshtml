@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_List.cshtml";
+}
+<button id="loading">加载</button>
+<script>
+    $('#loading').click(function () {
+        parent.loading(true);
+        setTimeout(function () {
+            parent.loading(false);
+        }, 2000);
+    });
+</script>
+666666666

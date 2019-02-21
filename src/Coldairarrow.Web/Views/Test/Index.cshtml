@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_List.cshtml";
+}
+
+<div id="product_images_wrapper"></div>
+<button id="upload">
+    上传
+</button>
+<script src="~/Scripts/vendor/exif/exif.min.js"></script>
+<script src="~/Scripts/vendor/html5Uploader/html5Uploader.js"></script>
+<script>
+    var productImageUploader = new Html5Uploader("#product_images_wrapper", {
+        maxHeight: 100,
+        maxWidth: 100,
+        uploadLimit: 2
+    });
+    productImageUploader.insertItem('http://t2.hddhhn.com/uploads/tu/201610/198/scx30045vxd.jpg');
+    productImageUploader.insertItem('http://t2.hddhhn.com/uploads/tu/201610/198/scx30045vxd.jpg');
+    $(function () {
+        $('#upload').click(function () {
+            var images = productImageUploader.getUploadFiles();
+            console.log(images);
+        });
+    });
+</script>

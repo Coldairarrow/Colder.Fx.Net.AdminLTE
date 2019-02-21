@@ -1,0 +1,77 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_List.cshtml";
+}
+
+<script src="~/Scripts/vendor/echarts/echarts.js"></script>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="container" style="height: 90%"></div>
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    myChart.showLoading();
+
+    $.get('/Test/GetHKGeojson', function (geoJson) {
+
+        myChart.hideLoading();
+
+        echarts.registerMap('HK', geoJson);
+
+        myChart.setOption(option = {
+            title: {
+                text: '停车大数据'
+                //subtext: '人口密度数据来自Wikipedia',
+                //sublink: 'http://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E5%8D%80%E5%8A%83#cite_note-12'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}<br/>{c} (停车位个数)'
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: { readOnly: false },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            visualMap: {
+                min: 0,
+                max: 1000,
+                text: ['High', 'Low'],
+                realtime: false,
+                calculable: true,
+                inRange: {
+                    color: ['lightskyblue', 'yellow', 'orangered']
+                }
+            },
+            series: [
+                {
+                    name: '香港18区人口密度',
+                    type: 'map',
+                    mapType: 'HK', // 自定义扩展图表类型
+                    itemStyle: {
+                        normal: { label: { show: true } },
+                        emphasis: { label: { show: true } }
+                    },
+                    data: [
+                        { name: '海曙区', value: 500 },
+                        { name: '江北区', value: 600 },
+                        { name: '北仑区', value: 700 },
+                        { name: '镇海区', value: 800 },
+                        { name: '鄞州区', value: 900 },
+                        { name: '奉化区', value: 641 },
+                        { name: '余姚市', value: 963 },
+                        { name: '慈溪市', value: 964 },
+                        { name: '象山县', value: 631 },
+                        { name: '宁海县', value: 415 }
+                    ]
+                }
+            ]
+        });
+    });
+</script>

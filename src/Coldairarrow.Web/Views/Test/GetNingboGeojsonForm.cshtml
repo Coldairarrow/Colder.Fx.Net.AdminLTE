@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_List.cshtml";
+}
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6BRpIPAF8Z87yrIwoPiSK7kykvGtp2wg"></script>
+<style type="text/css">
+    body {
+        font-size: 13px;
+        margin: 10px
+    }
+
+    #container {
+        width: 800px;
+        height: 500px;
+        border: 1px solid gray
+    }
+</style>
+<div id="container"></div>
+<br />
+    输入省、直辖市或县名称：<input type="text" id="districtName" style="width:80px" value="南京市">
+<input type="button" onclick="getBoundary()" value="获取轮廓线">
+
+<script type="text/javascript">
+    var map = new BMap.Map("container");
+    map.centerAndZoom(new BMap.Point(116.403765, 39.914850), 12);
+
+    map.enableScrollWheelZoom(true)
+    function getBoundary() {
+        var bdary = new BMap.Boundary();
+        var name = document.getElementById("districtName").value;
+        bdary.get(name, function (rs) {       //获取行政区域
+            map.clearOverlays();        //清除地图覆盖物
+            var count = rs.boundaries.length; //行政区域的点有多少个
+            console.log(rs.boundaries);
+            for (var i = 0; i < count; i++) {
+                var ply = new BMap.Polygon(rs.boundaries[i],
+                    {
+                        strokeWeight: 2, //设置多边形边线线粗
+
+                        strokeOpacity: 1, //设置多边形边线透明度0-1
+                        StrokeStyle: "solid", //设置多边形边线样式为实线或虚线，取值 solid 或 dashed
+
+                        strokeColor: "#ff0000", //设置多边形边线颜色
+
+                    }); //建立多边形覆盖物
+                map.addOverlay(ply);  //添加覆盖物
+                map.setViewport(ply.getPath());    //调整视野
+            }
+        });
+    }
+
+    $(function () {
+        var i = 0;
+        var allAreas = [];
+        var areas = ['海曙区', '江北区', '北仑区', '镇海区', '鄞州区', '奉化区', '余姚市', '慈溪市', '象山县', '宁海县'];
+        areas.forEach(function (aArea) {
+            var name = '宁波{0}'.format(aArea);
+            var bdary = new BMap.Boundary();
+
+            bdary.get(name, function (rs) {
+                allAreas.push({
+                    AreaName: aArea,
+                    Points: rs.boundaries
+                });
+                i++;
+            });
+        });
+
+        setTimeout(function () {
+            if (i == areas.length) {
+                loading();
+                $.postJSON('/Test/GetNingboGeojson', { obj: JSON.stringify(allAreas) }, function (resJson) {
+                    loading(false);
+                    if (resJson.Success) {
+                        alert('成功！');
+                    }
+                });
+            }
+        }, 3000);
+    });
+</script>

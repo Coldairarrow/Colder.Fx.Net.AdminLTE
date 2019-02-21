@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UploadImg</title>
+    <link href="~/Scripts/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="~/Scripts/easyui/themes/icon.css?v=1702" rel="stylesheet" />
+    <link href="~/Scripts/easyui/themes/color.css" rel="stylesheet" />
+    <link href="~/Skin/global.css?v=1715" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="~/Scripts/util/util.js"></script>
+    <script src="~/Scripts/config.js"></script>
+    <script src="~/Scripts/util/easyui-extend.js"></script>
+    <script src="~/Scripts/util/framework-util.js"></script>
+    <script src="~/Scripts/vendor/md5/md5.min.js"></script>
+    <script src="~/Scripts/business/requestbusiness.js"></script>
+    <script src="~/Scripts/vendor/exif/exif.min.js"></script>
+    <script src="~/Scripts/vendor/html5Uploader/html5Uploader.js"></script>
+</head>
+<body>
+    <div id="img"></div>
+
+    <script>
+        var imgUploader = new Html5Uploader('#img',{
+            asyncUpload: true,
+            uploadUrl: '/Demo/UploadImg',
+            maxHeight: 800,
+            maxWidth: 800,
+            uploadLimit: 5,  //上传数量限制，0为不限
+            sizeLimit: 5,    //大小限制，M
+        });
+    </script>
+</body>
+</html>
