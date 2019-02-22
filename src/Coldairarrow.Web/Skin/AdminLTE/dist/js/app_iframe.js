@@ -1918,12 +1918,6 @@ var addTabs = function (options) {
 
     options = $.extend(true, defaultTabOptions, options);
 
-    if (options.urlType === "relative") {
-        // var url = window.location.protocol + '//' + window.location.host + "/";
-        var basePath = window.location.pathname + "/../";
-        options.url = basePath + options.url;
-    }
-
     var pageId = options.id;
 
     //判断这个id的tab是否已经存在,不存在就新建一个

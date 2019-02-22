@@ -1997,6 +1997,7 @@
     <Content Include="Skin\AdminLTE\plugins\pace-master\pace.coffee" />
     <Content Include="Skin\AdminLTE\plugins\pace-master\package.json" />
     <Content Include="Skin\AdminLTE\plugins\pace-master\README.md" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\Index2.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
