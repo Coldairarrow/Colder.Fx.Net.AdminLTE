@@ -10,66 +10,122 @@
     <meta name="viewport" content="width=device-width" />
     <title>Index2</title>
     <link rel="stylesheet" href="~/Skin/AdminLTE/bootstrap/css/bootstrap.min.css">
-    <script src="~/Skin/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
-    <script src="~/Skin/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.css">
 
+    <style>
+        .form-group {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
     <div style="padding:15px">
         <div id="toobar">
             <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-success" aria-label="Left Align">
+                <button type="button" class="btn btn-default" aria-label="Left Align">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     添加
                 </button>
-                <button type="button" class="btn btn-info" aria-label="Center Align">
+                <button type="button" class="btn btn-default" aria-label="Center Align">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     修改
                 </button>
-                <button type="button" class="btn btn-danger" aria-label="Right Align">
+                <button type="button" class="btn btn-default" aria-label="Right Align">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     删除
                 </button>
-                <button type="button" class="btn btn-primary btn-refresh" aria-label="Right Align">
+                <button type="button" class="btn btn-default" aria-label="Right Align" onclick="javascript: location.reload();">
                     <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     刷新
                 </button>
             </div>
         </div>
-        <div id="searchBar" style="margin-top:5px">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div><!-- /btn-group -->
-                        <input type="text" class="form-control" aria-label="...">
-                    </div><!-- /input-group -->
-                </div><!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" aria-label="...">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div><!-- /btn-group -->
-                    </div><!-- /input-group -->
-                </div><!-- /.col-lg-6 -->
-            </div><!-- /.row -->
+        <div id="searchBar" style="margin-top:5px;" class="search_wrapper">
+            <form class="form-inline" id="searchForm">
+                <div class="form-group">
+                    <label>查询类别</label>
+                    <select class="selectpicker" name="condition" data-style="btn-default btn-sm" data-width="100px">
+                        <option value="">请选择</option>
+                        <option value="UserName">用户名</option>
+                        <option value="RealName">真实姓名</option>
+                    </select>
+                    <input type="text" class="form-control input-sm" name="keyword" placeholder="请输入关键字">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default btn-sm" onclick="javascript: $('#table').bootstrapTable('refresh', { silent: true });">
+                        <i class="glyphicon glyphicon-search"></i>
+                        查询
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div style="margin-top:5px">
+            <table id="table" class="table-bordered"></table>
         </div>
     </div>
+
+    <script src="~/Skin/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Skin/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
+    <script src="~/Scripts/util/util.js"></script>
+
+    <script>
+        var $table = $('#table');
+
+        $(function () {
+            $table.bootstrapTable({
+                url: '/Base_SysManage/Base_User/GetDataList',
+                idField: 'id',
+                pagination: true,
+                method: 'post',
+                clickToSelect: true,
+                sidePagination: "server",
+                pageNumber: 1,
+                pageSize: 30,
+                pageList: [10, 30, 60, 100],
+                columns: [
+                    { title: 'ck', field: 'ck', checkbox: true },
+                    { title: '用户名', field: 'UserName', width: 200 },
+                    { title: '真实姓名', field: 'RealName', width: 200 },
+                    //{
+                    //    title: '性别', field: 'Sex', width: 200, formatter: function (value, row) {
+                    //        var mapping = {
+                    //            '1': '男',
+                    //            '0': '女'
+                    //        };
+
+                    //        return mapping[value];
+                    //    }
+                    //},
+                    //{
+                    //    title: '出生日期', field: 'Birthday', width: 200, formatter: function (value) {
+                    //        return toDateString(value, 'yyyy-MM-dd');
+                    //    }
+                    //},
+                    { title: '所属角色', field: 'RoleNameList', width: 600 }
+                    //{
+                    //    title: '操作', field: '_', width: 200, fixed: true, formatter: function (value, row) {
+                    //        var html = '';
+                    //        if (manageSysPermission && row['UserId'] != 'Admin') {
+                    //            html += '<a href="javascript:;" onclick="setPermission(\'{0}\',\'{1}\')">设置权限</a>'.format(row['UserId'], row['RealName']);
+                    //        }
+
+                    //        return html;
+                    //    }
+                    //}
+                ],
+                queryParams: function (params) {
+                    var searchParams = $('#searchForm').getValues();
+                    $.extend(params, searchParams);
+
+                    return params;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -213,10 +213,13 @@ namespace Coldairarrow.Util
             if (contentType.Contains("application/json"))
             {
                 string str = request.InputStream.ReadToString(Encoding.UTF8);
-                var obj = str.ToJObject();
-                foreach (var aProperty in obj)
+                if (!str.IsNullOrEmpty())
                 {
-                    allParams.Add(aProperty.Key, aProperty.Value);
+                    var obj = str.ToJObject();
+                    foreach (var aProperty in obj)
+                    {
+                        allParams.Add(aProperty.Key, aProperty.Value);
+                    }
                 }
             }
             return allParams;

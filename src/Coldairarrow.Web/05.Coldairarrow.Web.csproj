@@ -344,8 +344,14 @@
     <Content Include="Skin\AdminLTE\pages\UI\timeline_iframe.html" />
     <Content Include="Skin\AdminLTE\pages\welcome_iframe.html" />
     <Content Include="Skin\AdminLTE\pages\widgets.html" />
+    <Content Include="Skin\AdminLTE\plugins\bootstrap-select\bootstrap-select.min.css" />
+    <Content Include="Skin\AdminLTE\plugins\bootstrap-select\bootstrap-select.min.js" />
+    <Content Include="Skin\AdminLTE\plugins\bootstrap-select\defaults-zh_CN.min.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-slider\slider.css" />
+    <Content Include="Skin\AdminLTE\plugins\bootstrap-table\bootstrap-table-zh-CN.min.js" />
+    <Content Include="Skin\AdminLTE\plugins\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="Skin\AdminLTE\plugins\bootstrap-table\bootstrap-table.min.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.min.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.css" />
