@@ -193,6 +193,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\admin.css" />
     <Content Include="Skin\AdminLTE\bootstrap\css\bootstrap-theme.css" />
     <Content Include="Skin\AdminLTE\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Skin\AdminLTE\bootstrap\css\bootstrap.css" />
@@ -1088,6 +1089,15 @@
     <Content Include="Skin\AdminLTE\plugins\jvectormap\jquery-jvectormap-usa-en.js" />
     <Content Include="Skin\AdminLTE\plugins\jvectormap\jquery-jvectormap-world-mill-en.js" />
     <Content Include="Skin\AdminLTE\plugins\knob\jquery.knob.js" />
+    <Content Include="Skin\AdminLTE\plugins\layer\layer.js" />
+    <Content Include="Skin\AdminLTE\plugins\layer\mobile\layer.js" />
+    <Content Include="Skin\AdminLTE\plugins\layer\mobile\need\layer.css" />
+    <Content Include="Skin\AdminLTE\plugins\layer\theme\default\icon-ext.png" />
+    <Content Include="Skin\AdminLTE\plugins\layer\theme\default\icon.png" />
+    <Content Include="Skin\AdminLTE\plugins\layer\theme\default\layer.css" />
+    <Content Include="Skin\AdminLTE\plugins\layer\theme\default\loading-0.gif" />
+    <Content Include="Skin\AdminLTE\plugins\layer\theme\default\loading-1.gif" />
+    <Content Include="Skin\AdminLTE\plugins\layer\theme\default\loading-2.gif" />
     <Content Include="Skin\AdminLTE\plugins\morris\morris.css" />
     <Content Include="Skin\AdminLTE\plugins\morris\morris.js" />
     <Content Include="Skin\AdminLTE\plugins\morris\morris.min.js" />
@@ -2004,6 +2014,7 @@
     <Content Include="Skin\AdminLTE\plugins\pace-master\package.json" />
     <Content Include="Skin\AdminLTE\plugins\pace-master\README.md" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\Index2.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\Form2.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />

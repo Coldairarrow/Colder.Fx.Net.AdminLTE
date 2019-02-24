@@ -23,15 +23,15 @@
     <div style="padding:15px">
         <div id="toobar">
             <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-default" aria-label="Left Align">
+                <button id="add" type="button" class="btn btn-default" aria-label="Left Align">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     添加
                 </button>
-                <button type="button" class="btn btn-default" aria-label="Center Align">
+                <button id="edit" type="button" class="btn btn-default" aria-label="Center Align">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     修改
                 </button>
-                <button type="button" class="btn btn-default" aria-label="Right Align">
+                <button id="delete" type="button" class="btn btn-default" aria-label="Right Align">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     删除
                 </button>
@@ -72,11 +72,13 @@
     <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
     <script src="~/Scripts/util/util.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/layer/layer.js"></script>
 
     <script>
         var $table = $('#table');
 
-        $(function () {
+        //初始化表格
+        function initTable() {
             $table.bootstrapTable({
                 url: '/Base_SysManage/Base_User/GetDataList',
                 idField: 'id',
@@ -125,7 +127,31 @@
                     return params;
                 }
             });
+        }
+
+        //绑定事件
+        function bindEvent() {
+            //添加数据
+            $('#add').click(function () {
+                layer.open({
+                    type: 2,
+                    title: '欢迎页',
+                    maxmin: true,
+                    area: ['800px', '500px'],
+                    btn: ['确定', '取消'],
+                    content: '/Base_SysManage/Base_User/Form2',
+                    end: function () {
+                        //layer.tips('Hi', '#about', { tips: 1 })
+                    }
+                });
+            });
+        }
+
+        $(function () {
+            initTable();
+            bindEvent();
         });
+         
     </script>
 </body>
 </html>

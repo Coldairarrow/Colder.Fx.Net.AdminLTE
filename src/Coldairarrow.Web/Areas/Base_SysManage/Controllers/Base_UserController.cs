@@ -29,6 +29,13 @@ namespace Coldairarrow.Web
             return View(theData);
         }
 
+        public ActionResult Form2(string id)
+        {
+            var theData = id.IsNullOrEmpty() ? new Base_User() : _base_UserBusiness.GetTheData(id);
+
+            return View(theData);
+        }
+
         public ActionResult ChangePwdForm()
         {
             return View();
