@@ -1,6 +1,18 @@
-﻿
+﻿@using Coldairarrow.Entity.Base_SysManage;
+@using Coldairarrow.Util;
+@using Coldairarrow.Business.Base_SysManage;
+
 @{
     Layout = null;
+    var obj = (Base_User)Model;
+    string roleIdList = "[]";
+    if (!obj.Id.IsNullOrEmpty())
+    {
+        roleIdList = Base_UserBusiness.GetUserRoleIds(obj.UserId).ToJson().Replace("\"", "'");
+    }
+    string str = obj.ToJson();
+    var objStr = Html.Raw(obj.ToJson());
+
 }
 
 <!DOCTYPE html>
@@ -33,125 +45,98 @@
             position: absolute;
             bottom: 55px;
             overflow: auto;
-            /*margin-top:15px;*/
             padding-top: 15px;
             padding-left: 15px;
             padding-right: 45px;
-            width:100%;
+            width: 100%;
             height: -webkit-calc(100% - 55px);
             height: -moz-calc(100% - 55px);
             height: calc(100% - 55px);
         }
+
         .fx-form-bottom {
             position: absolute;
             bottom: 0px;
             width: calc(100% - 1px);
         }
-
-        .fx-form-container {
-            height: 100%;
-            width: calc(100% - 30px);
-        }
     </style>
 </head>
 <body>
-    <div class="fx-form-container">
-        <div class="fx-form-center">
-            <form id="form" class="form-horizontal" role="form">
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
+    <div class="fx-form-center">
+        <form id="form" class="form-horizontal" role="form">
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-5">
+                    <input name="UserName" value="@obj.UserName" type="text" class="form-control" required>
+                    <div class="help-block with-errors"></div>
                 </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="col-sm-2 control-label">名字</label>
-                    <div class="col-sm-5">
-                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <button id="submit" type="submit" class="hidden" hidden>提交</button>
-                </div>
-                @*<div class="form-group">
-                    <button type="button" onclick="submitForm();" class="btn btn-primary" hidden>提交</button>
-                </div>*@
-            </form>
-        </div>
-        <div class="fx-form-bottom">
-            <div class="layui-layer-btn layui-layer-btn-">
-                <a class="layui-layer-btn0">确定</a>
-                <a class="layui-layer-btn1">取消</a>
             </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-5">
+                    <input name="Pwd" type="password" class="form-control">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-5">
+                    <input name="RealName" value="@obj.RealName" type="text" class="form-control" required>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">性别</label>
+                <div class="col-sm-5">
+                    <select id="Sex" class="selectpicker" name="@obj.Sex" data-style="btn-default btn-sm" style="width:100%">
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">出生日期</label>
+                <div class="col-sm-5">
+                    <input name="RealName" value="@obj.RealName" type="text" class="form-control" required>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button id="submit" type="submit" class="hidden" hidden>提交</button>
+            </div>
+        </form>
+    </div>
+    <div class="fx-form-bottom">
+        <div class="layui-layer-btn layui-layer-btn-">
+            <a class="layui-layer-btn0">确定</a>
+            <a class="layui-layer-btn1">取消</a>
         </div>
     </div>
 
     <script>
+        var theEntity = @objStr;
+
         $(function () {
             initEvent();
         });
 
         //事件绑定
         function initEvent() {
+            $('Sex').selectpicker('val', theEntity.Sex);
+
             //表单校验
             $('#form').validator().on('submit', function (e) {
                 //校验成功
                 if (!e.isDefaultPrevented()) {
                     e.preventDefault();
 
-                    console.log('成功');
+                    var values = $('#form').getValues();
+                    $.extend(theEntity, values);
+                    $.postJSON('', theEntity, function (resJson) {
+
+                    });
                 }
             })
         }

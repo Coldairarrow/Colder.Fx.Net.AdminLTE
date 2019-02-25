@@ -77,6 +77,11 @@
     <script>
         var $table = $('#table');
 
+        $(function () {
+            initTable();
+            bindEvent();
+        });
+
         //初始化表格
         function initTable() {
             $table.bootstrapTable({
@@ -93,32 +98,32 @@
                     { title: 'ck', field: 'ck', checkbox: true },
                     { title: '用户名', field: 'UserName', width: 200 },
                     { title: '真实姓名', field: 'RealName', width: 200 },
-                    //{
-                    //    title: '性别', field: 'Sex', width: 200, formatter: function (value, row) {
-                    //        var mapping = {
-                    //            '1': '男',
-                    //            '0': '女'
-                    //        };
+                    {
+                        title: '性别', field: 'Sex', width: 200, formatter: function (value, row) {
+                            var mapping = {
+                                '1': '男',
+                                '0': '女'
+                            };
 
-                    //        return mapping[value];
-                    //    }
-                    //},
-                    //{
-                    //    title: '出生日期', field: 'Birthday', width: 200, formatter: function (value) {
-                    //        return toDateString(value, 'yyyy-MM-dd');
-                    //    }
-                    //},
-                    { title: '所属角色', field: 'RoleNameList', width: 600 }
-                    //{
-                    //    title: '操作', field: '_', width: 200, fixed: true, formatter: function (value, row) {
-                    //        var html = '';
-                    //        if (manageSysPermission && row['UserId'] != 'Admin') {
-                    //            html += '<a href="javascript:;" onclick="setPermission(\'{0}\',\'{1}\')">设置权限</a>'.format(row['UserId'], row['RealName']);
-                    //        }
+                            return mapping[value];
+                        }
+                    },
+                    {
+                        title: '出生日期', field: 'Birthday', width: 200, formatter: function (value) {
+                            return toDateString(value, 'yyyy-MM-dd');
+                        }
+                    },
+                    { title: '所属角色', field: 'RoleNameList', width: 600 },
+                    {
+                        title: '操作', field: '_', width: 200, fixed: true, formatter: function (value, row) {
+                            var html = '';
+                            //if (manageSysPermission && row['UserId'] != 'Admin') {
+                            //    html += '<a href="javascript:;" onclick="setPermission(\'{0}\',\'{1}\')">设置权限</a>'.format(row['UserId'], row['RealName']);
+                            //}
 
-                    //        return html;
-                    //    }
-                    //}
+                            return html;
+                        }
+                    }
                 ],
                 queryParams: function (params) {
                     var searchParams = $('#searchForm').getValues();
@@ -138,28 +143,10 @@
                     title: '表单',
                     maxmin: true,
                     area: ['60%', '80%'],
-                    //btn: ['确定', '取消'],
                     content: '/Base_SysManage/Base_User/Form2',
-                    end: function () {
-                        //layer.tips('Hi', '#about', { tips: 1 })
-                    },
-                    yes: function (index, layero) {
-                        //do something
-                        console.log('确定');
-                        layer.close(index); //如果设定了yes回调，需进行手工关闭
-
-                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-                        
-                    }
                 });
             });
         }
-
-        $(function () {
-            initTable();
-            bindEvent();
-        });
-         
     </script>
 </body>
 </html>
