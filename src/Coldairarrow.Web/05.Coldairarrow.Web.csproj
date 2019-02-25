@@ -353,6 +353,7 @@
     <Content Include="Skin\AdminLTE\plugins\bootstrap-table\bootstrap-table-zh-CN.min.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-table\bootstrap-table.min.css" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="Skin\AdminLTE\plugins\bootstrap-validator\validator.min.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.min.js" />
     <Content Include="Skin\AdminLTE\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.css" />

@@ -62,7 +62,7 @@ namespace Coldairarrow.Web
         {
             var dataList = _base_UserBusiness.GetDataList(condition, keyword, pagination);
 
-            return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
+            return Content(pagination.BuildTableResult_BootstrapTable(dataList).ToJson());
         }
 
         #endregion

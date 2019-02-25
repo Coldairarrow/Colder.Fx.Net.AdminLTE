@@ -22,38 +22,144 @@
     <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
     <script src="~/Scripts/util/util.js"></script>
     <script src="~/Skin/AdminLTE/plugins/layer/layer.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-validator/validator.min.js"></script>
 
     <style>
-        .form-group form-horizontal {
-            margin-right: 0px;
-            margin-left: 0px;
+        html body {
+            height: 100%;
+        }
+
+        .fx-form-center {
+            position: absolute;
+            bottom: 55px;
+            overflow: auto;
+            /*margin-top:15px;*/
+            padding-top: 15px;
+            padding-left: 15px;
+            padding-right: 45px;
+            width:100%;
+            height: -webkit-calc(100% - 55px);
+            height: -moz-calc(100% - 55px);
+            height: calc(100% - 55px);
+        }
+        .fx-form-bottom {
+            position: absolute;
+            bottom: 0px;
+            width: calc(100% - 1px);
+        }
+
+        .fx-form-container {
+            height: 100%;
+            width: calc(100% - 30px);
         }
     </style>
 </head>
 <body>
-    <form class="form-horizontal" role="form">
-        <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label">名字</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="firstname"
-                       placeholder="请输入名字">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label">名字名字名字</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="firstname"
-                       placeholder="请输入名字">
-            </div>
-        </div>
-        @*<div class="form-group">
-            <label for="firstname" class="col-sm-1 control-label">名字啊啊啊</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="firstname"
-                       placeholder="请输入名字">
-            </div>
-        </div>*@
+    <div class="fx-form-container">
+        <div class="fx-form-center">
+            <form id="form" class="form-horizontal" role="form">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">名字</label>
+                    <div class="col-sm-5">
+                        <input name="name" type="text" class="form-control" required placeholder="请输入名字">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
 
-    </form>
+                <div class="form-group">
+                    <button id="submit" type="submit" class="hidden" hidden>提交</button>
+                </div>
+                @*<div class="form-group">
+                    <button type="button" onclick="submitForm();" class="btn btn-primary" hidden>提交</button>
+                </div>*@
+            </form>
+        </div>
+        <div class="fx-form-bottom">
+            <div class="layui-layer-btn layui-layer-btn-">
+                <a class="layui-layer-btn0">确定</a>
+                <a class="layui-layer-btn1">取消</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            initEvent();
+        });
+
+        //事件绑定
+        function initEvent() {
+            //表单校验
+            $('#form').validator().on('submit', function (e) {
+                //校验成功
+                if (!e.isDefaultPrevented()) {
+                    e.preventDefault();
+
+                    console.log('成功');
+                }
+            })
+        }
+
+        //提交表单
+        function submitForm() {
+            $('#submit').trigger('click');
+        }
+    </script>
 </body>
 </html>
