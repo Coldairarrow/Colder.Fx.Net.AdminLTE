@@ -1,0 +1,142 @@
+﻿@using Coldairarrow.Entity.Base_SysManage;
+@using Coldairarrow.Util;
+@using Coldairarrow.Business.Base_SysManage;
+
+@{
+    Layout = null;
+    var obj = (Base_User)Model;
+    string roleIdList = "[]";
+    if (!obj.Id.IsNullOrEmpty())
+    {
+        roleIdList = Base_UserBusiness.GetUserRoleIds(obj.UserId).ToJson().Replace("\"", "'");
+    }
+    string str = obj.ToJson();
+    var objStr = Html.Raw(obj.ToJson());
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Form4</title>
+
+    <link rel="stylesheet" href="~/skin/adminlte/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/css/admin.css" />
+
+    <script src="~/Skin/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Skin/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
+    <script src="~/Scripts/util/util.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/layer/layer.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-validator/validator.min.js"></script>
+
+    <!--bootstrap-datetimepicker-->
+    <link href="~/Skin/AdminLTE/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <style>
+        html {
+            width: 100vw;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding:15px;padding-right:45px">
+        <form id="form" class="form-horizontal" role="form">
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-5">
+                    <input name="UserName" value="@obj.UserName" type="text" class="form-control" required>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-5">
+                    <input name="Pwd" type="password" class="form-control">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-5">
+                    <input name="RealName" value="@obj.RealName" type="text" class="form-control" required>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">性别</label>
+                <div class="col-sm-5">
+                    <select id="Sex" class="selectpicker form-control" name="@obj.Sex" required data-style="btn-default btn-sm">
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm" id="container" style="position:relative">
+                <label class="col-sm-2 control-label">出生日期</label>
+                <div class="col-sm-5" style="position:relative">
+                    <input type="text" value="@(obj.Birthday?.ToString("yyyy-MM-dd"))" id="Birthday" data-date-format="yyyy-mm-dd" class="form-control">
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">角色</label>
+                <div class="col-sm-5">
+                    <select id="Sex" class="selectpicker form-control" name="@obj.Sex" required data-style="btn-default btn-sm">
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button id="submit" type="submit" class="hidden" hidden>提交</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        var theEntity = @objStr;
+
+        $(function () {
+            initEvent();
+        });
+
+        //事件绑定
+        function initEvent() {
+            $('#Sex').selectpicker('val', theEntity.Sex);
+            $('#Birthday').datetimepicker({
+                language: 'zh-CN',
+                minView: 2//日期选择
+            });
+            //表单校验
+            $('#form').validator().on('submit', function (e) {
+                //校验成功
+                if (!e.isDefaultPrevented()) {
+                    e.preventDefault();
+
+                    var values = $('#form').getValues();
+                    $.extend(theEntity, values);
+                    $.postJSON('', theEntity, function (resJson) {
+
+                    });
+                }
+            })
+        }
+
+        //提交表单
+        function submitForm() {
+            $('#submit').trigger('click');
+        }
+    </script>
+
+</body>
+</html>
