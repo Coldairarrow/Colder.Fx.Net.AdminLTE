@@ -6,9 +6,11 @@
     Layout = null;
     var obj = (Base_User)Model;
     string roleIdList = "[]";
+    object roleIds = "[]";
     if (!obj.Id.IsNullOrEmpty())
     {
         roleIdList = Base_UserBusiness.GetUserRoleIds(obj.UserId).ToJson().Replace("\"", "'");
+        roleIds = Html.Raw(Base_UserBusiness.GetUserRoleIds(obj.UserId).ToJson());
     }
     string str = obj.ToJson();
     var objStr = Html.Raw(obj.ToJson());
@@ -31,6 +33,7 @@
     <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
     <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select-extends.js"></script>
     <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
     <script src="~/Scripts/util/util.js"></script>
     <script src="~/Skin/AdminLTE/plugins/layer/layer.js"></script>
@@ -91,7 +94,7 @@
             <div class="form-group form-group-sm">
                 <label class="col-sm-2 control-label">角色</label>
                 <div class="col-sm-5">
-                    <select id="roleList" class="selectpicker form-control" name="roleList" required multiple data-style="btn-default btn-sm">
+                    <select id="roleList" class="selectpicker form-control" name="roleList" multiple data-style="btn-default btn-sm">
                     </select>
                     <div class="help-block with-errors"></div>
                 </div>
@@ -102,47 +105,8 @@
         </form>
     </div>
     <script>
-        (function ($) {
-            $.fn.bootstrapSelect = function (options, param) {
-                //$.extend($.fn.bootstrapSelect, $.fn.selectpicker);
-                var _this = this;
-                if (typeof options == 'string') {
-                    return $.fn.bootstrapSelect.methods[options](this, param);
-                }
-                var defaults = {
-                    url: null,
-                    data: [],
-                    valueField: 'value',
-                    textField: 'text',
-                };
-
-                var _options = $.extend(defaults, options);
-                if (_options.url) {
-                    $.postJSON('/Base_SysManage/Base_SysRole/GetDataList_NoPagin', {}, function (resJson) {
-                        _options.data = resJson;
-                        build();
-                    });
-                } else {
-                    build();
-                }
-
-                function build() {
-                    var data = _options.data;
-                    for (var i = 0; i < data.length; i++) {
-                        $(_this).append("<option value=" + data[i][_options.valueField] + ">" + data[i][_options.textField] + "</option>");
-                    }
-                    //重新渲染
-                    $(_this).selectpicker('refresh');
-                    $(_this).selectpicker('render');
-
-                    //$('#roleList').bootstrapSelect('selectAll');
-                }
-
-            };
-        })($)
         var theEntity = @objStr;
-        console.log($.fn.selectpicker.prototype);
-        console.log($.fn.bootstrapSelect.prototype);
+        var roleIds =@roleIds;
 
         $(function () {
             initEvent();
@@ -150,22 +114,16 @@
 
         //事件绑定
         function initEvent() {
-            $('#Sex').selectpicker('val', theEntity.Sex);
+            $('#Sex').selectpicker({
+                value: theEntity.Sex
+            });
             $('#Birthday').datetimepicker({
                 language: 'zh-CN',
                 minView: 2//日期选择
             });
-            //$.postJSON('/Base_SysManage/Base_SysRole/GetDataList_NoPagin', {}, function (resJson) {
-            //    var data = resJson;
-            //    for (var i = 0; i < data.length; i++) {
-            //        $('#roleList').append("<option value=" + data[i].RoleId + ">" + data[i].RoleName + "</option>");
-            //    }
-            //    //重新渲染
-            //    $('#roleList').selectpicker('refresh');
-            //    $('#roleList').selectpicker('render');
-            //});
-            $('#roleList').bootstrapSelect({
+            $('#roleList').selectpicker({
                 url: '/Base_SysManage/Base_SysRole/GetDataList_NoPagin',
+                value: roleIds,
                 valueField: 'RoleId',
                 textField: 'RoleName',
             });
@@ -186,10 +144,8 @@
 
         //提交表单
         function submitForm() {
-            //$('#roleList').bootstrapSelect('selectAll');
             $('#submit').trigger('click');
         }
     </script>
-
 </body>
 </html>
