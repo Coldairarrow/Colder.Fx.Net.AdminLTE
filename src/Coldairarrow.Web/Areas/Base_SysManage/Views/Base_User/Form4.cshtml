@@ -91,20 +91,58 @@
             <div class="form-group form-group-sm">
                 <label class="col-sm-2 control-label">角色</label>
                 <div class="col-sm-5">
-                    <select id="Sex" class="selectpicker form-control" name="@obj.Sex" required data-style="btn-default btn-sm">
-                        <option value="1">男</option>
-                        <option value="0">女</option>
+                    <select id="roleList" class="selectpicker form-control" name="roleList" required multiple data-style="btn-default btn-sm">
                     </select>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
             <div class="form-group">
-                <button id="submit" type="submit" class="hidden" hidden>提交</button>
+                <button id="submit" type="submit" class="hidden">提交</button>
             </div>
         </form>
     </div>
     <script>
+        (function ($) {
+            $.fn.bootstrapSelect = function (options, param) {
+                //$.extend($.fn.bootstrapSelect, $.fn.selectpicker);
+                var _this = this;
+                if (typeof options == 'string') {
+                    return $.fn.bootstrapSelect.methods[options](this, param);
+                }
+                var defaults = {
+                    url: null,
+                    data: [],
+                    valueField: 'value',
+                    textField: 'text',
+                };
+
+                var _options = $.extend(defaults, options);
+                if (_options.url) {
+                    $.postJSON('/Base_SysManage/Base_SysRole/GetDataList_NoPagin', {}, function (resJson) {
+                        _options.data = resJson;
+                        build();
+                    });
+                } else {
+                    build();
+                }
+
+                function build() {
+                    var data = _options.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $(_this).append("<option value=" + data[i][_options.valueField] + ">" + data[i][_options.textField] + "</option>");
+                    }
+                    //重新渲染
+                    $(_this).selectpicker('refresh');
+                    $(_this).selectpicker('render');
+
+                    //$('#roleList').bootstrapSelect('selectAll');
+                }
+
+            };
+        })($)
         var theEntity = @objStr;
+        console.log($.fn.selectpicker.prototype);
+        console.log($.fn.bootstrapSelect.prototype);
 
         $(function () {
             initEvent();
@@ -116,6 +154,20 @@
             $('#Birthday').datetimepicker({
                 language: 'zh-CN',
                 minView: 2//日期选择
+            });
+            //$.postJSON('/Base_SysManage/Base_SysRole/GetDataList_NoPagin', {}, function (resJson) {
+            //    var data = resJson;
+            //    for (var i = 0; i < data.length; i++) {
+            //        $('#roleList').append("<option value=" + data[i].RoleId + ">" + data[i].RoleName + "</option>");
+            //    }
+            //    //重新渲染
+            //    $('#roleList').selectpicker('refresh');
+            //    $('#roleList').selectpicker('render');
+            //});
+            $('#roleList').bootstrapSelect({
+                url: '/Base_SysManage/Base_SysRole/GetDataList_NoPagin',
+                valueField: 'RoleId',
+                textField: 'RoleName',
             });
             //表单校验
             $('#form').validator().on('submit', function (e) {
@@ -134,6 +186,7 @@
 
         //提交表单
         function submitForm() {
+            //$('#roleList').bootstrapSelect('selectAll');
             $('#submit').trigger('click');
         }
     </script>
