@@ -87,7 +87,6 @@ namespace Coldairarrow.Web
         {
             if (!Pwd.IsNullOrEmpty())
                 theData.Password = Pwd.ToMD5String();
-            var roleIdList = RoleIdList.ToList<string>();
 
             if (theData.Id.IsNullOrEmpty())
             {
@@ -101,7 +100,11 @@ namespace Coldairarrow.Web
                 _base_UserBusiness.UpdateData(theData);
             }
 
-            _base_UserBusiness.SetUserRole(theData.UserId, roleIdList);
+            //Ω«…´…Ë÷√
+            if (!RoleIdList.IsNullOrEmpty())
+            {
+                _base_UserBusiness.SetUserRole(theData.UserId, RoleIdList.ToList<string>());
+            }
 
             return Success();
         }

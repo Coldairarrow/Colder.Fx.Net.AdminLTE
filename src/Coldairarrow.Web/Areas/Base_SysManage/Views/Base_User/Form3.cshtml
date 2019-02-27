@@ -143,7 +143,7 @@
                 <div class="form-group form-group-sm" id="container" style="position:relative">
                     <label class="col-sm-2 control-label">出生日期</label>
                     <div class="col-sm-5" style="position:relative">
-                        <input type="text" value="@(obj.Birthday?.ToString("yyyy-MM-dd"))" id="datetimepicker" data-date-format="yyyy-mm-dd" class="form-control">
+                        <input type="text" style="position:relative" value="@(obj.Birthday?.ToString("yyyy-MM-dd"))" id="datetimepicker" data-date-format="yyyy-mm-dd" class="form-control">
                     </div>
                 </div>
                 @*<div class="form-group form-group-sm">
@@ -188,17 +188,7 @@
             $('#Sex').selectpicker('val', theEntity.Sex);
             $('#datetimepicker').datetimepicker({
                 language: 'zh-CN',
-                minView: 2,//日期选择
-                widgetParent: $('#container'),
-                //widgetPositioning: {
-                //    horizontal: "auto",
-                //    vertical: "auto"
-                //}
-                sideBySide: true,
-                widgetPositioning: {
-                    horizontal: 'right',
-                    vertical: 'top'
-                }
+                minView: 2//日期选择
             });
             //表单校验
             $('#form').validator().on('submit', function (e) {
