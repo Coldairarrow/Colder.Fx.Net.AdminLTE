@@ -1,166 +1,157 @@
-@using Coldairarrow.Business.Base_SysManage;
-
+ï»¿
 @{
-    Layout = "~/Views/Shared/_Layout_List.cshtml";
-
-    var manage = PermissionManage.OperatorHasPermissionValue("sysuser.manage");
-    var manageSysPermission = PermissionManage.OperatorHasPermissionValue("sysuser.manageSysPermission");
+    Layout = null;
 }
 
-@section toolbar{
-    @if (manage)
-    {
-        <a id="add" class="easyui-linkbutton" data-options="iconCls:'icon-add'">Ìí¼Ó</a>
-        <a id="edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">ĞŞ¸Ä</a>
-        <a id="delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">É¾³ı</a>
-    }
-}
+<!DOCTYPE html>
 
-@section search{
-    <div class="search_wrapper">
-        <div class="search_item">
-            <label class="search_label">²éÑ¯Àà±ğ</label>
-            <select name="condition" class="easyui-combobox" data-options="width:100">
-                <option value="">ÇëÑ¡Ôñ</option>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index2</title>
+    <link rel="stylesheet" href="~/Skin/AdminLTE/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.css">
 
-                <option value="UserName">ÓÃ»§Ãû</option>
-                <option value="RealName">ÕæÊµĞÕÃû</option>
-            </select>
-            <input name="keyword" class="easyui-textbox" style="width:150px" />
+    <style>
+        .form-group {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding:15px">
+        <div id="toobar">
+            <div class="btn-group btn-group-sm">
+                <button onclick="openForm('', 'æ·»åŠ æ•°æ®');" type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    æ·»åŠ 
+                </button>
+                <button id="edit" type="button" class="btn btn-default" aria-label="Center Align">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    ä¿®æ”¹
+                </button>
+                <button id="delete" type="button" class="btn btn-default" aria-label="Right Align">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    åˆ é™¤
+                </button>
+                <button type="button" class="btn btn-default" aria-label="Right Align" onclick="javascript: location.reload();">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    åˆ·æ–°
+                </button>
+            </div>
         </div>
-        <div class="search_submit">
-            <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="searchGrid(this,'#dataTable')">²éÑ¯</a>
+        <div id="searchBar" style="margin-top:5px;" class="search_wrapper">
+            <form class="form-inline" id="searchForm">
+                <div class="form-group">
+                    <label>æŸ¥è¯¢ç±»åˆ«</label>
+                    <select class="selectpicker" name="condition" data-style="btn-default btn-sm" data-width="100px">
+                        <option value="">è¯·é€‰æ‹©</option>
+                        <option value="UserName">ç”¨æˆ·å</option>
+                        <option value="RealName">çœŸå®å§“å</option>
+                    </select>
+                    <input type="text" class="form-control input-sm" name="keyword" placeholder="è¯·è¾“å…¥å…³é”®å­—">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default btn-sm" onclick="javascript: $('#dataTable').bootstrapTable('refresh', { silent: true });">
+                        <i class="glyphicon glyphicon-search"></i>
+                        æŸ¥è¯¢
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div style="margin-top:5px">
+            <table id="dataTable" class="table-bordered"></table>
         </div>
     </div>
-}
-<div id="dataTable">
 
-</div>
+    <script src="~/Skin/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Skin/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
+    <script src="~/Scripts/util/util.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/layer/layer.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/layer/layer-extends.js"></script>
 
-<script>
-    var rootUrl = '@Url.Content("~/")';
-    var manageSysPermission =@manageSysPermission.ToString().ToLower();
+    <script>
+        var $table = $('#dataTable');
 
-    function initTable() {
-        $('#dataTable').datagrid({
-            url: rootUrl + 'Base_SysManage/Base_User/GetDataList',
-            method: 'POST',
-            //queryParams: { 'id': id },
-            idField: 'Id',
-            fit: true,
-            fitColumns: true,
-            singleSelect: false,
-            selectOnCheck: false,
-            checkOnSelect: false,
-            //rownumbers: true,
-            pagination: true,
-            pageSize: 30,
-            //nowrap: false,
-            pageList: [10, 20, 30, 50, 100, 150, 200],
-            //showFooter: true,
-            columns: [[
-                { title: 'ck', field: 'ck', checkbox: true },
-                { title: 'ÓÃ»§Ãû', field: 'UserName', width: 200 },
-                { title: 'ÕæÊµĞÕÃû', field: 'RealName', width: 200 },
-                {
-                    title: 'ĞÔ±ğ', field: 'Sex', width: 200, formatter: function (value, row) {
-                        var mapping = {
-                            '1': 'ÄĞ',
-                            '0': 'Å®'
-                        };
+        $(function () {
+            initTable();
+            bindEvent();
+        });
 
-                        return mapping[value];
-                    }
-                },
-                {
-                    title: '³öÉúÈÕÆÚ', field: 'Birthday', width: 200, formatter: function (value) {
-                        return toDateString(value, 'yyyy-MM-dd');
-                    }
-                },
-                { title: 'ËùÊô½ÇÉ«', field: 'RoleNameList', width: 600 },
-                {
-                    title: '²Ù×÷', field: '_', width: 200, fixed: true, formatter: function (value, row) {
-                        var html = '';
-                        if (manageSysPermission && row['UserId'] != 'Admin') {
-                            html += '<a href="javascript:;" onclick="setPermission(\'{0}\',\'{1}\')">ÉèÖÃÈ¨ÏŞ</a>'.format(row['UserId'], row['RealName']);
+        //åˆå§‹åŒ–è¡¨æ ¼
+        function initTable() {
+            $table.bootstrapTable({
+                url: '/Base_SysManage/Base_User/GetDataList',
+                idField: 'id',
+                pagination: true,
+                method: 'post',
+                clickToSelect: true,
+                sidePagination: "server",
+                pageNumber: 1,
+                pageSize: 30,
+                pageList: [10, 30, 60, 100],
+                columns: [
+                    { title: 'ck', field: 'ck', checkbox: true },
+                    { title: 'ç”¨æˆ·å', field: 'UserName', width: 200 },
+                    { title: 'çœŸå®å§“å', field: 'RealName', width: 200 },
+                    {
+                        title: 'æ€§åˆ«', field: 'Sex', width: 200, formatter: function (value, row) {
+                            var mapping = {
+                                '1': 'ç”·',
+                                '0': 'å¥³'
+                            };
+
+                            return mapping[value];
                         }
+                    },
+                    {
+                        title: 'å‡ºç”Ÿæ—¥æœŸ', field: 'Birthday', width: 200, formatter: function (value) {
+                            return toDateString(value, 'yyyy-MM-dd');
+                        }
+                    },
+                    { title: 'æ‰€å±è§’è‰²', field: 'RoleNameList', width: 600 },
+                    {
+                        title: 'æ“ä½œ', field: '_', width: 200, fixed: true, formatter: function (value, row) {
+                            var html = '';
+                            //if (manageSysPermission && row['UserId'] != 'Admin') {
+                            //    html += '<a href="javascript:;" onclick="setPermission(\'{0}\',\'{1}\')">è®¾ç½®æƒé™</a>'.format(row['UserId'], row['RealName']);
+                            //}
 
-                        return html;
+                            return html;
+                        }
                     }
+                ],
+                queryParams: function (params) {
+                    var searchParams = $('#searchForm').getValues();
+                    $.extend(params, searchParams);
+
+                    return params;
                 }
-            ]],
-            onBeforeSelect: function () {
-                return false;
-            }
-        });
-    }
+            });
+        }
 
-    $(function () {
-        initTable();
+        //ç»‘å®šäº‹ä»¶
+        function bindEvent() {
 
-        //Ìí¼ÓÊı¾İ
-        $('#add').click(function () {
+        }
+
+        //æ‰“å¼€è¡¨å•
+        function openForm(id, title) {
             dialogOpen({
                 id: 'form',
-                title: 'Ìí¼ÓÊı¾İ',
-                width: 500,
-                height: 445,
-                url: rootUrl + 'Base_SysManage/Base_User/Form',
+                title: title,
+                btn: ['ç¡®å®š', 'å–æ¶ˆ'],
+                url: '/Base_SysManage/Base_User/Form?id={0}'.format(id || ''),
+                yes: function (window, body) {
+                    window.submitForm();
+                }
             });
-        });
-
-        //ĞŞ¸ÄÊı¾İ
-        $('#edit').click(function () {
-            var selected = $("#dataTable").datagrid("getChecked");
-            if (!selected || !selected.length) {
-                dialogError('ÇëÑ¡ÔñÒªĞŞ¸ÄµÄ¼ÇÂ¼!');
-                return;
-            }
-            var id = selected[0].Id;
-
-            dialogOpen({
-                id: 'form',
-                title: 'ĞŞ¸ÄÊı¾İ',
-                width: 500,
-                height: 445,
-                url: rootUrl + 'Base_SysManage/Base_User/Form?id=' + id,
-            });
-        });
-
-        //É¾³ıÊı¾İ
-        $('#delete').click(function () {
-            var checked = $("#dataTable").datagrid("getChecked");
-            if (!checked || !checked.length) {
-                dialogError('ÇëÑ¡ÔñÒªÉ¾³ıµÄ¼ÇÂ¼!');
-                return;
-            }
-            var ids = $.map(checked, function (item) {
-                return item['Id'];
-            });
-
-            dialogComfirm('È·ÈÏÉ¾³ıÂğ£¿', function () {
-                $.postJSON(rootUrl + 'Base_SysManage/Base_User/DeleteData', { ids: JSON.stringify(ids) }, function (resJson) {
-                    if (resJson.Success) {
-                        $('#dataTable').datagrid('clearSelections').datagrid('clearChecked');
-                        $('#dataTable').datagrid('reload');
-                        dialogMsg('É¾³ı³É¹¦!');
-                    }
-                    else {
-                        dialogError(resJson.Msg);
-                    }
-                });
-            });
-        });
-    });
-
-    //ÉèÖÃÈ¨ÏŞ
-    function setPermission(userId, realName) {
-        dialogOpen({
-            id: 'permissionForm',
-            title: 'ÉèÖÃÓÃ»§¡¾{0}¡¿È¨ÏŞ'.format(realName),
-            width: '80%',
-            height: '80%',
-            url: rootUrl + 'Base_SysManage/Base_User/PermissionForm?userId={0}'.format(userId),
-        });
-    }
-</script>
+        }
+    </script>
+</body>
+</html>

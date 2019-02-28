@@ -17,33 +17,7 @@ namespace Coldairarrow.Web
             return View();
         }
 
-        public ActionResult Index2()
-        {
-            return View();
-        }
-
         public ActionResult Form(string id)
-        {
-            var theData = id.IsNullOrEmpty() ? new Base_User() : _base_UserBusiness.GetTheData(id);
-
-            return View(theData);
-        }
-
-        public ActionResult Form2(string id)
-        {
-            var theData = id.IsNullOrEmpty() ? new Base_User() : _base_UserBusiness.GetTheData(id);
-
-            return View(theData);
-        }
-
-        public ActionResult Form3(string id)
-        {
-            var theData = id.IsNullOrEmpty() ? new Base_User() : _base_UserBusiness.GetTheData(id);
-
-            return View(theData);
-        }
-
-        public ActionResult Form4(string id)
         {
             var theData = id.IsNullOrEmpty() ? new Base_User() : _base_UserBusiness.GetTheData(id);
 

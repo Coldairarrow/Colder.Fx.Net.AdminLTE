@@ -1,103 +1,159 @@
-@using Coldairarrow.Entity.Base_SysManage;
+Ôªø@using Coldairarrow.Entity.Base_SysManage;
 @using Coldairarrow.Util;
 @using Coldairarrow.Business.Base_SysManage;
 
 @{
-    Layout = "~/Views/Shared/_Layout_List.cshtml";
-
+    Layout = null;
     var obj = (Base_User)Model;
-    string roleIdList ="[]";
+    object roleIds = "[]";
     if (!obj.Id.IsNullOrEmpty())
     {
-        roleIdList = Base_UserBusiness.GetUserRoleIds(obj.UserId).ToJson().Replace("\"", "'");
+        roleIds = Html.Raw(Base_UserBusiness.GetUserRoleIds(obj.UserId).ToJson());
     }
     string str = obj.ToJson();
     var objStr = Html.Raw(obj.ToJson());
 }
 
-<form id="dataForm" enctype="multipart/form-data" class="easyui-form" method="post" data-options="novalidate:true">
-    <table class="table_base">
-        <colgroup>
-            <col style="width:80px;" />
-        </colgroup>
-        <tbody>
-            <tr>
-                <th>”√ªß√˚</th>
-                <td>
-                    <input name="UserName" value="@obj.UserName" class="easyui-textbox" data-options="width:'200px',required:true">
-                </td>
-            </tr>
-            <tr>
-                <th>√‹¬Î</th>
-                <td>
-                    <input name="Pwd" class="easyui-passwordbox" data-options="width:'200px'">
-                </td>
-            </tr>
-            <tr>
-                <th>’Ê µ–’√˚</th>
-                <td>
-                    <input name="RealName" value="@obj.RealName" class="easyui-textbox" data-options="width:'200px',required:true">
-                </td>
-            </tr>
-            <tr>
-                <th>–‘±</th>
-                <td>
-                    <select name="Sex" class="easyui-combobox" data-options="width:200,value:'@obj.Sex',required:true">
-                        <option value="1">ƒ–</option>
-                        <option value="0">≈Æ</option>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Form4</title>
+
+    <link rel="stylesheet" href="~/skin/adminlte/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/css/admin.css" />
+
+    <script src="~/Skin/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Skin/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select-extends.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
+    <script src="~/Scripts/util/util.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/layer/layer.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/layer/layer-extends.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-validator/validator.min.js"></script>
+
+    <!--bootstrap-datetimepicker-->
+    <link href="~/Skin/AdminLTE/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Skin/AdminLTE/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <style>
+        html {
+            width: 100vw;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding:15px;padding-right:45px;">
+        <form id="form" class="form-horizontal" role="form">
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">Áî®Êà∑Âêç</label>
+                <div class="col-sm-5">
+                    <input name="UserName" value="@obj.UserName" type="text" class="form-control" required>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">ÂØÜÁ†Å</label>
+                <div class="col-sm-5">
+                    <input name="Pwd" type="password" class="form-control">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">ÂßìÂêç</label>
+                <div class="col-sm-5">
+                    <input name="RealName" value="@obj.RealName" type="text" class="form-control" required>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">ÊÄßÂà´</label>
+                <div class="col-sm-5">
+                    <select id="Sex" class="selectpicker form-control" name="@obj.Sex" required data-style="btn-default btn-sm">
+                        <option value="1">Áî∑</option>
+                        <option value="0">Â•≥</option>
                     </select>
-                </td>
-            </tr>
-            <tr>
-                <th>≥ˆ…˙»’∆⁄</th>
-                <td>
-                    <input name="Birthday" type="text" class="easyui-datebox" data-options="width:'200',required:false,value:'@(obj.Birthday?.ToString("yyyy-MM-dd"))'">
-                </td>
-            </tr>
-            <tr>
-                <th>À˘ ÙΩ«…´</th>
-                <td>
-                    <input id="RoleId" class="easyui-combobox" data-options="
-                        width:200,
-                        valueField: 'RoleId',
-                        textField: 'RoleName',
-                        multiple:true,
-                        value:@roleIdList,
-                        url: '@Url.Content("~/")Base_SysManage/Base_SysRole/GetDataList_NoPagin'
-                    ">
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</form>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm" id="container" style="position:relative">
+                <label class="col-sm-2 control-label">Âá∫ÁîüÊó•Êúü</label>
+                <div class="col-sm-5" style="position:relative">
+                    <input type="text" value="@(obj.Birthday?.ToString("yyyy-MM-dd"))" id="Birthday" data-date-format="yyyy-mm-dd" class="form-control">
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label">ËßíËâ≤</label>
+                <div class="col-sm-5">
+                    <select id="roleList" class="selectpicker form-control" name="roleList" multiple data-style="btn-default btn-sm"></select>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button id="submit" type="submit" class="hidden">Êèê‰∫§</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        var theEntity = @objStr;
+        var roleIds =@roleIds;
 
-@section foottoolbar{
-    <a id="saveForm" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-save'">±£¥Ê</a>
-}
-
-<script>
-    var rootUrl = '@Url.Content("~/")';
-    var theEntity = @objStr;
-
-    $(function () {
-        $('#saveForm').click(function () {
-            if (!$('#dataForm').form('enableValidation').form('validate'))
-                return;
-
-            var formValues = $('#dataForm').getValues();
-            $.extend(theEntity, formValues);
-            var roleIds = $('#RoleId').combobox('getValues');
-            theEntity['RoleIdList'] = JSON.stringify(roleIds);
-            $.postJSON(rootUrl + 'Base_SysManage/Base_User/SaveData', theEntity, function (resJson) {
-                if (resJson.Success) {
-                    parent.$('#dataTable').datagrid('clearChecked').datagrid('reload');
-                    parent.dialogMsg('±£¥Ê≥…π¶!');
-                    parent.dialogClose('form');
-                }
-                else {
-                    dialogError(resJson.Msg);
-                }
-            });
+        $(function () {
+            initEvent();
         });
-    });
-</script>
+
+        //‰∫ã‰ª∂ÁªëÂÆö
+        function initEvent() {
+            $('#Sex').selectpicker({
+                value: theEntity.Sex
+            });
+            $('#Birthday').datetimepicker({
+                language: 'zh-CN',
+                minView: 2//Êó•ÊúüÈÄâÊã©
+            });
+            $('#roleList').selectpicker({
+                url: '/Base_SysManage/Base_SysRole/GetDataList_NoPagin',
+                value: roleIds,
+                valueField: 'RoleId',
+                textField: 'RoleName',
+            });
+            //Ë°®ÂçïÊ†°È™å
+            $('#form').validator().on('submit', function (e) {
+                //Ê†°È™åÊàêÂäü
+                if (!e.isDefaultPrevented()) {
+                    e.preventDefault();
+
+                    var values = $('#form').getValues();
+                    $.extend(theEntity, values);
+                    theEntity['RoleIdList'] = JSON.stringify(theEntity['roleList'] || []);
+                    loading();
+                    $.postJSON('/Base_SysManage/Base_User/SaveData', theEntity, function (resJson) {
+                        loading(false);
+
+                        if (resJson.Success) {
+                            parent.$('#dataTable').bootstrapTable('refresh');
+                            parent.dialogSuccess();
+                            dialogClose();
+                        }
+                        else {
+                            dialogError(resJson.Msg);
+                        }
+                    });
+                }
+            })
+        }
+
+        //Êèê‰∫§Ë°®Âçï
+        function submitForm() {
+            $('#submit').trigger('click');
+        }
+    </script>
+</body>
+</html>
