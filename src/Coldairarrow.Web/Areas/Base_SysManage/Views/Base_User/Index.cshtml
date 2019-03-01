@@ -188,7 +188,10 @@
                 width: '80.5%',
                 height: '80.5%',
                 btn: ['确定', '取消'],
-                url: '/Base_SysManage/Base_User/PermissionForm3?userId={0}'.format(userId),
+                url: '/Base_SysManage/Base_User/PermissionForm?userId={0}'.format(userId),
+                yes: function (iframeWin) {
+                    iframeWin.savePermission();
+                }
             });
         }
     </script>

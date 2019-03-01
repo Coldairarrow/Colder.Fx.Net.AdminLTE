@@ -78,7 +78,8 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 aModule.Items?.ForEach(aItem =>
                 {
-                    aItem.IsChecked = hasPermissions.Contains($"{aModule.Value}.{aItem.Value}");
+                    aItem.Value = $"{aModule.Value}.{aItem.Value}";
+                    aItem.IsChecked = hasPermissions.Contains(aItem.Value);
                 });
             });
 
@@ -341,6 +342,7 @@ namespace Coldairarrow.Business.Base_SysManage
 
     public class PermissionItem
     {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
         public string Value { get; set; }
         public bool IsChecked { get; set; }

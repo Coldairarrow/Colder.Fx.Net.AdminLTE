@@ -701,6 +701,9 @@
     <Content Include="Skin\AdminLTE\plugins\flot\jquery.flot.threshold.min.js" />
     <Content Include="Skin\AdminLTE\plugins\flot\jquery.flot.time.js" />
     <Content Include="Skin\AdminLTE\plugins\flot\jquery.flot.time.min.js" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\css\font-awesome.css" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Skin\AdminLTE\plugins\fullcalendar\fullcalendar.css" />
     <Content Include="Skin\AdminLTE\plugins\fullcalendar\fullcalendar.js" />
     <Content Include="Skin\AdminLTE\plugins\fullcalendar\fullcalendar.min.css" />
@@ -1337,7 +1340,6 @@
     <Content Include="Areas\Base_SysManage\Views\Base_DatabaseLink\Index.cshtml" />
     <Content Include="Config\Permission.config" />
     <Content Include="Areas\Base_SysManage\Views\Base_SysRole\PermissionForm.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\ChangePwdForm.cshtml" />
     <Content Include="Config\UrlPermission.config" />
     <Content Include="Areas\Base_SysManage\Views\Base_AppSecret\Form.cshtml" />
@@ -1467,8 +1469,7 @@
     <Content Include="Skin\AdminLTE\plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\Index.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\Form.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm1.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm3.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
@@ -1506,6 +1507,11 @@
     <Content Include="Views\Demo\UploadImgView.cshtml" />
     <Content Include="Scripts\vendor\umeditor\net\getContent.ashx" />
     <Content Include="Scripts\vendor\umeditor\net\imageUp.ashx" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Skin\AdminLTE\plugins\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
