@@ -194,11 +194,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\admin.css" />
+    <Content Include="css\build.css" />
     <Content Include="Skin\AdminLTE\bootstrap\css\bootstrap-theme.css" />
     <Content Include="Skin\AdminLTE\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Skin\AdminLTE\bootstrap\css\bootstrap.css" />
     <Content Include="Skin\AdminLTE\bootstrap\css\bootstrap.min.css" />
     <Content Include="Skin\AdminLTE\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Skin\AdminLTE\bootstrap\js\bootstrap-BtnBuilder.js" />
     <Content Include="Skin\AdminLTE\bootstrap\js\bootstrap.js" />
     <Content Include="Skin\AdminLTE\bootstrap\js\bootstrap.min.js" />
     <Content Include="Skin\AdminLTE\bootstrap\js\npm.js" />
@@ -1465,6 +1467,8 @@
     <Content Include="Skin\AdminLTE\plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\Index.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\Form.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm1.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm3.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />

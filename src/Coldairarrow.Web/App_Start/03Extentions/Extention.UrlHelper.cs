@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Coldairarrow.Util;
+using System.IO;
 
 namespace System.Web.Mvc
 {
@@ -13,10 +14,18 @@ namespace System.Web.Mvc
         /// <returns></returns>
         public static string Scrpit(this UrlHelper helper, string scriptVirtualPath)
         {
-            string filePath = helper.RequestContext.HttpContext.Server.MapPath(scriptVirtualPath);
-            FileInfo fileInfo = new FileInfo(filePath);
-            var lastTime = fileInfo.LastWriteTime.GetHashCode();
-            return helper.Content($"{scriptVirtualPath}?_v={lastTime}");
+            int version = 0;
+            if(GlobalSwitch.RunModel== RunModel.LocalTest)
+            {
+                version = Guid.NewGuid().GetHashCode();
+            }
+            else
+            {
+                string filePath = helper.RequestContext.HttpContext.Server.MapPath(scriptVirtualPath);
+                FileInfo fileInfo = new FileInfo(filePath);
+                version = fileInfo.LastWriteTime.GetHashCode();
+            }
+            return helper.Content($"{scriptVirtualPath}?_v={version}");
         }
     }
 }

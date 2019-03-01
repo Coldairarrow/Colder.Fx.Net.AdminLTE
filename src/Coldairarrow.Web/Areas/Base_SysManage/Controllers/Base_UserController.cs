@@ -36,6 +36,20 @@ namespace Coldairarrow.Web
             return View();
         }
 
+        public ActionResult PermissionForm1(string userId)
+        {
+            ViewData["userId"] = userId;
+
+            return View();
+        }
+
+        public ActionResult PermissionForm3(string userId)
+        {
+            ViewData["userId"] = userId;
+
+            return View();
+        }
+
         #endregion
 
         #region 获取数据

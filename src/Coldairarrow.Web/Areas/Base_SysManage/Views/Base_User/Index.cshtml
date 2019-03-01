@@ -1,17 +1,12 @@
-﻿
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index2</title>
-    <link rel="stylesheet" href="~/Skin/AdminLTE/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.css">
-    <link rel="stylesheet" href="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.css">
+    <link rel="stylesheet" href="@Url.Scrpit("~/Skin/AdminLTE/bootstrap/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Scrpit("~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.css")">
+    <link rel="stylesheet" href="@Url.Scrpit("~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.css")">
 
     <style>
         .form-group {
@@ -27,11 +22,7 @@
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     添加
                 </button>
-                <button id="edit" type="button" class="btn btn-default" aria-label="Center Align">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    修改
-                </button>
-                <button id="delete" type="button" class="btn btn-default" aria-label="Right Align">
+                <button onclick="deleteData();" type="button" class="btn btn-default" aria-label="Right Align">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     删除
                 </button>
@@ -67,13 +58,15 @@
 
     <script src="~/Skin/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="~/Skin/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="@Url.Scrpit("~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table.min.js")"></script>
     <script src="~/Skin/AdminLTE/plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+
     <script src="~/Skin/AdminLTE/plugins/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="~/Skin/AdminLTE/plugins/bootstrap-select/defaults-zh_CN.min.js"></script>
     <script src="~/Scripts/util/util.js"></script>
     <script src="~/Skin/AdminLTE/plugins/layer/layer.js"></script>
     <script src="~/Skin/AdminLTE/plugins/layer/layer-extends.js"></script>
+    <script src="~/Skin/AdminLTE/bootstrap/js/bootstrap-BtnBuilder.js"></script>
 
     <script>
         var $table = $('#dataTable');
@@ -90,7 +83,7 @@
                 idField: 'id',
                 pagination: true,
                 method: 'post',
-                clickToSelect: true,
+                clickToSelect: false,
                 sidePagination: "server",
                 pageNumber: 1,
                 pageSize: 30,
@@ -116,13 +109,13 @@
                     },
                     { title: '所属角色', field: 'RoleNameList', width: 600 },
                     {
-                        title: '操作', field: '_', width: 200, fixed: true, formatter: function (value, row) {
-                            var html = '';
-                            //if (manageSysPermission && row['UserId'] != 'Admin') {
-                            //    html += '<a href="javascript:;" onclick="setPermission(\'{0}\',\'{1}\')">设置权限</a>'.format(row['UserId'], row['RealName']);
-                            //}
+                        title: '操作', field: '_', width: '20%', formatter: function (value, row) {
+                            var builder = new BtnBuilder();
+                            builder.AddBtn({ icon: 'glyphicon-edit', function: 'openForm', param: [row['Id']] });
+                            builder.AddBtn({ icon: 'glyphicon-trash', function: 'deleteData', param: [row['Id']] });
+                            builder.AddBtn({ name: '权限分配', icon: 'glyphicon-edit', function: 'setPermission', param: [row['UserId'], row['RealName']] });
 
-                            return html;
+                            return builder.build();
                         }
                     }
                 ],
@@ -137,7 +130,7 @@
 
         //绑定事件
         function bindEvent() {
-
+            
         }
 
         //打开表单
@@ -150,6 +143,52 @@
                 yes: function (window, body) {
                     window.submitForm();
                 }
+            });
+        }
+
+        //删除数据
+        function deleteData(id) {
+            dialogComfirm('确认删除吗？', function () {
+                var ids = [];
+
+                if (typeof (id) == 'string') {//单条数据
+                    ids.push(id);
+                } else {//多条数据
+                    var rows = $table.bootstrapTable('getSelections');
+                    if (rows.length == 0) {
+                        dialogError('请选择需要删除的数据！');
+                        return;
+                    } else {
+                        $.each(rows, function (index, value) {
+                            ids.push(value['Id']);
+                        })
+                    }
+                }
+
+                loading();
+                $.postJSON('/Base_SysManage/Base_User/DeleteData', { ids: JSON.stringify(ids) }, function (resJson) {
+                    loading(false);
+
+                    if (resJson.Success) {
+                        $table.bootstrapTable('refresh');
+                        dialogSuccess('删除成功!');
+                    }
+                    else {
+                        dialogError(resJson.Msg);
+                    }
+                });
+            });
+        }
+
+        //设置权限
+        function setPermission(userId, realName) {
+            dialogOpen({
+                id: 'permissionForm',
+                title: '设置用户【{0}】权限'.format(realName),
+                width: '80.5%',
+                height: '80.5%',
+                btn: ['确定', '取消'],
+                url: '/Base_SysManage/Base_User/PermissionForm3?userId={0}'.format(userId),
             });
         }
     </script>
