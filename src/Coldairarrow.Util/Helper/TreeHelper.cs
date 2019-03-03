@@ -45,9 +45,9 @@ namespace Coldairarrow.Util
             {
                 T newNode = new T();
                 resData.Add(newNode);
-                
+
                 //赋值属性
-                properties.ForEach(aProperty =>
+                properties.Where(x => x.CanWrite).ForEach(aProperty =>
                 {
                     var value = aProperty.GetValue(aChildren, null);
                     aProperty.SetValue(newNode, value);

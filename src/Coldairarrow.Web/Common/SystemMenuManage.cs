@@ -38,7 +38,6 @@ namespace Coldairarrow.Web
                 List<string> exceptProperties = new List<string> {"id", "IsShow", "targetType", "isHeader", "children","_url" };
                 menu.GetType().GetProperties().Where(x => !exceptProperties.Contains(x.Name)).ForEach(aProperty =>
                 {
-                    //element.Attribute
                     aProperty.SetValue(menu, element.Attribute(aProperty.Name)?.Value);
                 });
             };
@@ -148,7 +147,7 @@ namespace Coldairarrow.Web
             else
                 return null;
         }
-
+        
         #endregion
 
         #region 外部接口
@@ -174,9 +173,25 @@ namespace Coldairarrow.Web
                 return resList;
 
             var userPermissions = PermissionManage.GetUserPermissionValues(Operator.UserId);
-            SetSubMenuShow(resList, userPermissions, 1);
+            RemoteNoPermission(resList, userPermissions);
 
             return resList;
+
+            void RemoteNoPermission(List<Menu> menus, List<string> userPermissionValues)
+            {
+                for (int i = menus.Count - 1; i >= 0; i--)
+                {
+                    var theMenu = menus[i];
+                    if (!theMenu.Permission.IsNullOrEmpty() && !userPermissions.Contains(theMenu.Permission))
+                        menus.RemoveAt(i);
+                    else if (theMenu.children?.Count > 0)
+                    {
+                        RemoteNoPermission(theMenu.children, userPermissions);
+                        if (theMenu.children.Count == 0 && theMenu.url.IsNullOrEmpty())
+                            menus.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         #endregion
@@ -186,8 +201,6 @@ namespace Coldairarrow.Web
 
     public class Menu
     {
-        #region 属性
-
         public string id { get; set; } = Guid.NewGuid().ToString();
         public string text { get; set; }
         public string icon { get; set; }
@@ -198,20 +211,6 @@ namespace Coldairarrow.Web
         public string targetType { get; } = "iframe-tab";
         public bool isHeader { get; } = false;
         public List<Menu> children { get; set; }
-
-        #endregion
-
-        #region 前端映射
-
-        //public string id { get => Id; }
-        //public string text { get => Name; }
-        //public string url { get => Url; }
-        //public string icon { get => Icon; }
-        //public string targetType { get; } = "iframe-tab";
-        //public bool isHeader { get; } = false;
-        //public List<Menu> children { get => SubMenus; }
-
-        #endregion
     }
 
     #endregion
