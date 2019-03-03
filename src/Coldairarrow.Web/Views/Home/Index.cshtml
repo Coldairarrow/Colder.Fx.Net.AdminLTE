@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Coldairarrow.Util;
+
+@{ 
+    var menus = SystemMenuManage.GetOperatorMenu();
+    var menusJson = Html.Raw(menus.ToJson());
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -743,6 +750,8 @@
     <!--tabs-->
     <script src="~/Scripts/vendor/adminlte/dist/js/app_iframe.js"></script>
     <script type="text/javascript">
+        var menus =@menusJson;
+        console.log(menus);
         /**
          * 本地搜索菜单
          */
@@ -784,99 +793,99 @@
             //});
 
             App.fixIframeCotent();
-            var menus = [
-                {
-                    id: "9000",
-                    text: "header",
-                    icon: "",
-                    isHeader: true
-                },
-                {
-                    id: "9001",
-                    text: "UI Elements",
-                    icon: "fa fa-laptop",
-                    children: [
-                        {
-                            id: "90011",
-                            text: "用户列表",
-                            icon: "fa fa-circle-o",
-                            url: "/Base_SysManage/Base_User/Index",
-                            targetType: "iframe-tab"
-                        },
-                        {
-                            id: "90012",
-                            text: "icons",
-                            url: "UI/icons_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        },
-                        {
-                            id: "90013",
-                            text: "general",
-                            url: "UI/general_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        },
-                        {
-                            id: "90014",
-                            text: "modals",
-                            url: "UI/modals_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        },
-                        {
-                            id: "90015",
-                            text: "sliders",
-                            url: "UI/sliders_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        },
-                        {
-                            id: "90016",
-                            text: "timeline",
-                            url: "UI/timeline_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        }
-                    ]
-                },
-                {
-                    id: "9002",
-                    text: "Forms",
-                    icon: "fa fa-edit",
-                    children: [
-                        {
-                            id: "90021",
-                            text: "advanced",
-                            url: "forms/advanced_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        },
-                        {
-                            id: "90022",
-                            text: "general",
-                            url: "forms/general_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        },
-                        {
-                            id: "90023",
-                            text: "editors",
-                            url: "forms/editors_iframe.html",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o"
-                        },
-                        {
-                            id: "90024",
-                            text: "百度",
-                            url: "https://www.baidu.com",
-                            targetType: "iframe-tab",
-                            icon: "fa fa-circle-o",
-                            urlType: 'abosulte'
-                        }
-                    ]
-                }
-            ];
+            //var menus = [
+            //    {
+            //        id: "9000",
+            //        text: "header",
+            //        icon: "",
+            //        isHeader: true
+            //    },
+            //    {
+            //        id: "9001",
+            //        text: "UI Elements",
+            //        icon: "fa fa-laptop",
+            //        children: [
+            //            {
+            //                id: "90011",
+            //                text: "用户列表",
+            //                icon: "fa fa-circle-o",
+            //                url: "/Base_SysManage/Base_User/Index",
+            //                targetType: "iframe-tab"
+            //            },
+            //            {
+            //                id: "90012",
+            //                text: "icons",
+            //                url: "UI/icons_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            },
+            //            {
+            //                id: "90013",
+            //                text: "general",
+            //                url: "UI/general_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            },
+            //            {
+            //                id: "90014",
+            //                text: "modals",
+            //                url: "UI/modals_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            },
+            //            {
+            //                id: "90015",
+            //                text: "sliders",
+            //                url: "UI/sliders_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            },
+            //            {
+            //                id: "90016",
+            //                text: "timeline",
+            //                url: "UI/timeline_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            }
+            //        ]
+            //    },
+            //    {
+            //        id: "9002",
+            //        text: "Forms",
+            //        icon: "fa fa-edit",
+            //        children: [
+            //            {
+            //                id: "90021",
+            //                text: "advanced",
+            //                url: "forms/advanced_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            },
+            //            {
+            //                id: "90022",
+            //                text: "general",
+            //                url: "forms/general_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            },
+            //            {
+            //                id: "90023",
+            //                text: "editors",
+            //                url: "forms/editors_iframe.html",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o"
+            //            },
+            //            {
+            //                id: "90024",
+            //                text: "百度",
+            //                url: "https://www.baidu.com",
+            //                targetType: "iframe-tab",
+            //                icon: "fa fa-circle-o",
+            //                urlType: 'abosulte'
+            //            }
+            //        ]
+            //    }
+            //];
             $('.sidebar-menu').sidebarMenu({ data: menus });
         });
     </script>

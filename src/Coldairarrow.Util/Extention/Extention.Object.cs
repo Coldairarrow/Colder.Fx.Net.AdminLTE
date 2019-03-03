@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.IO;
 using System.Reflection;
@@ -62,6 +63,8 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static string ToJson(this object obj)
         {
+            var serializerSettings = new JsonSerializerSettings();
+            serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             return JsonConvert.SerializeObject(obj);
         }
 

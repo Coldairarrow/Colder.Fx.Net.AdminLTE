@@ -35,9 +35,10 @@ namespace Coldairarrow.Web
         {
             Action<Menu, XElement> SetMenuProperty = (menu, element) =>
             {
-                List<string> exceptProperties = new List<string> { "Id", "IsShow" };
+                List<string> exceptProperties = new List<string> {"id", "IsShow", "targetType", "isHeader", "children","_url" };
                 menu.GetType().GetProperties().Where(x => !exceptProperties.Contains(x.Name)).ForEach(aProperty =>
                 {
+                    //element.Attribute
                     aProperty.SetValue(menu, element.Attribute(aProperty.Name)?.Value);
                 });
             };
@@ -50,22 +51,22 @@ namespace Coldairarrow.Web
                 Menu newMenu1 = new Menu();
                 menus.Add(newMenu1);
                 SetMenuProperty(newMenu1, aElement1);
-                newMenu1.SubMenus = new List<Menu>();
+                newMenu1.children = new List<Menu>();
                 aElement1.Elements("SecondMenu")?.ForEach(aElement2 =>
                 {
                     Menu newMenu2 = new Menu();
-                    newMenu1.SubMenus.Add(newMenu2);
+                    newMenu1.children.Add(newMenu2);
                     SetMenuProperty(newMenu2, aElement2);
-                    newMenu2.SubMenus = new List<Menu>();
+                    newMenu2.children = new List<Menu>();
 
                     aElement2.Elements("ThirdMenu")?.ForEach(aElement3 =>
                     {
                         Menu newMenu3 = new Menu();
-                        newMenu2.SubMenus.Add(newMenu3);
+                        newMenu2.children.Add(newMenu3);
                         SetMenuProperty(newMenu3, aElement3);
-                        if (!newMenu3.Url.IsNullOrEmpty())
+                        if (!newMenu3.url.IsNullOrEmpty())
                         {
-                            newMenu3.Url = GetUrl(newMenu3.Url);
+                            newMenu3.url = GetUrl(newMenu3.url);
                         }
                     });
                 });
@@ -75,44 +76,44 @@ namespace Coldairarrow.Web
             {
                 Menu newMenu1 = new Menu
                 {
-                    Name = "开发",
-                    Icon = "icon_menu_prod",
-                    SubMenus = new List<Menu>()
+                    text = "开发",
+                    icon = "icon_menu_prod",
+                    children = new List<Menu>()
                 };
                 menus.Add(newMenu1);
                 Menu newMenu1_1 = new Menu
                 {
-                    Name = "快速开发",
-                    SubMenus = new List<Menu>()
+                    text = "快速开发",
+                    children = new List<Menu>()
                 };
-                newMenu1.SubMenus.Add(newMenu1_1);
+                newMenu1.children.Add(newMenu1_1);
                 Menu newMenu1_1_1 = new Menu
                 {
-                    Name = "代码生成",
-                    Url = GetUrl("~/Base_SysManage/RapidDevelopment/Index")
+                    text = "代码生成",
+                    url = GetUrl("~/Base_SysManage/RapidDevelopment/Index")
                 };
-                newMenu1_1.SubMenus.Add(newMenu1_1_1);
+                newMenu1_1.children.Add(newMenu1_1_1);
 
                 Menu newMenu1_1_2 = new Menu
                 {
-                    Name = "数据库连接管理",
-                    Url = GetUrl("~/Base_SysManage/Base_DatabaseLink/Index")
+                    text = "数据库连接管理",
+                    url = GetUrl("~/Base_SysManage/Base_DatabaseLink/Index")
                 };
-                newMenu1_1.SubMenus.Add(newMenu1_1_2);
+                newMenu1_1.children.Add(newMenu1_1_2);
 
                 Menu newMenu1_1_3 = new Menu
                 {
-                    Name = "UEditor Demo",
-                    Url = GetUrl("~/Demo/UMEditor")
+                    text = "UEditor Demo",
+                    url = GetUrl("~/Demo/UMEditor")
                 };
-                newMenu1_1.SubMenus.Add(newMenu1_1_3);
+                newMenu1_1.children.Add(newMenu1_1_3);
 
                 Menu newMenu1_1_4 = new Menu
                 {
-                    Name = "文件上传Demo",
-                    Url = GetUrl("~/Demo/UploadFileIndex")
+                    text = "文件上传Demo",
+                    url = GetUrl("~/Demo/UploadFileIndex")
                 };
-                newMenu1_1.SubMenus.Add(newMenu1_1_4);
+                newMenu1_1.children.Add(newMenu1_1_4);
             }
 
             _allMenu = menus;
@@ -130,18 +131,22 @@ namespace Coldairarrow.Web
                 }
                 else
                 {
-                    SetSubMenuShow(aMenu.SubMenus, userPermissionValues, level + 1);
+                    SetSubMenuShow(aMenu.children, userPermissionValues, level + 1);
                 }
 
-                if ((!aMenu?.SubMenus?.Any(x => x.IsShow)) ?? false)
+                if ((!aMenu?.children?.Any(x => x.IsShow)) ?? false)
                     aMenu.IsShow = false;
             });
         }
-
-        private static string GetUrl(string virtualUrl)
+        public static string GetUrl(string virtualUrl)
         {
-            UrlHelper urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            return urlHelper.Content(virtualUrl);
+            if (!virtualUrl.IsNullOrEmpty())
+            {
+                UrlHelper urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                return urlHelper.Content(virtualUrl);
+            }
+            else
+                return null;
         }
 
         #endregion
@@ -181,13 +186,32 @@ namespace Coldairarrow.Web
 
     public class Menu
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
-        public string Icon { get; set; }
-        public string Url { get; set; }
+        #region 属性
+
+        public string id { get; set; } = Guid.NewGuid().ToString();
+        public string text { get; set; }
+        public string icon { get; set; }
+        public string url { get => SystemMenuManage.GetUrl(_url); set => _url = value; }
+        public string _url { get; set; }
         public string Permission { get; set; }
         public bool IsShow { get; set; } = true;
-        public List<Menu> SubMenus { get; set; }
+        public string targetType { get; } = "iframe-tab";
+        public bool isHeader { get; } = false;
+        public List<Menu> children { get; set; }
+
+        #endregion
+
+        #region 前端映射
+
+        //public string id { get => Id; }
+        //public string text { get => Name; }
+        //public string url { get => Url; }
+        //public string icon { get => Icon; }
+        //public string targetType { get; } = "iframe-tab";
+        //public bool isHeader { get; } = false;
+        //public List<Menu> children { get => SubMenus; }
+
+        #endregion
     }
 
     #endregion
