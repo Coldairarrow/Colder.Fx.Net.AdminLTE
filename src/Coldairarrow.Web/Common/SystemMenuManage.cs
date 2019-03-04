@@ -73,19 +73,12 @@ namespace Coldairarrow.Web
 
             if (GlobalSwitch.RunModel == RunModel.LocalTest)
             {
-                Menu newMenu1 = new Menu
-                {
-                    text = "开发",
-                    icon = "icon_menu_prod",
-                    children = new List<Menu>()
-                };
-                menus.Add(newMenu1);
                 Menu newMenu1_1 = new Menu
                 {
-                    text = "快速开发",
+                    text = "开发",
                     children = new List<Menu>()
                 };
-                newMenu1.children.Add(newMenu1_1);
+                menus.Add(newMenu1_1);
                 Menu newMenu1_1_1 = new Menu
                 {
                     text = "代码生成",

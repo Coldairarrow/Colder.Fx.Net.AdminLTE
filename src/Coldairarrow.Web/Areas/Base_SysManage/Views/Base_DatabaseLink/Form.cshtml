@@ -38,7 +38,7 @@
         <div class="form-group form-group-sm">
             <label class="col-sm-2 control-label">≈≈–Ú±‡∫≈</label>
             <div class="col-sm-5">
-                <input name="ConnectionStr" value="@obj.ConnectionStr" type="text" class="form-control">
+                <input name="SortNum" value="@obj.SortNum" type="text" class="form-control">
                 <div class="help-block with-errors"></div>
             </div>
         </div>
@@ -68,6 +68,7 @@
                 e.preventDefault();
 
                 var values = $('#form').getValues();
+                
                 $.extend(theEntity, values);
                 loading();
                 $.postJSON('/Base_SysManage/Base_DatabaseLink/SaveData', theEntity, function (resJson) {

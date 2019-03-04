@@ -21,7 +21,6 @@ namespace Coldairarrow.Web
         {
             if (Operator.Logged())
             {
-
                 string loginUrl = Url.Content("~/");
                 string script = $@"    
 <html>

@@ -12,7 +12,7 @@ namespace Coldairarrow.Web
     /// Mvc基控制器
     /// </summary>
     /// 
-    [IgnoreLogin]
+    //[IgnoreLogin]
     public class BaseController : Controller
     {
         /// <summary>
