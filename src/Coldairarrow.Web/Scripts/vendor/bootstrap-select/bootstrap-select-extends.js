@@ -23,10 +23,9 @@ $('#roleList').selectpicker({
             valueField: 'value',
             textField: 'text',
         };
-
         var _options = $.extend(defaults, options);
         if (_options.url) {
-            $.postJSON('/Base_SysManage/Base_SysRole/GetDataList_NoPagin', {}, function (resJson) {
+            $.postJSON(_options.url, {}, function (resJson) {
                 _options.data = resJson;
                 build();
             });

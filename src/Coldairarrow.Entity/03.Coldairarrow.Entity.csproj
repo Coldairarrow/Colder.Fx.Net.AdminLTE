@@ -101,5 +101,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj">
+      <Project>{7095b12b-7ff2-4b6b-8c6c-654197edaa34}</Project>
+      <Name>01.Coldairarrow.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

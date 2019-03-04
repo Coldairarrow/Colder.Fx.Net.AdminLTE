@@ -90,7 +90,7 @@ namespace Coldairarrow.Business.Base_SysManage
         {
             return $"{GlobalSwitch.ProjectName}_{_cacheKey}_{key}";
         }
-        
+
         #endregion
 
         #region 所有权限
@@ -125,9 +125,14 @@ namespace Coldairarrow.Business.Base_SysManage
         public static List<PermissionModule> GetRolePermissionModules(string roleId)
         {
             BaseBusiness<Base_PermissionRole> _db = new BaseBusiness<Base_PermissionRole>();
-            var hasPermissions = _db.GetIQueryable().Where(x => x.RoleId == roleId).Select(x => x.PermissionValue).ToList();
+            List<string> permissions = new List<string>();
+            var theRoleInfo = _db.Service.GetIQueryable<Base_SysRole>().Where(x => x.RoleId == roleId).FirstOrDefault();
+            if (theRoleInfo.RoleType == EnumType.RoleType.超级管理员)
+                permissions = _allPermissionValues.DeepClone();
+            else
+                permissions = _db.GetIQueryable().Where(x => x.RoleId == roleId).Select(x => x.PermissionValue).ToList();
 
-            return GetPermissionModules(hasPermissions);
+            return GetPermissionModules(permissions);
         }
 
         #endregion
@@ -171,7 +176,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="appId">AppId</param>
         /// <param name="permissions">权限值列表</param>
-        public static void SetAppIdPermission(string appId,List<string> permissions)
+        public static void SetAppIdPermission(string appId, List<string> permissions)
         {
             //更新缓存
             string cacheKey = BuildCacheKey(appId);
@@ -237,7 +242,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <param name="permissions">权限值列表</param>
-        public static void SetUserPermission(string userId,List<string> permissions)
+        public static void SetUserPermission(string userId, List<string> permissions)
         {
             //更新数据库
             BaseBusiness<Base_UnitTest> _db = new BaseBusiness<Base_UnitTest>();

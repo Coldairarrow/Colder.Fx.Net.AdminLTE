@@ -2,81 +2,89 @@
     Layout = "~/Views/Shared/_Layout_List.cshtml";
 }
 
-@section search{
-<div class="search_wrapper">
-    <div class="search_item">
-        <label class="search_label">日志内容</label>
-        <input name="logContent" class="easyui-textbox" style="width:150px" />
+<div class="fx-content">
+    <div class="fx-wrapper">
+        <form class="form-inline form-group-sm" id="searchForm">
+            <div class="form-group">
+                <label>日志内容</label>
+                <input type="text" class="form-control input-sm" name="logContent">
+            </div>
+            <div class="form-group">
+                <label>日志类别</label>
+                <select class="selectpicker" id="logType" name="logType" data-style="btn-default btn-sm" data-width="100px">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>用户名</label>
+                <input name="opUserName" type="text" class="form-control input-sm">
+            </div>
+            <br />
+            <div class="form-group">
+                <label>时间</label>
+                <input name="startTime" id="startTime" type="text" data-date-format="yyyy-mm-dd hh:ii:ss" class="form-control">
+                <label>~</label>
+                <input name="endTime" id="endTime" type="text" data-date-format="yyyy-mm-dd hh:ii:ss" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default btn-sm" onclick="javascript: $('#dataTable').bootstrapTable('refresh', { silent: true });">
+                    <i class="glyphicon glyphicon-search"></i>
+                    查询
+                </button>
+            </div>
+        </form>
     </div>
-    <div class="search_item">
-        <label class="search_label">日志类别</label>
-        <input name="logType" class="easyui-combobox" data-options="
-            width:150,
-            valueField: 'Value',
-            textField: 'Name',
-            url: '@Url.Content("~/")Base_SysManage/Base_SysLog/GetLogTypeList',
-            mode:'remote'
-        ">
+    <div class="fx-wrapper">
+        <table id="dataTable" class="table-bordered"></table>
     </div>
-    <div class="search_item">
-        <label class="search_label">用户名</label>
-        <input name="opUserName" class="easyui-textbox" style="width:150px" />
-    </div>
-    <br />
-    <div class="search_item">
-        <label class="search_label">开始时间</label>
-        <input name="startTime" class="easyui-datebox" style="width:150px" />
-    </div>
-    <div class="search_item">
-        <label class="search_label">结束时间</label>
-        <input name="endTime" class="easyui-datebox" style="width:150px" />
-    </div>
-    <div class="search_submit">
-        <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="searchGrid(this,'#dataTable')">查询</a>
-    </div>
-</div>
-}
-<div id="dataTable">
-
 </div>
 
 <script>
-    var rootUrl = '@Url.Content("~/")';
-
-    function initTable() {
-        $('#dataTable').datagrid({
-            url: rootUrl + 'Base_SysManage/Base_SysLog/GetLogList',
-            method: 'POST',
-            //queryParams: { 'id': id },
-            idField: 'Id',
-            fit: true,
-            fitColumns: true,
-            singleSelect: false,
-            selectOnCheck: false,
-            checkOnSelect: false,
-            //rownumbers: true,
-            pagination: true,
-            pageSize: 30,
-            nowrap: false,
-            pageList: [10, 20, 30, 50, 100, 150, 200],
-            //showFooter: true,
-            columns: [[
-                { title: '日志类型', field: 'LogType', width: 150, fixed: true },
-                { title: '日志内容', field: 'LogContent', width: 800 },
-                { title: '操作员用户名', field: 'OpUserName', width: 100, fixed: true },
-                { title: '日志记录时间', field: 'OpTime', width: 200, fixed: true }
-            ]],
-            onBeforeLoad: function (param) {
-                param['sort'] = 'OpTime';
-                param['order'] = 'desc';
-            },
-            onBeforeSelect: function () {
-                return false;
-            }
-        });
-    }
+    var $table = $('#dataTable');
 
     $(function () {
         initTable();
+        bindEvent();
     });
+
+    function bindEvent() {
+        $('#logType').selectpicker({
+            url: '/Base_SysManage/Base_SysLog/GetLogTypeList',
+            textField: 'Name',
+            valueField: 'Value'
+        });
+        $('#startTime').datetimepicker({
+            language: 'zh-CN',
+        });
+        $('#endTime').datetimepicker({
+            language: 'zh-CN',
+        });
+    }
+
+    //初始化表格
+    function initTable() {
+        $table.bootstrapTable({
+            url: '/Base_SysManage/Base_SysLog/GetLogList',
+            idField: 'Id',
+            pagination: true,
+            method: 'post',
+            clickToSelect: false,
+            sidePagination: "server",
+            pageNumber: 1,
+            pageSize: 30,
+            pageList: [10, 30, 60, 100],
+            columns: [
+                //{ title: 'ck', field: 'ck', checkbox: true, width: '3%' },
+                { title: '日志内容', field: 'LogContent', width: '60%' },
+                { title: '操作员用户名', field: 'OpUserName', width: '5%' },
+                { title: '日志记录时间', field: 'OpTime', width: '10%' }
+            ],
+            queryParams: function (params) {
+                var searchParams = $('#searchForm').getValues();
+                $.extend(params, searchParams);
+
+                return params;
+            }
+        });
+    }
 </script>
