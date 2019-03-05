@@ -1,5 +1,8 @@
-﻿@{
+﻿@using Coldairarrow.Business.Base_SysManage;
+
+@{
     Layout = "~/Views/Shared/_Layout_List.cshtml";
+    var manageSysPermission = PermissionManage.OperatorHasPermissionValue("sysuser.manageSysPermission");
 }
 
 <div class="fx-content">
@@ -45,6 +48,7 @@
 
 <script>
     var $table = $('#dataTable');
+    var manageSysPermission=@manageSysPermission.ToString().ToLower();
 
     $(function () {
         initTable();
@@ -88,7 +92,9 @@
                         var builder = new BtnBuilder();
                         builder.AddBtn({ icon: 'glyphicon-edit', function: 'openForm', param: [row['Id']] });
                         builder.AddBtn({ icon: 'glyphicon-trash', function: 'deleteData', param: [row['Id']] });
-                        builder.AddBtn({ name: '权限分配', icon: 'glyphicon-edit', function: 'setPermission', param: [row['UserId'], row['RealName']] });
+                        if (manageSysPermission) {
+                            builder.AddBtn({ name: '权限分配', icon: 'glyphicon-edit', function: 'setPermission', param: [row['UserId'], row['RealName']] });
+                        }
 
                         return builder.build();
                     }
