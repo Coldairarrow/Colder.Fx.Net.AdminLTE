@@ -4,18 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Colder快速开发框架登录</title>
-    <!-- Tell the browser to be responsive to screen width -->
+    <!-- Tell the browser to be respodnsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!--bootstrap-->
-    <link href="~/Scripts/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Scripts/vendor/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
     <!--awesome-->
-    <link href="~/Scripts/vendor/adminlte/dist/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Scripts/vendor/adminlte/dist/css/font-awesome.min.css")" rel="stylesheet" />
     <!-- Ionicons -->
-    <link href="~/Scripts/vendor/adminlte/dist/css/ionicons.min.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Scripts/vendor/adminlte/dist/css/ionicons.min.css")" rel="stylesheet" />
     <!-- Theme style -->
-    <link href="~/Scripts/vendor/adminlte/dist/css/AdminLTE.min.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Scripts/vendor/adminlte/dist/css/AdminLTE.min.css")" rel="stylesheet" />
     <!-- iCheck -->
-    <link href="~/Scripts/vendor/iCheck/square/blue.css" rel="stylesheet">
+    <link href="@Url.Scrpit("~/Scripts/vendor/iCheck/square/blue.css")" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,12 +34,12 @@
             @*<p class="login-box-msg">Sign in to start your session</p>*@
             <form id="form" role="form">
                 <div class="form-group has-feedback">
-                    <input name="userName" type="text" class="form-control" required placeholder="请输入账号">
+                    <input id="userName" name="userName" type="text" class="form-control" required placeholder="请输入账号">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group has-feedback">
-                    <input name="password" type="password" required class="form-control" placeholder="请输入密码">
+                    <input id="password" name="password" type="password" required class="form-control" placeholder="请输入密码">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     <div class="help-block with-errors"></div>
                 </div>
@@ -61,11 +61,15 @@
     </div>
     <!-- /.login-box -->
     <!-- jQuery 2.2.3 -->
-    <script src="~/Scripts/vendor/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="@Url.Scrpit("~/Scripts/vendor/jQuery/jquery-2.2.3.min.js")"></script>
+
+    <!--jQuery-cookie-->
+    <script src="@Url.Scrpit("~/Scripts/vendor/jQuery-cookie/jquery.cookie.min.js")"></script>
+
     <!-- Bootstrap 3.3.6 -->
-    <script src="~/Scripts/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="@Url.Scrpit("~/Scripts/vendor/bootstrap/js/bootstrap.min.js")"></script>
     <!-- iCheck -->
-    <script src="~/Scripts/vendor/iCheck/icheck.min.js"></script>
+    <script src="@Url.Scrpit("~/Scripts/vendor/iCheck/icheck.min.js")"></script>
     <!--bootstrap-validator-->
     <!--bootstrap-->
     <link href="@Url.Scrpit("~/Scripts/vendor/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
@@ -82,6 +86,8 @@
         var rootUrl = '@Url.Content("~/")';
 
         $(function () {
+            setPwd();
+
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue',
@@ -95,6 +101,9 @@
                     e.preventDefault();
 
                     var values = $('#form').getValues();
+                    //保存账号密码
+                    var checked = $('#savePwd')[0].checked;
+                    savePwd(values.userName, values.password, checked);
                     loading();
                     $.postJSON(rootUrl + 'Home/SubmitLogin', values, function (resJson) {
                         loading(false);
@@ -109,6 +118,36 @@
                 }
             })
         });
+
+        //设置保存的账号密码
+        function setPwd() {
+            var userName = $.cookie('userName');
+            var password = $.cookie('password');
+            if (userName && password) {
+                $('#userName').val(userName);
+                $('#password').val(password);
+                $('#savePwd').prop('checked', 'checked');
+            } else {
+                $('#savePwd').removeAttr('checked');
+            }
+        }
+
+        //保存账号密码
+        function savePwd(userName, password, isSave) {
+            if (isSave) {
+                $.cookie('userName', userName, {
+                    expires: new Date('9999/1/1'),
+                    path: '/'
+                });
+                $.cookie('password', password, {
+                    expires: new Date('9999/1/1'),
+                    path: '/'
+                });
+            } else {
+                $.removeCookie('userName', { path: '/' });
+                $.removeCookie('password', { path: '/' });
+            }
+        }
     </script>
 </body>
 </html>

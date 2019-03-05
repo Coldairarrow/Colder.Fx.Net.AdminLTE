@@ -285,12 +285,11 @@
                                 <li class="user-header">
                                     <img src="~/Scripts/vendor/adminlte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                     <p>
-                                        @Operator.Property.UserName - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        @Operator.Property.UserName
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
-                                <li class="user-body">
+                                @*<li class="user-body">
                                     <div class="row">
                                         <div class="col-xs-4 text-center">
                                             <a href="#">Followers</a>
@@ -302,12 +301,11 @@
                                             <a href="#">Friends</a>
                                         </div>
                                     </div>
-                                    <!-- /.row -->
-                                </li>
+                                </li>*@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <button id="changePwd" class="btn btn-default btn-flat">修改密码</button>
                                     </div>
                                     <div class="pull-right">
                                         <button id="logout" type="button" class="btn btn-default btn-flat">注销</button>
@@ -794,6 +792,21 @@
         }
 
         $(function () {
+            //更改密码
+            $('#changePwd').click(function () {
+                dialogOpen({
+                    id: 'changePwdForm',
+                    title: '更改密码',
+                    btn: ['确定', '取消'],
+                    height: '40%',
+                    width:'50%',
+                    url: rootUrl + 'Base_SysManage/Base_User/ChangePwdForm',
+                    yes: function (window, body) {
+                        window.submitForm();
+                    }
+                });
+            });
+
             //注销
             $('#logout').click(function () {
                 dialogComfirm('确认要注销吗？', function () {
@@ -807,107 +820,14 @@
             App.setbasePath("/Scripts/vendor/adminlte/");
             App.setGlobalImgPath("dist/img/");
 
-            //addTabs({
-            //    id: '10008',
-            //    title: '欢迎页',
-            //    close: false,
-            //    url: '/Skin/AdminLTE/pages/welcome_iframe.html',
-            //});
+            addTabs({
+                id: '324708b9-5027-4fd0-a9eb-a001d214ca72',
+                title: '框架介绍',
+                close: true,
+                url: '/Home/Desktop',
+            });
 
             App.fixIframeCotent();
-            //var menus = [
-            //    {
-            //        id: "9000",
-            //        text: "header",
-            //        icon: "",
-            //        isHeader: true
-            //    },
-            //    {
-            //        id: "9001",
-            //        text: "UI Elements",
-            //        icon: "fa fa-laptop",
-            //        children: [
-            //            {
-            //                id: "90011",
-            //                text: "用户列表",
-            //                icon: "fa fa-circle-o",
-            //                url: "/Base_SysManage/Base_User/Index",
-            //                targetType: "iframe-tab"
-            //            },
-            //            {
-            //                id: "90012",
-            //                text: "icons",
-            //                url: "UI/icons_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            },
-            //            {
-            //                id: "90013",
-            //                text: "general",
-            //                url: "UI/general_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            },
-            //            {
-            //                id: "90014",
-            //                text: "modals",
-            //                url: "UI/modals_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            },
-            //            {
-            //                id: "90015",
-            //                text: "sliders",
-            //                url: "UI/sliders_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            },
-            //            {
-            //                id: "90016",
-            //                text: "timeline",
-            //                url: "UI/timeline_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            }
-            //        ]
-            //    },
-            //    {
-            //        id: "9002",
-            //        text: "Forms",
-            //        icon: "fa fa-edit",
-            //        children: [
-            //            {
-            //                id: "90021",
-            //                text: "advanced",
-            //                url: "forms/advanced_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            },
-            //            {
-            //                id: "90022",
-            //                text: "general",
-            //                url: "forms/general_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            },
-            //            {
-            //                id: "90023",
-            //                text: "editors",
-            //                url: "forms/editors_iframe.html",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o"
-            //            },
-            //            {
-            //                id: "90024",
-            //                text: "百度",
-            //                url: "https://www.baidu.com",
-            //                targetType: "iframe-tab",
-            //                icon: "fa fa-circle-o",
-            //                urlType: 'abosulte'
-            //            }
-            //        ]
-            //    }
-            //];
             $('.sidebar-menu').sidebarMenu({ data: menus });
         });
     </script>

@@ -37,7 +37,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 运行模式
         /// </summary>
-        public static RunModel RunModel { get; } = RunModel.Publish;
+        public static RunModel RunModel { get; } = RunModel.LocalTest;
 
         #endregion
 

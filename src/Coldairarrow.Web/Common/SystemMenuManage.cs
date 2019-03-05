@@ -35,7 +35,7 @@ namespace Coldairarrow.Web
         {
             Action<Menu, XElement> SetMenuProperty = (menu, element) =>
             {
-                List<string> exceptProperties = new List<string> {"id", "IsShow", "targetType", "isHeader", "children","_url" };
+                List<string> exceptProperties = new List<string> { "id", "IsShow", "targetType", "isHeader", "children", "_url" };
                 menu.GetType().GetProperties().Where(x => !exceptProperties.Contains(x.Name)).ForEach(aProperty =>
                 {
                     aProperty.SetValue(menu, element.Attribute(aProperty.Name)?.Value);
@@ -76,12 +76,14 @@ namespace Coldairarrow.Web
                 Menu newMenu1_1 = new Menu
                 {
                     text = "开发",
+                    icon = "glyphicon glyphicon-console",
                     children = new List<Menu>()
                 };
                 menus.Add(newMenu1_1);
                 Menu newMenu1_1_1 = new Menu
                 {
                     text = "代码生成",
+                    icon = "fa fa-circle-o",
                     url = GetUrl("~/Base_SysManage/RapidDevelopment/Index")
                 };
                 newMenu1_1.children.Add(newMenu1_1_1);
@@ -89,23 +91,24 @@ namespace Coldairarrow.Web
                 Menu newMenu1_1_2 = new Menu
                 {
                     text = "数据库连接管理",
+                    icon = "fa fa-circle-o",
                     url = GetUrl("~/Base_SysManage/Base_DatabaseLink/Index")
                 };
                 newMenu1_1.children.Add(newMenu1_1_2);
 
-                Menu newMenu1_1_3 = new Menu
-                {
-                    text = "UEditor Demo",
-                    url = GetUrl("~/Demo/UMEditor")
-                };
-                newMenu1_1.children.Add(newMenu1_1_3);
+                //Menu newMenu1_1_3 = new Menu
+                //{
+                //    text = "UEditor Demo",
+                //    url = GetUrl("~/Demo/UMEditor")
+                //};
+                //newMenu1_1.children.Add(newMenu1_1_3);
 
-                Menu newMenu1_1_4 = new Menu
-                {
-                    text = "文件上传Demo",
-                    url = GetUrl("~/Demo/UploadFileIndex")
-                };
-                newMenu1_1.children.Add(newMenu1_1_4);
+                //Menu newMenu1_1_4 = new Menu
+                //{
+                //    text = "文件上传Demo",
+                //    url = GetUrl("~/Demo/UploadFileIndex")
+                //};
+                //newMenu1_1.children.Add(newMenu1_1_4);
             }
 
             _allMenu = menus;
@@ -140,7 +143,7 @@ namespace Coldairarrow.Web
             else
                 return null;
         }
-        
+
         #endregion
 
         #region 外部接口
