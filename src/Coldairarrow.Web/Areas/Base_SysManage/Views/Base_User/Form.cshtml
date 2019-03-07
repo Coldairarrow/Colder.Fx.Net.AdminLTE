@@ -40,7 +40,7 @@
         <div class="form-group form-group-sm">
             <label class="col-sm-2 control-label">性别</label>
             <div class="col-sm-5">
-                <select id="Sex" class="selectpicker form-control" name="@obj.Sex" data-style="btn-default btn-sm">
+                <select id="Sex" name="Sex" class="selectpicker form-control" data-style="btn-default btn-sm">
                     <option value="1">男</option>
                     <option value="0">女</option>
                 </select>
@@ -50,7 +50,7 @@
         <div class="form-group form-group-sm" id="container" style="position:relative">
             <label class="col-sm-2 control-label">出生日期</label>
             <div class="col-sm-5" style="position:relative">
-                <input type="text" value="@(obj.Birthday?.ToString("yyyy-MM-dd"))" id="Birthday" data-date-format="yyyy-mm-dd" class="form-control">
+                <input id="Birthday" name="Birthday" type="text" value="@(obj.Birthday?.ToString("yyyy-MM-dd"))" data-date-format="yyyy-mm-dd" class="form-control">
             </div>
         </div>
         <div class="form-group form-group-sm">
