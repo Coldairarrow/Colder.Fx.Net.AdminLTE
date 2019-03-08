@@ -27,9 +27,25 @@ namespace Coldairarrow.Web
 
         #endregion
 
+        #region 特定平台
+
+        private static string _configFile { get=> HttpContext.Current.Server.MapPath("~/Config/SystemMenu.config"); }
+
+        public static string GetUrl(string virtualUrl)
+        {
+            if (!virtualUrl.IsNullOrEmpty())
+            {
+                UrlHelper urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                return urlHelper.Content(virtualUrl);
+            }
+            else
+                return null;
+        }
+
+        #endregion
+
         #region 私有成员
 
-        private static string _configFile { get; } = "~/Config/SystemMenu.config";
         private static List<Menu> _allMenu { get; set; }
         private static void InitAllMenu()
         {
@@ -42,7 +58,7 @@ namespace Coldairarrow.Web
                 });
             };
 
-            string filePath = HttpContext.Current.Server.MapPath(_configFile);
+            string filePath = _configFile;
             XElement xe = XElement.Load(filePath);
             List<Menu> menus = new List<Menu>();
             xe.Elements("FirstMenu")?.ForEach(aElement1 =>
@@ -113,36 +129,6 @@ namespace Coldairarrow.Web
 
             _allMenu = menus;
         }
-        private static void SetSubMenuShow(List<Menu> menus, List<string> userPermissionValues, int level)
-        {
-            if (level >= 4)
-                return;
-            menus?.ForEach(aMenu =>
-            {
-                if (!aMenu.Permission.IsNullOrEmpty() && !userPermissionValues.Contains(aMenu.Permission))
-                {
-                    aMenu.IsShow = false;
-                    return;
-                }
-                else
-                {
-                    SetSubMenuShow(aMenu.children, userPermissionValues, level + 1);
-                }
-
-                if ((!aMenu?.children?.Any(x => x.IsShow)) ?? false)
-                    aMenu.IsShow = false;
-            });
-        }
-        public static string GetUrl(string virtualUrl)
-        {
-            if (!virtualUrl.IsNullOrEmpty())
-            {
-                UrlHelper urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                return urlHelper.Content(virtualUrl);
-            }
-            else
-                return null;
-        }
 
         #endregion
 
@@ -169,11 +155,11 @@ namespace Coldairarrow.Web
                 return resList;
 
             var userPermissions = PermissionManage.GetUserPermissionValues(Operator.UserId);
-            RemoteNoPermission(resList, userPermissions);
+            RemoveNoPermission(resList, userPermissions);
 
             return resList;
 
-            void RemoteNoPermission(List<Menu> menus, List<string> userPermissionValues)
+            void RemoveNoPermission(List<Menu> menus, List<string> userPermissionValues)
             {
                 for (int i = menus.Count - 1; i >= 0; i--)
                 {
@@ -182,7 +168,7 @@ namespace Coldairarrow.Web
                         menus.RemoveAt(i);
                     else if (theMenu.children?.Count > 0)
                     {
-                        RemoteNoPermission(theMenu.children, userPermissions);
+                        RemoveNoPermission(theMenu.children, userPermissions);
                         if (theMenu.children.Count == 0 && theMenu.url.IsNullOrEmpty())
                             menus.RemoveAt(i);
                     }
