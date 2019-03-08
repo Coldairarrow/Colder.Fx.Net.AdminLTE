@@ -22,6 +22,7 @@ $('#roleList').selectpicker({
             data: [],
             valueField: 'value',
             textField: 'text',
+            onSelect: null
         };
         var _options = $.extend(defaults, options);
         if (_options.url) {
@@ -44,6 +45,14 @@ $('#roleList').selectpicker({
 
             //赋初值
             $(_this)._selectpicker('val', _options.value);
+
+            //绑定选择事件
+            if (_options.onSelect) {
+                $(_this).on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
+                    var value = $(e.currentTarget).val();
+                    _options.onSelect(value);
+                });
+            }
 
             return $(_this);
         }

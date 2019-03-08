@@ -67,11 +67,8 @@
         $('#linkId').selectpicker({
             url: '/Base_SysManage/RapidDevelopment/GetAllDbLink',
             textField: 'LinkName',
-            valueField: 'Id'
-        });
-        $('#linkId').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
-            var value = $(e.currentTarget).val();
-            if (value) {
+            valueField: 'Id',
+            onSelect: function (value) {
                 $table.bootstrapTable('refresh');
             }
         });
