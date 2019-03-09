@@ -4,8 +4,6 @@ using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.Xml.Linq;
 
 namespace Coldairarrow.Web
@@ -23,23 +21,6 @@ namespace Coldairarrow.Web
         static SystemMenuManage()
         {
             InitAllMenu();
-        }
-
-        #endregion
-
-        #region 特定平台
-
-        private static string _configFile { get=> HttpContext.Current.Server.MapPath("~/Config/SystemMenu.config"); }
-
-        public static string GetUrl(string virtualUrl)
-        {
-            if (!virtualUrl.IsNullOrEmpty())
-            {
-                UrlHelper urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                return urlHelper.Content(virtualUrl);
-            }
-            else
-                return null;
         }
 
         #endregion
@@ -129,6 +110,8 @@ namespace Coldairarrow.Web
 
             _allMenu = menus;
         }
+        private static string _configFile { get => PathHelper.GetAbsolutePath("~/Config/SystemMenu.config"); }
+        public static string GetUrl(string virtualUrl) => PathHelper.GetUrl(virtualUrl);
 
         #endregion
 

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Coldairarrow.DataRepository;
+using System;
+using System.IO;
+using System.Linq;
+using Coldairarrow.Util;
 
 namespace Coldairarrow.Console1
 {
@@ -6,6 +10,7 @@ namespace Coldairarrow.Console1
     {
         static void Main(string[] args)
         {
+
             Console.WriteLine("完成");
             Console.ReadLine();
         }

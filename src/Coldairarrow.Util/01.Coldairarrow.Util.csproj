@@ -209,6 +209,7 @@
     <Compile Include="Extention\Extention.Guid.cs" />
     <Compile Include="Extention\Extention.Type.cs" />
     <Compile Include="Helper\ExceptionHelper.cs" />
+    <Compile Include="Helper\PathHelper.cs" />
     <Compile Include="Helper\RandomHelper.cs" />
     <Compile Include="Helper\GuidHelper.cs" />
     <Compile Include="Helper\IocHelper.cs" />
