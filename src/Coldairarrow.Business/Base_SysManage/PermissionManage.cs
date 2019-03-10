@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
@@ -35,7 +36,7 @@ namespace Coldairarrow.Business.Base_SysManage
         private static void InitAllPermissionModules()
         {
             List<PermissionModule> resList = new List<PermissionModule>();
-            string filePath = HttpContext.Current.Server.MapPath(_permissionConfigFile);
+            string filePath = PathHelper.GetAbsolutePath(_permissionConfigFile);
             XElement xe = XElement.Load(filePath);
             xe.Elements("module")?.ForEach(aModule =>
             {
@@ -51,7 +52,7 @@ namespace Coldairarrow.Business.Base_SysManage
                     newModule.Items.Add(newItem);
 
                     newItem.Name = aItem?.Attribute("name")?.Value;
-                    newItem.Value = aItem?.Attribute("value")?.Value;
+                    newItem.Value = $"{newModule.Value}.{aItem?.Attribute("value")?.Value}";
                 });
             });
 
@@ -65,7 +66,7 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 aModule.Items?.ForEach(aItem =>
                 {
-                    resList.Add($"{aModule.Value}.{aItem.Value}");
+                    resList.Add(aItem.Value);
                 });
             });
 
@@ -78,7 +79,6 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 aModule.Items?.ForEach(aItem =>
                 {
-                    aItem.Value = $"{aModule.Value}.{aItem.Value}";
                     aItem.IsChecked = hasPermissions.Contains(aItem.Value);
                 });
             });
@@ -213,7 +213,12 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <returns></returns>
         public static List<PermissionModule> GetUserPermissionModules(string userId)
         {
-            var hasPermissions = GetUserPermissionValues(userId);
+            var userInfo = Base_UserBusiness.GetTheUser(userId);
+            List<string> hasPermissions = new List<string>();
+            if (userInfo.RoleType.HasFlag(RoleType.超级管理员))
+                hasPermissions = _allPermissionValues.DeepClone();
+            else
+                hasPermissions = GetUserPermissionValues(userId);
 
             return GetPermissionModules(hasPermissions);
         }

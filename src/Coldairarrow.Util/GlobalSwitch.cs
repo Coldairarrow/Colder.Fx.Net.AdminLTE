@@ -23,7 +23,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 项目名
         /// </summary>
-        public static string ProjectName { get; } = "Coldairarrow.Fx.Net.AdminLTE";
+        public static string ProjectName { get; } = "Colder.Fx.Net.AdminLTE";
 
         /// <summary>
         /// 网站根地址
