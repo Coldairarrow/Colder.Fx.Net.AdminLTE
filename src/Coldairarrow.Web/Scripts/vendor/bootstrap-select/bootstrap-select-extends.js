@@ -54,6 +54,23 @@ $('#roleList').selectpicker({
                 });
             }
 
+            //绑定输入事件
+            if (_options.onInput) {
+                var inputTimeout = null;
+
+                $(_this).on('shown.bs.select', function (e) {
+                    var $input = $(_this).parent().find('.bs-searchbox').find('input');
+                    $input.keydown(function () {
+                        if (inputTimeout) {
+                            clearTimeout(inputTimeout);
+                        }
+                        inputTimeout = setTimeout(function () {
+                            _options.onInput($input.val());
+                        }, 500);
+                    })
+                });
+            }
+
             return $(_this);
         }
     };

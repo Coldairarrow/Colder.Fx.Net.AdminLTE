@@ -20,14 +20,9 @@
             </div>
         </div>
         <div class="form-group form-group-sm">
-            <label class="col-sm-2 control-label">数据库类型</label>
+            <label class="col-sm-2 control-label">角色</label>
             <div class="col-sm-5">
-                <select id="DbType" name="DbType" class="form-control">
-                    <option value="SqlServer">SqlServer</option>
-                    <option value="MySql">MySql</option>
-                    <option value="Oracle">Oracle</option>
-                    <option value="PostgreSql">PostgreSql</option>
-                </select>
+                <select id="roleList" class="selectpicker form-control" name="roleList" multiple data-style="btn-default btn-sm" data-live-search="true"></select>
                 <div class="help-block with-errors"></div>
             </div>
         </div>
@@ -38,12 +33,14 @@
 </div>
 <script>
     $(function () {
-        $('#DbType').select2({
-            language: 'zh-CN',//中文
-            theme:'bootstrap',
-            //minimumResultsForSearch: -1,//取消搜索
-            multiple: true,//多选
-            closeOnSelect: false//选择后关闭
+        $('#roleList').selectpicker({
+            url: '/Base_SysManage/Base_User/GetDataList_NoPagin',
+            //value: roleIds,
+            valueField: 'UserId',
+            textField: 'RealName',
+            onInput: function (log) {
+                console.log(log);
+            }
         });
     });
 </script>

@@ -2,6 +2,7 @@ using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Coldairarrow.Web
@@ -51,6 +52,23 @@ namespace Coldairarrow.Web
             var dataList = _base_UserBusiness.GetDataList(condition, keyword, pagination);
 
             return Content(pagination.BuildTableResult_BootstrapTable(dataList).ToJson());
+        }
+
+        public ActionResult GetDataList_NoPagin(string q)
+        {
+            Pagination pagination = new Pagination()
+            {
+                PageRows = 5
+            };
+            var where = LinqHelper.True<Base_User>();
+
+            if (!q.IsNullOrEmpty())
+            {
+                where = where.And(x => x.UserId.Contains(q) || x.RealName.Contains(q));
+            }
+            var list = _base_UserBusiness.GetIQueryable().Where(where).GetPagination(pagination).ToList();
+
+            return Content(list.ToJson());
         }
 
         #endregion
