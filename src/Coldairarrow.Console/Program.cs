@@ -19,11 +19,11 @@ namespace Coldairarrow.Console1
             {
                 insertList.Add(new Base_User
                 {
-                    Id=GuidHelper.GenerateKey(),
-                    UserId= GuidHelper.GenerateKey(),
-                    UserName= $"名字{index}",
-                    RealName =$"名字{index}"
-            });
+                    Id = GuidHelper.GenerateKey(),
+                    UserId = GuidHelper.GenerateKey(),
+                    UserName = $"名字{index}",
+                    RealName = $"名字{index}"
+                });
             });
             base_UserBusiness.Insert(insertList);
 

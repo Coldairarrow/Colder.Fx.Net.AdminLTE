@@ -2,6 +2,7 @@ using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -56,19 +57,54 @@ namespace Coldairarrow.Web
 
         public ActionResult GetDataList_NoPagin(string q)
         {
+            List<SelectResponseModel> resList = new List<SelectResponseModel>();
+            var query = q.ToObject<SelectQueryModel>();
             Pagination pagination = new Pagination()
             {
                 PageRows = 5
             };
             var where = LinqHelper.True<Base_User>();
-
-            if (!q.IsNullOrEmpty())
+            List<Base_User> selected = new List<Base_User>();
+            if (query.Selected.Count > 0)
             {
-                where = where.And(x => x.UserId.Contains(q) || x.RealName.Contains(q));
+                resList = _base_UserBusiness
+                    .GetIQueryable()
+                    .Where(x => query.Selected.Contains(x.UserId))
+                    .Select(x => new SelectResponseModel
+                    {
+                        text=x.RealName,
+                        value=x.UserId,
+                        selected=true
+                    }).ToList();
             }
-            var list = _base_UserBusiness.GetIQueryable().Where(where).GetPagination(pagination).ToList();
+            if (!query.Keyword.IsNullOrEmpty())
+            {
+                where = where.And(x => x.RealName.Contains(query.Keyword)&&!query.Selected.Contains(x.UserId));
+            }
+            var keywordList = _base_UserBusiness
+                .GetIQueryable().Where(where)
+                .GetPagination(pagination)
+                .Select(x => new SelectResponseModel
+                {
+                    text = x.RealName,
+                    value = x.UserId,
+                    selected = false
+                }).ToList();
 
-            return Content(list.ToJson());
+            return Content(resList.Concat(keywordList).ToJson());
+        }
+
+        class SelectQueryModel
+        {
+            public List<string> Selected { get; set; }
+            public string Keyword { get; set; }
+        }
+
+        class SelectResponseModel
+        {
+            public string text { get; set; }
+            public string value { get; set; }
+            public bool selected { get; set; }
         }
 
         #endregion
