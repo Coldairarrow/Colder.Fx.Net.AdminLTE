@@ -2,7 +2,6 @@ using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -57,46 +56,9 @@ namespace Coldairarrow.Web
 
         public ActionResult GetDataList_NoPagin(string values, string q)
         {
-            List<Base_User> resList = new List<Base_User>();
-            List<string> selectedList = values.ToList<string>();
-            Pagination pagination = new Pagination()
-            {
-                PageRows = 5
-            };
-            var where = LinqHelper.True<Base_User>();
-            List<Base_User> selected = new List<Base_User>();
-            if (selectedList.Count > 0)
-            {
-                resList = _base_UserBusiness
-                    .GetIQueryable()
-                    .Where(x => selectedList.Contains(x.UserId))
-                    .ToList();
+            var resList = _base_UserBusiness.BuildSelectResult(values, q, "RealName", "UserId");
 
-                where = where.And(x => !selectedList.Contains(x.UserId));
-            }
-            if (!q.IsNullOrEmpty())
-            {
-                where = where.And(x => x.RealName.Contains(q));
-            }
-            var keywordList = _base_UserBusiness
-                .GetIQueryable().Where(where)
-                .GetPagination(pagination)
-                .ToList();
-
-            return Content(resList.Concat(keywordList).ToJson());
-        }
-
-        class SelectQueryModel
-        {
-            public List<string> Selected { get; set; } = new List<string>();
-            public string Keyword { get; set; }
-        }
-
-        class SelectResponseModel
-        {
-            public string text { get; set; }
-            public string value { get; set; }
-            public bool selected { get; set; }
+            return Content(resList.ToJson());
         }
 
         #endregion

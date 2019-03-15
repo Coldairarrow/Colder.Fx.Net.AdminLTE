@@ -4,7 +4,7 @@
     /// Mvc基控制器
     /// </summary>
     [CheckLogin]
-    [CheckUrlPermission]
+    //[CheckUrlPermission]
     public class BaseMvcController : BaseController
     {
 

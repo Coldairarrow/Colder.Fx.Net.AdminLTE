@@ -516,6 +516,47 @@ namespace Coldairarrow.Business
             return res;
         }
 
+        /// <summary>
+        /// 构建前端Select远程搜索数据
+        /// </summary>
+        /// <param name="selectedValueJson">已选择的项，JSON数组</param>
+        /// <param name="q">查询关键字</param>
+        /// <param name="textFiled">文本字段</param>
+        /// <param name="valueField">值字段</param>
+        /// <returns></returns>
+        public List<T> BuildSelectResult(string selectedValueJson, string q, string textFiled, string valueField)
+        {
+            Pagination pagination = new Pagination
+            {
+                PageRows = 10
+            };
+
+            List<T> selectedList = new List<T>();
+            List<T> newQList = new List<T>();
+            var iq = new BaseBusiness<T>().GetIQueryable();
+            string where = " 1=1 ";
+            List<string> ids = selectedValueJson?.ToList<string>() ?? new List<string>();
+            if (ids.Count > 0)
+            {
+                selectedList = GetNewQ().Where($"@0.Contains(outerIt.{valueField})", ids).ToList();
+
+                where += $" && !@0.Contains(outerIt.{valueField})";
+            }
+
+            if (!q.IsNullOrEmpty())
+            {
+                where += $" && outerIt.{textFiled}.Contains(@1)";
+            }
+            newQList = GetNewQ().Where(where, ids, q).GetPagination(pagination).ToList();
+
+            return selectedList.Concat(newQList).ToList();
+
+            IQueryable<T> GetNewQ()
+            {
+                return new BaseBusiness<T>().GetIQueryable();
+            }
+        }
+
         #endregion
 
         #region 其它操作
