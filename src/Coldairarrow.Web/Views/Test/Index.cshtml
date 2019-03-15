@@ -21,6 +21,7 @@
     <link href="@Url.Scrpit("~/Scripts/vendor/bootstrap-select/bootstrap-select.min.css")" rel="stylesheet">
     <script src="@Url.Scrpit("~/Scripts/vendor/bootstrap-select/bootstrap-select.js")"></script>
     @*<script src="@Url.Scrpit("~/Scripts/vendor/bootstrap-select/bootstrap-select-extends.js")"></script>*@
+    <script src="~/Scripts/vendor/bootstrap-select/bootstrap-select-extends.js"></script>
     <script src="@Url.Scrpit("~/Scripts/vendor/bootstrap-select/defaults-zh_CN.min.js")"></script>
 
     <!--bootstrap-validator-->
@@ -38,13 +39,13 @@
     <!--fx-->
     <script src="@Url.Scrpit("~/Scripts/util/util.js")"></script>
 
-    <link href="~/Scripts/vendor/select2/select2.min.css" rel="stylesheet" />
+    @*<link href="~/Scripts/vendor/select2/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/vendor/select2/select2.min.js"></script>
     <script src="~/Scripts/vendor/select2/i18n/zh-CN.js"></script>
 
     <link href="~/Scripts/vendor/bootstrap-select/ajax-bootstrap-select.css" rel="stylesheet" />
-    <script src="~/Scripts/vendor/bootstrap-select/ajax-bootstrap-select.js"></script>
+    <script src="~/Scripts/vendor/bootstrap-select/ajax-bootstrap-select.js"></script>*@
 </head>
 <body>
     <div style="padding:15px;padding-right:45px;">
@@ -59,12 +60,11 @@
             <div class="form-group form-group-sm">
                 <label class="col-sm-2 control-label">角色</label>
                 <div class="col-sm-5">
-                    <select id="roleList" class="selectpicker form-control" name="roleList" multiple data-style="btn-default btn-sm" data-live-search="true">
-                        <option value="5551" selected>aaa</option>
-                        <option value="5552" selected>aaa</option>
-                        <option value="5556">aaa</option>
+                    <select id="roleList" class="selectpicker form-control" multiple name="roleList" data-style="btn-default btn-sm">
+                        <option value="">aaaaa</option>
+                        <option value="5552">a555aa</option>
+                        <option value="5556">a1111aa</option>
                     </select>
-
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -76,32 +76,13 @@
 
     <script>
     $(function () {
-        $('#roleList').selectpicker();
-            //url: '/Base_SysManage/Base_User/GetDataList_NoPagin',
-            //value: roleIds,
-            //valueField: 'UserId',
-            //textField: 'RealName',
-            //onInput: function (log) {
-            //    console.log(log);
-            //}
-        //}).ajaxSelectPicker({
-        //    ajax: {
-        //        url: '/Base_SysManage/Base_User/GetDataList_NoPagin',
-        //        data: function () {
-        //            var params = {
-        //                q: '{{{q}}}'
-        //            };
-        //            return params;
-        //        }
-        //    },
-        //    locale: {
-        //        emptyTitle: '请输入关键字'
-        //    },
-        //    //preprocessData: function (data) {
-        //    //    return data;
-        //    //},
-        //    preserveSelected: false
-        //});
+        $('#roleList').selectpicker({
+            url: '/Base_SysManage/Base_User/GetDataList_NoPagin',//远程地址
+            value: 'Admin',//初始化值,字符串或字符串数组
+            liveSearch: true,//搜索
+            valueField: 'UserId',
+            textField: 'RealName'
+        });
     });
     </script>
 </body>

@@ -494,6 +494,9 @@
         return;
 
     window.getType = function (obj) {
+        if (obj == null)
+            return 'null';
+        
         var type = typeof (obj);
         if (type == 'object') {
             type = Object.prototype.toString.call(obj);

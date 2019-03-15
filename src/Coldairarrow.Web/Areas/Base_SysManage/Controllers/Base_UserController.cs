@@ -55,48 +55,40 @@ namespace Coldairarrow.Web
             return Content(pagination.BuildTableResult_BootstrapTable(dataList).ToJson());
         }
 
-        public ActionResult GetDataList_NoPagin(string q)
+        public ActionResult GetDataList_NoPagin(string values, string q)
         {
-            List<SelectResponseModel> resList = new List<SelectResponseModel>();
-            var query = q.ToObject<SelectQueryModel>();
+            List<Base_User> resList = new List<Base_User>();
+            List<string> selectedList = values.ToList<string>();
             Pagination pagination = new Pagination()
             {
                 PageRows = 5
             };
             var where = LinqHelper.True<Base_User>();
             List<Base_User> selected = new List<Base_User>();
-            if (query.Selected.Count > 0)
+            if (selectedList.Count > 0)
             {
                 resList = _base_UserBusiness
                     .GetIQueryable()
-                    .Where(x => query.Selected.Contains(x.UserId))
-                    .Select(x => new SelectResponseModel
-                    {
-                        text=x.RealName,
-                        value=x.UserId,
-                        selected=true
-                    }).ToList();
+                    .Where(x => selectedList.Contains(x.UserId))
+                    .ToList();
+
+                where = where.And(x => !selectedList.Contains(x.UserId));
             }
-            if (!query.Keyword.IsNullOrEmpty())
+            if (!q.IsNullOrEmpty())
             {
-                where = where.And(x => x.RealName.Contains(query.Keyword)&&!query.Selected.Contains(x.UserId));
+                where = where.And(x => x.RealName.Contains(q));
             }
             var keywordList = _base_UserBusiness
                 .GetIQueryable().Where(where)
                 .GetPagination(pagination)
-                .Select(x => new SelectResponseModel
-                {
-                    text = x.RealName,
-                    value = x.UserId,
-                    selected = false
-                }).ToList();
+                .ToList();
 
             return Content(resList.Concat(keywordList).ToJson());
         }
 
         class SelectQueryModel
         {
-            public List<string> Selected { get; set; }
+            public List<string> Selected { get; set; } = new List<string>();
             public string Keyword { get; set; }
         }
 
