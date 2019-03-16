@@ -553,7 +553,7 @@ namespace Coldairarrow.Business
 
             IQueryable<T> GetNewQ()
             {
-                return new BaseBusiness<T>().GetIQueryable();
+                return GetIQueryable();
             }
         }
 
