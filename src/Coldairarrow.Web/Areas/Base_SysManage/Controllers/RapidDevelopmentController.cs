@@ -1,5 +1,7 @@
 ﻿using Coldairarrow.Business.Base_SysManage;
+using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Coldairarrow.Web
