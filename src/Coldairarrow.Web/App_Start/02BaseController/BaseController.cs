@@ -34,6 +34,15 @@ namespace Coldairarrow.Web
             }
         }
 
+        protected override FileContentResult File(byte[] fileContents, string contentType, string fileDownloadName)
+        {
+            string agent = Request.UserAgent.ToLower();
+            if (!agent.Contains("firefox"))
+                fileDownloadName = HttpUtility.UrlEncode(fileDownloadName);
+
+            return base.File(fileContents, contentType, fileDownloadName);
+        }
+
         /// <summary>
         /// 返回JSON格式的内容
         /// </summary>

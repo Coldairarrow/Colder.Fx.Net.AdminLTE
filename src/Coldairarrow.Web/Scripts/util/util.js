@@ -458,20 +458,71 @@
     };
 })();
 
+//将对象转为x-www-form-urlencoded格式字符串
+(function () {
+    if (window.objToFormData)
+        return;
+
+    window.objToFormData = function (element, key, list) {
+        var list = list || [];
+        if (typeof (element) == 'object') {
+            for (var idx in element)
+                objToFormData(element[idx], key ? key + '[' + idx + ']' : idx, list);
+        } else {
+            list.push(key + '=' + encodeURIComponent(element));
+        }
+        return list.join('&');
+    };
+})();
+
 //使用文件Url下载文件
 (function () {
     if (window.downloadFile)
         return;
 
-    window.downloadFile = function (url) {
-        var a = document.createElement('a');
-        a.hidden = true;
-        a.download = '';
-        a.href = url
-        $("body").append(a);  // 修复firefox中无法触发click
-        a.click();
-        $(a).remove();
-    };
+    window.downloadFile = function (sUrl, params) {
+        if (params) {
+            sUrl = sUrl + '?' + objToFormData(params);
+        }
+
+        //iOS devices do not support downloading. We have to inform user about this.
+        if (/(iP)/g.test(navigator.userAgent)) {
+            alert('Your device does not support files downloading. Please try again in desktop browser.');
+            return false;
+        }
+
+        //If in Chrome or Safari - download via virtual link click
+        if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+            //Creating new link node.
+            var link = document.createElement('a');
+            link.href = sUrl;
+
+            if (link.download !== undefined) {
+                //Set HTML5 download attribute. This will prevent file from opening if supported.
+                var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
+                link.download = fileName;
+            }
+
+            //Dispatching click event.
+            if (document.createEvent) {
+                var e = document.createEvent('MouseEvents');
+                e.initEvent('click', true, true);
+                link.dispatchEvent(e);
+                return true;
+            }
+        }
+
+        // Force file download (whether supported by server).
+        if (sUrl.indexOf('?') === -1) {
+            sUrl += '?download';
+        }
+
+        window.open(sUrl, '_self');
+        return true;
+    }
+
+    window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
 })();
 
 //拓展window的toDateString方法
