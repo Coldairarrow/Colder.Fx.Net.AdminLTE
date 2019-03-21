@@ -311,7 +311,7 @@ namespace Coldairarrow.Web
                 if (fieldType == typeof(string))
                 {
                     string newOption = $@"
-                <option value=""{aField.Name}"">{aField.Description}</option>";
+                    <option value=""{aField.Name}"">{aField.Description}</option>";
                     searchConditionSelectHtml.Append(newOption);
                 }
 
