@@ -16,9 +16,9 @@ namespace Coldairarrow.Console1
         {
             Base_UserBusiness base_UserBusiness = new Base_UserBusiness();
             List<string> ids = new List<string>() { "Admin" };
-            var list = base_UserBusiness.GetIQueryable().Where("@0.Contains(outerIt.UserId)", ids).ToList();
+            //var list = base_UserBusiness.GetIQueryable().Where("@0.Contains(outerIt.UserId)", ids).ToList();
             //List<Base_User> insertList = new List<Base_User>();
-            //LoopHelper.Loop(20, index =>
+            //LoopHelper.Loop(100, index =>
             //{
             //    insertList.Add(new Base_User
             //    {
