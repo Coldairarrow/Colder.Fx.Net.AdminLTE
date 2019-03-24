@@ -25,6 +25,20 @@ namespace Coldairarrow.Web.Controllers
         {
             return View();
         }
+        public ActionResult TreeGrid()
+        {
+            return View();
+        }
+
+        public ActionResult ZTree()
+        {
+            return View();
+        }
+
+        public ActionResult ZTreeSelect()
+        {
+            return View();
+        }
 
         #endregion
 
