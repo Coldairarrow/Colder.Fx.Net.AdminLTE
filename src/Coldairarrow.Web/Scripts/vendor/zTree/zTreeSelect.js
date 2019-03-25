@@ -53,13 +53,14 @@
 
             //select项渲染
             $(_this).css('display', 'none');
-            //$(_this).empty();
+            $(_this).empty();
             $.each(option.data, function (index, item) {
                 var text = item.name;
                 var value = item.id;
 
                 $(_this).append("<option value=" + value + ">" + text + "</option>");
             });
+            $(_this).val(null);
 
             //input显示框渲染
             var inputHtml = '<input id="' + _inputId + '" type="text" readonly class="form-control"/>';
@@ -108,12 +109,16 @@
                         var zTree = $.fn.zTree.getZTreeObj(_treeId),
                             nodes = zTree.getSelectedNodes(),
                             v = "";
+                        var values = [];
+
                         nodes.sort(function compare(a, b) { return a.id - b.id; });
                         for (var i = 0, l = nodes.length; i < l; i++) {
                             v += nodes[i].name + ",";
+                            values.push(nodes[i].id);
                         }
                         if (v.length > 0) v = v.substring(0, v.length - 1);
                         _inputObj.attr("value", v);
+                        $(_this).val(values);
                     }
                 }
             };
