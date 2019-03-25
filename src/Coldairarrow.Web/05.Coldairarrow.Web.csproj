@@ -719,6 +719,9 @@
     <Content Include="Scripts\vendor\fullcalendar\fullcalendar.min.css" />
     <Content Include="Scripts\vendor\fullcalendar\fullcalendar.min.js" />
     <Content Include="Scripts\vendor\fullcalendar\fullcalendar.print.css" />
+    <Content Include="Scripts\vendor\html5Uploader\html5Uploader-extends.js" />
+    <Content Include="Scripts\vendor\html5Uploader\html5Uploader.css" />
+    <Content Include="Scripts\vendor\html5Uploader\images\upload-sprite.png" />
     <Content Include="Scripts\vendor\iCheck\all.css" />
     <Content Include="Scripts\vendor\iCheck\flat\aero%402x.png" />
     <Content Include="Scripts\vendor\iCheck\flat\aero.css" />
@@ -1398,6 +1401,7 @@
     <Content Include="Views\Demo\TreeGrid.cshtml" />
     <Content Include="Views\Demo\ZTree.cshtml" />
     <Content Include="Views\Demo\ZTreeSelect.cshtml" />
+    <Content Include="Views\Demo\UploadImgForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

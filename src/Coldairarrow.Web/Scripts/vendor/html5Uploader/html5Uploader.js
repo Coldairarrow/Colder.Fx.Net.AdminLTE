@@ -169,7 +169,7 @@
                     var scaleWidth = this.naturalWidth,
                         scaleHeight = this.naturalHeight;
 
-                    // 如果高度超标
+                    //// 如果高度超标
                     //if (scaleHeight > options.maxHeight) {
                     //    // 宽度等比例缩放 *=
                     //    scaleWidth *= options.maxHeight / scaleHeight;
@@ -180,8 +180,8 @@
                     //    scaleHeight *= options.maxWidth / scaleWidth;
                     //    scaleWidth = options.maxWidth;
                     //}
-                    this.width = scaleWidth,
-                    this.height = scaleHeight;
+                    //this.width = scaleWidth,
+                    //this.height = scaleHeight;
 
                     var canvas = document.createElement("canvas");
                     var ctx = canvas.getContext("2d");

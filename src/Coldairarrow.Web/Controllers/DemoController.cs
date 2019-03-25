@@ -12,7 +12,6 @@ namespace Coldairarrow.Web.Controllers
         {
             return View();
         }
-
         public ActionResult UploadFileIndex()
         {
             return View();
@@ -36,6 +35,11 @@ namespace Coldairarrow.Web.Controllers
         }
 
         public ActionResult ZTreeSelect()
+        {
+            return View();
+        }
+
+        public ActionResult UploadImgForm()
         {
             return View();
         }
