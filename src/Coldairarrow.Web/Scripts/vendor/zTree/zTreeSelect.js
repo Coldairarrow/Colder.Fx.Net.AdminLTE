@@ -69,7 +69,8 @@
 
             //input显示框渲染
             var inputHtml = '<input id="' + _inputId + '" type="text" readonly class="form-control"/>';
-            $(inputHtml).appendTo($(_this).parent());
+            $(_this).after($(inputHtml));
+            //$(inputHtml).appendTo($(_this).parent());
             _inputObj = $('#' + _inputId);
             option._inputObj = $('#' + _inputId);
             $(_inputObj).click(function () {
@@ -83,7 +84,8 @@
 
             //图标
             var iconHtml = '<span id="' + _iconId + '" class="form-control-feedback glyphicon glyphicon-chevron-left" style="right:10px" />'
-            $(iconHtml).appendTo($(_this).parent());
+            $(_inputObj).after($(iconHtml));
+            //$(iconHtml).appendTo($(_this).parent());
             _iconObj = $('#' + _iconId);
 
             //zTree下拉渲染
