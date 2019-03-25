@@ -31,6 +31,11 @@
             getData(function () {
                 renderHtml();
                 renderZTree();
+
+                //设置默认选中数据
+                if (option.value) {
+                    selectItem(option.value);
+                }
             });
         }
 
@@ -117,7 +122,7 @@
                             values.push(nodes[i].id);
                         }
                         if (v.length > 0) v = v.substring(0, v.length - 1);
-                        _inputObj.attr("value", v);
+                        _inputObj.val(v);
                         $(_this).val(values);
                     }
                 }
@@ -148,6 +153,16 @@
 
             $(_inputObj).data('show', false);
             $(_treeContentObj).fadeOut("fast");
+        }
+
+        function selectItem(value) {
+            var zTree = $.fn.zTree.getZTreeObj(_treeId);
+            var node = zTree.getNodeByParam("id", value);
+            var name = node.name;
+            node.checked = true;
+            zTree.updateNode(node);
+            $(_this).val(value);
+            $(_inputObj).val(name);
         }
     };
 })();
