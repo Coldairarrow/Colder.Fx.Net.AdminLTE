@@ -1,13 +1,15 @@
-﻿(function () {
-    $.fn.zTreeSelect = function (options, params) {
+﻿/*
+$('#CategoryId').zTreeSelect({
+    url: '/ScmManage/Scm_ScmProduct/GetPlatformProductCategory?SourceType=1'
+});
+
+$('#CategoryId').zTreeSelect('setOption',{});
+$('#CategoryId').zTreeSelect('reload');
+ */
+(function () {
+    $.fn.zTreeSelect = function (options, param) {
         var _this = this;
 
-        var defaults = {
-            url: null,
-            value: null,
-            multiple: false,
-            data: [],
-        };
         var _inputObj = null;
         var _zTreeObj = null;
         var _iconObj = null;
@@ -19,14 +21,37 @@
         var _treeId = _selectId + '_tree';
         var _iconId = _selectId + '_icon';
 
-        var _option = $.extend({}, defaults, options);
-        setOption(_option);
-        init();
         var methods = {
-
+            reload: function () {
+                return init();
+            },
+            setOption: function (newOption) {
+                var oldOption = getOption();
+                newOption = $.extend({}, oldOption, newOption);
+                setOption(newOption);
+            }
         };
 
+        if (typeof options == 'string') {//执行方法
+            return methods[options](param);
+        } else {//初始化
+            var defaults = {
+                url: null,
+                value: null,
+                multiple: false,
+                data: [],
+                _firstLoad: true
+            };
+
+            var _option = $.extend({}, defaults, options);
+            setOption(_option);
+
+            init();
+        }
+
         function init() {
+            $(_this).css('display', 'none');
+
             var option = getOption();
             getData(function () {
                 renderHtml();
@@ -36,6 +61,9 @@
                 if (option.value) {
                     selectItem(option.value);
                 }
+
+                option._firstLoad = false;
+                setOption(option);
             });
         }
 
@@ -55,9 +83,15 @@
 
         function renderHtml() {
             var option = getOption();
+            //创建容器
+            if (option._firstLoad) {
+                var container = $('<div style="position:relative;width:100%"></div>');
+                var children = $(_this).parent().children();
+                $(_this).parent().append(container);
+                container.append(children);
+            }
 
             //select项渲染
-            $(_this).css('display', 'none');
             $(_this).empty();
             $.each(option.data, function (index, item) {
                 var text = item.name;
@@ -67,33 +101,53 @@
             });
             $(_this).val(null);
 
+            var customClass = $(_this).attr('data-class') || 'form-control';
+
             //input显示框渲染
-            var inputHtml = '<input id="' + _inputId + '" type="text" readonly class="form-control"/>';
-            $(_this).after($(inputHtml));
-            _inputObj = $('#' + _inputId);
-            option._inputObj = $('#' + _inputId);
-            $(_inputObj).click(function () {
-                var show = $(_inputObj).data('show');
-                if (show) {
-                    hideMenu();
-                } else {
-                    showMenu();
-                }
-            });
+            if (option._firstLoad) {
+                var inputHtml = '<input id="' + _inputId + '" type="text" readonly class="' + customClass + '"/>';
+                $(_this).after($(inputHtml));
+                _inputObj = $('#' + _inputId);
+                option._inputObj = $('#' + _inputId);
+                $(_inputObj).click(function () {
+                    var show = $(_inputObj).data('show');
+                    if (show) {
+                        hideMenu();
+                    } else {
+                        showMenu();
+                    }
+                });
 
-            //图标
-            var iconHtml = '<span id="' + _iconId + '" class="form-control-feedback glyphicon glyphicon-chevron-left" style="right:10px" />'
-            $(_inputObj).after($(iconHtml));
-            _iconObj = $('#' + _iconId);
+                //图标
+                var emptyIcon = $('<span class="form-control-feedback glyphicon glyphicon-remove" style="right:30px;cursor:pointer;pointer-events:auto" />');
+                $(_inputObj).after(emptyIcon);
+                var tmpSpan = $('<span class="' + customClass + '" style="display:none"></span>');
+                emptyIcon.after(tmpSpan);
+                var iconHtml = '<span id="' + _iconId + '" class="form-control-feedback glyphicon glyphicon-chevron-left" />'
+                $(tmpSpan).after($(iconHtml));
+                _iconObj = $('#' + _iconId);
 
-            //zTree下拉渲染
-            var width = $(_inputObj).outerWidth();
-            var treeHtml = '<div id="' + _treeContentId + '" class="menuContent dropdown-menu" style="display:none; position: absolute;width:' + width + 'px;background-color:white">';
-            treeHtml += '<ul id="' + _treeId + '" class="ztree" style="margin-top:0; width:100%;"></ul>'
-            treeHtml += '</div>';
-            $(treeHtml).appendTo('body');
-            _treeContentObj = $('#' + _treeContentId);
-            _zTreeObj = $('#' + _treeId);
+                emptyIcon.click(function () {
+                    emptyItem();
+                });
+
+                //zTree下拉渲染
+                var width = $(_inputObj).outerWidth();
+                var treeHtml = '<div id="' + _treeContentId + '" class="menuContent dropdown-menu" style="display:none; position: absolute;width:' + width + 'px;background-color:white">';
+                treeHtml += '<ul id="' + _treeId + '" class="ztree" style="margin-top:0; width:100%;"></ul>'
+                treeHtml += '</div>';
+                $(treeHtml).appendTo('body');
+                _treeContentObj = $('#' + _treeContentId);
+                _zTreeObj = $('#' + _treeId);
+            }
+        }
+
+        function getOption() {
+            return $(_this).data('option');
+        }
+
+        function setOption(option) {
+            $(_this).data('option', option);
         }
 
         function renderZTree() {
@@ -122,21 +176,13 @@
                             values.push(nodes[i].id);
                         }
                         if (v.length > 0) v = v.substring(0, v.length - 1);
-                        _inputObj.val(v);
+                        $('#' + _inputId).val(v);
                         $(_this).val(values);
                     }
                 }
             };
 
-            $.fn.zTree.init(_zTreeObj, setting, option.data);
-        }
-
-        function getOption() {
-            return $(_this).data('option');
-        }
-
-        function setOption(option) {
-            $(_this).data('option', option);
+            $.fn.zTree.init($('#' + _treeId), setting, option.data);
         }
 
         function showMenu() {
@@ -163,6 +209,11 @@
             zTree.updateNode(node);
             $(_this).val(value);
             $(_inputObj).val(name);
+        }
+
+        function emptyItem() {
+            $(_this).val(null);
+            $(_inputObj).val(null);
         }
     };
 })();
