@@ -1,4 +1,5 @@
 ﻿/*
+ * 单选使用[节点选中],多选使用[checkbox勾选]
 $('#CategoryId').zTreeSelect({
     url: '/ScmManage/Scm_ScmProduct/GetPlatformProductCategory?SourceType=1'
 });
@@ -13,7 +14,7 @@ $('#CategoryId').zTreeSelect('reload');
         var _inputObj = null;
         var _zTreeObj = null;
         var _iconObj = null;
-        var _treeContentObj = null
+        var _treeContentObj = null;
 
         var _selectId = $(_this)[0].id;
         var _inputId = _selectId + '_input';
@@ -32,7 +33,7 @@ $('#CategoryId').zTreeSelect('reload');
             }
         };
 
-        if (typeof options == 'string') {//执行方法
+        if (typeof options === 'string') {//执行方法
             return methods[options](param);
         } else {//初始化
             var defaults = {
@@ -59,7 +60,10 @@ $('#CategoryId').zTreeSelect('reload');
 
                 //设置默认选中数据
                 if (option.value) {
-                    selectItem(option.value);
+                    if (option.value instanceof Array)
+                        selectItems(option.value);
+                    else
+                        selectItem(option.value);
                 }
 
                 option._firstLoad = false;
@@ -83,6 +87,7 @@ $('#CategoryId').zTreeSelect('reload');
 
         function renderHtml() {
             var option = getOption();
+
             //创建容器
             if (option._firstLoad) {
                 var container = $('<div style="position:relative;width:100%"></div>');
@@ -123,7 +128,7 @@ $('#CategoryId').zTreeSelect('reload');
                 $(_inputObj).after(emptyIcon);
                 var tmpSpan = $('<span class="' + customClass + '" style="display:none"></span>');
                 emptyIcon.after(tmpSpan);
-                var iconHtml = '<span id="' + _iconId + '" class="form-control-feedback glyphicon glyphicon-chevron-left" />'
+                var iconHtml = '<span id="' + _iconId + '" class="form-control-feedback glyphicon glyphicon-chevron-left" />';
                 $(tmpSpan).after($(iconHtml));
                 _iconObj = $('#' + _iconId);
 
@@ -134,7 +139,7 @@ $('#CategoryId').zTreeSelect('reload');
                 //zTree下拉渲染
                 var width = $(_inputObj).outerWidth();
                 var treeHtml = '<div id="' + _treeContentId + '" class="menuContent dropdown-menu" style="display:none; position: absolute;width:' + width + 'px;background-color:white">';
-                treeHtml += '<ul id="' + _treeId + '" class="ztree" style="margin-top:0; width:100%;"></ul>'
+                treeHtml += '<ul id="' + _treeId + '" class="ztree" style="margin-top:0; width:100%;"></ul>';
                 treeHtml += '</div>';
                 $(treeHtml).appendTo('body');
                 _treeContentObj = $('#' + _treeContentId);
@@ -142,20 +147,18 @@ $('#CategoryId').zTreeSelect('reload');
             }
         }
 
-        function getOption() {
-            return $(_this).data('option');
-        }
-
-        function setOption(option) {
-            $(_this).data('option', option);
-        }
-
         function renderZTree() {
             var option = getOption();
 
             var setting = {
                 view: {
-                    dblClickExpand: false
+                    dblClickExpand: false,
+                    selectedMulti: option.multiple
+                },
+                check: {
+                    enable: option.multiple,
+                    autoCheckTrigger: true,
+                    chkboxType: { "Y": "", "N": "" }
                 },
                 data: {
                     simpleData: {
@@ -167,22 +170,55 @@ $('#CategoryId').zTreeSelect('reload');
                     onClick: function (e, treeId, treeNode) {
                         var zTree = $.fn.zTree.getZTreeObj(_treeId),
                             nodes = zTree.getSelectedNodes(),
-                            v = "";
+                            v = [];
                         var values = [];
 
                         nodes.sort(function compare(a, b) { return a.id - b.id; });
                         for (var i = 0, l = nodes.length; i < l; i++) {
-                            v += nodes[i].name + ",";
+                            v.push(nodes[i].name);
                             values.push(nodes[i].id);
                         }
-                        if (v.length > 0) v = v.substring(0, v.length - 1);
-                        $('#' + _inputId).val(v);
+
+                        $('#' + _inputId).val(v.join(','));
+                        $(_this).val(values);
+                    },
+                    onCheck: function (e, treeId, treeNode) {
+                        var zTree = $.fn.zTree.getZTreeObj(_treeId),
+                            nodes = zTree.getCheckedNodes(true),
+                            v = [];
+                        var values = [];
+
+                        nodes.sort(function compare(a, b) { return a.id - b.id; });
+                        for (var i = 0, l = nodes.length; i < l; i++) {
+                            v.push(nodes[i].name);
+                            values.push(nodes[i].id);
+                        }
+
+                        $('#' + _inputId).val(v.join(','));
                         $(_this).val(values);
                     }
                 }
             };
 
+            if (option.multiple) {
+                setting.callback.onClick = function () { };
+            } else {
+                setting.callback.onCheck = function () { };
+            }
+
             $.fn.zTree.init($('#' + _treeId), setting, option.data);
+        }
+
+        function getOption() {
+            return $(_this).data('option');
+        }
+
+        function setOption(option) {
+            //根据value修正多选配置
+            if (option.value instanceof Array)
+                option.multiple = true;
+
+            $(_this).data('option', option);
         }
 
         function showMenu() {
@@ -204,14 +240,38 @@ $('#CategoryId').zTreeSelect('reload');
         function selectItem(value) {
             var zTree = $.fn.zTree.getZTreeObj(_treeId);
             var node = zTree.getNodeByParam("id", value);
-            var name = node.name;
-            node.checked = true;
-            zTree.updateNode(node);
-            $(_this).val(value);
-            $(_inputObj).val(name);
+
+            if (node)
+                $('#' + node.tId).children('a').click();
+
+        }
+
+        function selectItems(values) {
+            if (values.length <= 0) return;
+
+            var zTree = $.fn.zTree.getZTreeObj(_treeId),
+                names = [],
+                vals = [];
+
+            $.each(values, function (index, value) {
+                var node = zTree.getNodeByParam("id", value);
+                names.push(node.name);
+                vals.push(node.id);
+                zTree.checkNode(node, true, false, false);
+            });
+
+            $(_this).val(vals);
+            $(_inputObj).val(names.join(','));
         }
 
         function emptyItem() {
+            var option = getOption();
+
+            var zTree = $.fn.zTree.getZTreeObj(_treeId);
+
+            zTree.checkAllNodes(false);
+            zTree.cancelSelectedNode();
+
             $(_this).val(null);
             $(_inputObj).val(null);
         }
