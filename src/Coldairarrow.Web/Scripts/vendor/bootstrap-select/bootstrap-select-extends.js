@@ -57,7 +57,8 @@ $('#roleList').selectpicker({
                 valueField: 'value',
                 textField: 'text',
                 onSelect: null,
-                pleaseSelect: pleaseSelect
+                pleaseSelect: pleaseSelect,
+                onLoadSuccess: null
             };
             var _options = $.extend(defaults, options);
 
@@ -72,6 +73,9 @@ $('#roleList').selectpicker({
                 getData(function () {
                     renderHtml();
                     bindEvent();
+                    if (_options.onLoadSuccess) {
+                        _options.onLoadSuccess();
+                    }
                 });
             }
 
@@ -108,14 +112,21 @@ $('#roleList').selectpicker({
                 if (_options.pleaseSelect) {
                     $(_this).append('<option value="">请选择</option>');
                 }
+                var multiple = $(_this).prop('multiple');
                 for (var i = 0; i < data.length; i++) {
+
                     var text = data[i][_options.textField];
                     var value = data[i][_options.valueField];
 
-                    var selectedHtml = ''
-                    if (selected.indexOf(value) > -1) {
+                    var selectedHtml = '';
+
+                    if ((!multiple && i == 0) || (multiple && selected.indexOf(value) > -1)) {
                         selectedHtml = 'selected="selected"';
                     }
+
+                    //if (selected.indexOf(value) > -1) {
+                    //    selectedHtml = 'selected="selected"';
+                    //}
 
                     $(_this).append("<option " + selectedHtml + " value=" + value + ">" + text + "</option>");
                 }
