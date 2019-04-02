@@ -50,6 +50,7 @@ namespace Coldairarrow.Business.Common
         public static void Logout()
         {
             SessionHelper.Session["UserId"] = null;
+            SessionHelper.RemoveSessionCookie();
         }
 
         /// <summary>

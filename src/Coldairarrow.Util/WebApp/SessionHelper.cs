@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace Coldairarrow.Util
 {
@@ -50,6 +51,19 @@ namespace Coldairarrow.Util
                     else
                         CacheHelper.Cache.SetCache(cacheKey, value);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 清除Session的Cookie
+        /// </summary>
+        public static void RemoveSessionCookie()
+        {
+            var sessionCookie = HttpContext.Current.Request.Cookies[SessionHelper.SessionCookieName];
+            if (!sessionCookie.IsNullOrEmpty())
+            {
+                sessionCookie.Expires = DateTime.Now.AddDays(-1);
+                HttpContext.Current.Response.Cookies.Add(sessionCookie);
             }
         }
 
