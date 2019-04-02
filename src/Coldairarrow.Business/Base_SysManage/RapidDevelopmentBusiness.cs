@@ -391,6 +391,8 @@ $@"@{{
             idField: 'Id',
             pagination: true,
             method: 'post',
+            contentType: 'application/x-www-form-urlencoded',
+            queryParamsType: '',
             clickToSelect: false,
             sidePagination: ""server"",
             pageNumber: 1,
