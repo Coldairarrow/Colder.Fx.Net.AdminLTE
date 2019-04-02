@@ -12,18 +12,7 @@ namespace Coldairarrow.Web.Controllers
         {
             return View();
         }
-        public ActionResult UploadFileIndex()
-        {
-            return View();
-        }
-        public ActionResult UploadFileForm()
-        {
-            return View();
-        }
-        public ActionResult UploadImgView()
-        {
-            return View();
-        }
+
         public ActionResult TreeGrid()
         {
             return View();

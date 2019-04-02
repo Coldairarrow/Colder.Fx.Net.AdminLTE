@@ -1266,9 +1266,6 @@
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.otf" />
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.ttf" />
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.woff" />
-    <Content Include="Views\Demo\UploadFileIndex.cshtml" />
-    <Content Include="Views\Demo\UploadFileForm.cshtml" />
-    <Content Include="Views\Demo\UploadImgView.cshtml" />
     <Content Include="Scripts\vendor\umeditor\net\getContent.ashx" />
     <Content Include="Scripts\vendor\umeditor\net\imageUp.ashx" />
     <Content Include="Views\Shared\_Layout_Form.cshtml" />
