@@ -1,4 +1,6 @@
-﻿/*
+﻿import { networkInterfaces } from "os";
+
+/*
  拓展selectpicker,功能如下：
  支持远程异步数据
  支持远程异步数据搜索
@@ -163,7 +165,11 @@ $('#roleList').selectpicker({
                         getOption().data = resJson || [];
                         next();
                     });
-                } else {//本地数据
+                }
+                else if (getOption().data && getOption().data.length > 0) {
+                    next();
+                }
+                else {//本地数据
                     getOption().data = [];
                     $(_this).find('option').each(function () {
                         getOption().data.push({
