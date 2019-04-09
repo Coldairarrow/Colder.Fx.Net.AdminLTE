@@ -8,6 +8,7 @@ using Coldairarrow.Entity.Base_SysManage;
 using System.Collections.Generic;
 using System.Linq.Dynamic;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Coldairarrow.Console1
 {
@@ -15,7 +16,10 @@ namespace Coldairarrow.Console1
     {
         static void Main(string[] args)
         {
-            Base_UserBusiness base_UserBusiness = new Base_UserBusiness();
+            IRepository db = DbFactory.GetRepository();
+
+            var list = db.GetIQueryable<Base_User>().OrderBy(x => x.Id).ToList();
+            var list2 = db.GetIQueryable<Base_User>().OrderBy(x => x.Id).RemoveOrderBy().ToList();
 
             Console.WriteLine("完成");
             Console.ReadLine();

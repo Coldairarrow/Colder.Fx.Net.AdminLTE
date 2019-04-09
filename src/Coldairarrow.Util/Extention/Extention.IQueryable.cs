@@ -85,5 +85,26 @@ namespace Coldairarrow.Util
         {
             return LinqKit.Extensions.AsExpandable(source);
         }
+
+        /// <summary>
+        /// 删除OrderBy表达式
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static IQueryable<T> RemoveOrderBy<T>(this IQueryable<T> source)
+        {
+            return (IQueryable<T>)((IQueryable)source).RemoveOrderBy();
+        }
+
+        /// <summary>
+        /// 删除OrderBy表达式
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static IQueryable RemoveOrderBy(this IQueryable source)
+        {
+            return source.Provider.CreateQuery(new RemoveOrderByVisitor().Visit(source.Expression));
+        }
     }
 }
