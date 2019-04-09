@@ -30,7 +30,7 @@ namespace Coldairarrow.Web
                 Msg = theEx.Message
             };
 
-            exContext.Result = new ContentResult() { Content = res.ToJson(), ContentEncoding = Encoding.UTF8 };
+            exContext.Result = new ContentResult() { Content = res.ToJson(), ContentEncoding = Encoding.UTF8, ContentType = "application/json" };
         }
     }
 }
