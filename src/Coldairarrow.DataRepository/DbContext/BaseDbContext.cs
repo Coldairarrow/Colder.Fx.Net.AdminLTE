@@ -112,31 +112,11 @@ namespace Coldairarrow.DataRepository
                 return _dbCompiledModel[dbType];
             else
             {
-                DbConnection connection = GetDbConnection(nameOrConStr, dbType);
-                DbModelBuilder modelBuilder = new DbModelBuilder(DbModelBuilderVersion.Latest);
-                modelBuilder.HasDefaultSchema(GetSchema());
-                var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
-                _modelTypes.ToList().ForEach(aModel =>
-                {
-                    entityMethod.MakeGenericMethod(aModel).Invoke(modelBuilder, null);
-                });
-
-                var theModel = modelBuilder.Build(connection).Compile();
+                var theModel = BuildDbCompiledModel(nameOrConStr, dbType);
 
                 _dbCompiledModel[dbType] = theModel;
 
                 return theModel;
-
-                string GetSchema()
-                {
-                    switch (dbType)
-                    {
-                        case DatabaseType.SqlServer: return "dbo";
-                        case DatabaseType.MySql: case DatabaseType.PostgreSql: return "public";
-                        case DatabaseType.Oracle: return connection.Database;
-                        default: return "dbo";
-                    }
-                }
             }
         }
         private static DbCompiledModel BuildDbCompiledModel(string nameOrConStr, DatabaseType dbType)
