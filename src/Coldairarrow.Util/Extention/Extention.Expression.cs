@@ -367,4 +367,39 @@ namespace Coldairarrow.Util
         }
     }
 
+    /// <summary>
+    /// 删除Skip表达式
+    /// </summary>
+    public class RemoveSkipVisitor : ExpressionVisitor
+    {
+        protected override Expression VisitMethodCall(MethodCallExpression node)
+        {
+            if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
+                return base.VisitMethodCall(node);
+
+            if (node.Method.Name != "Skip")
+                return base.VisitMethodCall(node);
+
+            //eliminate the method call from the expression tree by returning the object of the call.
+            return base.Visit(node.Arguments[0]);
+        }
+    }
+
+    /// <summary>
+    /// 删除Take表达式
+    /// </summary>
+    public class RemoveTakeVisitor : ExpressionVisitor
+    {
+        protected override Expression VisitMethodCall(MethodCallExpression node)
+        {
+            if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
+                return base.VisitMethodCall(node);
+
+            if (node.Method.Name != "Take")
+                return base.VisitMethodCall(node);
+
+            //eliminate the method call from the expression tree by returning the object of the call.
+            return base.Visit(node.Arguments[0]);
+        }
+    }
 }

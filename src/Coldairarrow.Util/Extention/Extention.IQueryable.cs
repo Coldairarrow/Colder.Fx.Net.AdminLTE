@@ -1,6 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Linq.Dynamic;
-using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Coldairarrow.Util
 {
@@ -105,6 +111,96 @@ namespace Coldairarrow.Util
         public static IQueryable RemoveOrderBy(this IQueryable source)
         {
             return source.Provider.CreateQuery(new RemoveOrderByVisitor().Visit(source.Expression));
+        }
+
+        /// <summary>
+        /// 删除Skip表达式
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static IQueryable<T> RemoveSkip<T>(this IQueryable<T> source)
+        {
+            return (IQueryable<T>)((IQueryable)source).RemoveSkip();
+        }
+
+        /// <summary>
+        /// 删除Skip表达式
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static IQueryable RemoveSkip(this IQueryable source)
+        {
+            return source.Provider.CreateQuery(new RemoveSkipVisitor().Visit(source.Expression));
+        }
+
+        /// <summary>
+        /// 删除Take表达式
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static IQueryable<T> RemoveTake<T>(this IQueryable<T> source)
+        {
+            return (IQueryable<T>)((IQueryable)source).RemoveTake();
+        }
+
+        /// <summary>
+        /// 删除Take表达式
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static IQueryable RemoveTake(this IQueryable source)
+        {
+            return source.Provider.CreateQuery(new RemoveTakeVisitor().Visit(source.Expression));
+        }
+
+        /// <summary>
+        /// 切换DbContext
+        /// </summary>
+        /// <typeparam name="T">数据源类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="target">目标DbContext</param>
+        /// <returns></returns>
+        public static IQueryable<T> ChangeDbContext<T>(this IQueryable<T> source, DbContext target)
+        {
+            var binder = new ChangeDbContextVisitor(target);
+            var expression = binder.Visit(source.Expression);
+            var provider = binder.TargetProvider;
+            return provider != null ? provider.CreateQuery<T>(expression) : source;
+        }
+
+        public static DbContext GetDbContext<T>(this IQueryable<T> source)
+        {
+            return null;
+        }
+        class ChangeDbContextVisitor : ExpressionVisitor
+        {
+            public ChangeDbContextVisitor(DbContext target)
+            {
+                targetObjectContext = ((IObjectContextAdapter)target).ObjectContext;
+            }
+            ObjectContext targetObjectContext;
+            public IQueryProvider TargetProvider { get; private set; }
+            protected override Expression VisitConstant(ConstantExpression node)
+            {
+                if (node.Value is ObjectQuery objectQuery && objectQuery.Context != targetObjectContext)
+                    return Expression.Constant(CreateObjectQuery((dynamic)objectQuery));
+                return base.VisitConstant(node);
+            }
+            ObjectQuery<T> CreateObjectQuery<T>(ObjectQuery<T> source)
+            {
+                var parameters = source.Parameters
+                    .Select(p => new ObjectParameter(p.Name, p.ParameterType) { Value = p.Value })
+                    .ToArray();
+                var query = targetObjectContext.CreateQuery<T>(source.CommandText, parameters);
+                query.MergeOption = source.MergeOption;
+                query.Streaming = source.Streaming;
+                query.EnablePlanCaching = source.EnablePlanCaching;
+                if (TargetProvider == null)
+                    TargetProvider = ((IQueryable)query).Provider;
+                return query;
+            }
         }
     }
 }
