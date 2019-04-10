@@ -35,7 +35,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="dbType">数据库类型</param>
         /// <param name="entityNamespace">数据库实体命名空间,注意,该命名空间应该包含所有需要的数据库实体</param>
         public BaseDbContext(string nameOrConStr, DatabaseType dbType, string entityNamespace)
-            : base(GetDbConnection(nameOrConStr, dbType), true)
+            : base(GetDbConnection(nameOrConStr, dbType), GetDbCompiledModel(nameOrConStr, dbType), true)
         {
             _dbType = dbType;
         }
@@ -73,12 +73,7 @@ namespace Coldairarrow.DataRepository
 
         #region 私有成员
 
-        private DatabaseType _dbType { get; set; }
-
-        /// <summary>
-        /// 初始化DbContext
-        /// </summary>
-        /// <param name="modelBuilder">模型建造者</param>
+        private static ConcurrentDictionary<DatabaseType, DbCompiledModel> _dbCompiledModel { get; } = new ConcurrentDictionary<DatabaseType, DbCompiledModel>();
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<TheEntity>();
@@ -96,16 +91,12 @@ namespace Coldairarrow.DataRepository
                 {
                     case DatabaseType.SqlServer: return "dbo";
                     case DatabaseType.MySql: case DatabaseType.PostgreSql: return "public";
-                    case DatabaseType.Oracle:return Database.Connection.Database;
+                    case DatabaseType.Oracle: return Database.Connection.Database;
                     default: return "dbo";
                 }
             }
         }
-        /// <summary>
-        /// 获取DbConnection
-        /// </summary>
-        /// <param name="conStr">连接名或字符串</param>
-        /// <returns></returns>
+        private DatabaseType _dbType { get; set; }
         private static DbConnection GetDbConnection(string conStr, DatabaseType dbType)
         {
             if (conStr.IsNullOrEmpty())
@@ -115,7 +106,65 @@ namespace Coldairarrow.DataRepository
 
             return dbConnection;
         }
+        private static DbCompiledModel GetDbCompiledModel(string nameOrConStr, DatabaseType dbType)
+        {
+            if (_dbCompiledModel.ContainsKey(dbType))
+                return _dbCompiledModel[dbType];
+            else
+            {
+                DbConnection connection = GetDbConnection(nameOrConStr, dbType);
+                DbModelBuilder modelBuilder = new DbModelBuilder(DbModelBuilderVersion.Latest);
+                modelBuilder.HasDefaultSchema(GetSchema());
+                var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
+                _modelTypes.ToList().ForEach(aModel =>
+                {
+                    entityMethod.MakeGenericMethod(aModel).Invoke(modelBuilder, null);
+                });
 
+                var theModel = modelBuilder.Build(connection).Compile();
+
+                _dbCompiledModel[dbType] = theModel;
+
+                return theModel;
+
+                string GetSchema()
+                {
+                    switch (dbType)
+                    {
+                        case DatabaseType.SqlServer: return "dbo";
+                        case DatabaseType.MySql: case DatabaseType.PostgreSql: return "public";
+                        case DatabaseType.Oracle: return connection.Database;
+                        default: return "dbo";
+                    }
+                }
+            }
+        }
+        private static DbCompiledModel BuildDbCompiledModel(string nameOrConStr, DatabaseType dbType)
+        {
+            DbConnection connection = GetDbConnection(nameOrConStr, dbType);
+            DbModelBuilder modelBuilder = new DbModelBuilder(DbModelBuilderVersion.Latest);
+            modelBuilder.HasDefaultSchema(GetSchema());
+            var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
+            _modelTypes.ToList().ForEach(aModel =>
+            {
+                entityMethod.MakeGenericMethod(aModel).Invoke(modelBuilder, null);
+            });
+
+            var theModel = modelBuilder.Build(connection).Compile();
+
+            return theModel;
+
+            string GetSchema()
+            {
+                switch (dbType)
+                {
+                    case DatabaseType.SqlServer: return "dbo";
+                    case DatabaseType.MySql: case DatabaseType.PostgreSql: return "public";
+                    case DatabaseType.Oracle: return connection.Database;
+                    default: return "dbo";
+                }
+            }
+        }
         private static void InitModelType()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().Union(new Assembly[] { Assembly.Load("Coldairarrow.Entity") });
@@ -159,6 +208,14 @@ namespace Coldairarrow.DataRepository
             });
 
             return builder.ToString().ToMD5String();
+        }
+        private static void RefreshModel()
+        {
+            var dbTypes = _dbCompiledModel.Keys.ToList();
+            dbTypes.ForEach(aDbType =>
+            {
+
+            });
         }
 
         #endregion
