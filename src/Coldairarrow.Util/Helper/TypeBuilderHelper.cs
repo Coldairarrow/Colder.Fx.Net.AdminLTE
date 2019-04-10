@@ -19,7 +19,7 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static Type BuildType(string typeFullName, string assemblyName, List<PropertyConfig> properties)
         {
-            TypeBuilder tb = GetTypeBuilder(typeFullName,assemblyName);
+            TypeBuilder tb = GetTypeBuilder(typeFullName, assemblyName);
             ConstructorBuilder constructor = tb.DefineDefaultConstructor(MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
             properties.ForEach(aProperty =>
             {
