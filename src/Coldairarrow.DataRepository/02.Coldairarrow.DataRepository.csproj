@@ -95,6 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbContext\BaseDbContext.cs" />
+    <Compile Include="DbContext\DbModelFactory.cs" />
+    <Compile Include="DbContext\IBaseDbContext.cs" />
     <Compile Include="DbFactory.cs" />
     <Compile Include="IRepository\IRepository.cs" />
     <Compile Include="IRepository\IRepository.T.cs" />
