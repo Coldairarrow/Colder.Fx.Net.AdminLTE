@@ -113,9 +113,9 @@ namespace Coldairarrow.DataRepository
                 entityMethod.MakeGenericMethod(aModel).Invoke(modelBuilder, null);
             });
 
-            var theModel = modelBuilder.Build(connection).Compile();
+            var theModel = modelBuilder.Build(connection);
 
-            return theModel;
+            return theModel.Compile();
 
             string GetSchema()
             {
