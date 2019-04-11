@@ -60,25 +60,6 @@ namespace Coldairarrow.Business
             SetService(conStr, dbType, entityNamespace);
         }
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="conStr">上下文连接的DbContext</param>
-        public BaseBusiness(DbContext dbContext)
-        {
-            SetService(dbContext, null, null);
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="dbContext">上下文连接的DbContext</param>
-        /// <param name="dbType">数据库类型</param>
-        public BaseBusiness(DbContext dbContext, DatabaseType dbType)
-        {
-            SetService(dbContext, dbType, null);
-        }
-
         #endregion
 
         #region 私有成员

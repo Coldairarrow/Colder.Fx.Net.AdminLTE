@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Coldairarrow.DataRepository
 {
-    public class BaseDbContext : DbContext
+    public class BaseDbContext : DbContext, IBaseDbContext
     {
         #region 构造函数
 
@@ -73,6 +73,7 @@ namespace Coldairarrow.DataRepository
 
         #region 私有成员
 
+        private IRepository _repository { get; set; }
         private static ConcurrentDictionary<DatabaseType, DbCompiledModel> _dbCompiledModel { get; } = new ConcurrentDictionary<DatabaseType, DbCompiledModel>();
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -196,6 +197,11 @@ namespace Coldairarrow.DataRepository
             {
 
             });
+        }
+
+        public void SetRepository(IRepository repository)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

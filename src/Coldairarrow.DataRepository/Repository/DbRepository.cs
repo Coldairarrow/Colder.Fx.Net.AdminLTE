@@ -33,11 +33,11 @@ namespace Coldairarrow.DataRepository
             BuildParam = param;
             _dbType = dbType;
             _entityNamespace = entityNamespace;
-            Handle_BuildDbContext = new Func<DbContext>(() =>
-            {
-                return DbFactory.GetDbContext(BuildParam, _dbType, _entityNamespace);
-            });
-            _db = Handle_BuildDbContext?.Invoke();
+            //Handle_BuildDbContext = new Func<DbContext>(() =>
+            //{
+            //    return DbFactory.GetDbContext(BuildParam, _dbType, _entityNamespace);
+            //});
+            //_db = Handle_BuildDbContext?.Invoke();
             _connectionString = _db.Database.Connection.ConnectionString;
             IsDisposed = false;
         }
@@ -59,7 +59,7 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 连接上下文DbContext
         /// </summary>
-        private DbContext _db { get; set; }
+        private IBaseDbContext _db { get; set; }
 
         /// <summary>
         /// 建造DbConText所需参数
@@ -81,13 +81,13 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         protected DbContextTransaction Transaction { get; set; }
 
-        protected DbContext Db
+        protected IBaseDbContext Db
         {
             get
             {
                 if (IsDisposed)
                 {
-                    _db = Handle_BuildDbContext?.Invoke();
+                    //_db = Handle_BuildDbContext?.Invoke();
                     IsDisposed = false;
                 }
 
@@ -239,7 +239,7 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public DbContext GetDbContext()
         {
-            return Db;
+            return (DbContext)Db;
         }
         public Action<string> HandleSqlLog
         {
@@ -542,9 +542,6 @@ namespace Coldairarrow.DataRepository
         }
         public IQueryable GetIQueryable(Type type)
         {
-            if(BaseDbContext.NeedReloadDb(type))
-                Db = Handle_BuildDbContext?.Invoke();
-
             return Db.Set(type).AsNoTracking();
         }
 
