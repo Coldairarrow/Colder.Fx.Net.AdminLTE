@@ -28,67 +28,34 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         /// <param name="param">构造参数，可以为数据库连接字符串或者DbContext</param>
         /// <param name="dbType">数据库类型</param>
-        public DbRepository(Object param, DatabaseType dbType, string entityNamespace)
+        public DbRepository(object param, DatabaseType dbType, string entityNamespace)
         {
-            BuildParam = param;
+            _buildParam = param;
             _dbType = dbType;
             _entityNamespace = entityNamespace;
-            //Handle_BuildDbContext = new Func<DbContext>(() =>
-            //{
-            //    return DbFactory.GetDbContext(BuildParam, _dbType, _entityNamespace);
-            //});
-            //_db = Handle_BuildDbContext?.Invoke();
+            RefreshDbContext();
             _connectionString = _db.Database.Connection.ConnectionString;
-            IsDisposed = false;
+            _isDisposed = false;
         }
 
         #endregion
 
-        #region 拥有成员
+        #region 私有成员
 
-        /// <summary>
-        /// 连接字符串
-        /// </summary>
+        private void RefreshDbContext()
+        {
+            Db = DbFactory.GetDbContext(_buildParam, _dbType, _entityNamespace);
+        }
         protected string _connectionString { get; }
-
-        /// <summary>
-        /// 数据库类型
-        /// </summary>
         private DatabaseType _dbType { get; set; }
-
-        /// <summary>
-        /// 连接上下文DbContext
-        /// </summary>
-        private IBaseDbContext _db { get; set; }
-
-        /// <summary>
-        /// 建造DbConText所需参数
-        /// </summary>
-        private Object BuildParam { get; set; }
-
-        /// <summary>
-        /// 实体命名空间
-        /// </summary>
-        private string _entityNamespace { get; set; }
-
-        /// <summary>
-        /// 标记DbContext是否已经释放
-        /// </summary>
-        protected bool IsDisposed { get; set; }
-
-        /// <summary>
-        /// 判断是否开始事物
-        /// </summary>
-        protected DbContextTransaction Transaction { get; set; }
-
-        protected IBaseDbContext Db
+        protected IRepositoryDbContext Db
         {
             get
             {
-                if (IsDisposed)
+                if (_isDisposed)
                 {
-                    //_db = Handle_BuildDbContext?.Invoke();
-                    IsDisposed = false;
+                    RefreshDbContext();
+                    _isDisposed = false;
                 }
 
                 return _db;
@@ -98,12 +65,15 @@ namespace Coldairarrow.DataRepository
                 _db = value;
             }
         }
-
+        private IRepositoryDbContext _db { get; set; }
+        private Object _buildParam { get; set; }
+        private string _entityNamespace { get; set; }
+        protected bool _isDisposed { get; set; }
+        protected DbContextTransaction Transaction { get; set; }
         protected static PropertyInfo GetKeyProperty<T>()
         {
             return GetKeyPropertys<T>().FirstOrDefault();
         }
-
         protected static List<PropertyInfo> GetKeyPropertys<T>()
         {
             var properties = typeof(T)
@@ -113,7 +83,6 @@ namespace Coldairarrow.DataRepository
 
             return properties;
         }
-
         protected static string GetDbTableName<T>()
         {
             string tableName = string.Empty;
@@ -125,7 +94,6 @@ namespace Coldairarrow.DataRepository
 
             return tableName;
         }
-
         protected static ObjectQuery<T> GetObjectQueryFromDbQueryable<T>(IQueryable<T> query)
         {
             var internalQueryField = query.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.Name.Equals("_internalQuery")).FirstOrDefault();
@@ -137,7 +105,7 @@ namespace Coldairarrow.DataRepository
         {
             if (Db.Entry(entity).State == EntityState.Detached)
             {
-                var objectContext = ((IObjectContextAdapter)Db).ObjectContext;
+                var objectContext = ((IObjectContextAdapter)Db.GetDbContext()).ObjectContext;
                 var entitySet = objectContext.CreateObjectSet<T>();
                 var entityKey = objectContext.CreateEntityKey(entitySet.EntitySet.Name, entity);
                 object foundSet;
@@ -148,12 +116,6 @@ namespace Coldairarrow.DataRepository
                 }
             }
         }
-
-        #endregion
-
-        #region 事件处理
-
-        Func<DbContext> Handle_BuildDbContext { get; set; }
 
         #endregion
 
@@ -179,7 +141,7 @@ namespace Coldairarrow.DataRepository
             {
                 Db.SaveChanges();
                 Db.Dispose();
-                IsDisposed = true;
+                _isDisposed = true;
             }
         }
 
@@ -190,7 +152,7 @@ namespace Coldairarrow.DataRepository
         {
             Transaction?.Dispose();
             Db?.Dispose();
-            IsDisposed = true;
+            _isDisposed = true;
             _openedTransaction = false;
             _sqlTransaction = null;
         }
@@ -239,8 +201,12 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public DbContext GetDbContext()
         {
-            return (DbContext)Db;
+            return Db.GetDbContext();
         }
+
+        /// <summary>
+        /// 追踪SQL日志
+        /// </summary>
         public Action<string> HandleSqlLog
         {
             set

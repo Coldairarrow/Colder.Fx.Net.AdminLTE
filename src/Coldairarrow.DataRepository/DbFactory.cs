@@ -41,25 +41,10 @@ namespace Coldairarrow.DataRepository
             IRepository res = null;
             DatabaseType _dbType = GetDbType(dbType);
             Type dbRepositoryType = Type.GetType("Coldairarrow.DataRepository." + DbProviderFactoryHelper.DbTypeToDbTypeStr(_dbType) + "Repository");
-            List<object> paramters = new List<object>();
-            void BuildParamters()
-            {
-                if (obj.IsNullOrEmpty())
-                    return;
+            if (obj.IsNullOrEmpty())
+                obj = GlobalSwitch.DefaultDbConName;
+            res = _dbrepositoryContainer.Resolve<IRepository>(_dbType.ToString(), obj, entityNamespace);
 
-                if (obj is DbContext)
-                {
-                    paramters.Add(obj);
-                    return;
-                }
-                else if (obj is string)
-                {
-                    paramters.Add(obj);
-                    paramters.Add(entityNamespace);
-                }
-            }
-            BuildParamters();
-            res = _dbrepositoryContainer.Resolve<IRepository>(_dbType.ToString(), paramters.ToArray());
             return res;
         }
 
@@ -87,22 +72,19 @@ namespace Coldairarrow.DataRepository
         /// <param name="obj">初始化参数，可为连接字符串或者DbContext</param>
         /// <param name="dbType">数据库类型</param>
         /// <returns></returns>
-        public static DbContext GetDbContext(Object obj, DatabaseType dbType, string entityNamespace)
+        public static IRepositoryDbContext GetDbContext(object obj, DatabaseType dbType, string entityNamespace)
         {
-            DbContext dbContext = null;
+            IRepositoryDbContext dbContext = null;
 
             if (obj.IsNullOrEmpty())
             {
-                dbContext = new BaseDbContext(null, dbType, entityNamespace);
+                dbContext = new RepositoryDbContext(null, dbType, entityNamespace);
             }
             else
             {
                 //若参数为字符串
-                if (obj is String)
-                    dbContext = new BaseDbContext((string)obj, dbType, entityNamespace);
-                //若参数为DbContext
-                else if (obj is DbContext)
-                    dbContext = (DbContext)Activator.CreateInstance(obj.GetType(), null);
+                if (obj is string)
+                    dbContext = new RepositoryDbContext((string)obj, dbType, entityNamespace);
                 else
                     throw new Exception("请传入有效的参数！");
             }

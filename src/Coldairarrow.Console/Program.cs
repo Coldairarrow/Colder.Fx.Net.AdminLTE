@@ -18,11 +18,11 @@ namespace Coldairarrow.Console1
         static void Main(string[] args)
         {
             IRepository db1 = DbFactory.GetRepository();
-            IRepository db2 = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
+            //IRepository db2 = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
 
-            db2.HandleSqlLog = Console.WriteLine;
+            //db2.HandleSqlLog = Console.WriteLine;
             var list = db1.GetList<Base_User>();
-            var list2 = db2.GetList<Base_User>();
+            //var list2 = db2.GetList<Base_User>();
             Console.WriteLine("完成");
             Console.ReadLine();
         }

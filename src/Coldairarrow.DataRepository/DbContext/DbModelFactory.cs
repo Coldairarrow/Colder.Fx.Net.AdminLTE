@@ -28,23 +28,29 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 获取DbCompiledModel
         /// </summary>
-        /// <param name="nameOrConStr">数据库连接名或字符串</param>
+        /// <param name="conStr">数据库连接名或字符串</param>
         /// <param name="dbType">数据库类型</param>
         /// <returns></returns>
-        public static DbCompiledModel GetDbCompiledModel(string nameOrConStr, DatabaseType dbType)
+        public static DbCompiledModel GetDbCompiledModel(string conStr, DatabaseType dbType)
         {
-            if (_dbCompiledModel.ContainsKey(dbType))
-                return _dbCompiledModel[dbType];
+            string modelInfoId = GetCompiledModelIdentity(conStr, dbType);
+            if (_dbCompiledModel.ContainsKey(modelInfoId))
+                return _dbCompiledModel[modelInfoId].DbCompiledModel;
             else
             {
-                var theModel = BuildDbCompiledModel(nameOrConStr, dbType);
+                var theModelInfo = BuildDbCompiledModelInfo(conStr, dbType);
 
-                _dbCompiledModel[dbType] = theModel;
+                _dbCompiledModel[modelInfoId] = theModelInfo;
 
-                return theModel;
+                return theModelInfo.DbCompiledModel;
             }
         }
 
+        /// <summary>
+        /// 获取模型
+        /// </summary>
+        /// <param name="type">原类型</param>
+        /// <returns></returns>
         public static (bool needRefresh, Type model) GetModel(Type type)
         {
             bool needRefresh = false;
@@ -53,7 +59,7 @@ namespace Coldairarrow.DataRepository
                 targetType = _modelTypes.Where(x => x == type).FirstOrDefault();
             else
             {
-                string modelId = GetIdentity(type);
+                string modelId = GetModelIdentity(type);
                 if (_modelTypeMap.ContainsKey(modelId))
                     targetType = _modelTypeMap[modelId];
                 else
@@ -62,6 +68,7 @@ namespace Coldairarrow.DataRepository
                     _modelTypeMap[modelId] = type;
                     targetType = type;
                     needRefresh = true;
+                    RefreshModel();
                 }
             }
 
@@ -87,24 +94,15 @@ namespace Coldairarrow.DataRepository
             types.ForEach(aType =>
             {
                 _modelTypes.Add(aType);
-                _modelTypeMap[GetIdentity(aType)] = aType;
+                _modelTypeMap[GetModelIdentity(aType)] = aType;
             });
         }
         private static ConcurrentDictionary<string, Type> _modelTypeMap { get; } = new ConcurrentDictionary<string, Type>();
         private static SynchronizedCollection<Type> _modelTypes { get; } = new SynchronizedCollection<Type>();
-        private static ConcurrentDictionary<DatabaseType, DbCompiledModel> _dbCompiledModel { get; } = new ConcurrentDictionary<DatabaseType, DbCompiledModel>();
-        private static DbConnection GetDbConnection(string conStr, DatabaseType dbType)
+        private static ConcurrentDictionary<string, DbCompiledModelInfo> _dbCompiledModel { get; } = new ConcurrentDictionary<string, DbCompiledModelInfo>();
+        private static DbCompiledModelInfo BuildDbCompiledModelInfo(string nameOrConStr, DatabaseType dbType)
         {
-            if (conStr.IsNullOrEmpty())
-                conStr = GlobalSwitch.DefaultDbConName;
-            DbConnection dbConnection = DbProviderFactoryHelper.GetDbConnection(dbType);
-            dbConnection.ConnectionString = DbProviderFactoryHelper.GetConStr(conStr);
-
-            return dbConnection;
-        }
-        private static DbCompiledModel BuildDbCompiledModel(string nameOrConStr, DatabaseType dbType)
-        {
-            DbConnection connection = GetDbConnection(nameOrConStr, dbType);
+            DbConnection connection = DbProviderFactoryHelper.GetDbConnection(nameOrConStr, dbType);
             DbModelBuilder modelBuilder = new DbModelBuilder(DbModelBuilderVersion.Latest);
             modelBuilder.HasDefaultSchema(GetSchema());
             var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
@@ -113,9 +111,15 @@ namespace Coldairarrow.DataRepository
                 entityMethod.MakeGenericMethod(aModel).Invoke(modelBuilder, null);
             });
 
-            var theModel = modelBuilder.Build(connection);
+            var theModel = modelBuilder.Build(connection).Compile();
+            DbCompiledModelInfo info = new DbCompiledModelInfo
+            {
+                ConStr = connection.ConnectionString,
+                DatabaseType = dbType,
+                DbCompiledModel = theModel
+            };
 
-            return theModel.Compile();
+            return info;
 
             string GetSchema()
             {
@@ -128,24 +132,38 @@ namespace Coldairarrow.DataRepository
                 }
             }
         }
-        private static string GetIdentity(Type type)
+        private static string GetModelIdentity(Type type)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append(type.Name);
+            builder.Append(type.FullName);
             type.GetProperties().OrderBy(x => x.Name).ForEach(aProperty =>
             {
                 builder.Append($"{aProperty.Name}{aProperty.PropertyType.FullName}");
             });
 
-            return builder.ToString().ToMD5String();
+            return builder.ToString();
         }
-        private static void RefreshModel(string nameOrConStr, DatabaseType dbType)
+        private static string GetCompiledModelIdentity(string conStr, DatabaseType dbType)
         {
-            var dbTypes = _dbCompiledModel.Keys.ToList();
-            dbTypes.ForEach(aDbType =>
+            return $"{dbType.ToString()}{conStr}";
+        }
+        private static void RefreshModel()
+        {
+            _dbCompiledModel.Values.ForEach(aModelInfo =>
             {
-                _dbCompiledModel[aDbType] = BuildDbCompiledModel(nameOrConStr, dbType);
+                aModelInfo.DbCompiledModel = BuildDbCompiledModelInfo(aModelInfo.ConStr, aModelInfo.DatabaseType).DbCompiledModel;
             });
+        }
+
+        #endregion
+
+        #region 数据结构
+
+        class DbCompiledModelInfo
+        {
+            public DbCompiledModel DbCompiledModel { get; set; }
+            public string ConStr { get; set; }
+            public DatabaseType DatabaseType { get; set; }
         }
 
         #endregion
