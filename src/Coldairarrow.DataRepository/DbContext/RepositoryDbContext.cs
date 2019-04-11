@@ -21,12 +21,12 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="nameOrConStr">数据库连接名或连接字符串</param>
+        /// <param name="conString">数据库连接名或连接字符串</param>
         /// <param name="dbType">数据库类型</param>
         /// <param name="entityNamespace">数据库实体命名空间,注意,该命名空间应该包含所有需要的数据库实体</param>
-        public RepositoryDbContext(string nameOrConStr, DatabaseType dbType, string entityNamespace)
+        public RepositoryDbContext(string conString, DatabaseType dbType, string entityNamespace)
         {
-            _dbConStr = DbProviderFactoryHelper.GetConStr(nameOrConStr);
+            _conString = conString;
             _dbType = dbType;
             RefreshDb();
         }
@@ -86,11 +86,11 @@ namespace Coldairarrow.DataRepository
 
         private DbContext _db { get; set; }
         private DatabaseType _dbType { get; }
-        private string _dbConStr { get; }
+        private string _conString { get; }
         private void RefreshDb()
         {
-            var con = DbProviderFactoryHelper.GetDbConnection(_dbConStr, _dbType);
-            var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_dbConStr, _dbType);
+            var con = DbProviderFactoryHelper.GetDbConnection(_conString, _dbType);
+            var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
             _db = new BaseDbContext(con, dBCompiledModel);
         }
         private Type CheckModel(Type type)

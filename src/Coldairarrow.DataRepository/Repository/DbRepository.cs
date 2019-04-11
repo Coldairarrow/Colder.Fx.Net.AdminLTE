@@ -11,7 +11,6 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace Coldairarrow.DataRepository
 {
@@ -26,35 +25,25 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="param">构造参数，可以为数据库连接字符串或者DbContext</param>
+        /// <param name="conString">构造参数，可以为数据库连接字符串或者DbContext</param>
         /// <param name="dbType">数据库类型</param>
-        public DbRepository(object param, DatabaseType dbType, string entityNamespace)
+        public DbRepository(string conString, DatabaseType dbType, string entityNamespace)
         {
-            _buildParam = param;
+            _conString = conString;
             _dbType = dbType;
             _entityNamespace = entityNamespace;
-            RefreshDbContext();
-            _connectionString = _db.Database.Connection.ConnectionString;
-            _isDisposed = false;
         }
 
         #endregion
 
         #region 私有成员
-
-        private void RefreshDbContext()
-        {
-            Db = DbFactory.GetDbContext(_buildParam, _dbType, _entityNamespace);
-        }
-        protected string _connectionString { get; }
-        private DatabaseType _dbType { get; set; }
         protected IRepositoryDbContext Db
         {
             get
             {
-                if (_isDisposed)
+                if (_isDisposed || _db == null)
                 {
-                    RefreshDbContext();
+                    _db = DbFactory.GetDbContext(_conString, _dbType, _entityNamespace);
                     _isDisposed = false;
                 }
 
@@ -66,7 +55,8 @@ namespace Coldairarrow.DataRepository
             }
         }
         private IRepositoryDbContext _db { get; set; }
-        private Object _buildParam { get; set; }
+        protected string _conString { get; set; }
+        protected DatabaseType _dbType { get; set; }
         private string _entityNamespace { get; set; }
         protected bool _isDisposed { get; set; }
         protected DbContextTransaction Transaction { get; set; }
@@ -248,7 +238,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="entities">数据</param>
         public virtual void BulkInsert<T>(List<T> entities) where T : class, new()
         {
-
+            throw new NotImplementedException("不支持此操作!");
         }
 
         #endregion
@@ -355,29 +345,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="condition">条件</param>
         public virtual void Delete_Sql<T>(Expression<Func<T, bool>> condition) where T : class, new()
         {
-            var objectQuery = GetObjectQueryFromDbQueryable(GetIQueryable<T>().Where(condition));
-            string querySTr = objectQuery.ToTraceString();
-            string parttern = "^SELECT.*?FROM.*?AS(.*?)WHERE.*?$";
-            var match = Regex.Match(querySTr, parttern, RegexOptions.Singleline);
-            string extent1 = match.Groups[1].ToString();
-
-            parttern = "^SELECT.*?(FROM.*?AS.*?WHERE.*?$)";
-            match = Regex.Match(querySTr, parttern, RegexOptions.Singleline);
-            string fromSql = match.Groups[1].ToString();
-
-            string deleteSql = $"DELETE {extent1} {fromSql}";
-            List<DbParameter> dbParamters = new List<DbParameter>();
-
-            objectQuery.Parameters.ToList().ForEach(aParamter =>
-            {
-                var parameter = DbProviderFactoryHelper.GetDbParameter(_dbType);
-                parameter.ParameterName = aParamter.Name;
-                parameter.Value = aParamter.Value ?? DBNull.Value;
-
-                dbParamters.Add(parameter);
-            });
-
-            ExecuteSql(deleteSql, dbParamters);
+            throw new NotImplementedException("不支持此操作!");
         }
 
         #endregion
@@ -506,6 +474,13 @@ namespace Coldairarrow.DataRepository
         {
             return GetIQueryable(typeof(T)) as IQueryable<T>;
         }
+
+        /// <summary>
+        /// 获取实体对应的表，延迟加载，主要用于支持Linq查询操作
+        /// 注意：无缓存
+        /// </summary>
+        /// <param name="type">实体类型</param>
+        /// <returns></returns>
         public IQueryable GetIQueryable(Type type)
         {
             return Db.Set(type).AsNoTracking();
@@ -532,7 +507,7 @@ namespace Coldairarrow.DataRepository
             DbProviderFactory dbProviderFactory = DbProviderFactories.GetFactory(Db.Database.Connection);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
-                conn.ConnectionString = _connectionString;
+                conn.ConnectionString = _conString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();

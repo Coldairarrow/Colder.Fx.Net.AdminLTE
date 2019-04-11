@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Expressions;
@@ -18,7 +17,7 @@ namespace Coldairarrow.Business
     /// 作者：Coldairarrow
     /// </summary>
     /// <typeparam name="T">泛型约束（数据库实体）</typeparam>
-    public class BaseBusiness<T> : IRepository<T> where T : class, new()
+    public class BaseBusiness<T> : IBaseBusiness<T> where T : class, new()
     {
         #region 构造函数
 
@@ -67,12 +66,12 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 设置仓储服务
         /// </summary>
-        /// <param name="param">参数</param>
+        /// <param name="conString">参数</param>
         /// <param name="dbType">数据库类型</param>
         /// <param name="entityNamespace">命名空间</param>
-        private void SetService(object param, DatabaseType? dbType, string entityNamespace)
+        private void SetService(string conString, DatabaseType? dbType, string entityNamespace)
         {
-            Service = DbFactory.GetRepository(param, dbType, entityNamespace);
+            Service = DbFactory.GetRepository(conString, dbType, entityNamespace);
         }
 
         #endregion

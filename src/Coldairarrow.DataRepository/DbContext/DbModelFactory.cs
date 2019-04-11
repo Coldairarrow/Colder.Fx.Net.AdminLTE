@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Util;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -127,7 +128,7 @@ namespace Coldairarrow.DataRepository
                 {
                     case DatabaseType.SqlServer: return "dbo";
                     case DatabaseType.MySql: case DatabaseType.PostgreSql: return "public";
-                    case DatabaseType.Oracle: return connection.Database;
+                    case DatabaseType.Oracle: return new OracleConnectionStringBuilder(connection.ConnectionString).UserID; ;
                     default: return "dbo";
                 }
             }

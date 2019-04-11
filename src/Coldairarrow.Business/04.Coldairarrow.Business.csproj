@@ -60,6 +60,12 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.18.3.0\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -104,6 +110,7 @@
     <Compile Include="00Cache\BaseCache\IBaseCache.T.cs" />
     <Compile Include="00Cache\Base_UserModelCache.cs" />
     <Compile Include="BaseBusiness\BaseBusiness.T.cs" />
+    <Compile Include="BaseBusiness\IBaseBusiness.T.cs" />
     <Compile Include="Base_SysManage\Base_AppSecretBusiness.cs" />
     <Compile Include="Base_SysManage\Base_DatabaseLinkBusiness.cs" />
     <Compile Include="Base_SysManage\Base_SysLogBusiness.cs" />

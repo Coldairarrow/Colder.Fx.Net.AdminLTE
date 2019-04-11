@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -43,15 +42,6 @@ namespace Coldairarrow.DataRepository
         {
         }
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="dbContext">数据库连接上下文</param>
-        public MySqlRepository(DbContext dbContext)
-            : base(dbContext, DatabaseType.MySql, null)
-        {
-        }
-
         #endregion
 
         #region 插入数据
@@ -64,9 +54,9 @@ namespace Coldairarrow.DataRepository
         public override void BulkInsert<T>(List<T> entities)
         {
             DataTable dt = entities.ToDataTable();
-            using (MySqlConnection conn=new MySqlConnection())
+            using (MySqlConnection conn = new MySqlConnection())
             {
-                conn.ConnectionString = _connectionString;
+                conn.ConnectionString = _conString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();

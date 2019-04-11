@@ -1,7 +1,6 @@
 ﻿using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq.Expressions;
 
 namespace Coldairarrow.DataRepository
@@ -34,15 +33,6 @@ namespace Coldairarrow.DataRepository
         /// <param name="entityNamespace">实体命名空间</param>
         public OracleRepository(string conStr, string entityNamespace)
             : base(conStr, DatabaseType.Oracle, entityNamespace)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="dbContext">数据库连接上下文</param>
-        public OracleRepository(DbContext dbContext)
-            : base(dbContext, DatabaseType.Oracle, null)
         {
         }
 
