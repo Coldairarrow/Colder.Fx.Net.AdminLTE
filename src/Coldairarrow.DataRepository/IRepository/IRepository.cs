@@ -13,7 +13,7 @@ namespace Coldairarrow.DataRepository
         #region 数据库连接相关方法
 
         DbContext GetDbContext();
-        Action<string> HandleSqlLog { set; }
+        Action<string> HandleSqlLog { get; set; }
 
         #endregion
 

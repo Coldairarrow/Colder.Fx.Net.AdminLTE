@@ -44,6 +44,7 @@ namespace Coldairarrow.DataRepository
                 if (_isDisposed || _db == null)
                 {
                     _db = DbFactory.GetDbContext(_conString, _dbType, _entityNamespace);
+                    _db.Database.Log += HandleSqlLog;
                     _isDisposed = false;
                 }
 
@@ -197,13 +198,7 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 追踪SQL日志
         /// </summary>
-        public Action<string> HandleSqlLog
-        {
-            set
-            {
-                Db.Database.Log = value;
-            }
-        }
+        public Action<string> HandleSqlLog { get; set; }
 
         #endregion
 

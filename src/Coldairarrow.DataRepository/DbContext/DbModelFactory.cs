@@ -136,7 +136,7 @@ namespace Coldairarrow.DataRepository
         private static string GetModelIdentity(Type type)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append(type.FullName);
+            builder.Append(type.Name);
             type.GetProperties().OrderBy(x => x.Name).ForEach(aProperty =>
             {
                 builder.Append($"{aProperty.Name}{aProperty.PropertyType.FullName}");

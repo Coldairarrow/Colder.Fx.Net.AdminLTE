@@ -91,9 +91,12 @@ namespace Coldairarrow.DataRepository
         private string _conString { get; }
         private void RefreshDb()
         {
+            var oldDb = _db;
             var con = DbProviderFactoryHelper.GetDbConnection(_conString, _dbType);
             var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
             _db = new BaseDbContext(con, dBCompiledModel);
+            if (oldDb != null)
+                _db.Database.Log += oldDb.Database.Log;
         }
         private Type CheckModel(Type type)
         {
