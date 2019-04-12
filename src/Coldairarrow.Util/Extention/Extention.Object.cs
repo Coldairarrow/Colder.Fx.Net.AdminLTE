@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;

@@ -37,6 +37,7 @@ namespace Coldairarrow.DataRepository
         #endregion
 
         #region 私有成员
+
         protected IRepositoryDbContext Db
         {
             get
@@ -74,14 +75,14 @@ namespace Coldairarrow.DataRepository
 
             return properties;
         }
-        protected static string GetDbTableName<T>()
+        protected string GetDbTableName(Type type)
         {
             string tableName = string.Empty;
-            var tableAttribute = typeof(T).GetCustomAttribute<TableAttribute>();
+            var tableAttribute = type.GetCustomAttribute<TableAttribute>();
             if (tableAttribute != null)
                 tableName = tableAttribute.Name;
             else
-                tableName = typeof(T).Name;
+                tableName = type.Name;
 
             return tableName;
         }
@@ -228,7 +229,6 @@ namespace Coldairarrow.DataRepository
         public void Insert(List<object> entities)
         {
             entities.ForEach(x => Db.Entry(x).State = EntityState.Added);
-
             Commit();
         }
 
@@ -257,55 +257,16 @@ namespace Coldairarrow.DataRepository
 
         #region 删除数据
 
-        /// <summary>
-        /// 删除表中所有数据
-        /// </summary>
-        /// <typeparam name="T">实体</typeparam>
         public virtual void DeleteAll<T>() where T : class, new()
         {
-            TableAttribute tableAttribute = typeof(T).GetCustomAttributes(typeof(TableAttribute), true).FirstOrDefault() as TableAttribute;
-            string tableName = tableAttribute.Name;
-            string sql = $"DELETE {tableName}";
+            DeleteAll(typeof(T));
+        }
+
+        public virtual void DeleteAll(Type type)
+        {
+            string tableName = GetDbTableName(type);
+            string sql = $"DELETE FROM {tableName}";
             ExecuteSql(sql);
-        }
-
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="key">主键值</param>
-        public void Delete<T>(string key) where T : class, new()
-        {
-            T newData = new T();
-            var theProperty = GetKeyProperty<T>();
-            if (theProperty == null)
-                throw new Exception("该实体没有主键标识！请使用[Key]标识主键！");
-            var value = Convert.ChangeType(key, theProperty.PropertyType);
-            theProperty.SetValue(newData, value);
-            Delete(newData);
-        }
-
-        /// <summary>
-        /// 删除多条数据
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="keys">主键列表</param>
-        public void Delete<T>(List<string> keys) where T : class, new()
-        {
-            var theProperty = GetKeyProperty<T>();
-            if (theProperty == null)
-                throw new Exception("该实体没有主键标识！请使用[Key]标识主键！");
-
-            List<T> deleteList = new List<T>();
-            keys.ForEach(aKey =>
-            {
-                T newData = new T();
-                var value = Convert.ChangeType(aKey, theProperty.PropertyType);
-                theProperty.SetValue(newData, value);
-                deleteList.Add(newData);
-            });
-
-            Delete(deleteList);
         }
 
         /// <summary>
@@ -358,6 +319,49 @@ namespace Coldairarrow.DataRepository
         public virtual void Delete_Sql<T>(Expression<Func<T, bool>> condition) where T : class, new()
         {
             throw new NotImplementedException("不支持此操作!");
+        }
+
+        public void Delete(object entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(List<object> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete<T>(string key) where T : class, new()
+        {
+            Delete<T>(new List<string> { key });
+        }
+
+        public void Delete<T>(List<string> keys) where T : class, new()
+        {
+            var theProperty = GetKeyProperty<T>();
+            if (theProperty == null)
+                throw new Exception("该实体没有主键标识！请使用[Key]标识主键！");
+
+            List<T> deleteList = new List<T>();
+            keys.ForEach(aKey =>
+            {
+                T newData = new T();
+                var value = Convert.ChangeType(aKey, theProperty.PropertyType);
+                theProperty.SetValue(newData, value);
+                deleteList.Add(newData);
+            });
+
+            Delete(deleteList);
+        }
+
+        public void Delete(Type type, string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Type type, List<string> keys)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -446,6 +450,26 @@ namespace Coldairarrow.DataRepository
             var list = GetIQueryable<T>().Where(whereExpre).ToList();
             list.ForEach(aData => set(aData));
             Update(list);
+        }
+
+        public void Update(object entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(List<object> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAny(object entity, List<string> properties)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAny(List<object> entities, List<string> properties)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -566,6 +590,16 @@ namespace Coldairarrow.DataRepository
         public List<T> GetListBySql<T>(string sqlStr, List<DbParameter> parameters) where T : class, new()
         {
             return Db.Database.SqlQuery<T>(sqlStr, parameters.ToArray()).ToList();
+        }
+
+        public object GetEntity(Type type, params object[] keyValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<object> GetList(Type type)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

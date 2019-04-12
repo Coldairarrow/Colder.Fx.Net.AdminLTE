@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 
 namespace Coldairarrow.DataRepository
@@ -15,28 +14,16 @@ namespace Coldairarrow.DataRepository
     {
         #region 构造函数
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         public MySqlRepository()
             : base(null, DatabaseType.MySql, null)
         {
         }
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="conStr">数据库连接名</param>
         public MySqlRepository(string conStr)
             : base(conStr, DatabaseType.MySql, null)
         {
         }
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="conStr">数据库连接名</param>
-        /// <param name="entityNamespace">实体命名空间</param>
         public MySqlRepository(string conStr, string entityNamespace)
             : base(conStr, DatabaseType.MySql, entityNamespace)
         {
@@ -44,13 +31,8 @@ namespace Coldairarrow.DataRepository
 
         #endregion
 
-        #region 插入数据
+        #region 特殊操作
 
-        /// <summary>
-        /// 使用Bulk批量插入数据（适合大数据量，速度非常快）
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="entities">数据</param>
         public override void BulkInsert<T>(List<T> entities)
         {
             DataTable dt = entities.ToDataTable();
@@ -102,11 +84,6 @@ namespace Coldairarrow.DataRepository
                 }
                 File.Delete(tmpPath);
             }
-        }
-
-        public override void Delete_Sql<T>(Expression<Func<T, bool>> condition)
-        {
-            Delete(condition);
         }
 
         #endregion
