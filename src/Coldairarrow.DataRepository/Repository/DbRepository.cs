@@ -207,11 +207,28 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 插入数据
         /// </summary>
+        /// <param name="entity">实体</param>
+        public void Insert(object entity)
+        {
+            Db.Entry(entity).State = EntityState.Added;
+            Commit();
+        }
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="entity">实体</param>
         public void Insert<T>(T entity) where T : class, new()
         {
             Db.Entry(entity).State = EntityState.Added;
+            Commit();
+        }
+
+        public void Insert(List<object> entities)
+        {
+            entities.ForEach(x => Db.Entry(x).State = EntityState.Added);
+
             Commit();
         }
 
@@ -222,7 +239,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="entities">实体列表</param>
         public void Insert<T>(List<T> entities) where T : class, new()
         {
-            Db.Set<T>().AddRange(entities);
+            entities.ForEach(x => Db.Entry(x).State = EntityState.Added);
             Commit();
         }
 

@@ -29,8 +29,24 @@ namespace Coldairarrow.Console1
             typeConfig.FullName = tableName;
             typeConfig.Attributes[0].ConstructorArgs[0] = tableName;
             var type = TypeBuilderHelper.BuildType(typeConfig);
-            
-            var list = db.GetIQueryable(type).CastToList<object>();
+            var type2 = TypeBuilderHelper.BuildType(typeConfig);
+            var properties = type.GetProperties();
+            Console.WriteLine(type == type2);
+            Base_User base_User = new Base_User
+            {
+                Id = GuidHelper.GenerateKey(),
+                UserId = GuidHelper.GenerateKey(),
+                UserName= GuidHelper.GenerateKey()
+            };
+            Base_User base_User2 = new Base_User
+            {
+                Id = GuidHelper.GenerateKey(),
+                UserId = GuidHelper.GenerateKey(),
+                UserName = GuidHelper.GenerateKey()
+            };
+
+            db.Insert(base_User.ToJson().ToObject(type));
+            db.Insert(base_User2.ChangeType(type2));
             Console.WriteLine("完成");
             Console.ReadLine();
         }

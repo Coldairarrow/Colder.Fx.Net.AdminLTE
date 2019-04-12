@@ -45,14 +45,14 @@ namespace Coldairarrow.DataRepository
             if (type == model)
                 targetObj = entity;
             else
-                targetObj = entity.ToJson().ToObject(model);
+                targetObj = entity.ChangeType(model);
 
-            return _db.Entry(entity);
+            return _db.Entry(targetObj);
         }
 
         public DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
         {
-            return _db.Entry(entity as object).Cast<TEntity>();
+            return Entry(entity as object).Cast<TEntity>();
         }
 
         public DbSet<TEntity> Set<TEntity>() where TEntity : class

@@ -105,6 +105,28 @@ namespace Coldairarrow.Util
         }
 
         /// <summary>
+        /// 改变实体类型
+        /// </summary>
+        /// <param name="obj">对象</param>
+        /// <param name="targetType">目标类型</param>
+        /// <returns></returns>
+        public static object ChangeType(this object obj,Type targetType)
+        {
+            return obj.ToJson().ToObject(targetType);
+        }
+
+        /// <summary>
+        /// 改变实体类型
+        /// </summary>
+        /// <typeparam name="T">目标泛型</typeparam>
+        /// <param name="obj">对象</param>
+        /// <returns></returns>
+        public static T ChangeType<T>(this object obj)
+        {
+            return obj.ToJson().ToObject<T>();
+        }
+
+        /// <summary>
         /// 初始化时间默认值
         /// </summary>
         /// <param name="obj">对象</param>

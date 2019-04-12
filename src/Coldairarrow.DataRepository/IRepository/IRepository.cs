@@ -19,10 +19,6 @@ namespace Coldairarrow.DataRepository
 
         #region 事物提交
 
-        /// <summary>
-        /// 开始单库事物
-        /// 注意:若要使用跨库事务,请使用DistributedTransaction
-        /// </summary>
         void BeginTransaction();
         bool EndTransaction();
 
@@ -30,7 +26,9 @@ namespace Coldairarrow.DataRepository
 
         #region 增加数据
 
+        void Insert(object entity);
         void Insert<T>(T entity) where T : class, new();
+        void Insert(List<object> entities);
         void Insert<T>(List<T> entities) where T : class, new();
         void BulkInsert<T>(List<T> entities) where T : class, new();
 
