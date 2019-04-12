@@ -39,23 +39,25 @@ namespace Coldairarrow.DataRepository
 
         public DbEntityEntry Entry(object entity)
         {
-            CheckModel(entity.GetType());
+            object targetObj = null;
+            var type = entity.GetType();
+            var model = CheckModel(entity.GetType());
+            if (type == model)
+                targetObj = entity;
+            else
+                targetObj = entity.ToJson().ToObject(model);
 
             return _db.Entry(entity);
         }
 
         public DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
         {
-            CheckModel(entity.GetType());
-
-            return _db.Entry(entity);
+            return _db.Entry(entity as object).Cast<TEntity>();
         }
 
         public DbSet<TEntity> Set<TEntity>() where TEntity : class
         {
-            CheckModel(typeof(TEntity));
-
-            return _db.Set<TEntity>();
+            return _db.Set(typeof(TEntity)).Cast<TEntity>();
         }
 
         public DbSet Set(Type entityType)
