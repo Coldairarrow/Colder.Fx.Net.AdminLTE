@@ -7,7 +7,6 @@ using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -62,13 +61,13 @@ namespace Coldairarrow.DataRepository
         private string _entityNamespace { get; set; }
         protected bool _isDisposed { get; set; }
         protected DbContextTransaction Transaction { get; set; }
-        protected static PropertyInfo GetKeyProperty<T>()
+        protected static PropertyInfo GetKeyProperty(Type type)
         {
-            return GetKeyPropertys<T>().FirstOrDefault();
+            return GetKeyPropertys(type).FirstOrDefault();
         }
-        protected static List<PropertyInfo> GetKeyPropertys<T>()
+        protected static List<PropertyInfo> GetKeyPropertys(Type type)
         {
-            var properties = typeof(T)
+            var properties = type
                 .GetProperties()
                 .Where(x => x.GetCustomAttributes(true).Select(o => o.GetType().FullName).Contains(typeof(KeyAttribute).FullName))
                 .ToList();
@@ -92,21 +91,6 @@ namespace Coldairarrow.DataRepository
             var internalQuery = internalQueryField.GetValue(query);
             var objectQueryField = internalQuery.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.Name.Equals("_objectQuery")).FirstOrDefault();
             return objectQueryField.GetValue(internalQuery) as ObjectQuery<T>;
-        }
-        private void CheckEntityState<T>(T entity) where T : class
-        {
-            if (Db.Entry(entity).State == EntityState.Detached)
-            {
-                var objectContext = ((IObjectContextAdapter)Db.GetDbContext()).ObjectContext;
-                var entitySet = objectContext.CreateObjectSet<T>();
-                var entityKey = objectContext.CreateEntityKey(entitySet.EntitySet.Name, entity);
-                object foundSet;
-                bool exists = objectContext.TryGetObjectByKey(entityKey, out foundSet);
-                if (exists)
-                {
-                    objectContext.Detach(foundSet); //从上下文中移除
-                }
-            }
         }
 
         #endregion
@@ -211,8 +195,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="entity">实体</param>
         public void Insert(object entity)
         {
-            Db.Entry(entity).State = EntityState.Added;
-            Commit();
+            Insert(new List<object> { entity });
         }
 
         /// <summary>
@@ -222,14 +205,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="entity">实体</param>
         public void Insert<T>(T entity) where T : class, new()
         {
-            Db.Entry(entity).State = EntityState.Added;
-            Commit();
-        }
-
-        public void Insert(List<object> entities)
-        {
-            entities.ForEach(x => Db.Entry(x).State = EntityState.Added);
-            Commit();
+            Insert(new List<object> { entity });
         }
 
         /// <summary>
@@ -238,6 +214,11 @@ namespace Coldairarrow.DataRepository
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="entities">实体列表</param>
         public void Insert<T>(List<T> entities) where T : class, new()
+        {
+            Insert(entities.CastToList<object>());
+        }
+
+        public void Insert(List<object> entities)
         {
             entities.ForEach(x => Db.Entry(x).State = EntityState.Added);
             Commit();
@@ -269,6 +250,11 @@ namespace Coldairarrow.DataRepository
             ExecuteSql(sql);
         }
 
+        public void Delete(object entity)
+        {
+            Delete(new List<object> { entity });
+        }
+
         /// <summary>
         /// 删除一条数据
         /// </summary>
@@ -276,11 +262,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="entity">实体对象</param>
         public void Delete<T>(T entity) where T : class, new()
         {
-            CheckEntityState(entity);
-
-            Db.Set<T>().Attach(entity);
-            Db.Set<T>().Remove(entity);
-            Commit();
+            Delete(new List<object> { entity });
         }
 
         /// <summary>
@@ -290,12 +272,14 @@ namespace Coldairarrow.DataRepository
         /// <param name="entities">数据列表</param>
         public void Delete<T>(List<T> entities) where T : class, new()
         {
+            Delete(entities.CastToList<object>());
+        }
+
+        public void Delete(List<object> entities)
+        {
             foreach (var entity in entities)
             {
-                CheckEntityState(entity);
-
-                Db.Set<T>().Attach(entity);
-                Db.Set<T>().Remove(entity);
+                Db.Entry(entity).State = EntityState.Deleted;
             }
             Commit();
         }
@@ -321,16 +305,6 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException("不支持此操作!");
         }
 
-        public void Delete(object entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(List<object> entities)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Delete<T>(string key) where T : class, new()
         {
             Delete<T>(new List<string> { key });
@@ -338,15 +312,25 @@ namespace Coldairarrow.DataRepository
 
         public void Delete<T>(List<string> keys) where T : class, new()
         {
-            var theProperty = GetKeyProperty<T>();
+            Delete(typeof(T), keys);
+        }
+
+        public void Delete(Type type, string key)
+        {
+            Delete(type, new List<string> { key });
+        }
+
+        public void Delete(Type type, List<string> keys)
+        {
+            var theProperty = GetKeyProperty(type);
             if (theProperty == null)
                 throw new Exception("该实体没有主键标识！请使用[Key]标识主键！");
 
-            List<T> deleteList = new List<T>();
+            List<object> deleteList = new List<object>();
             keys.ForEach(aKey =>
             {
-                T newData = new T();
-                var value = Convert.ChangeType(aKey, theProperty.PropertyType);
+                object newData = Activator.CreateInstance(type);
+                var value = aKey.ChangeType(theProperty.PropertyType);
                 theProperty.SetValue(newData, value);
                 deleteList.Add(newData);
             });
@@ -354,19 +338,14 @@ namespace Coldairarrow.DataRepository
             Delete(deleteList);
         }
 
-        public void Delete(Type type, string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Type type, List<string> keys)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region 更新数据
+
+        public void Update(object entity)
+        {
+            Update(new List<object> { entity });
+        }
 
         /// <summary>
         /// 默认更新一个实体，所有字段
@@ -375,11 +354,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="entity"></param>
         public void Update<T>(T entity) where T : class, new()
         {
-            CheckEntityState(entity);
-
-            Db.Entry(entity).State = EntityState.Modified;
-
-            Commit();
+            Update(new List<object> { entity });
         }
 
         /// <summary>
@@ -389,10 +364,13 @@ namespace Coldairarrow.DataRepository
         /// <param name="entities"></param>
         public void Update<T>(List<T> entities) where T : class, new()
         {
+            Update(entities.CastToList<object>());
+        }
+
+        public void Update(List<object> entities)
+        {
             entities.ForEach(aEntity =>
             {
-                CheckEntityState(aEntity);
-
                 Db.Entry(aEntity).State = EntityState.Modified;
             });
 
@@ -407,14 +385,12 @@ namespace Coldairarrow.DataRepository
         /// <param name="properties">需要更新的字段</param>
         public void UpdateAny<T>(T entity, List<string> properties) where T : class, new()
         {
-            CheckEntityState(entity);
+            UpdateAny(new List<object> { entity }, properties);
+        }
 
-            Db.Set<T>().Attach(entity);
-            properties.ForEach(aProperty =>
-            {
-                Db.Entry(entity).Property(aProperty).IsModified = true;
-            });
-            Commit();
+        public void UpdateAny(object entity, List<string> properties)
+        {
+            UpdateAny(new List<object> { entity }, properties);
         }
 
         /// <summary>
@@ -425,11 +401,14 @@ namespace Coldairarrow.DataRepository
         /// <param name="properties">需要更新的字段</param>
         public void UpdateAny<T>(List<T> entities, List<string> properties) where T : class, new()
         {
+            UpdateAny(entities.CastToList<object>(), properties);
+        }
+
+        public void UpdateAny(List<object> entities, List<string> properties)
+        {
             entities.ForEach(aEntity =>
             {
-                CheckEntityState(aEntity);
-
-                Db.Set<T>().Attach(aEntity);
+                Db.Set(aEntity.GetType()).Attach(aEntity);
                 properties.ForEach(aProperty =>
                 {
                     Db.Entry(aEntity).Property(aProperty).IsModified = true;
@@ -452,26 +431,6 @@ namespace Coldairarrow.DataRepository
             Update(list);
         }
 
-        public void Update(object entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(List<object> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateAny(object entity, List<string> properties)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateAny(List<object> entities, List<string> properties)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region 查询数据
@@ -484,7 +443,12 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public T GetEntity<T>(params object[] keyValue) where T : class, new()
         {
-            var entity = Db.Set<T>().Find(keyValue);
+            return GetEntity(typeof(T), keyValue) as T;
+        }
+
+        public object GetEntity(Type type, params object[] keyValue)
+        {
+            var entity = Db.Set(type).Find(keyValue);
             Db.Entry(entity).State = EntityState.Detached;
 
             return entity;
@@ -498,6 +462,11 @@ namespace Coldairarrow.DataRepository
         public List<T> GetList<T>() where T : class, new()
         {
             return GetIQueryable<T>().ToList();
+        }
+
+        public List<object> GetList(Type type)
+        {
+            return GetIQueryable(type).CastToList<object>();
         }
 
         /// <summary>
@@ -592,15 +561,6 @@ namespace Coldairarrow.DataRepository
             return Db.Database.SqlQuery<T>(sqlStr, parameters.ToArray()).ToList();
         }
 
-        public object GetEntity(Type type, params object[] keyValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<object> GetList(Type type)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 

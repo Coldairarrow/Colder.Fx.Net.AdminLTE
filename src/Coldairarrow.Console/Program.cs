@@ -18,35 +18,16 @@ namespace Coldairarrow.Console1
     {
         static void Main(string[] args)
         {
-            //IRepository db1 = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
-            //IRepository db2 = DbFactory.GetRepository("oracle2", DatabaseType.Oracle);
-            //var list = db1.GetList<Base_User>();
-            //var list2 = db2.GetList<Base_User>();
-            var db = DbFactory.GetRepository();
-            db.HandleSqlLog = Console.WriteLine;
-            string tableName = "Base_User1";
-            var typeConfig = TypeBuilderHelper.GetConfig(typeof(Base_User));
-            typeConfig.FullName = tableName;
-            typeConfig.Attributes[0].ConstructorArgs[0] = tableName;
-            var type = TypeBuilderHelper.BuildType(typeConfig);
-            var type2 = TypeBuilderHelper.BuildType(typeConfig);
-            var properties = type.GetProperties();
-            Console.WriteLine(type == type2);
-            Base_User base_User = new Base_User
-            {
-                Id = GuidHelper.GenerateKey(),
-                UserId = GuidHelper.GenerateKey(),
-                UserName= GuidHelper.GenerateKey()
-            };
-            Base_User base_User2 = new Base_User
-            {
-                Id = GuidHelper.GenerateKey(),
-                UserId = GuidHelper.GenerateKey(),
-                UserName = GuidHelper.GenerateKey()
-            };
+            IRepository db = DbFactory.GetRepository();
 
-            db.Insert(base_User.ToJson().ToObject(type));
-            db.Insert(base_User2.ChangeType(type2));
+            var q = db.GetIQueryable<Base_User>();
+            var qWhere = db.GetIQueryable<Base_User>().Where(x => true);
+            
+            var expression = qWhere.Expression as MethodCallExpression;
+            var arg1 = expression.Arguments[0] as MethodCallExpression;
+            var obj = (arg1.Object as ConstantExpression).Value as IQueryable<Base_User>;
+            //bool eq = q == obj;
+            var list = obj.ToList();
             Console.WriteLine("完成");
             Console.ReadLine();
         }

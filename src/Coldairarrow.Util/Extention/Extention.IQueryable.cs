@@ -170,10 +170,21 @@ namespace Coldairarrow.Util
             return provider != null ? provider.CreateQuery<T>(expression) : source;
         }
 
-        public static DbContext GetDbContext<T>(this IQueryable<T> source)
+        public static IQueryable<U> ChangeSource<T,U>(this IQueryable<T> source,IQueryable<U> targetSource)
         {
             return null;
         }
+
+        class ChangeSourceVisitor: ExpressionVisitor
+        {
+            protected override Expression VisitConstant(ConstantExpression node)
+            {
+                if (node.Value is ObjectQuery)
+                    return null;
+                return base.VisitConstant(node);
+            }
+        }
+
         class ChangeDbContextVisitor : ExpressionVisitor
         {
             public ChangeDbContextVisitor(DbContext target)
