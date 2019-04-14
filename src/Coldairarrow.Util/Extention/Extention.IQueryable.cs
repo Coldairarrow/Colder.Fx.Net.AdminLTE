@@ -7,6 +7,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Coldairarrow.Util
 {
@@ -170,18 +171,69 @@ namespace Coldairarrow.Util
             return provider != null ? provider.CreateQuery<T>(expression) : source;
         }
 
-        public static IQueryable<U> ChangeSource<T,U>(this IQueryable<T> source,IQueryable<U> targetSource)
+        public static IQueryable<U> ChangeSource<T, U>(this IQueryable<T> source, IQueryable<U> targetSource)
         {
-            return null;
+            //var binder = new ChangeSourceVisitor(targetSource, (targetSource as DbQuery).ElementType);
+            //var expression = binder.Visit(source.Expression);
+            //var provider = binder.TargetProvider;
+            //return provider.CreateQuery<U>(expression);
+            return targetSource.Provider.CreateQuery(new ChangeSourceVisitor(targetSource,typeof(object)).Visit(source.Expression)) as IQueryable<U>;
         }
 
-        class ChangeSourceVisitor: ExpressionVisitor
+        class ChangeSourceVisitor : ExpressionVisitor
         {
+            public ChangeSourceVisitor(IQueryable targetSource,Type targetEntityType)
+            {
+                _targetEntityType = targetEntityType;
+                var qWhere = targetSource.Where("True");
+
+                var expression = qWhere.Expression as MethodCallExpression;
+                var arg1 = expression.Arguments[0] as MethodCallExpression;
+                var obj = (arg1.Object as ConstantExpression).Value;
+                _constantValue = obj;
+                _targetQuery = _constantValue as ObjectQuery;
+                targetObjectContext = _targetQuery.Context;
+                //_targetQuery = targetSource as ObjectQuery;
+            }
+            Type _targetEntityType { get; }
+            ObjectQuery _targetQuery { get; }
+            private object _constantValue { get; }
+            public IQueryProvider TargetProvider { get; private set; }
+            private ObjectContext targetObjectContext { get; set; }
             protected override Expression VisitConstant(ConstantExpression node)
             {
-                if (node.Value is ObjectQuery)
-                    return null;
+                if (node.Value is ObjectQuery objectQuery)
+                    return Expression.Constant(_constantValue);
+
                 return base.VisitConstant(node);
+            }
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Object is ConstantExpression constant && constant.Value is ObjectQuery)
+                {
+        //            MethodInfo mergeAsMethod = typeof(ObjectQuery<object>)
+        //.GetTypeInfo().GetDeclaredMethods("MergeAs").Single();
+                    var method = _constantValue.GetType().GetTypeInfo().GetDeclaredMethods(node.Method.Name).Single();
+                    return Expression.Call(Expression.Constant(_constantValue), method, node.Arguments);
+                }
+
+                return base.VisitMethodCall(node);
+            }
+
+            ObjectQuery CreateObjectQuery(ObjectQuery oldSource)
+            {
+                var parameters = oldSource.Parameters
+                    .Select(p => new ObjectParameter(p.Name, p.ParameterType) { Value = p.Value })
+                    .ToArray();
+                var method = targetObjectContext.GetType().GetMethod("CreateQuery");
+                var query = method.MakeGenericMethod(_targetEntityType).Invoke(targetObjectContext, new object[] { _targetQuery.CommandText, parameters }) as ObjectQuery;
+                //var query = targetObjectContext.CreateQuery(_targetQuery.CommandText, parameters);
+                //query.MergeOption = oldSource.MergeOption;
+                query.Streaming = oldSource.Streaming;
+                query.EnablePlanCaching = oldSource.EnablePlanCaching;
+                if (TargetProvider == null)
+                    TargetProvider = ((IQueryable)query).Provider;
+                return query;
             }
         }
 

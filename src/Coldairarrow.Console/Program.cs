@@ -18,16 +18,18 @@ namespace Coldairarrow.Console1
     {
         static void Main(string[] args)
         {
-            IRepository db = DbFactory.GetRepository();
+            IRepository db = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
+            IRepository db2 = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
+            var q = db.GetIQueryable<Base_User>().Where(x=>x.RealName.Contains("aa")).OrderBy(x=>x.RealName);
+            var type = ((System.Data.Entity.Infrastructure.DbQuery)q).ElementType;
+            //var qWhere = db.GetIQueryable<Base_User>().Where("True");
 
-            var q = db.GetIQueryable<Base_User>();
-            var qWhere = db.GetIQueryable<Base_User>().Where(x => true);
-            
-            var expression = qWhere.Expression as MethodCallExpression;
-            var arg1 = expression.Arguments[0] as MethodCallExpression;
-            var obj = (arg1.Object as ConstantExpression).Value as IQueryable<Base_User>;
-            //bool eq = q == obj;
-            var list = obj.ToList();
+            //var expression = qWhere.Expression as MethodCallExpression;
+            //var arg1 = expression.Arguments[0] as MethodCallExpression;
+            //var obj = (arg1.Object as ConstantExpression).Value as IQueryable<Base_User>;
+            //var list = obj.ToList();
+            var list = q.ChangeSource(db.GetIQueryable<Base_SysRole>()).ToList();
+            //var list = q.ChangeDbContext(db2.GetDbContext()).ToList();
             Console.WriteLine("完成");
             Console.ReadLine();
         }
