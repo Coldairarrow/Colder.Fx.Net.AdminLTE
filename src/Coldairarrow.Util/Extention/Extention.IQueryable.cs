@@ -173,33 +173,23 @@ namespace Coldairarrow.Util
 
         public static IQueryable<U> ChangeSource<T, U>(this IQueryable<T> source, IQueryable<U> targetSource)
         {
-            //var binder = new ChangeSourceVisitor(targetSource, (targetSource as DbQuery).ElementType);
-            //var expression = binder.Visit(source.Expression);
-            //var provider = binder.TargetProvider;
-            //return provider.CreateQuery<U>(expression);
-            return targetSource.Provider.CreateQuery(new ChangeSourceVisitor(targetSource,typeof(object)).Visit(source.Expression)) as IQueryable<U>;
+            return targetSource.Provider.CreateQuery(new ChangeSourceVisitor(targetSource).Visit(source.Expression)) as IQueryable<U>;
         }
 
         class ChangeSourceVisitor : ExpressionVisitor
         {
-            public ChangeSourceVisitor(IQueryable targetSource,Type targetEntityType)
+            public ChangeSourceVisitor(IQueryable targetSource)
             {
-                _targetEntityType = targetEntityType;
                 var qWhere = targetSource.Where("True");
 
                 var expression = qWhere.Expression as MethodCallExpression;
                 var arg1 = expression.Arguments[0] as MethodCallExpression;
                 var obj = (arg1.Object as ConstantExpression).Value;
                 _constantValue = obj;
-                _targetQuery = _constantValue as ObjectQuery;
-                targetObjectContext = _targetQuery.Context;
-                //_targetQuery = targetSource as ObjectQuery;
+                _targetType = (targetSource as DbQuery).ElementType;
             }
-            Type _targetEntityType { get; }
-            ObjectQuery _targetQuery { get; }
+            Type _targetType { get; }
             private object _constantValue { get; }
-            public IQueryProvider TargetProvider { get; private set; }
-            private ObjectContext targetObjectContext { get; set; }
             protected override Expression VisitConstant(ConstantExpression node)
             {
                 if (node.Value is ObjectQuery objectQuery)
@@ -211,29 +201,31 @@ namespace Coldairarrow.Util
             {
                 if (node.Object is ConstantExpression constant && constant.Value is ObjectQuery)
                 {
-        //            MethodInfo mergeAsMethod = typeof(ObjectQuery<object>)
-        //.GetTypeInfo().GetDeclaredMethods("MergeAs").Single();
                     var method = _constantValue.GetType().GetTypeInfo().GetDeclaredMethods(node.Method.Name).Single();
+
                     return Expression.Call(Expression.Constant(_constantValue), method, node.Arguments);
                 }
 
                 return base.VisitMethodCall(node);
             }
-
-            ObjectQuery CreateObjectQuery(ObjectQuery oldSource)
+            protected override Expression VisitParameter(ParameterExpression node)
             {
-                var parameters = oldSource.Parameters
-                    .Select(p => new ObjectParameter(p.Name, p.ParameterType) { Value = p.Value })
-                    .ToArray();
-                var method = targetObjectContext.GetType().GetMethod("CreateQuery");
-                var query = method.MakeGenericMethod(_targetEntityType).Invoke(targetObjectContext, new object[] { _targetQuery.CommandText, parameters }) as ObjectQuery;
-                //var query = targetObjectContext.CreateQuery(_targetQuery.CommandText, parameters);
-                //query.MergeOption = oldSource.MergeOption;
-                query.Streaming = oldSource.Streaming;
-                query.EnablePlanCaching = oldSource.EnablePlanCaching;
-                if (TargetProvider == null)
-                    TargetProvider = ((IQueryable)query).Provider;
-                return query;
+                return Expression.Parameter(_targetType, node.Name);
+            }
+            protected override Expression VisitMember(MemberExpression node)
+            {
+                if (node.Member.MemberType == MemberTypes.Property)
+                {
+                    MemberExpression memberExpression = null;
+                    var memberName = node.Member.Name;
+                    var targetMember = _targetType.GetProperty(memberName);
+                    memberExpression = Expression.Property(Visit(node.Expression), targetMember);
+                    return memberExpression;
+                }
+                else
+                {
+                    return base.VisitMember(node);
+                }
             }
         }
 

@@ -20,7 +20,7 @@ namespace Coldairarrow.Console1
         {
             IRepository db = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
             IRepository db2 = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
-            var q = db.GetIQueryable<Base_User>().Where(x=>x.RealName.Contains("aa")).OrderBy(x=>x.RealName);
+            var q = db.GetIQueryable<Base_User>()/*OrderBy(x=>x.Id)*/.Where(x=>x.RealName.Contains("aaa"));
             var type = ((System.Data.Entity.Infrastructure.DbQuery)q).ElementType;
             //var qWhere = db.GetIQueryable<Base_User>().Where("True");
 
@@ -28,7 +28,7 @@ namespace Coldairarrow.Console1
             //var arg1 = expression.Arguments[0] as MethodCallExpression;
             //var obj = (arg1.Object as ConstantExpression).Value as IQueryable<Base_User>;
             //var list = obj.ToList();
-            var list = q.ChangeSource(db.GetIQueryable<Base_SysRole>()).ToList();
+            var list = q.ChangeSource(db.GetIQueryable<Base_User1>());
             //var list = q.ChangeDbContext(db2.GetDbContext()).ToList();
             Console.WriteLine("完成");
             Console.ReadLine();
