@@ -208,7 +208,7 @@ using Coldairarrow.Util;
 using System;
 using System.Web.Mvc;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Web.Areas.{areaName}.Controllers
 {{
     public class {entityName}Controller : BaseMvcController
     {{
@@ -552,7 +552,7 @@ $@"@using Coldairarrow.Entity.{areaName};
             string areaRegistrationCode = 
 $@"using System.Web.Mvc;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Web.Areas.{areaName}
 {{
     public class {areaName}AreaRegistration : AreaRegistration 
     {{
