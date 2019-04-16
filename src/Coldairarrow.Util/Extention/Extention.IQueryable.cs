@@ -171,62 +171,20 @@ namespace Coldairarrow.Util
             return provider != null ? provider.CreateQuery<T>(expression) : source;
         }
 
-        public static IQueryable<U> ChangeSource<T, U>(this IQueryable<T> source, IQueryable<U> targetSource)
+        /// <summary>
+        /// 转为获取对应的SQL语句
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static (string sql, List<ObjectParameter> parameters) ToSQL(this IQueryable source)
         {
-            return targetSource.Provider.CreateQuery(new ChangeSourceVisitor(targetSource).Visit(source.Expression)) as IQueryable<U>;
-        }
+            var dbQuery = (DbQuery)source;
+            var iqProp = dbQuery.GetType().GetProperty("InternalQuery", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            var iq = iqProp.GetValue(dbQuery, null);
+            var oqProp = iq.GetType().GetProperty("ObjectQuery", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            var objectQuery = (ObjectQuery)oqProp.GetValue(iq, null);
 
-        class ChangeSourceVisitor : ExpressionVisitor
-        {
-            public ChangeSourceVisitor(IQueryable targetSource)
-            {
-                var qWhere = targetSource.Where("True");
-
-                var expression = qWhere.Expression as MethodCallExpression;
-                var arg1 = expression.Arguments[0] as MethodCallExpression;
-                var obj = (arg1.Object as ConstantExpression).Value;
-                _constantValue = obj;
-                _targetType = (targetSource as DbQuery).ElementType;
-            }
-            Type _targetType { get; }
-            private object _constantValue { get; }
-            protected override Expression VisitConstant(ConstantExpression node)
-            {
-                if (node.Value is ObjectQuery objectQuery)
-                    return Expression.Constant(_constantValue);
-
-                return base.VisitConstant(node);
-            }
-            protected override Expression VisitMethodCall(MethodCallExpression node)
-            {
-                if (node.Object is ConstantExpression constant && constant.Value is ObjectQuery)
-                {
-                    var method = _constantValue.GetType().GetTypeInfo().GetDeclaredMethods(node.Method.Name).Single();
-
-                    return Expression.Call(Expression.Constant(_constantValue), method, node.Arguments);
-                }
-
-                return base.VisitMethodCall(node);
-            }
-            protected override Expression VisitParameter(ParameterExpression node)
-            {
-                return Expression.Parameter(_targetType, node.Name);
-            }
-            protected override Expression VisitMember(MemberExpression node)
-            {
-                if (node.Member.MemberType == MemberTypes.Property)
-                {
-                    MemberExpression memberExpression = null;
-                    var memberName = node.Member.Name;
-                    var targetMember = _targetType.GetProperty(memberName);
-                    memberExpression = Expression.Property(Visit(node.Expression), targetMember);
-                    return memberExpression;
-                }
-                else
-                {
-                    return base.VisitMember(node);
-                }
-            }
+            return (objectQuery.ToTraceString(), objectQuery.Parameters.ToList());
         }
 
         class ChangeDbContextVisitor : ExpressionVisitor

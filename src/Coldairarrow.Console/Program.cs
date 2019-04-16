@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Collections;
 using System.Reflection;
+using System.Data.Common;
+using System.Runtime.CompilerServices;
 
 namespace Coldairarrow.Console1
 {
@@ -18,18 +20,21 @@ namespace Coldairarrow.Console1
     {
         static void Main(string[] args)
         {
-            IRepository db = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
-            IRepository db2 = DbFactory.GetRepository("oracle", DatabaseType.Oracle);
-            var q = db.GetIQueryable<Base_User>()/*OrderBy(x=>x.Id)*/.Where(x=>x.RealName.Contains("aaa"));
-            var type = ((System.Data.Entity.Infrastructure.DbQuery)q).ElementType;
-            //var qWhere = db.GetIQueryable<Base_User>().Where("True");
-
-            //var expression = qWhere.Expression as MethodCallExpression;
-            //var arg1 = expression.Arguments[0] as MethodCallExpression;
-            //var obj = (arg1.Object as ConstantExpression).Value as IQueryable<Base_User>;
-            //var list = obj.ToList();
-            var list = q.ChangeSource(db.GetIQueryable<Base_User1>());
-            //var list = q.ChangeDbContext(db2.GetDbContext()).ToList();
+            IRepository db = DbFactory.GetRepository();
+            string keyword = "";
+            var q = db.GetIQueryable<Base_User>().Where(x=>x.RealName.Contains(keyword)).GetPagination(new Pagination()).RemoveSkip().RemoveTake();
+            string oldTableName = typeof(Base_User).Name;
+            string targetTableName = typeof(Base_User1).Name;
+            var sql = q.ToSQL();
+            string sqlStr = sql.sql.Replace(oldTableName, targetTableName);
+            List<DbParameter> _paramters = sql.parameters.Select(x =>
+            {
+                var aParam = DbProviderFactoryHelper.GetDbParameter(DatabaseType.SqlServer);
+                aParam.ParameterName = x.Name;
+                aParam.Value = x.Value;
+                return aParam;
+            }).ToList();
+            var list = db.GetListBySql<Base_User>(sqlStr, _paramters);
             Console.WriteLine("完成");
             Console.ReadLine();
         }
