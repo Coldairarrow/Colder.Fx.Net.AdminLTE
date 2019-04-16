@@ -389,11 +389,11 @@ $@"@{{
         $table.bootstrapTable({{
             url: '/{areaName}/{entityName}/GetDataList',
             idField: 'Id',
-            pagination: true,
             method: 'post',
             contentType: 'application/x-www-form-urlencoded',
             queryParamsType: '',
             clickToSelect: false,
+            pagination: true,
             sidePagination: ""server"",
             pageNumber: 1,
             pageSize: 30,
