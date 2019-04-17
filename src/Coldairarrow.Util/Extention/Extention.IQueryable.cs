@@ -15,11 +15,6 @@ namespace Coldairarrow.Util
     /// </summary>
     public static partial class Extention
     {
-        public static List<T> ToList<T>(this IQueryable<T> source)
-        {
-            return Enumerable.ToList(source);
-        }
-
         /// <summary>
         /// 获取分页后的数据
         /// </summary>

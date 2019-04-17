@@ -19,8 +19,6 @@ namespace Coldairarrow.DataRepository
 
         public IQueryProvider Provider => _source.Provider;
 
-        private IQueryable<T> _source { get; }
-
         public IEnumerator<T> GetEnumerator()
         {
             return _source.GetEnumerator();
@@ -29,6 +27,33 @@ namespace Coldairarrow.DataRepository
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _source.GetEnumerator();
+        }
+
+        private IQueryable<T> _source { get; }
+
+        public int Count()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<T> ToList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IShardingQueryable<T> Where<TSource>(Expression<Func<TSource, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IShardingQueryable<T> OrderBy<TSource, TKey>(Expression<Func<TSource, TKey>> keySelector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IShardingQueryable<T> OrderByDescending<TSource, TKey>(Expression<Func<TSource, TKey>> keySelector)
+        {
+            throw new NotImplementedException();
         }
     }
 }

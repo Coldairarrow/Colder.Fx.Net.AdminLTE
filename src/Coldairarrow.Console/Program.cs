@@ -20,10 +20,14 @@ namespace Coldairarrow.Console1
     {
         static void Main(string[] args)
         {
-            IRepository db = DbFactory.GetRepository();
-            var q = db.GetIQueryable<Base_User>();
-            IShardingQueryable<Base_User> iSQ = new ShardingQueryable<Base_User>(q);
-            var list = iSQ.Where(x=>x.RealName.Contains("aaa"));
+            //IRepository db = DbFactory.GetRepository();
+            //var q = db.GetIQueryable<Base_User>();
+            //q.Where(x => x.Id == "aa").OrderBy(x => x.Id).GetPagination(new Pagination()).ToList();
+            //IShardingQueryable<Base_User> iSQ = new ShardingQueryable<Base_User>(q);
+            //iSQ.ToList();
+            //iSQ.Count();
+            //var list = iSQ.Where(x=>x.RealName.Contains("aaa"));
+            //list.ToList();
 
             //List<string> list = new List<string> { "aa", "bb" };
             //RuntimeHelper.ReplaceMethod(typeof(Enumerable).GetMethod("ToList", BindingFlags.Static| BindingFlags.Public), typeof(Extention).GetMethod("ToList", BindingFlags.NonPublic | BindingFlags.Static));
@@ -42,7 +46,8 @@ namespace Coldairarrow.Console1
             //    return aParam;
             //}).ToList();
             //var list = db.GetListBySql<Base_User>(sqlStr, _paramters);
-
+            ReadWriteType readWriteType = ReadWriteType.ReadAndWrite;
+            Console.WriteLine(readWriteType.HasFlag(ReadWriteType.Read));
             Console.WriteLine("完成");
             Console.ReadLine();
         }
