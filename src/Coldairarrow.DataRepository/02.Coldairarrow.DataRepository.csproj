@@ -107,6 +107,8 @@
     <Compile Include="Repository\PostgreSqlRepository.cs" />
     <Compile Include="Repository\OracleRepository.cs" />
     <Compile Include="Repository\SqlServerRepository.cs" />
+    <Compile Include="Sharding\IShardingQueryable.T.cs" />
+    <Compile Include="Sharding\ShardingIQueryable.T.cs" />
     <Compile Include="Transaction\DistributedTransaction.cs" />
   </ItemGroup>
   <ItemGroup>

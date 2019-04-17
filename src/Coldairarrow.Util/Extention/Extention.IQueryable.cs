@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
@@ -17,6 +15,11 @@ namespace Coldairarrow.Util
     /// </summary>
     public static partial class Extention
     {
+        public static List<T> ToList<T>(this IQueryable<T> source)
+        {
+            return Enumerable.ToList(source);
+        }
+
         /// <summary>
         /// 获取分页后的数据
         /// </summary>
@@ -186,7 +189,7 @@ namespace Coldairarrow.Util
 
             return (objectQuery.ToTraceString(), objectQuery.Parameters.ToList());
         }
-
+        
         class ChangeDbContextVisitor : ExpressionVisitor
         {
             public ChangeDbContextVisitor(DbContext target)
