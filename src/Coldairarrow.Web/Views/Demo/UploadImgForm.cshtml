@@ -21,9 +21,10 @@
         $('#WorkerContractImg').html5Uploader({
             //imgs: theEntity[aImgId],
             asyncUpload: true,
-            uploadUrl: '/Base_SysManage/Common/UploadImg',
+            uploadUrl: '/Base_SysManage/Common/UploadFile',
             uploadLimit: 0,  //上传数量限制，0为不限
             sizeLimit: 5,    //大小限制，M
+            type:'file' //file即可上传文件也可上传图片
         });
     });
 </script>
