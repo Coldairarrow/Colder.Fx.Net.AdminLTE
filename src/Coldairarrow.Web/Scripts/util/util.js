@@ -112,6 +112,20 @@
     };
 })();
 
+//拓展String的getFileName方法，获取URL中的文件名
+(function () {
+    if (String.prototype.getFileName)
+        return;
+
+    String.prototype.getFileName = function () {
+        var str = this;
+        var url = str.split('?')[0];
+        var pathArray = url.split('/');
+
+        return pathArray[pathArray.length - 1];
+    };
+})();
+
 //拓展Array的forEach方法，用在某些浏览器没有forEach方法
 (function (Array) {
     if (Array.prototype.forEach)
