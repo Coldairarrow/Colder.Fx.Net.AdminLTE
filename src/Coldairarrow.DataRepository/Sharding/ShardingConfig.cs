@@ -10,13 +10,44 @@ namespace Coldairarrow.DataRepository
     /// </summary>
     public class ShardingConfig
     {
-        private SynchronizedCollection<AbstractDatabse> _absDb { get; } = new SynchronizedCollection<AbstractDatabse>();
-        private SynchronizedCollection<AbstractTable> _absTable { get; } = new SynchronizedCollection<AbstractTable>();
-        private SynchronizedCollection<LogicDatabase> _logicDb { get; } = new SynchronizedCollection<LogicDatabase>();
-        private SynchronizedCollection<PhysicDatabase> _physicDb { get; } = new SynchronizedCollection<PhysicDatabase>();
-        private SynchronizedCollection<PhysicTable> _physicTable { get; } = new SynchronizedCollection<PhysicTable>();
+        #region 外部接口
 
-        public List<(string conString, DatabaseType dbType, string tableName)> GetTargetTables<T>(ReadWriteType opType, string absDbName = null)
+        public void AddAbsDb(AbstractDatabse abstractDatabse)
+        {
+            _absDb.Add(abstractDatabse);
+        }
+
+        public void AddAbsTable(AbstractTable abstractTable)
+        {
+            _absTable.Add(abstractTable);
+        }
+
+        public void AddLogicDb(LogicDatabase logicDatabase)
+        {
+            _logicDb.Add(logicDatabase);
+        }
+
+        public void AddPhysicDb(PhysicDatabase physicDatabase)
+        {
+            _physicDb.Add(physicDatabase);
+        }
+
+        public void AddPhysicTable(PhysicTable physicTable)
+        {
+            _physicTable.Add(physicTable);
+        }
+
+        public List<(string conString, DatabaseType dbType, string tableName)> GetReadTables<T>()
+        {
+            return GetTargetTables<T>(ReadWriteType.Read);
+        }
+
+        public (string conString, DatabaseType dbType, string tableName) GetWriteTable<T>()
+        {
+            return GetTargetTables<T>(ReadWriteType.Write).Single();
+        }
+
+        private List<(string conString, DatabaseType dbType, string tableName)> GetTargetTables<T>(ReadWriteType opType, string absDbName = null)
         {
             string absTableName = typeof(T).Name;
 
@@ -57,8 +88,23 @@ namespace Coldairarrow.DataRepository
                 return new List<(string conString, DatabaseType dbType, string tableName)> { tables[indexTable] };
             }
         }
+
+        #endregion
+
+        #region 私有成员
+
+        private SynchronizedCollection<AbstractDatabse> _absDb { get; } = new SynchronizedCollection<AbstractDatabse>();
+        private SynchronizedCollection<AbstractTable> _absTable { get; } = new SynchronizedCollection<AbstractTable>();
+        private SynchronizedCollection<LogicDatabase> _logicDb { get; } = new SynchronizedCollection<LogicDatabase>();
+        private SynchronizedCollection<PhysicDatabase> _physicDb { get; } = new SynchronizedCollection<PhysicDatabase>();
+        private SynchronizedCollection<PhysicTable> _physicTable { get; } = new SynchronizedCollection<PhysicTable>();
+
+        #endregion
     }
 
+    /// <summary>
+    /// 读写类型
+    /// </summary>
     public enum ReadWriteType
     {
         Read = 1,
