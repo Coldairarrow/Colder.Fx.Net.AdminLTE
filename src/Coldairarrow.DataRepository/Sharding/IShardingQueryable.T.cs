@@ -8,9 +8,11 @@ namespace Coldairarrow.DataRepository
     public interface IShardingQueryable<T> : IQueryable<T>
     {
         List<T> ToList();
-        IShardingQueryable<T> Where<TSource>(Expression<Func<TSource, bool>> predicate);
+        IShardingQueryable<T> Where(Expression<Func<T, bool>> predicate);
         int Count();
-        IShardingQueryable<T> OrderBy<TSource, TKey>(Expression<Func<TSource, TKey>> keySelector);
-        IShardingQueryable<T> OrderByDescending<TSource, TKey>(Expression<Func<TSource, TKey>> keySelector);
+        IShardingQueryable<T> Skip(int count);
+        IShardingQueryable<T> Take(int count);
+        IShardingQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector);
+        IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector);
     }
 }

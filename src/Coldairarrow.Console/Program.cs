@@ -18,36 +18,35 @@ namespace Coldairarrow.Console1
 {
     class Program
     {
+        static void ShardingTest()
+        {
+            var db = DbFactory.GetRepository();
+            Stopwatch watch = new Stopwatch();
+            var q = db.GetIQueryable<Base_SysLog>()
+                .Where(x => x.LogContent.Contains("8C7719FF-5038-4C0A-9D0F-83830F0929E9"))
+                .OrderByDescending(x => x.OpTime)
+                .Skip(0)
+                .Take(30);
+            q.ToList();
+            q.ToSharding().ToList();
+            watch.Restart();
+            var list1 = q.ToList();
+            watch.Stop();
+            Console.WriteLine($"未分表耗时:{watch.ElapsedMilliseconds}ms");
+            watch.Restart();
+            var list2 = q.ToSharding().ToList();
+            watch.Stop();
+            Console.WriteLine($"分表后耗时:{watch.ElapsedMilliseconds}ms");
+        }
+
         static void Main(string[] args)
         {
-            //IRepository db = DbFactory.GetRepository();
-            //var q = db.GetIQueryable<Base_User>();
-            //q.Where(x => x.Id == "aa").OrderBy(x => x.Id).GetPagination(new Pagination()).ToList();
-            //IShardingQueryable<Base_User> iSQ = new ShardingQueryable<Base_User>(q);
-            //iSQ.ToList();
-            //iSQ.Count();
-            //var list = iSQ.Where(x=>x.RealName.Contains("aaa"));
-            //list.ToList();
+            var db = DbFactory.GetRepository();
+            db.HandleSqlLog = Console.WriteLine;
+            var q = db.GetIQueryable<Base_User>().Where(x=>x.RealName.Contains("aaa"));
+            var newQ = q.ChangeSource(db.GetIQueryable<Base_User1>()).Cast<Base_User1>();
+            var list = newQ.ToList();
 
-            //List<string> list = new List<string> { "aa", "bb" };
-            //RuntimeHelper.ReplaceMethod(typeof(Enumerable).GetMethod("ToList", BindingFlags.Static| BindingFlags.Public), typeof(Extention).GetMethod("ToList", BindingFlags.NonPublic | BindingFlags.Static));
-            //list.ToList();
-            //string keyword = "";
-            //var q = db.GetIQueryable<Base_User>().Where(x => x.RealName.Contains(keyword)).GetPagination(new Pagination()).RemoveSkip().RemoveTake();
-            //string oldTableName = typeof(Base_User).Name;
-            //string targetTableName = typeof(Base_User1).Name;
-            //var sql = q.ToSQL();
-            //string sqlStr = sql.sql.Replace(oldTableName, targetTableName);
-            //List<DbParameter> _paramters = sql.parameters.Select(x =>
-            //{
-            //    var aParam = DbProviderFactoryHelper.GetDbParameter(DatabaseType.SqlServer);
-            //    aParam.ParameterName = x.Name;
-            //    aParam.Value = x.Value;
-            //    return aParam;
-            //}).ToList();
-            //var list = db.GetListBySql<Base_User>(sqlStr, _paramters);
-            ReadWriteType readWriteType = ReadWriteType.ReadAndWrite;
-            Console.WriteLine(readWriteType.HasFlag(ReadWriteType.Read));
             Console.WriteLine("完成");
             Console.ReadLine();
         }

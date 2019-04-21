@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
@@ -184,7 +185,145 @@ namespace Coldairarrow.Util
 
             return (objectQuery.ToTraceString(), objectQuery.Parameters.ToList());
         }
-        
+
+        /// <summary>
+        /// 获取Skip数量
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static int GetSkipCount(this IQueryable source)
+        {
+            var visitor = new SkipVisitor();
+            visitor.Visit(source.Expression);
+
+            return visitor.SkipCount;
+        }
+
+        /// <summary>
+        /// 获取Take数量
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static int GetTakeCount(this IQueryable source)
+        {
+            var visitor = new TakeVisitor();
+            visitor.Visit(source.Expression);
+
+            return visitor.TakeCount;
+        }
+
+        /// <summary>
+        /// 获取排序参数
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        public static (string sortColumn, string sortType) GetOrderBy(this IQueryable source)
+        {
+            var visitor = new OrderByVisitor();
+            visitor.Visit(source.Expression);
+
+            return visitor.OrderParam;
+        }
+
+        public static IQueryable ChangeSource(this IQueryable source, IQueryable targetSource)
+        {
+            ChangeSourceVisitor visitor = new ChangeSourceVisitor(targetSource.GetObjQuery(), targetSource.ElementType);
+
+            return targetSource.Provider.CreateQuery(visitor.Visit(source.Expression));
+        }
+
+        public static ObjectQuery GetObjQuery(this IQueryable source)
+        {
+            GetObjQueryVisitor visitor = new GetObjQueryVisitor();
+            visitor.Visit(source.Expression);
+
+            return visitor.ObjQuery;
+        }
+
+        class ChangeSourceVisitor : ExpressionVisitor
+        {
+            public ChangeSourceVisitor(ObjectQuery targetObjQuery,Type targetType)
+            {
+                _targetObjQuery = targetObjQuery;
+                _targetType = targetType;
+            }
+            private ObjectQuery _targetObjQuery { get; }
+            private Type _targetType { get; }
+
+            protected override Expression VisitConstant(ConstantExpression node)
+            {
+                if (node.Value is ObjectQuery)
+                    return Expression.Constant(_targetObjQuery);
+
+                return base.VisitConstant(node);
+            }
+
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Method.Name == "MergeAs")
+                {
+                    var arg = node.Arguments;
+                    var method = _targetObjQuery.GetType().GetTypeInfo().DeclaredMethods.Where(x => x.Name == node.Method.Name).Single();
+                    return Expression.Call(Expression.Constant(_targetObjQuery), method, node.Arguments.ToArray());
+                }
+
+                return base.VisitMethodCall(node);
+            }
+        }
+
+        class GetObjQueryVisitor : ExpressionVisitor
+        {
+            public ObjectQuery ObjQuery { get; set; }
+            protected override Expression VisitConstant(ConstantExpression node)
+            {
+                if (node.Value is ObjectQuery)
+                    ObjQuery = node.Value as ObjectQuery;
+
+                return base.VisitConstant(node);
+            }
+        }
+
+        class OrderByVisitor : ExpressionVisitor
+        {
+            public (string sortColumn, string sortType) OrderParam { get; set; }
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Method.Name == "OrderBy" || node.Method.Name == "OrderByDescending")
+                {
+                    string sortColumn = (((node.Arguments[1] as UnaryExpression).Operand as LambdaExpression).Body as MemberExpression).Member.Name;
+                    string sortType = node.Method.Name == "OrderBy" ? "asc" : "desc";
+                    OrderParam = (sortColumn, sortType);
+                }
+                return base.VisitMethodCall(node);
+            }
+        }
+
+        class SkipVisitor : ExpressionVisitor
+        {
+            public int SkipCount { get; set; }
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Method.Name == "Skip")
+                {
+                    SkipCount = (int)(node.Arguments[1] as ConstantExpression).Value;
+                }
+                return base.VisitMethodCall(node);
+            }
+        }
+
+        class TakeVisitor : ExpressionVisitor
+        {
+            public int TakeCount { get; set; }
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Method.Name == "Take")
+                {
+                    TakeCount = (int)(node.Arguments[1] as ConstantExpression).Value;
+                }
+                return base.VisitMethodCall(node);
+            }
+        }
+
         class ChangeDbContextVisitor : ExpressionVisitor
         {
             public ChangeDbContextVisitor(DbContext target)
@@ -211,6 +350,60 @@ namespace Coldairarrow.Util
                 if (TargetProvider == null)
                     TargetProvider = ((IQueryable)query).Provider;
                 return query;
+            }
+        }
+
+        /// <summary>
+        /// 删除OrderBy表达式
+        /// </summary>
+        public class RemoveOrderByVisitor : ExpressionVisitor
+        {
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
+                    return base.VisitMethodCall(node);
+
+                if (node.Method.Name != "OrderBy" && node.Method.Name != "OrderByDescending" && node.Method.Name != "ThenBy" && node.Method.Name != "ThenByDescending")
+                    return base.VisitMethodCall(node);
+
+                //eliminate the method call from the expression tree by returning the object of the call.
+                return base.Visit(node.Arguments[0]);
+            }
+        }
+
+        /// <summary>
+        /// 删除Skip表达式
+        /// </summary>
+        public class RemoveSkipVisitor : ExpressionVisitor
+        {
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
+                    return base.VisitMethodCall(node);
+
+                if (node.Method.Name != "Skip")
+                    return base.VisitMethodCall(node);
+
+                //eliminate the method call from the expression tree by returning the object of the call.
+                return base.Visit(node.Arguments[0]);
+            }
+        }
+
+        /// <summary>
+        /// 删除Take表达式
+        /// </summary>
+        public class RemoveTakeVisitor : ExpressionVisitor
+        {
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
+                    return base.VisitMethodCall(node);
+
+                if (node.Method.Name != "Take")
+                    return base.VisitMethodCall(node);
+
+                //eliminate the method call from the expression tree by returning the object of the call.
+                return base.Visit(node.Arguments[0]);
             }
         }
     }

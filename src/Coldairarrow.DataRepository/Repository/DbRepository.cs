@@ -561,7 +561,6 @@ namespace Coldairarrow.DataRepository
             return Db.Database.SqlQuery<T>(sqlStr, parameters.ToArray()).ToList();
         }
 
-
         #endregion
 
         #region 执行Sql语句

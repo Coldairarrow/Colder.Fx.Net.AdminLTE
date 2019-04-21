@@ -10,94 +10,170 @@ namespace Coldairarrow.DataRepository
     /// </summary>
     public class ShardingConfig
     {
+        #region 构造函数
+
+        /// <summary>
+        /// 私有构造函数
+        /// </summary>
+        private ShardingConfig()
+        {
+            
+        }
+
+        /// <summary>
+        /// 静态构造函数
+        /// </summary>
+        static ShardingConfig()
+        {
+            Init();
+        }
+
+        #endregion
+
         #region 外部接口
 
-        public void AddAbsDb(AbstractDatabse abstractDatabse)
+        /// <summary>
+        /// 初始化配置
+        /// </summary>
+        public static void Init()
         {
-            _absDb.Add(abstractDatabse);
+            ShardingConfigBuilder.GetBuilder()
+                //添加数据源
+                .AddDataSource("BaseDb", DatabaseType.SqlServer, dbBuilder =>
+                {
+                    //添加物理数据库
+                    dbBuilder.AddPhsicDb("BaseDb", ReadWriteType.ReadAndWrite);
+                })
+                //添加抽象数据库
+                .AddAbsDb("BaseDb", absTableBuilder =>
+                {
+                    //添加抽象数据表
+                    absTableBuilder.AddAbsTable("Base_SysLog", tableBuilder =>
+                    {
+                        //添加物理数据表
+                        tableBuilder.AddPhsicTable("Base_SysLog_1", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_SysLog_2", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_SysLog_3", "BaseDb");
+                    }, tables => RandomHelper.Next(tables));
+                });
         }
 
-        public void AddAbsTable(AbstractTable abstractTable)
+        /// <summary>
+        /// 获取实例
+        /// </summary>
+        public static ShardingConfig Instance { get => _instance; }
+
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <returns></returns>
+        public bool IsSharding<T>()
         {
-            _absTable.Add(abstractTable);
+            return _absDb.Any(x => x.Tables.Any(y => y.AbsTableName == typeof(T).Name));
         }
 
-        public void AddLogicDb(LogicDatabase logicDatabase)
+        /// <summary>
+        /// 添加数据源
+        /// </summary>
+        /// <param name="dataSourceName">数据源名</param>
+        /// <param name="dbType">数据库类型</param>
+        /// <param name="dbs">一组读写数据库</param>
+        public void AddDataSource(string dataSourceName, DatabaseType dbType, List<(string conString, ReadWriteType opType)> dbs)
         {
-            _logicDb.Add(logicDatabase);
-        }
-
-        public void AddPhysicDb(PhysicDatabase physicDatabase)
-        {
-            _physicDb.Add(physicDatabase);
-        }
-
-        public void AddPhysicTable(PhysicTable physicTable)
-        {
-            _physicTable.Add(physicTable);
-        }
-
-        public List<(string conString, DatabaseType dbType, string tableName)> GetReadTables<T>()
-        {
-            return GetTargetTables<T>(ReadWriteType.Read);
-        }
-
-        public (string conString, DatabaseType dbType, string tableName) GetWriteTable<T>()
-        {
-            return GetTargetTables<T>(ReadWriteType.Write).Single();
-        }
-
-        private List<(string conString, DatabaseType dbType, string tableName)> GetTargetTables<T>(ReadWriteType opType, string absDbName = null)
-        {
-            string absTableName = typeof(T).Name;
-
-            //获取抽象表
-            AbstractTable absTable = null;
-            if (absDbName.IsNullOrEmpty())
-                absTable = _absTable.Where(x => x.AbsTableName == absTableName).FirstOrDefault();
-            else
-                absTable = _absTable.Where(x => x.AbsTableName == absTableName && x.AbsDbName == absDbName).Single();
-
-            //获取抽象数据库
-            AbstractDatabse absDb = _absDb.Where(x => x.AbsDbName == absTable.AbsDbName).Single();
-
-            //获取逻辑数据库
-            List<LogicDatabase> logicDbs = _logicDb.Where(x => x.AbsDbName == absDb.AbsDbName && x.ReadWriteType.HasFlag(opType)).ToList();
-            int index = logicDbs.Count == 1 ? 0 : RandomHelper.Next(0, logicDbs.Count - 1);
-            LogicDatabase logicDb = logicDbs[index];
-
-            //获取物理表
-            var tables = (from a in _physicDb
-                          join b in _physicTable on a.PhysicDbName equals b.PhysicDbName
-                          where a.LogicDbName == logicDb.LogicDbName && b.AbsTableName == absTableName
-                          select new
-                          {
-                              a.ConString,
-                              b.PhysicTableName
-                          }
-                        ).Select(x => (x.ConString, absDb.DbType, x.PhysicTableName))
-                        .ToList();
-
-            //读操作,需要获取所有表
-            if (opType == ReadWriteType.Read)
-                return tables;
-            //写操作,获取一个表
-            else
+            _dataSource.Add(new DataSource
             {
-                int indexTable = RandomHelper.Next(0, tables.Count - 1);
-                return new List<(string conString, DatabaseType dbType, string tableName)> { tables[indexTable] };
-            }
+                DataSourceName = dataSourceName,
+                DbType = dbType,
+                Dbs = dbs
+            });
+        }
+
+        /// <summary>
+        /// 添加抽象数据库
+        /// </summary>
+        /// <param name="absDbName">抽象数据库名</param>
+        /// <param name="tables">抽象数据表</param>
+        public void AddAbsDatabase(string absDbName, List<AbstractTable> tables)
+        {
+            _absDb.Add(new AbstractDatabse
+            {
+                AbsDbName=absDbName,
+                Tables=tables
+            });
+        }
+
+        /// <summary>
+        /// 获取读表
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="absDbName">抽象数据库名</param>
+        /// <returns></returns>
+        public List<(string tableName, string conString, DatabaseType dbType)> GetReadTables<T>(string absDbName = null)
+        {
+            return GetTargetTables<T>(ReadWriteType.Read, absDbName);
+        }
+
+        /// <summary>
+        /// 获取写表
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="absDbName">抽象数据库名</param>
+        /// <returns></returns>
+        public (string tableName, string conString, DatabaseType dbType) GetWriteTable<T>(string absDbName = null)
+        {
+            return GetTargetTables<T>(ReadWriteType.Write, absDbName).Single();
         }
 
         #endregion
 
         #region 私有成员
 
+        private static ShardingConfig _instance { get; } = new ShardingConfig();
+        private List<(string tableName, string conString, DatabaseType dbType)> GetTargetTables<T>(ReadWriteType opType, string absDbName)
+        {
+            //获取抽象数据库
+            AbstractDatabse db = null;
+            if (absDbName.IsNullOrEmpty())
+                db = _absDb.Single();
+            else
+                db = _absDb.Where(x => x.AbsDbName == absDbName).Single();
+            if (db == null)
+                throw new Exception("请配置抽象数据库");
+
+            //获取抽象数据表
+            string absTableName = typeof(T).Name;
+            var absTable = db.Tables.Where(x => x.AbsTableName == absTableName).Single();
+
+            //获取物理表
+            List<(string physicTableName, string dataSourceName)> physicTables = null;
+            //读操作获取全部表
+            if (opType == ReadWriteType.Read)
+            {
+                physicTables = absTable.PhysicTables;
+            }
+            //写操作获取某个表
+            else
+            {
+                var theTable = absTable.FindTable(absTable.PhysicTables.Select(y => y.physicTableName).ToList());
+                physicTables = absTable.PhysicTables.Where(x=>x.physicTableName==theTable).ToList();
+            }
+
+            //获取数据源
+            var dataSources = _dataSource
+                .Where(x => physicTables.Select(y => y.dataSourceName).Contains(x.DataSourceName))
+                .Select(x => new { x.DataSourceName, x.DbType, RandomHelper.Next(x.Dbs.Where(y => y.opType.HasFlag(opType)).ToList()).conString })
+                .ToList();
+
+            var q = from a in physicTables
+                    join b in dataSources on a.dataSourceName equals b.DataSourceName
+                    select (a.physicTableName, b.conString, b.DbType);
+            var resList = q.ToList();
+
+            return resList;
+        }
+        private SynchronizedCollection<DataSource> _dataSource { get; } = new SynchronizedCollection<DataSource>();
         private SynchronizedCollection<AbstractDatabse> _absDb { get; } = new SynchronizedCollection<AbstractDatabse>();
-        private SynchronizedCollection<AbstractTable> _absTable { get; } = new SynchronizedCollection<AbstractTable>();
-        private SynchronizedCollection<LogicDatabase> _logicDb { get; } = new SynchronizedCollection<LogicDatabase>();
-        private SynchronizedCollection<PhysicDatabase> _physicDb { get; } = new SynchronizedCollection<PhysicDatabase>();
-        private SynchronizedCollection<PhysicTable> _physicTable { get; } = new SynchronizedCollection<PhysicTable>();
 
         #endregion
     }
@@ -113,13 +189,24 @@ namespace Coldairarrow.DataRepository
     }
 
     /// <summary>
+    /// 数据源
+    /// 注：一组读写数据库为一个数据源,它们中表结构一致,需要开启主从复制或主主复制
+    /// </summary>
+    public class DataSource
+    {
+        public string DataSourceName { get; set; }
+        public DatabaseType DbType { get; set; }
+        public List<(string conString, ReadWriteType opType)> Dbs { get; set; } = new List<(string conString, ReadWriteType opType)>();
+    }
+
+    /// <summary>
     /// 抽象数据库
     /// 注：即将所有读库与写库视为同一个整体数据库
     /// </summary>
     public class AbstractDatabse
     {
         public string AbsDbName { get; set; }
-        public DatabaseType DbType { get; set; }
+        public List<AbstractTable> Tables { get; set; } = new List<AbstractTable>();
     }
 
     /// <summary>
@@ -129,40 +216,7 @@ namespace Coldairarrow.DataRepository
     public class AbstractTable
     {
         public string AbsTableName { get; set; }
-        public string AbsDbName { get; set; }
-        public Func<string> FindTable { get; set; }
-    }
-
-    /// <summary>
-    /// 逻辑数据库
-    /// 注：逻辑读库、逻辑写库、逻辑读写库，即将逻辑库中的所有表视为一个整体
-    /// </summary>
-    public class LogicDatabase
-    {
-        public string AbsDbName { get; set; }
-        public string LogicDbName { get; set; }
-        public ReadWriteType ReadWriteType { get; set; }
-    }
-
-    /// <summary>
-    /// 物理数据库
-    /// 注：即真正的数据库，属于逻辑数据库
-    /// </summary>
-    public class PhysicDatabase
-    {
-        public string PhysicDbName { get; set; }
-        public string LogicDbName { get; set; }
-        public string ConString { get; set; }
-    }
-
-    /// <summary>
-    /// 物理表
-    /// 注：属于物理数据库，一张物理表对应一张抽象表
-    /// </summary>
-    public class PhysicTable
-    {
-        public string PhysicTableName { get; set; }
-        public string PhysicDbName { get; set; }
-        public string AbsTableName { get; set; }
+        public List<(string physicTableName, string dataSourceName)> PhysicTables { get; set; } = new List<(string physicTableName, string dataSourceName)>();
+        public Func<List<string>, string> FindTable { get; set; }
     }
 }

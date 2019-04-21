@@ -72,6 +72,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -99,14 +102,18 @@
     <Compile Include="DbContext\DbModelFactory.cs" />
     <Compile Include="DbContext\IRepositoryDbContext.cs" />
     <Compile Include="DbFactory.cs" />
+    <Compile Include="IRepository\IBaseRepository.cs" />
     <Compile Include="IRepository\IRepository.cs" />
     <Compile Include="IRepository\IRepository.T.cs" />
+    <Compile Include="IRepository\IShardingRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\MySqlRepository.cs" />
     <Compile Include="Repository\DbRepository.cs" />
     <Compile Include="Repository\PostgreSqlRepository.cs" />
     <Compile Include="Repository\OracleRepository.cs" />
+    <Compile Include="Repository\ShardingRepository.cs" />
     <Compile Include="Repository\SqlServerRepository.cs" />
+    <Compile Include="Sharding\Extention.Sharding.cs" />
     <Compile Include="Sharding\IShardingQueryable.T.cs" />
     <Compile Include="Sharding\ShardingConfig.cs" />
     <Compile Include="Sharding\ShardingConfigBuilder.cs" />
