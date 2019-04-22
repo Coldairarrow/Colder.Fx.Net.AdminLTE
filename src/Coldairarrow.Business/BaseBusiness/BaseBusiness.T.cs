@@ -122,7 +122,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">实体列表</param>
         public void Insert(List<T> entities)
         {
-            Service.Insert(entities);
+            Service.Insert<T>(entities);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Coldairarrow.Business
         /// <param name="entity">实体对象</param>
         public void Delete(T entity)
         {
-            Service.Delete(entity);
+            Service.Delete<T>(entity);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">数据列表</param>
         public void Delete(List<T> entities)
         {
-            Service.Delete(entities);
+            Service.Delete<T>(entities);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">数据列表</param>
         public void Update(List<T> entities)
         {
-            Service.Update(entities);
+            Service.Update<T>(entities);
         }
 
         /// <summary>
