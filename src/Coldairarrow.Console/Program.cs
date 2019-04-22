@@ -43,9 +43,11 @@ namespace Coldairarrow.Console1
         {
             var db = DbFactory.GetRepository();
             db.HandleSqlLog = Console.WriteLine;
-            var q = db.GetIQueryable<Base_User>().Where(x=>x.RealName.Contains("aaa"));
+            
+            var q = db.GetIQueryable<Base_User>().Where(x=>x.RealName.Contains("aaa")).OrderByDescending(x=>x.RealName).Where(x=>x.Password=="aa");
+            q.ToList();
             var newQ = q.ChangeSource(db.GetIQueryable<Base_User1>()).Cast<Base_User1>();
-            var list = newQ.ToList();
+            newQ.ToList();
 
             Console.WriteLine("完成");
             Console.ReadLine();

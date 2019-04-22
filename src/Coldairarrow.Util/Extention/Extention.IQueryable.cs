@@ -227,7 +227,7 @@ namespace Coldairarrow.Util
 
         public static IQueryable ChangeSource(this IQueryable source, IQueryable targetSource)
         {
-            ChangeSourceVisitor visitor = new ChangeSourceVisitor(targetSource.GetObjQuery(), targetSource.ElementType);
+            ChangeSourceVisitor visitor = new ChangeSourceVisitor(source.GetObjQuery(), targetSource.GetObjQuery(), targetSource.ElementType);
 
             return targetSource.Provider.CreateQuery(visitor.Visit(source.Expression));
         }
@@ -242,32 +242,100 @@ namespace Coldairarrow.Util
 
         class ChangeSourceVisitor : ExpressionVisitor
         {
-            public ChangeSourceVisitor(ObjectQuery targetObjQuery,Type targetType)
+            public ChangeSourceVisitor(ObjectQuery oldObjQuery,ObjectQuery targetObjQuery, Type targetType)
             {
+                _oldObjQuery = oldObjQuery;
                 _targetObjQuery = targetObjQuery;
                 _targetType = targetType;
+                _targetObjQueryConstant = Expression.Constant(targetObjQuery);
             }
+            private ObjectQuery _oldObjQuery { get; }
             private ObjectQuery _targetObjQuery { get; }
             private Type _targetType { get; }
-
+            private ConstantExpression _targetObjQueryConstant { get; }
+            private MethodInfo GetMethod(string methodName)
+            {
+                return _targetObjQuery.GetType().GetTypeInfo().DeclaredMethods.Where(x => x.Name == methodName).Single();
+            }
             protected override Expression VisitConstant(ConstantExpression node)
             {
-                if (node.Value is ObjectQuery)
-                    return Expression.Constant(_targetObjQuery);
+                if (node.Value == _oldObjQuery)
+                    return _targetObjQueryConstant;
 
                 return base.VisitConstant(node);
             }
-
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
                 if (node.Method.Name == "MergeAs")
                 {
                     var arg = node.Arguments;
-                    var method = _targetObjQuery.GetType().GetTypeInfo().DeclaredMethods.Where(x => x.Name == node.Method.Name).Single();
-                    return Expression.Call(Expression.Constant(_targetObjQuery), method, node.Arguments.ToArray());
+                    var method = GetMethod(node.Method.Name);
+
+                    return Expression.Call(_targetObjQueryConstant, method, node.Arguments.ToArray());
+                }
+                if (node.Method.Name == "Where")
+                {
+                    var newParamter = Expression.Parameter(_targetType, "$x");
+                    var whereVisitor = new RepleaseWhereLambdaVisitor(newParamter);
+                    var newWhereLambdaBody = whereVisitor.Visit(((node.Arguments[1] as UnaryExpression).Operand as LambdaExpression).Body);
+                    var lambda = Expression.Lambda(newWhereLambdaBody, newParamter);
+                    return Expression.Call(
+                        typeof(Queryable),
+                        node.Method.Name,
+                        new Type[] { _targetType },
+                        new Expression[] { _targetObjQueryConstant, Expression.Quote(lambda) });
+                }
+                if (node.Method.Name == "OrderBy" || node.Method.Name == "OrderByDescending")
+                {
+                    var oldLambda = (node.Arguments[1] as UnaryExpression).Operand as LambdaExpression;
+                    var newParamter = Expression.Parameter(_targetType, "$x");
+                    var whereVisitor = new RepleaseOrderByLambdaVisitor(newParamter);
+                    var newWhereLambdaBody = whereVisitor.Visit(oldLambda.Body);
+                    var lambda = Expression.Lambda(newWhereLambdaBody, newParamter);
+                    return Expression.Call(
+                        typeof(Queryable),
+                        node.Method.Name,
+                        new Type[] { _targetType, oldLambda.ReturnType },
+                        new Expression[] { _targetObjQueryConstant, Expression.Quote(lambda) });
                 }
 
                 return base.VisitMethodCall(node);
+            }
+        }
+
+        class RepleaseWhereLambdaVisitor : ExpressionVisitor
+        {
+            public RepleaseWhereLambdaVisitor(ParameterExpression newParamter)
+            {
+                _newParamter = newParamter;
+            }
+
+            private ParameterExpression _newParamter { get; }
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                return _newParamter;
+            }
+            protected override Expression VisitMember(MemberExpression node)
+            {
+                return Expression.MakeMemberAccess(_newParamter, _newParamter.Type.GetMember(node.Member.Name).Single());
+            }
+        }
+
+        class RepleaseOrderByLambdaVisitor : ExpressionVisitor
+        {
+            public RepleaseOrderByLambdaVisitor(ParameterExpression newParamter)
+            {
+                _newParamter = newParamter;
+            }
+
+            private ParameterExpression _newParamter { get; }
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                return _newParamter;
+            }
+            protected override Expression VisitMember(MemberExpression node)
+            {
+                return Expression.MakeMemberAccess(_newParamter, _newParamter.Type.GetMember(node.Member.Name).Single());
             }
         }
 
