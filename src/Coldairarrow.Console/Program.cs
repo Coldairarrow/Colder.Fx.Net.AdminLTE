@@ -44,8 +44,12 @@ namespace Coldairarrow.Console1
             var db = DbFactory.GetRepository();
             db.HandleSqlLog = Console.WriteLine;
             
-            var q = db.GetIQueryable<Base_User>().Where(x=>x.RealName.Contains("aaa")).OrderByDescending(x=>x.RealName).Where(x=>x.Password=="aa");
-            q.ToList();
+            var q = db.GetIQueryable<Base_User>().GroupBy(x=>x.Birthday).Select(x=>new {
+                //x.Key,
+                Max=x.Max(y=>y.Birthday)
+            });
+            
+            var list= q.ToList();
             var newQ = q.ChangeSource(db.GetIQueryable<Base_User1>()).Cast<Base_User1>();
             newQ.ToList();
 

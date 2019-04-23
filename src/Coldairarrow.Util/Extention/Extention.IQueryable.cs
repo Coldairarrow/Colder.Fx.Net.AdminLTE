@@ -191,7 +191,7 @@ namespace Coldairarrow.Util
         /// </summary>
         /// <param name="source">数据源</param>
         /// <returns></returns>
-        public static int GetSkipCount(this IQueryable source)
+        public static int? GetSkipCount(this IQueryable source)
         {
             var visitor = new SkipVisitor();
             visitor.Visit(source.Expression);
@@ -204,7 +204,7 @@ namespace Coldairarrow.Util
         /// </summary>
         /// <param name="source">数据源</param>
         /// <returns></returns>
-        public static int GetTakeCount(this IQueryable source)
+        public static int? GetTakeCount(this IQueryable source)
         {
             var visitor = new TakeVisitor();
             visitor.Visit(source.Expression);
@@ -227,6 +227,8 @@ namespace Coldairarrow.Util
 
         public static IQueryable ChangeSource(this IQueryable source, IQueryable targetSource)
         {
+            var oldType = (source.GetObjQuery() as IQueryable).ElementType;
+            var targetType = targetSource.ElementType;
             var methods = GetMethods(source.Expression);
             var targetObjQuery = targetSource.GetObjQuery();
             Expression resExpression = (targetObjQuery as IQueryable).Expression;
@@ -235,12 +237,57 @@ namespace Coldairarrow.Util
                 if (methods.Count == 0)
                     break;
                 var theMethod = methods.Pop();
-                
+                string methodName = theMethod.Method.Name;
+                if (theMethod.Method.Name == "MergeAs")
+                    continue;
+
+                var args = theMethod.Arguments.ToList();
+                args[0] = resExpression;
+                for (int i = 1; i < args.Count; i++)
+                {
+                    args[i] = new ArgumentVisitor(oldType, targetType).Visit(args[i]);
+                }
+                var genericArguments = theMethod.Method.GetGenericArguments().ToList();
+                for (int i = 0; i < genericArguments.Count; i++)
+                {
+                    if (genericArguments[i] == oldType)
+                        genericArguments[i] = targetType;
+                }
+                resExpression = Expression.Call(
+                    typeof(Queryable),
+                    methodName,
+                    genericArguments.ToArray(),
+                    args.ToArray());
+
+                //switch (methodName)
+                //{
+                //    case "Where":
+                //    case "OrderBy":
+                //    case "OrderByDescending":
+                //        {
+                //            var newParamter = Expression.Parameter(targetType, "$x");
+                //            var whereVisitor = new RepleaseLambdaVisitor(newParamter);
+                //            var genericArguments = theMethod.Method.GetGenericArguments().ToList();
+                //            for(int i = 0; i < genericArguments.Count; i++)
+                //            {
+                //                if (genericArguments[i] == oldType)
+                //                    genericArguments[i] = targetType;
+                //            }
+
+                //            var newLambdaBody = whereVisitor.Visit(((theMethod.Arguments[1] as UnaryExpression).Operand as LambdaExpression).Body);
+                //            var lambda = Expression.Lambda(newLambdaBody, newParamter);
+                //            resExpression = Expression.Call(
+                //                typeof(Queryable),
+                //                methodName,
+                //                genericArguments.ToArray(),
+                //                new Expression[] { resExpression, Expression.Quote(lambda) });
+                //        };
+                //        break;
+                //    default: break;
+                //}
             }
 
-            ChangeSourceVisitor visitor = new ChangeSourceVisitor(source.GetObjQuery(), targetSource.GetObjQuery(), targetSource.ElementType);
-            
-            return targetSource.Provider.CreateQuery(visitor.Visit(source.Expression));
+            return targetSource.Provider.CreateQuery(resExpression);
 
             Stack<MethodCallExpression> GetMethods(Expression expression)
             {
@@ -272,98 +319,44 @@ namespace Coldairarrow.Util
             return visitor.ObjQuery;
         }
 
-        class RemoveAllMethod : ExpressionVisitor
+        class ArgumentVisitor : ExpressionVisitor
         {
-            protected override Expression VisitMethodCall(MethodCallExpression node)
+            public ArgumentVisitor(Type oldType, Type targetType)
             {
-                return node.Arguments[0];
-            }
-        }
-
-        class ChangeSourceVisitor : ExpressionVisitor
-        {
-            public ChangeSourceVisitor(ObjectQuery oldObjQuery,ObjectQuery targetObjQuery, Type targetType)
-            {
-                _oldObjQuery = oldObjQuery;
-                _targetObjQuery = targetObjQuery;
+                _oldType = oldType;
                 _targetType = targetType;
-                _targetObjQueryConstant = Expression.Constant(targetObjQuery);
+                _newParamter = Expression.Parameter(targetType, "$x");
             }
-            private ObjectQuery _oldObjQuery { get; }
-            private ObjectQuery _targetObjQuery { get; }
+            private Type _oldType { get; }
             private Type _targetType { get; }
-            private ConstantExpression _targetObjQueryConstant { get; }
-            private MethodInfo GetMethod(string methodName)
-            {
-                return _targetObjQuery.GetType().GetTypeInfo().DeclaredMethods.Where(x => x.Name == methodName).Single();
-            }
-            protected override Expression VisitConstant(ConstantExpression node)
-            {
-                if (node.Value == _oldObjQuery)
-                    return _targetObjQueryConstant;
-
-                return base.VisitConstant(node);
-            }
-            protected override Expression VisitMethodCall(MethodCallExpression node)
-            {
-                if (node.Method.Name == "MergeAs")
-                {
-                    var arg = node.Arguments;
-                    var method = GetMethod(node.Method.Name);
-
-                    return Expression.Call(_targetObjQueryConstant, method, node.Arguments.ToArray());
-                }
-                if (node.Method.Name == "Where")
-                {
-                    var newParamter = Expression.Parameter(_targetType, "$x");
-                    var whereVisitor = new RepleaseWhereLambdaVisitor(newParamter);
-                    var newWhereLambdaBody = whereVisitor.Visit(((node.Arguments[1] as UnaryExpression).Operand as LambdaExpression).Body);
-                    var lambda = Expression.Lambda(newWhereLambdaBody, newParamter);
-                    return Expression.Call(
-                        typeof(Queryable),
-                        node.Method.Name,
-                        new Type[] { _targetType },
-                        new Expression[] { _targetObjQueryConstant, Expression.Quote(lambda) });
-                }
-                if (node.Method.Name == "OrderBy" || node.Method.Name == "OrderByDescending")
-                {
-                    var oldLambda = (node.Arguments[1] as UnaryExpression).Operand as LambdaExpression;
-                    var newParamter = Expression.Parameter(_targetType, "$x");
-                    var whereVisitor = new RepleaseOrderByLambdaVisitor(newParamter);
-                    var newWhereLambdaBody = whereVisitor.Visit(oldLambda.Body);
-                    var lambda = Expression.Lambda(newWhereLambdaBody, newParamter);
-                    return Expression.Call(
-                        typeof(Queryable),
-                        node.Method.Name,
-                        new Type[] { _targetType, oldLambda.ReturnType },
-                        new Expression[] { _targetObjQueryConstant, Expression.Quote(lambda) });
-                }
-
-                return base.VisitMethodCall(node);
-            }
-        }
-
-        class RepleaseWhereLambdaVisitor : ExpressionVisitor
-        {
-            public RepleaseWhereLambdaVisitor(ParameterExpression newParamter)
-            {
-                _newParamter = newParamter;
-            }
-
             private ParameterExpression _newParamter { get; }
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                return _newParamter;
+                if (node.Type == _oldType)
+                    return _newParamter;
+
+                return base.VisitParameter(node);
             }
             protected override Expression VisitMember(MemberExpression node)
             {
-                return Expression.MakeMemberAccess(_newParamter, _newParamter.Type.GetMember(node.Member.Name).Single());
+                if (node.Member.DeclaringType == _oldType)
+                    return Expression.MakeMemberAccess(_newParamter, _newParamter.Type.GetMember(node.Member.Name).Single());
+
+                return base.VisitMember(node);
+            }
+
+            protected override Expression VisitLambda<T>(Expression<T> node)
+            {
+                var whereVisitor = new LambdaVisitor(_newParamter);
+                var newLambdaBody = whereVisitor.Visit(node.Body);
+                var lambda = Expression.Lambda(newLambdaBody, _newParamter);
+                return lambda;
             }
         }
 
-        class RepleaseOrderByLambdaVisitor : ExpressionVisitor
+        class LambdaVisitor : ExpressionVisitor
         {
-            public RepleaseOrderByLambdaVisitor(ParameterExpression newParamter)
+            public LambdaVisitor(ParameterExpression newParamter)
             {
                 _newParamter = newParamter;
             }
@@ -408,7 +401,7 @@ namespace Coldairarrow.Util
 
         class SkipVisitor : ExpressionVisitor
         {
-            public int SkipCount { get; set; }
+            public int? SkipCount { get; set; }
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
                 if (node.Method.Name == "Skip")
@@ -421,7 +414,7 @@ namespace Coldairarrow.Util
 
         class TakeVisitor : ExpressionVisitor
         {
-            public int TakeCount { get; set; }
+            public int? TakeCount { get; set; }
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
                 if (node.Method.Name == "Take")

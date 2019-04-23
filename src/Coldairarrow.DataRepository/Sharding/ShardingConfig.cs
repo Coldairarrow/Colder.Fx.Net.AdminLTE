@@ -55,6 +55,11 @@ namespace Coldairarrow.DataRepository
                         tableBuilder.AddPhsicTable("Base_SysLog_2", "BaseDb");
                         tableBuilder.AddPhsicTable("Base_SysLog_3", "BaseDb");
                     }, tables => RandomHelper.Next(tables));
+                    absTableBuilder.AddAbsTable("Base_User", tableBuilder =>
+                    {
+                        //添加物理数据表
+                        tableBuilder.AddPhsicTable("Base_User", "BaseDb");
+                    }, tables => RandomHelper.Next(tables));
                 });
         }
 
@@ -109,9 +114,9 @@ namespace Coldairarrow.DataRepository
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="absDbName">抽象数据库名</param>
         /// <returns></returns>
-        public List<(string tableName, string conString, DatabaseType dbType)> GetReadTables<T>(string absDbName = null)
+        public List<(string tableName, string conString, DatabaseType dbType)> GetReadTables(string absTableName, string absDbName = null)
         {
-            return GetTargetTables<T>(ReadWriteType.Read, absDbName);
+            return GetTargetTables(absTableName, ReadWriteType.Read, absDbName);
         }
 
         /// <summary>
@@ -120,9 +125,9 @@ namespace Coldairarrow.DataRepository
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="absDbName">抽象数据库名</param>
         /// <returns></returns>
-        public (string tableName, string conString, DatabaseType dbType) GetWriteTable<T>(string absDbName = null)
+        public (string tableName, string conString, DatabaseType dbType) GetWriteTable(string absTableName, string absDbName = null)
         {
-            return GetTargetTables<T>(ReadWriteType.Write, absDbName).Single();
+            return GetTargetTables(absTableName, ReadWriteType.Write, absDbName).Single();
         }
 
         #endregion
@@ -130,7 +135,7 @@ namespace Coldairarrow.DataRepository
         #region 私有成员
 
         private static ShardingConfig _instance { get; } = new ShardingConfig();
-        private List<(string tableName, string conString, DatabaseType dbType)> GetTargetTables<T>(ReadWriteType opType, string absDbName)
+        private List<(string tableName, string conString, DatabaseType dbType)> GetTargetTables(string absTableName,ReadWriteType opType, string absDbName)
         {
             //获取抽象数据库
             AbstractDatabse db = null;
@@ -142,7 +147,6 @@ namespace Coldairarrow.DataRepository
                 throw new Exception("请配置抽象数据库");
 
             //获取抽象数据表
-            string absTableName = typeof(T).Name;
             var absTable = db.Tables.Where(x => x.AbsTableName == absTableName).Single();
 
             //获取物理表

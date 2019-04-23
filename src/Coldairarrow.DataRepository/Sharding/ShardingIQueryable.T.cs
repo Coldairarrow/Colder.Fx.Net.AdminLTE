@@ -43,16 +43,19 @@ namespace Coldairarrow.DataRepository
 
         public List<T> ToList()
         {
-            string tableName = typeof(T).Name;
+            string tableName = (_source.GetObjQuery() as IQueryable).ElementType.Name;
             //去除分页,获取前Take+Skip数量
-            int take = _source.GetTakeCount();
-            int skip = _source.GetSkipCount();
+            int? take = _source.GetTakeCount();
+            int? skip = _source.GetSkipCount();
+            skip = skip == null ? 0 : skip;
             var (sortColumn, sortType) = _source.GetOrderBy();
-            var noPaginSource = _source.RemoveTake().RemoveSkip().Take(take + skip);
+            var noPaginSource = _source.RemoveTake().RemoveSkip();
+            if (!take.IsNullOrEmpty())
+                noPaginSource = noPaginSource.Take(take.Value + skip.Value);
             var (sql, parameters) = noPaginSource.ToSQL();
 
             //从各个分表获取数据
-            var tables = ShardingConfig.Instance.GetReadTables<T>();
+            var tables = ShardingConfig.Instance.GetReadTables(tableName);
             List<Task<List<T>>> tasks = new List<Task<List<T>>>();
             tables.ForEach(aTable =>
             {
@@ -70,7 +73,13 @@ namespace Coldairarrow.DataRepository
             });
 
             //合并数据
-            var resList = all.OrderBy($"{sortColumn} {sortType}").Skip(skip).Take(take).ToList();
+            var resList = all;
+            if (!sortColumn.IsNullOrEmpty() && !sortType.IsNullOrEmpty())
+                resList = all.OrderBy($"{sortColumn} {sortType}").ToList();
+            if (!skip.IsNullOrEmpty())
+                resList = all.Skip(skip.Value).ToList();
+            if (!take.IsNullOrEmpty())
+                resList = all.Skip(take.Value).ToList();
 
             return resList;
 

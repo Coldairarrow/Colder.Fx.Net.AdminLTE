@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Coldairarrow.Util
@@ -44,7 +45,9 @@ namespace Coldairarrow.Util
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 //创建泛型对象
-                T _t = Activator.CreateInstance<T>();
+
+                //T _t = (T)Activator.CreateInstance(type);
+                T _t = (T)FormatterServices.GetUninitializedObject(type);
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
                     string memberKey = dt.Columns[j].ColumnName.ToLower();
