@@ -227,9 +227,41 @@ namespace Coldairarrow.Util
 
         public static IQueryable ChangeSource(this IQueryable source, IQueryable targetSource)
         {
-            ChangeSourceVisitor visitor = new ChangeSourceVisitor(source.GetObjQuery(), targetSource.GetObjQuery(), targetSource.ElementType);
+            var methods = GetMethods(source.Expression);
+            var targetObjQuery = targetSource.GetObjQuery();
+            Expression resExpression = (targetObjQuery as IQueryable).Expression;
+            while (true)
+            {
+                if (methods.Count == 0)
+                    break;
+                var theMethod = methods.Pop();
+                
+            }
 
+            ChangeSourceVisitor visitor = new ChangeSourceVisitor(source.GetObjQuery(), targetSource.GetObjQuery(), targetSource.ElementType);
+            
             return targetSource.Provider.CreateQuery(visitor.Visit(source.Expression));
+
+            Stack<MethodCallExpression> GetMethods(Expression expression)
+            {
+                Stack<MethodCallExpression> resList = new Stack<MethodCallExpression>();
+
+                Expression next = expression;
+                while (true)
+                {
+                    if (next is MethodCallExpression methodCall)
+                    {
+                        resList.Push(methodCall);
+                        next = methodCall.Arguments[0];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                return resList;
+            }
         }
 
         public static ObjectQuery GetObjQuery(this IQueryable source)
@@ -238,6 +270,14 @@ namespace Coldairarrow.Util
             visitor.Visit(source.Expression);
 
             return visitor.ObjQuery;
+        }
+
+        class RemoveAllMethod : ExpressionVisitor
+        {
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                return node.Arguments[0];
+            }
         }
 
         class ChangeSourceVisitor : ExpressionVisitor
