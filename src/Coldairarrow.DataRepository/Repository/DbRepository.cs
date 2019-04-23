@@ -192,15 +192,6 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 插入数据
         /// </summary>
-        /// <param name="entity">实体</param>
-        public void Insert(object entity)
-        {
-            Insert(new List<object> { entity });
-        }
-
-        /// <summary>
-        /// 插入数据
-        /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="entity">实体</param>
         public void Insert<T>(T entity) where T : class, new()
@@ -248,11 +239,6 @@ namespace Coldairarrow.DataRepository
             string tableName = GetDbTableName(type);
             string sql = $"DELETE FROM {tableName}";
             ExecuteSql(sql);
-        }
-
-        public void Delete(object entity)
-        {
-            Delete(new List<object> { entity });
         }
 
         /// <summary>
@@ -341,11 +327,6 @@ namespace Coldairarrow.DataRepository
         #endregion
 
         #region 更新数据
-
-        public void Update(object entity)
-        {
-            Update(new List<object> { entity });
-        }
 
         /// <summary>
         /// 默认更新一个实体，所有字段

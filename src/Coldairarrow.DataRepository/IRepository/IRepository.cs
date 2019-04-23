@@ -25,7 +25,6 @@ namespace Coldairarrow.DataRepository
 
         #region 增加数据
 
-        void Insert(object entity);
         void Insert(List<object> entities);
         void BulkInsert<T>(List<T> entities) where T : class, new();
 
@@ -37,14 +36,12 @@ namespace Coldairarrow.DataRepository
         void DeleteAll(Type type);
         void Delete(Type type, string key);
         void Delete(Type type, List<string> keys);
-        void Delete(object entity);
         void Delete(List<object> entities);
 
         #endregion
 
         #region 更新数据
 
-        void Update(object entity);
         void Update(List<object> entities);
 
         #endregion
