@@ -853,6 +853,8 @@
     <Content Include="Scripts\vendor\ionslider\ion.rangeSlider.skinFlat.css" />
     <Content Include="Scripts\vendor\ionslider\ion.rangeSlider.skinNice.css" />
     <Content Include="Scripts\vendor\jQuery-cookie\jquery.cookie.min.js" />
+    <Content Include="Scripts\vendor\jquery-treegrid\jquery.treegrid.min.css" />
+    <Content Include="Scripts\vendor\jquery-treegrid\jquery.treegrid.min.js" />
     <Content Include="Scripts\vendor\jQueryUI\jquery-ui.js" />
     <Content Include="Scripts\vendor\jQueryUI\jquery-ui.min.js" />
     <Content Include="Scripts\vendor\jQuery\jquery-2.2.3.min.js" />
