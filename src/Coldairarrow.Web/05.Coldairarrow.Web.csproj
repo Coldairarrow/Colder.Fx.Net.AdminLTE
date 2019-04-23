@@ -404,6 +404,7 @@
     <Content Include="Scripts\vendor\bootstrap-select\defaults-zh_CN.min.js" />
     <Content Include="Scripts\vendor\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="Scripts\vendor\bootstrap-slider\slider.css" />
+    <Content Include="Scripts\vendor\bootstrap-table\bootstrap-table-treegrid.js" />
     <Content Include="Scripts\vendor\bootstrap-table\bootstrap-table-zh-CN.min.js" />
     <Content Include="Scripts\vendor\bootstrap-table\bootstrap-table.min.css" />
     <Content Include="Scripts\vendor\bootstrap-table\bootstrap-table.min.js" />
