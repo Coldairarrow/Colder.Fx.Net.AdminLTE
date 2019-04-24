@@ -166,7 +166,7 @@ namespace Coldairarrow.Web
 
     public class Menu
     {
-        public string id { get; set; } = Guid.NewGuid().ToString();
+        public string id { get => url ?? GuidHelper.GenerateKey(); }
         public string text { get; set; }
         public string icon { get; set; }
         public string url { get => SystemMenuManage.GetUrl(_url); set => _url = value; }
