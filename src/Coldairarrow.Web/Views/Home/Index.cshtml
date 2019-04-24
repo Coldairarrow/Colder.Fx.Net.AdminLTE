@@ -648,15 +648,16 @@
             App.setbasePath("/Scripts/vendor/adminlte/");
             App.setGlobalImgPath("dist/img/");
 
-            addTabs({
-                id: '324708b9-5027-4fd0-a9eb-a001d214ca72',
-                title: '框架介绍',
-                close: true,
-                url: '/Home/Desktop',
-            });
-
             App.fixIframeCotent();
             $('.sidebar-menu').sidebarMenu({ data: menus });
+
+            var desktop = '/Home/Desktop';
+            addTabs({
+                id: desktop,
+                title: '框架介绍',
+                close: true,
+                url: desktop,
+            });
         });
     </script>
 </body>
