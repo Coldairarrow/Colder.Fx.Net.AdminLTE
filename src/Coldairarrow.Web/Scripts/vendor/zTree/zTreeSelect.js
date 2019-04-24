@@ -41,7 +41,8 @@ $('#CategoryId').zTreeSelect('reload');
                 value: null,
                 multiple: false,
                 data: [],
-                _firstLoad: true
+                _firstLoad: true,
+                onSelect: function () { }
             };
 
             var _option = $.extend({}, defaults, options);
@@ -181,6 +182,9 @@ $('#CategoryId').zTreeSelect('reload');
 
                         $('#' + _inputId).val(v.join(','));
                         $(_this).val(values);
+
+                        //绑定选择事件
+                        option.onSelect(treeNode.id);
                     },
                     onCheck: function (e, treeId, treeNode) {
                         var zTree = $.fn.zTree.getZTreeObj(_treeId),

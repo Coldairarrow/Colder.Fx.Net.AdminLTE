@@ -525,7 +525,7 @@ namespace Coldairarrow.Business
 
             if (!q.IsNullOrEmpty())
             {
-                where += $" && outerIt.{textFiled}.Contains(@1)";
+                where += $" && it.{textFiled}.Contains(@1)";
             }
             newQList = GetNewQ().Where(where, ids, q).GetPagination(pagination).ToList();
 
