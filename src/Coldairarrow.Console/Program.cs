@@ -43,14 +43,16 @@ namespace Coldairarrow.Console1
         {
             var db = DbFactory.GetRepository();
             db.HandleSqlLog = Console.WriteLine;
-            
-            var q = db.GetIQueryable<Base_User>().GroupBy(x=>x.Birthday).Select(x=>new {
-                //x.Key,
-                Max=x.Max(y=>y.Birthday)
-            });
-            
-            var list= q.ToList();
-            var newQ = q.ChangeSource(db.GetIQueryable<Base_User1>()).Cast<Base_User1>();
+
+            //var q = db.GetIQueryable<Base_User>().GroupBy(x => x.Id).Select(x => new
+            //{
+            //    x.Key,
+            //    Max = x.Max(y => y.RealName)
+            //});
+            var q = db.GetIQueryable<Base_User>().Where(x => x.Password.Contains("aa"));
+
+            var list = q.ToList();
+            var newQ = q.ChangeSource(db.GetIQueryable<Base_User1>()).CastToList<object>();
             newQ.ToList();
 
             Console.WriteLine("完成");

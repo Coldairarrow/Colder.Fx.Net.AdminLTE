@@ -227,11 +227,15 @@ namespace Coldairarrow.Util
 
         public static IQueryable ChangeSource(this IQueryable source, IQueryable targetSource)
         {
-            var oldType = (source.GetObjQuery() as IQueryable).ElementType;
-            var targetType = targetSource.ElementType;
+            Dictionary<Type, Type> typeMap = new Dictionary<Type, Type>();
+            var oldQuery = source.GetObjQuery() as IQueryable;
+            var newQuery = targetSource.GetObjQuery() as IQueryable;
+            typeMap[oldQuery.ElementType] = newQuery.ElementType;
             var methods = GetMethods(source.Expression);
             var targetObjQuery = targetSource.GetObjQuery();
-            Expression resExpression = (targetObjQuery as IQueryable).Expression;
+            Expression newExpression = newQuery.Expression;
+            Expression oldExpression = oldQuery.Expression;
+
             while (true)
             {
                 if (methods.Count == 0)
@@ -242,52 +246,37 @@ namespace Coldairarrow.Util
                     continue;
 
                 var args = theMethod.Arguments.ToList();
-                args[0] = resExpression;
+                args[0] = newExpression;
                 for (int i = 1; i < args.Count; i++)
                 {
-                    args[i] = new ArgumentVisitor(oldType, targetType).Visit(args[i]);
+                    args[i] = new ArgumentVisitor(BuildParamters(args[i], typeMap), typeMap).Visit(args[i]);
                 }
                 var genericArguments = theMethod.Method.GetGenericArguments().ToList();
                 for (int i = 0; i < genericArguments.Count; i++)
                 {
-                    if (genericArguments[i] == oldType)
-                        genericArguments[i] = targetType;
+                    if (typeMap.ContainsKey(genericArguments[i]))
+                        genericArguments[i] = typeMap[genericArguments[i]];
                 }
-                resExpression = Expression.Call(
+                newExpression = Expression.Call(
                     typeof(Queryable),
                     methodName,
                     genericArguments.ToArray(),
                     args.ToArray());
+                newQuery = newQuery.Provider.CreateQuery(newExpression);
 
-                //switch (methodName)
-                //{
-                //    case "Where":
-                //    case "OrderBy":
-                //    case "OrderByDescending":
-                //        {
-                //            var newParamter = Expression.Parameter(targetType, "$x");
-                //            var whereVisitor = new RepleaseLambdaVisitor(newParamter);
-                //            var genericArguments = theMethod.Method.GetGenericArguments().ToList();
-                //            for(int i = 0; i < genericArguments.Count; i++)
-                //            {
-                //                if (genericArguments[i] == oldType)
-                //                    genericArguments[i] = targetType;
-                //            }
+                oldExpression = Expression.Call(
+                    typeof(Queryable),
+                    methodName,
+                    theMethod.Method.GetGenericArguments(),
+                    theMethod.Arguments.ToArray());
 
-                //            var newLambdaBody = whereVisitor.Visit(((theMethod.Arguments[1] as UnaryExpression).Operand as LambdaExpression).Body);
-                //            var lambda = Expression.Lambda(newLambdaBody, newParamter);
-                //            resExpression = Expression.Call(
-                //                typeof(Queryable),
-                //                methodName,
-                //                genericArguments.ToArray(),
-                //                new Expression[] { resExpression, Expression.Quote(lambda) });
-                //        };
-                //        break;
-                //    default: break;
-                //}
+                oldQuery = oldQuery.Provider.CreateQuery(oldExpression);
+
+                typeMap[oldQuery.ElementType] = newQuery.ElementType;
             }
 
-            return targetSource.Provider.CreateQuery(resExpression);
+            return targetSource.Provider.CreateQuery(newExpression);
+
 
             Stack<MethodCallExpression> GetMethods(Expression expression)
             {
@@ -311,6 +300,30 @@ namespace Coldairarrow.Util
             }
         }
 
+        public static Dictionary<string, ParameterExpression> BuildParamters(Expression expression, Dictionary<Type, Type> map)
+        {
+            Dictionary<string, ParameterExpression> res = new Dictionary<string, ParameterExpression>();
+            GetParamtersVisitor visitor = new GetParamtersVisitor();
+            visitor.Visit(expression);
+            var paramters = visitor.Paramters;
+            paramters.ForEach(aParamter =>
+            {
+                if (!res.ContainsKey(aParamter.Name))
+                {
+                    if (map.ContainsKey(aParamter.Type))
+                    {
+                        res[aParamter.Name] = Expression.Parameter(map[aParamter.Type], aParamter.Name);
+                    }
+                    else
+                    {
+                        res[aParamter.Name] = aParamter;
+                    }
+                }
+            });
+
+            return res;
+        }
+
         public static ObjectQuery GetObjQuery(this IQueryable source)
         {
             GetObjQueryVisitor visitor = new GetObjQueryVisitor();
@@ -321,54 +334,78 @@ namespace Coldairarrow.Util
 
         class ArgumentVisitor : ExpressionVisitor
         {
-            public ArgumentVisitor(Type oldType, Type targetType)
+            public ArgumentVisitor(Dictionary<string, ParameterExpression> paramters, Dictionary<Type, Type> typeMap)
             {
-                _oldType = oldType;
-                _targetType = targetType;
-                _newParamter = Expression.Parameter(targetType, "$x");
+                _paramters = paramters;
+                _typeMap = typeMap;
             }
-            private Type _oldType { get; }
-            private Type _targetType { get; }
-            private ParameterExpression _newParamter { get; }
+            Dictionary<string, ParameterExpression> _paramters { get; }
+            Dictionary<Type, Type> _typeMap { get; }
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                if (node.Type == _oldType)
-                    return _newParamter;
-
-                return base.VisitParameter(node);
+                if (_paramters.ContainsKey(node.Name))
+                    return _paramters[node.Name];
+                else
+                    return base.VisitParameter(node);
             }
             protected override Expression VisitMember(MemberExpression node)
             {
-                if (node.Member.DeclaringType == _oldType)
-                    return Expression.MakeMemberAccess(_newParamter, _newParamter.Type.GetMember(node.Member.Name).Single());
-
-                return base.VisitMember(node);
+                var oldParamter = node.Expression as ParameterExpression;
+                if (_paramters.ContainsKey(oldParamter.Name))
+                {
+                    var newParamter = _paramters[oldParamter.Name];
+                    return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                }
+                else
+                    return base.VisitMember(node);
             }
-
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
-                var whereVisitor = new LambdaVisitor(_newParamter);
+                var whereVisitor = new LambdaVisitor(BuildParamters(node, _typeMap));
                 var newLambdaBody = whereVisitor.Visit(node.Body);
-                var lambda = Expression.Lambda(newLambdaBody, _newParamter);
+                List<ParameterExpression> newParamters = new List<ParameterExpression>();
+                node.Parameters.ForEach(aParamter =>
+                {
+                    newParamters.Add(_paramters[aParamter.Name]);
+                });
+
+                var lambda = Expression.Lambda(newLambdaBody, newParamters.ToArray());
                 return lambda;
+            }
+        }
+
+        class GetParamtersVisitor : ExpressionVisitor
+        {
+            public List<ParameterExpression> Paramters { get; set; } = new List<ParameterExpression>();
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                if (!Paramters.Contains(node))
+                    Paramters.Add(node);
+                return base.VisitParameter(node);
             }
         }
 
         class LambdaVisitor : ExpressionVisitor
         {
-            public LambdaVisitor(ParameterExpression newParamter)
+            public LambdaVisitor(Dictionary<string, ParameterExpression> paramters)
             {
-                _newParamter = newParamter;
+                _paramters = paramters;
             }
-
-            private ParameterExpression _newParamter { get; }
+            Dictionary<string, ParameterExpression> _paramters { get; }
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                return _newParamter;
+                return _paramters[node.Name];
             }
             protected override Expression VisitMember(MemberExpression node)
             {
-                return Expression.MakeMemberAccess(_newParamter, _newParamter.Type.GetMember(node.Member.Name).Single());
+                var oldParamter = node.Expression as ParameterExpression;
+                if (_paramters.ContainsKey(oldParamter.Name))
+                {
+                    var newParamter = _paramters[oldParamter.Name];
+                    return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                }
+                else
+                    return base.VisitMember(node);
             }
         }
 
