@@ -49,7 +49,19 @@ namespace Coldairarrow.Console1
             //    x.Key,
             //    Max = x.Max(y => y.RealName)
             //});
-            var q = db.GetIQueryable<Base_User>().Where(x => x.Password.Contains("aa"));
+            var q = db.GetIQueryable<Base_User>().Where(x => x.Password.Contains("aa"))
+                //.Select(x => new
+                //{
+                //    x.Birthday,
+                //    x.RealName
+                //})
+                .GroupBy(x => x.RealName)
+            .Select(x => new
+            {
+                x.Key,
+                Max = x.Max(y => y.RealName)
+            })
+            ;
 
             var list = q.ToList();
             var newQ = q.ChangeSource(db.GetIQueryable<Base_User1>()).CastToList<object>();

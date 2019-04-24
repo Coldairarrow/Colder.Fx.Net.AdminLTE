@@ -361,15 +361,11 @@ namespace Coldairarrow.Util
             }
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
-                var whereVisitor = new LambdaVisitor(BuildParamters(node, _typeMap));
+                var newParamters = BuildParamters(node, _typeMap);
+                var whereVisitor = new LambdaVisitor(newParamters);
                 var newLambdaBody = whereVisitor.Visit(node.Body);
-                List<ParameterExpression> newParamters = new List<ParameterExpression>();
-                node.Parameters.ForEach(aParamter =>
-                {
-                    newParamters.Add(_paramters[aParamter.Name]);
-                });
 
-                var lambda = Expression.Lambda(newLambdaBody, newParamters.ToArray());
+                var lambda = Expression.Lambda(newLambdaBody, newParamters.Select(x => x.Value).ToArray());
                 return lambda;
             }
         }
