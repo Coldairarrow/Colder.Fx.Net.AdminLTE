@@ -7,3 +7,8 @@
 .fx-wrapper {
     margin-top: 5px;
 }
+
+    .fx-wrapper table {
+        word-break: break-all;
+        word-wrap: break-all;
+    }
