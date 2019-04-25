@@ -257,6 +257,14 @@ namespace Coldairarrow.Util
                     if (typeMap.ContainsKey(genericArguments[i]))
                         genericArguments[i] = typeMap[genericArguments[i]];
                 }
+
+                //若为Select需要先获取返回类型
+                if (methodName == "Select")
+                {
+                    Type returnType = ((args[1] as UnaryExpression).Operand as LambdaExpression).ReturnType;
+                    genericArguments[1] = returnType;
+                    string tmp = string.Empty;
+                }
                 newExpression = Expression.Call(
                     typeof(Queryable),
                     methodName,
@@ -334,7 +342,9 @@ namespace Coldairarrow.Util
 
         class ArgumentVisitor : ExpressionVisitor
         {
-            public ArgumentVisitor(Dictionary<string, ParameterExpression> paramters, Dictionary<Type, Type> typeMap)
+            public ArgumentVisitor(
+                Dictionary<string, ParameterExpression> paramters, 
+                Dictionary<Type, Type> typeMap)
             {
                 _paramters = paramters;
                 _typeMap = typeMap;
@@ -362,7 +372,70 @@ namespace Coldairarrow.Util
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
                 var newParamters = BuildParamters(node, _typeMap);
-                var whereVisitor = new LambdaVisitor(newParamters);
+                var whereVisitor = new LambdaVisitor(newParamters, _typeMap);
+                var newLambdaBody = whereVisitor.Visit(node.Body);
+
+                var lambda = Expression.Lambda(newLambdaBody, newParamters.Select(x => x.Value).ToArray());
+                return lambda;
+            }
+        }
+        class LambdaVisitor : ExpressionVisitor
+        {
+            public LambdaVisitor(
+                Dictionary<string, ParameterExpression> paramters,
+                Dictionary<Type, Type> typeMap)
+            {
+                _paramters = paramters;
+                _typeMap = typeMap;
+            }
+            Dictionary<string, ParameterExpression> _paramters { get; }
+            Dictionary<Type, Type> _typeMap { get; }
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                return _paramters[node.Name];
+            }
+            protected override Expression VisitMember(MemberExpression node)
+            {
+                var oldParamter = node.Expression as ParameterExpression;
+                if (_paramters.ContainsKey(oldParamter.Name))
+                {
+                    var newParamter = _paramters[oldParamter.Name];
+                    return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                }
+                else
+                    return base.VisitMember(node);
+            }
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                string paramterName = node.Arguments[0] is ParameterExpression oldParamter ? oldParamter.Name : "";
+                if (!_paramters.ContainsKey(paramterName))
+                    return base.VisitMethodCall(node);
+
+                var theMethod = node;
+                var args = theMethod.Arguments.ToList();
+                for (int i = 0; i < args.Count; i++)
+                {
+                    args[i] = new ArgumentVisitor(BuildParamters(args[i], _typeMap), _typeMap).Visit(args[i]);
+                }
+                var genericArguments = theMethod.Method.GetGenericArguments().ToList();
+                for (int i = 0; i < genericArguments.Count; i++)
+                {
+                    if (_typeMap.ContainsKey(genericArguments[i]))
+                        genericArguments[i] = _typeMap[genericArguments[i]];
+                }
+                return Expression.Call(
+                    node.Method.DeclaringType,
+                    node.Method.Name,
+                    genericArguments.ToArray(),
+                    args.ToArray());
+
+                return base.VisitMethodCall(node);
+            }
+            protected override Expression VisitLambda<T>(Expression<T> node)
+            {
+                var newParamters = BuildParamters(node, _typeMap);
+                //递归观察替换
+                var whereVisitor = new LambdaVisitor(newParamters, _typeMap);
                 var newLambdaBody = whereVisitor.Visit(node.Body);
 
                 var lambda = Expression.Lambda(newLambdaBody, newParamters.Select(x => x.Value).ToArray());
@@ -378,30 +451,6 @@ namespace Coldairarrow.Util
                 if (!Paramters.Contains(node))
                     Paramters.Add(node);
                 return base.VisitParameter(node);
-            }
-        }
-
-        class LambdaVisitor : ExpressionVisitor
-        {
-            public LambdaVisitor(Dictionary<string, ParameterExpression> paramters)
-            {
-                _paramters = paramters;
-            }
-            Dictionary<string, ParameterExpression> _paramters { get; }
-            protected override Expression VisitParameter(ParameterExpression node)
-            {
-                return _paramters[node.Name];
-            }
-            protected override Expression VisitMember(MemberExpression node)
-            {
-                var oldParamter = node.Expression as ParameterExpression;
-                if (_paramters.ContainsKey(oldParamter.Name))
-                {
-                    var newParamter = _paramters[oldParamter.Name];
-                    return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
-                }
-                else
-                    return base.VisitMember(node);
             }
         }
 

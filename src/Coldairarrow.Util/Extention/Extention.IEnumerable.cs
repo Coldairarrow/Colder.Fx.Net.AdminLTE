@@ -142,18 +142,5 @@ namespace Coldairarrow.Util
 
             return iEnumberable.OrderBy($@"{pagination.SortField} {pagination.SortType}").Skip((pagination.page - 1) * pagination.rows).Take(pagination.rows).ToList();
         }
-
-        private static List<TSource> ToList<TSource>(this IEnumerable<TSource> source)
-        {
-            List<TSource> resList = null;
-            if (source is IQueryable)
-            {
-                resList = Enumerable.ToList(source);
-            }
-            else
-                resList = Enumerable.ToList(source);
-
-            return resList;
-        }
     }
 }
