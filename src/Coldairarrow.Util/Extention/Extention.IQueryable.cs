@@ -225,14 +225,23 @@ namespace Coldairarrow.Util
             return visitor.OrderParam;
         }
 
+        /// <summary>
+        /// 切换数据源,保留原数据源中的Expression
+        /// 注:分库分表读写分离的核心,难度非常大,研究1个月的结果,做个标记
+        /// </summary>
+        /// <param name="source">原数据源</param>
+        /// <param name="targetSource">目标数据源</param>
+        /// <returns></returns>
         public static IQueryable ChangeSource(this IQueryable source, IQueryable targetSource)
         {
+            if (!(source is DbQuery && targetSource is DbQuery))
+                throw new Exception("仅支持EF的IQueryable!");
+
             Dictionary<Type, Type> typeMap = new Dictionary<Type, Type>();
             var oldQuery = source.GetObjQuery() as IQueryable;
             var newQuery = targetSource.GetObjQuery() as IQueryable;
             typeMap[oldQuery.ElementType] = newQuery.ElementType;
             var methods = GetMethods(source.Expression);
-            var targetObjQuery = targetSource.GetObjQuery();
             Expression newExpression = newQuery.Expression;
             Expression oldExpression = oldQuery.Expression;
 
@@ -258,13 +267,6 @@ namespace Coldairarrow.Util
                         genericArguments[i] = typeMap[genericArguments[i]];
                 }
 
-                //若为Select需要先获取返回类型
-                if (methodName == "Select")
-                {
-                    Type returnType = ((args[1] as UnaryExpression).Operand as LambdaExpression).ReturnType;
-                    genericArguments[1] = returnType;
-                    string tmp = string.Empty;
-                }
                 newExpression = Expression.Call(
                     typeof(Queryable),
                     methodName,
@@ -284,7 +286,6 @@ namespace Coldairarrow.Util
             }
 
             return targetSource.Provider.CreateQuery(newExpression);
-
 
             Stack<MethodCallExpression> GetMethods(Expression expression)
             {
@@ -308,7 +309,7 @@ namespace Coldairarrow.Util
             }
         }
 
-        public static Dictionary<string, ParameterExpression> BuildParamters(Expression expression, Dictionary<Type, Type> map)
+        private static Dictionary<string, ParameterExpression> BuildParamters(Expression expression, Dictionary<Type, Type> map)
         {
             Dictionary<string, ParameterExpression> res = new Dictionary<string, ParameterExpression>();
             GetParamtersVisitor visitor = new GetParamtersVisitor();
@@ -339,6 +340,41 @@ namespace Coldairarrow.Util
 
             return visitor.ObjQuery;
         }
+        public static TResult Max<TSource, TResult>(this IQueryable source, Expression<Func<TSource, TResult>> selector)
+        {
+            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
+            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
+            var newSelector = Expression.Lambda(newBody, newParamter);
+            var theMethod = typeof(Queryable).GetMethods().Where(x => x.Name == "Max" && (x.GetParameters().Length == 2)).Single();
+            var res = theMethod.MakeGenericMethod(source.ElementType, typeof(TResult)).Invoke(source, new object[] { source, newSelector });
+
+            return (TResult)res;
+        }
+
+        public static object Max(this IQueryable source)
+        {
+            var theMethod = typeof(Queryable).GetMethods().Where(x => x.Name == "Max" && (x.GetParameters().Length == 1)).Single();
+            var res = theMethod.MakeGenericMethod(source.ElementType).Invoke(source, new object[] { source });
+
+            return res;
+        }
+
+        class StatisVisitor : ExpressionVisitor
+        {
+            public StatisVisitor(ParameterExpression newParamter)
+            {
+                _newParamter = newParamter;
+            }
+            ParameterExpression _newParamter { get; }
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                return _newParamter;
+            }
+            protected override Expression VisitMember(MemberExpression node)
+            {
+                return Expression.MakeMemberAccess(_newParamter, _newParamter.Type.GetMember(node.Member.Name).Single());
+            }
+        }
 
         class ArgumentVisitor : ExpressionVisitor
         {
@@ -360,22 +396,27 @@ namespace Coldairarrow.Util
             }
             protected override Expression VisitMember(MemberExpression node)
             {
-                var oldParamter = node.Expression as ParameterExpression;
-                if (_paramters.ContainsKey(oldParamter.Name))
+                if (node.Expression is ParameterExpression oldParamter)
                 {
-                    var newParamter = _paramters[oldParamter.Name];
-                    return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                    if (_paramters.ContainsKey(oldParamter.Name))
+                    {
+                        var newParamter = _paramters[oldParamter.Name];
+                        return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                    }
+                    else
+                        return base.VisitMember(node);
                 }
-                else
-                    return base.VisitMember(node);
+
+                return base.VisitMember(node);
             }
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
                 var newParamters = BuildParamters(node, _typeMap);
-                var whereVisitor = new LambdaVisitor(newParamters, _typeMap);
-                var newLambdaBody = whereVisitor.Visit(node.Body);
+                var lambdaVisitor = new LambdaVisitor(newParamters, _typeMap);
+                var newLambdaBody = lambdaVisitor.Visit(node.Body);
+                var theParamters = node.Parameters.Select(x => newParamters[x.Name]).ToArray();
+                var lambda = Expression.Lambda(newLambdaBody, theParamters);
 
-                var lambda = Expression.Lambda(newLambdaBody, newParamters.Select(x => x.Value).ToArray());
                 return lambda;
             }
         }
@@ -392,18 +433,25 @@ namespace Coldairarrow.Util
             Dictionary<Type, Type> _typeMap { get; }
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                return _paramters[node.Name];
+                if (_paramters.ContainsKey(node.Name))
+                    return _paramters[node.Name];
+                else
+                    return base.VisitParameter(node);
             }
             protected override Expression VisitMember(MemberExpression node)
             {
-                var oldParamter = node.Expression as ParameterExpression;
-                if (_paramters.ContainsKey(oldParamter.Name))
+                if (node.Expression is ParameterExpression oldParamter)
                 {
-                    var newParamter = _paramters[oldParamter.Name];
-                    return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                    if (_paramters.ContainsKey(oldParamter.Name))
+                    {
+                        var newParamter = _paramters[oldParamter.Name];
+                        return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                    }
+                    else
+                        return base.VisitMember(node);
                 }
-                else
-                    return base.VisitMember(node);
+
+                return base.VisitMember(node);
             }
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
@@ -415,7 +463,7 @@ namespace Coldairarrow.Util
                 var args = theMethod.Arguments.ToList();
                 for (int i = 0; i < args.Count; i++)
                 {
-                    args[i] = new ArgumentVisitor(BuildParamters(args[i], _typeMap), _typeMap).Visit(args[i]);
+                    args[i] = new ArgumentVisitor(_paramters, _typeMap).Visit(args[i]);
                 }
                 var genericArguments = theMethod.Method.GetGenericArguments().ToList();
                 for (int i = 0; i < genericArguments.Count; i++)
@@ -428,17 +476,14 @@ namespace Coldairarrow.Util
                     node.Method.Name,
                     genericArguments.ToArray(),
                     args.ToArray());
-
-                return base.VisitMethodCall(node);
             }
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
-                var newParamters = BuildParamters(node, _typeMap);
-                //递归观察替换
-                var whereVisitor = new LambdaVisitor(newParamters, _typeMap);
-                var newLambdaBody = whereVisitor.Visit(node.Body);
+                var lambdaVisitor = new LambdaVisitor(_paramters, _typeMap);
+                var newLambdaBody = lambdaVisitor.Visit(node.Body);
+                var theParamters = node.Parameters.Select(x => _paramters[x.Name]).ToArray();
+                var lambda = Expression.Lambda(newLambdaBody, theParamters);
 
-                var lambda = Expression.Lambda(newLambdaBody, newParamters.Select(x => x.Value).ToArray());
                 return lambda;
             }
         }
