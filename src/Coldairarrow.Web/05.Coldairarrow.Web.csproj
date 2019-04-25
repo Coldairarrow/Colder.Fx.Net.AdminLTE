@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\fx\admin.css" />
+    <Content Include="css\fx\defaultAvatar.png" />
     <Content Include="css\fx\desktop.css" />
     <Content Include="css\fx\permisson-form.css" />
     <Content Include="css\fx\fx-list.css" />
