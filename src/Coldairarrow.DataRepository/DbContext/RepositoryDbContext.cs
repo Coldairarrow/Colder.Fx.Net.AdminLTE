@@ -10,15 +10,6 @@ namespace Coldairarrow.DataRepository
         #region 构造函数
 
         /// <summary>
-        /// 静态构造函数
-        /// </summary>
-        static RepositoryDbContext()
-        {
-            //数据库已手动构建，不需要自己生成初始化
-            Database.SetInitializer<BaseDbContext>(null);
-        }
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="conString">数据库连接名或连接字符串</param>
