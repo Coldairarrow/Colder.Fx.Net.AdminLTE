@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
@@ -41,9 +42,19 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
+        private Type MapTable(Type absTable, string targetTableName)
+        {
+            var config = TypeBuilderHelper.GetConfig(absTable);
+            config.Attributes.RemoveAll(x => x.Attribute == typeof(TableAttribute));
+            config.FullName = $"Coldairarrow.DataRepository.{targetTableName}";
+
+            return TypeBuilderHelper.BuildType(config);
+        }
+
         public List<T> ToList()
         {
-            string tableName = (_source.GetObjQuery() as IQueryable).ElementType.Name;
+            var tableType = (_source.GetObjQuery() as IQueryable).ElementType;
+            string tableName = tableType.Name;
             //去除分页,获取前Take+Skip数量
             int? take = _source.GetTakeCount();
             int? skip = _source.GetSkipCount();
@@ -52,7 +63,6 @@ namespace Coldairarrow.DataRepository
             var noPaginSource = _source.RemoveTake().RemoveSkip();
             if (!take.IsNullOrEmpty())
                 noPaginSource = noPaginSource.Take(take.Value + skip.Value);
-            var (sql, parameters) = noPaginSource.ToSQL();
 
             //从各个分表获取数据
             var tables = ShardingConfig.Instance.GetReadTables(tableName);
@@ -60,10 +70,17 @@ namespace Coldairarrow.DataRepository
             tables.ForEach(aTable =>
             {
                 tasks.Add(Task.Run(() =>
-               {
-                   var newSql = BuildNewSql(tableName, sql, parameters, aTable.tableName, aTable.dbType);
-                   return DbHelperFactory.GetDbHelper(aTable.dbType, aTable.conString).GetListBySql<T>(newSql.newSql, newSql.newParamters);
-               }));
+                {
+                    var targetTable = MapTable(tableType, aTable.tableName);
+                    var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
+                    var newQ = _source.ChangeSource(targetIQ);
+                    var list = newQ
+                        .CastToList<object>()
+                        .Select(x => x.ChangeType<T>())
+                        .ToList();
+
+                    return list;
+                }));
             });
             Task.WaitAll(tasks.ToArray());
             List<T> all = new List<T>();
@@ -83,20 +100,20 @@ namespace Coldairarrow.DataRepository
 
             return resList;
 
-            (string newSql, List<DbParameter> newParamters) BuildNewSql(string oldTableName, string oldSql, List<ObjectParameter> oldParamters, string newtableName, DatabaseType dbType)
-            {
-                string newSql = oldSql.Replace(oldTableName, newtableName);
-                var newParamters = oldParamters.Select(x =>
-                {
-                    var theParamter = DbProviderFactoryHelper.GetDbParameter(dbType);
-                    theParamter.ParameterName = x.Name;
-                    theParamter.Value = x.Value;
+            //(string newSql, List<DbParameter> newParamters) BuildNewSql(string oldTableName, string oldSql, List<ObjectParameter> oldParamters, string newtableName, DatabaseType dbType)
+            //{
+            //    string newSql = oldSql.Replace(oldTableName, newtableName);
+            //    var newParamters = oldParamters.Select(x =>
+            //    {
+            //        var theParamter = DbProviderFactoryHelper.GetDbParameter(dbType);
+            //        theParamter.ParameterName = x.Name;
+            //        theParamter.Value = x.Value;
 
-                    return theParamter;
-                }).ToList();
+            //        return theParamter;
+            //    }).ToList();
 
-                return (newSql, newParamters);
-            }
+            //    return (newSql, newParamters);
+            //}
         }
 
         public IShardingQueryable<T> Where(Expression<Func<T, bool>> predicate)

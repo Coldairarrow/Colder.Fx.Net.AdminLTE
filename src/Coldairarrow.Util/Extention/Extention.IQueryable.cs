@@ -16,6 +16,8 @@ namespace Coldairarrow.Util
     /// </summary>
     public static partial class Extention
     {
+        #region 外部接口
+
         /// <summary>
         /// 获取分页后的数据
         /// </summary>
@@ -227,7 +229,6 @@ namespace Coldairarrow.Util
 
         /// <summary>
         /// 切换数据源,保留原数据源中的Expression
-        /// 注:分库分表读写分离的核心,难度非常大,研究1个月的结果,做个标记
         /// </summary>
         /// <param name="source">原数据源</param>
         /// <param name="targetSource">目标数据源</param>
@@ -258,7 +259,7 @@ namespace Coldairarrow.Util
                 args[0] = newExpression;
                 for (int i = 1; i < args.Count; i++)
                 {
-                    args[i] = new ArgumentVisitor(BuildParamters(args[i], typeMap), typeMap).Visit(args[i]);
+                    args[i] = new ArgumentVisitor(ChangeSource_BuildParamters(args[i], typeMap), typeMap).Visit(args[i]);
                 }
                 var genericArguments = theMethod.Method.GetGenericArguments().ToList();
                 for (int i = 0; i < genericArguments.Count; i++)
@@ -273,7 +274,6 @@ namespace Coldairarrow.Util
                     genericArguments.ToArray(),
                     args.ToArray());
                 newQuery = newQuery.Provider.CreateQuery(newExpression);
-
                 oldExpression = Expression.Call(
                     typeof(Queryable),
                     methodName,
@@ -309,30 +309,11 @@ namespace Coldairarrow.Util
             }
         }
 
-        private static Dictionary<string, ParameterExpression> BuildParamters(Expression expression, Dictionary<Type, Type> map)
-        {
-            Dictionary<string, ParameterExpression> res = new Dictionary<string, ParameterExpression>();
-            GetParamtersVisitor visitor = new GetParamtersVisitor();
-            visitor.Visit(expression);
-            var paramters = visitor.Paramters;
-            paramters.ForEach(aParamter =>
-            {
-                if (!res.ContainsKey(aParamter.Name))
-                {
-                    if (map.ContainsKey(aParamter.Type))
-                    {
-                        res[aParamter.Name] = Expression.Parameter(map[aParamter.Type], aParamter.Name);
-                    }
-                    else
-                    {
-                        res[aParamter.Name] = aParamter;
-                    }
-                }
-            });
-
-            return res;
-        }
-
+        /// <summary>
+        /// 获取ObjectQuery
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
         public static ObjectQuery GetObjQuery(this IQueryable source)
         {
             GetObjQueryVisitor visitor = new GetObjQueryVisitor();
@@ -340,6 +321,15 @@ namespace Coldairarrow.Util
 
             return visitor.ObjQuery;
         }
+
+        /// <summary>
+        /// 最大值
+        /// </summary>
+        /// <typeparam name="TSource">数据类型</typeparam>
+        /// <typeparam name="TResult">结果</typeparam>
+        /// <param name="source">非泛型数据源</param>
+        /// <param name="selector">选择表达式</param>
+        /// <returns></returns>
         public static TResult Max<TSource, TResult>(this IQueryable source, Expression<Func<TSource, TResult>> selector)
         {
             ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
@@ -351,6 +341,11 @@ namespace Coldairarrow.Util
             return (TResult)res;
         }
 
+        /// <summary>
+        /// 最大值
+        /// </summary>
+        /// <param name="source">非泛型数据源</param>
+        /// <returns></returns>
         public static object Max(this IQueryable source)
         {
             var theMethod = typeof(Queryable).GetMethods().Where(x => x.Name == "Max" && (x.GetParameters().Length == 1)).Single();
@@ -358,6 +353,10 @@ namespace Coldairarrow.Util
 
             return res;
         }
+
+        #endregion
+
+        #region 自定义类
 
         class StatisVisitor : ExpressionVisitor
         {
@@ -379,7 +378,7 @@ namespace Coldairarrow.Util
         class ArgumentVisitor : ExpressionVisitor
         {
             public ArgumentVisitor(
-                Dictionary<string, ParameterExpression> paramters, 
+                Dictionary<string, ParameterExpression> paramters,
                 Dictionary<Type, Type> typeMap)
             {
                 _paramters = paramters;
@@ -389,35 +388,16 @@ namespace Coldairarrow.Util
             Dictionary<Type, Type> _typeMap { get; }
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                if (_paramters.ContainsKey(node.Name))
-                    return _paramters[node.Name];
-                else
-                    return base.VisitParameter(node);
+                return ChangeSource_VisitParameter(node, _paramters);
             }
             protected override Expression VisitMember(MemberExpression node)
             {
-                if (node.Expression is ParameterExpression oldParamter)
-                {
-                    if (_paramters.ContainsKey(oldParamter.Name))
-                    {
-                        var newParamter = _paramters[oldParamter.Name];
-                        return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
-                    }
-                    else
-                        return base.VisitMember(node);
-                }
-
-                return base.VisitMember(node);
+                return ChangeSource_VisitMember(node, _paramters);
             }
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
-                var newParamters = BuildParamters(node, _typeMap);
-                var lambdaVisitor = new LambdaVisitor(newParamters, _typeMap);
-                var newLambdaBody = lambdaVisitor.Visit(node.Body);
-                var theParamters = node.Parameters.Select(x => newParamters[x.Name]).ToArray();
-                var lambda = Expression.Lambda(newLambdaBody, theParamters);
-
-                return lambda;
+                var newParamters = ChangeSource_BuildParamters(node, _typeMap);
+                return ChangeSource_VisitLambda(node, newParamters, _typeMap);
             }
         }
         class LambdaVisitor : ExpressionVisitor
@@ -433,25 +413,11 @@ namespace Coldairarrow.Util
             Dictionary<Type, Type> _typeMap { get; }
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                if (_paramters.ContainsKey(node.Name))
-                    return _paramters[node.Name];
-                else
-                    return base.VisitParameter(node);
+                return ChangeSource_VisitParameter(node, _paramters);
             }
             protected override Expression VisitMember(MemberExpression node)
             {
-                if (node.Expression is ParameterExpression oldParamter)
-                {
-                    if (_paramters.ContainsKey(oldParamter.Name))
-                    {
-                        var newParamter = _paramters[oldParamter.Name];
-                        return Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
-                    }
-                    else
-                        return base.VisitMember(node);
-                }
-
-                return base.VisitMember(node);
+                return ChangeSource_VisitMember(node, _paramters);
             }
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
@@ -459,32 +425,11 @@ namespace Coldairarrow.Util
                 if (!_paramters.ContainsKey(paramterName))
                     return base.VisitMethodCall(node);
 
-                var theMethod = node;
-                var args = theMethod.Arguments.ToList();
-                for (int i = 0; i < args.Count; i++)
-                {
-                    args[i] = new ArgumentVisitor(_paramters, _typeMap).Visit(args[i]);
-                }
-                var genericArguments = theMethod.Method.GetGenericArguments().ToList();
-                for (int i = 0; i < genericArguments.Count; i++)
-                {
-                    if (_typeMap.ContainsKey(genericArguments[i]))
-                        genericArguments[i] = _typeMap[genericArguments[i]];
-                }
-                return Expression.Call(
-                    node.Method.DeclaringType,
-                    node.Method.Name,
-                    genericArguments.ToArray(),
-                    args.ToArray());
+                return ChangeSource_VisitMethodCall(node, _typeMap, _paramters);
             }
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
-                var lambdaVisitor = new LambdaVisitor(_paramters, _typeMap);
-                var newLambdaBody = lambdaVisitor.Visit(node.Body);
-                var theParamters = node.Parameters.Select(x => _paramters[x.Name]).ToArray();
-                var lambda = Expression.Lambda(newLambdaBody, theParamters);
-
-                return lambda;
+                return ChangeSource_VisitLambda(node, _paramters, _typeMap);
             }
         }
 
@@ -634,5 +579,86 @@ namespace Coldairarrow.Util
                 return base.Visit(node.Arguments[0]);
             }
         }
+
+        #endregion
+
+        #region 私有成员
+
+        private static Dictionary<string, ParameterExpression> ChangeSource_BuildParamters(Expression expression, Dictionary<Type, Type> map)
+        {
+            Dictionary<string, ParameterExpression> res = new Dictionary<string, ParameterExpression>();
+            GetParamtersVisitor visitor = new GetParamtersVisitor();
+            visitor.Visit(expression);
+            var paramters = visitor.Paramters;
+            paramters.ForEach(aParamter =>
+            {
+                if (!res.ContainsKey(aParamter.Name))
+                {
+                    if (map.ContainsKey(aParamter.Type))
+                    {
+                        res[aParamter.Name] = Expression.Parameter(map[aParamter.Type], aParamter.Name);
+                    }
+                    else
+                    {
+                        res[aParamter.Name] = aParamter;
+                    }
+                }
+            });
+
+            return res;
+        }
+        private static Expression ChangeSource_VisitParameter(ParameterExpression node, Dictionary<string, ParameterExpression> paramters)
+        {
+            var newNode = node;
+            if (paramters.ContainsKey(node.Name))
+                newNode = paramters[node.Name];
+
+            return newNode;
+        }
+        private static Expression ChangeSource_VisitMember(MemberExpression node, Dictionary<string, ParameterExpression> paramters)
+        {
+            MemberExpression newNode = node;
+            if (node.Expression is ParameterExpression oldParamter)
+            {
+                if (paramters.ContainsKey(oldParamter.Name))
+                {
+                    var newParamter = paramters[oldParamter.Name];
+                    newNode = Expression.MakeMemberAccess(newParamter, newParamter.Type.GetMember(node.Member.Name).Single());
+                }
+            }
+
+            return newNode;
+        }
+        private static Expression ChangeSource_VisitLambda<T>(Expression<T> node, Dictionary<string, ParameterExpression> paramters, Dictionary<Type, Type> typeMap)
+        {
+            var lambdaVisitor = new LambdaVisitor(paramters, typeMap);
+            var newLambdaBody = lambdaVisitor.Visit(node.Body);
+            var theParamters = node.Parameters.Select(x => paramters[x.Name]).ToArray();
+            var lambda = Expression.Lambda(newLambdaBody, theParamters);
+
+            return lambda;
+        }
+        private static Expression ChangeSource_VisitMethodCall(MethodCallExpression node, Dictionary<Type, Type> typeMap, Dictionary<string, ParameterExpression> paramters = null)
+        {
+            var theMethod = node;
+            var args = theMethod.Arguments.ToList();
+            for (int i = 0; i < args.Count; i++)
+            {
+                args[i] = new ArgumentVisitor(paramters ?? ChangeSource_BuildParamters(args[i], typeMap), typeMap).Visit(args[i]);
+            }
+            var genericArguments = theMethod.Method.GetGenericArguments().ToList();
+            for (int i = 0; i < genericArguments.Count; i++)
+            {
+                if (typeMap.ContainsKey(genericArguments[i]))
+                    genericArguments[i] = typeMap[genericArguments[i]];
+            }
+            return Expression.Call(
+                node.Method.DeclaringType,
+                node.Method.Name,
+                genericArguments.ToArray(),
+                args.ToArray());
+        }
+
+        #endregion
     }
 }

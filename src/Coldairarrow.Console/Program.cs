@@ -13,6 +13,7 @@ using System.Collections;
 using System.Reflection;
 using System.Data.Common;
 using System.Runtime.CompilerServices;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Coldairarrow.Console1
 {
@@ -41,13 +42,14 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            var db = DbFactory.GetRepository();
-            db.HandleSqlLog = Console.WriteLine;
-            var q = db.GetIQueryable<Base_User>();
-            var list = q.ToList();
-            var newQ = q.ChangeSource(db.GetIQueryable<Base_User1>());
-            var max= newQ.Max();
-            newQ.CastToList<object>();
+            ShardingTest();
+            //var db = DbFactory.GetRepository();
+            //db.GetIQueryable<Base_User>().ToList();
+            //var config = TypeBuilderHelper.GetConfig(typeof(Base_User));
+            //config.Attributes.RemoveAll(x => x.Attribute == typeof(TableAttribute));
+            //config.FullName = $"Coldairarrow.DataRepository.Base_User1";
+            //var newType = TypeBuilderHelper.BuildType(config);
+            //db.GetIQueryable(newType).CastToList<object>();
 
             Console.WriteLine("完成");
             Console.ReadLine();

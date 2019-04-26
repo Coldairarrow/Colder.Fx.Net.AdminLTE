@@ -92,7 +92,6 @@
     <Compile Include="Base_SysManage\Base_SysLog.cs" />
     <Compile Include="Base_SysManage\Base_SysRole.cs" />
     <Compile Include="Base_SysManage\Base_UnitTest.cs" />
-    <Compile Include="Base_SysManage\Base_User1.cs" />
     <Compile Include="Base_SysManage\Base_User.cs" />
     <Compile Include="Base_SysManage\Base_UserRoleMap.cs" />
     <Compile Include="Base_SysManage\EnumType.cs" />

@@ -53,9 +53,9 @@ namespace Coldairarrow.DataRepository
 
         public DbSet Set(Type entityType)
         {
-            CheckModel(entityType);
+            var targetModel = CheckModel(entityType);
 
-            return _db.Set(entityType);
+            return _db.Set(targetModel);
         }
 
         public int SaveChanges()
