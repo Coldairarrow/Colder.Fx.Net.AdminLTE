@@ -28,6 +28,7 @@ namespace Coldairarrow.Console1
                 .OrderByDescending(x => x.OpTime)
                 .Skip(0)
                 .Take(30);
+            
             q.ToList();
             q.ToSharding().ToList();
             watch.Restart();
@@ -42,15 +43,10 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            ShardingTest();
-            //var db = DbFactory.GetRepository();
-            //db.GetIQueryable<Base_User>().ToList();
-            //var config = TypeBuilderHelper.GetConfig(typeof(Base_User));
-            //config.Attributes.RemoveAll(x => x.Attribute == typeof(TableAttribute));
-            //config.FullName = $"Coldairarrow.DataRepository.Base_User1";
-            //var newType = TypeBuilderHelper.BuildType(config);
-            //db.GetIQueryable(newType).CastToList<object>();
+            //ShardingTest();
 
+            var db = DbFactory.GetRepository();
+            var avg = db.GetIQueryable<Base_User>().ToSharding().Average(x => x.Sex);
             Console.WriteLine("完成");
             Console.ReadLine();
         }

@@ -322,36 +322,93 @@ namespace Coldairarrow.Util
             return visitor.ObjQuery;
         }
 
-        /// <summary>
-        /// 最大值
-        /// </summary>
-        /// <typeparam name="TSource">数据类型</typeparam>
-        /// <typeparam name="TResult">结果</typeparam>
-        /// <param name="source">非泛型数据源</param>
-        /// <param name="selector">选择表达式</param>
-        /// <returns></returns>
         public static TResult Max<TSource, TResult>(this IQueryable source, Expression<Func<TSource, TResult>> selector)
         {
-            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
-            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
-            var newSelector = Expression.Lambda(newBody, newParamter);
-            var theMethod = typeof(Queryable).GetMethods().Where(x => x.Name == "Max" && (x.GetParameters().Length == 2)).Single();
-            var res = theMethod.MakeGenericMethod(source.ElementType, typeof(TResult)).Invoke(source, new object[] { source, newSelector });
-
-            return (TResult)res;
+            return (TResult)DynamicMax(source, selector);
         }
-
-        /// <summary>
-        /// 最大值
-        /// </summary>
-        /// <param name="source">非泛型数据源</param>
-        /// <returns></returns>
-        public static object Max(this IQueryable source)
+        public static TResult Min<TSource, TResult>(this IQueryable source, Expression<Func<TSource, TResult>> selector)
         {
-            var theMethod = typeof(Queryable).GetMethods().Where(x => x.Name == "Max" && (x.GetParameters().Length == 1)).Single();
-            var res = theMethod.MakeGenericMethod(source.ElementType).Invoke(source, new object[] { source });
-
-            return res;
+            return (TResult)DynamicMin(source, selector);
+        }
+        public static double Average<TSource>(this IQueryable source, Expression<Func<TSource, int>> selector)
+        {
+            return (double)DynamicAverage(source, selector);
+        }
+        public static double? Average<TSource>(this IQueryable source, Expression<Func<TSource, int?>> selector)
+        {
+            return (double?)DynamicAverage(source, selector);
+        }
+        public static float Average<TSource>(this IQueryable source, Expression<Func<TSource, float>> selector)
+        {
+            return (float)DynamicAverage(source, selector);
+        }
+        public static float? Average<TSource>(this IQueryable source, Expression<Func<TSource, float?>> selector)
+        {
+            return (float?)DynamicAverage(source, selector);
+        }
+        public static double Average<TSource>(this IQueryable source, Expression<Func<TSource, long>> selector)
+        {
+            return (double)DynamicAverage(source, selector);
+        }
+        public static double? Average<TSource>(this IQueryable source, Expression<Func<TSource, long?>> selector)
+        {
+            return (double?)DynamicAverage(source, selector);
+        }
+        public static double Average<TSource>(this IQueryable source, Expression<Func<TSource, double>> selector)
+        {
+            return (double)DynamicAverage(source, selector);
+        }
+        public static double? Average<TSource>(this IQueryable source, Expression<Func<TSource, double?>> selector)
+        {
+            return (double?)DynamicAverage(source, selector);
+        }
+        public static decimal Average<TSource>(this IQueryable source, Expression<Func<TSource, decimal>> selector)
+        {
+            return (decimal)DynamicAverage(source, selector);
+        }
+        public static decimal? Average<TSource>(this IQueryable source, Expression<Func<TSource, decimal?>> selector)
+        {
+            return (decimal?)DynamicAverage(source, selector);
+        }
+        public static decimal Sum<TSource>(this IQueryable source, Expression<Func<TSource, decimal>> selector)
+        {
+            return (decimal)DynamicSum(source, selector);
+        }
+        public static decimal? Sum<TSource>(this IQueryable source, Expression<Func<TSource, decimal?>> selector)
+        {
+            return (decimal?)DynamicSum(source, selector);
+        }
+        public static double Sum<TSource>(this IQueryable source, Expression<Func<TSource, double>> selector)
+        {
+            return (double)DynamicSum(source, selector);
+        }
+        public static double? Sum<TSource>(this IQueryable source, Expression<Func<TSource, double?>> selector)
+        {
+            return (double?)DynamicSum(source, selector);
+        }
+        public static float Sum<TSource>(this IQueryable source, Expression<Func<TSource, float>> selector)
+        {
+            return (float)DynamicSum(source, selector);
+        }
+        public static float? Sum<TSource>(this IQueryable source, Expression<Func<TSource, float?>> selector)
+        {
+            return (float?)DynamicSum(source, selector);
+        }
+        public static int Sum<TSource>(this IQueryable source, Expression<Func<TSource, int>> selector)
+        {
+            return (int)DynamicSum(source, selector);
+        }
+        public static int? Sum<TSource>(this IQueryable source, Expression<Func<TSource, int?>> selector)
+        {
+            return (int?)DynamicSum(source, selector);
+        }
+        public static long Sum<TSource>(this IQueryable source, Expression<Func<TSource, long>> selector)
+        {
+            return (long)DynamicSum(source, selector);
+        }
+        public static long? Sum<TSource>(this IQueryable source, Expression<Func<TSource, long?>> selector)
+        {
+            return (long?)DynamicSum(source, selector);
         }
 
         #endregion
@@ -657,6 +714,42 @@ namespace Coldairarrow.Util
                 node.Method.Name,
                 genericArguments.ToArray(),
                 args.ToArray());
+        }
+        private static object DynamicAverage(this IQueryable source, dynamic selector)
+        {
+            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
+            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
+            dynamic dynSelector = Expression.Lambda(newBody, newParamter);
+            dynamic dynSource = source;
+
+            return Queryable.Average(dynSource, dynSelector);
+        }
+        private static object DynamicSum(this IQueryable source, dynamic selector)
+        {
+            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
+            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
+            dynamic dynSelector = Expression.Lambda(newBody, newParamter);
+            dynamic dynSource = source;
+
+            return Queryable.Sum(dynSource, dynSelector);
+        }
+        private static object DynamicMax(this IQueryable source, dynamic selector)
+        {
+            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
+            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
+            dynamic dynSelector = Expression.Lambda(newBody, newParamter);
+            dynamic dynSource = source;
+
+            return Queryable.Max(dynSource, dynSelector);
+        }
+        private static object DynamicMin(this IQueryable source, dynamic selector)
+        {
+            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
+            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
+            dynamic dynSelector = Expression.Lambda(newBody, newParamter);
+            dynamic dynSource = source;
+
+            return Queryable.Min(dynSource, dynSelector);
         }
 
         #endregion
