@@ -112,10 +112,10 @@ namespace Coldairarrow.DataRepository
 
             return Skip((pagination.page - 1) * pagination.rows).Take(pagination.rows).ToList();
         }
-        private List<object> GetStatisData(Func<IQueryable, object> access)
+        private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access)
         {
             var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
-            List<Task<object>> tasks = new List<Task<object>>();
+            List<Task<dynamic>> tasks = new List<Task<dynamic>>();
             tables.ForEach(aTable =>
             {
                 tasks.Add(Task.Run(() =>
@@ -143,23 +143,18 @@ namespace Coldairarrow.DataRepository
         {
             return GetStatisData(x => x.Min(selector)).Min(x => (TResult)x);
         }
-        private dynamic DynamicSum(List<dynamic> datas)
-        {
-            dynamic sum = 0;
-            datas.ForEach(aData =>
-            {
-                sum += aData;
-            });
-
-            return sum;
-        }
         private dynamic DynamicAverage(dynamic selector)
         {
-            var list = GetStatisData(x => new KeyValuePair<dynamic, dynamic>(x.Count(), Coldairarrow.Util.Extention.Sum(x, selector))).Select(x => (KeyValuePair<dynamic, dynamic>)x).ToList();
-            var count = DynamicSum(list.Select(x => x.Key).ToList());
-            var sum = DynamicSum(list.Select(x => x.Value).ToList());
+            var list = GetStatisData(x => new KeyValuePair<int, dynamic>(x.Count(), Coldairarrow.Util.Extention.DynamicSum(x, selector))).Select(x => (KeyValuePair<int, dynamic>)x).ToList();
+            var count = list.Sum(x => x.Key);
+            dynamic sumList = list.Select(x => (decimal?)x.Value).ToList();
+            dynamic sum = Enumerable.Sum(sumList);
 
-            return (sum / count);
+            return (decimal?)sum / count;
+        }
+        private dynamic DynamicSum(dynamic selector)
+        {
+            return GetStatisData(x => Coldairarrow.Util.Extention.DynamicSum(x, selector)).Sum(x => (decimal?)x);
         }
         public double Average(Expression<Func<T, int>> selector)
         {
@@ -171,75 +166,75 @@ namespace Coldairarrow.DataRepository
         }
         public float Average(Expression<Func<T, float>> selector)
         {
-            throw new NotImplementedException();
+            return (float)DynamicAverage(selector);
         }
         public float? Average(Expression<Func<T, float?>> selector)
         {
-            throw new NotImplementedException();
+            return (float?)DynamicAverage(selector);
         }
         public double Average(Expression<Func<T, long>> selector)
         {
-            throw new NotImplementedException();
+            return (double)DynamicAverage(selector);
         }
         public double? Average(Expression<Func<T, long?>> selector)
         {
-            throw new NotImplementedException();
+            return (double?)DynamicAverage(selector);
         }
         public double Average(Expression<Func<T, double>> selector)
         {
-            throw new NotImplementedException();
+            return (double)DynamicAverage(selector);
         }
         public double? Average(Expression<Func<T, double?>> selector)
         {
-            throw new NotImplementedException();
+            return (double?)DynamicAverage(selector);
         }
         public decimal Average(Expression<Func<T, decimal>> selector)
         {
-            throw new NotImplementedException();
+            return (decimal)DynamicAverage(selector);
         }
         public decimal? Average(Expression<Func<T, decimal?>> selector)
         {
-            throw new NotImplementedException();
+            return (decimal?)DynamicAverage(selector);
         }
         public decimal Sum(Expression<Func<T, decimal>> selector)
         {
-            throw new NotImplementedException();
+            return (decimal)DynamicSum(selector);
         }
         public decimal? Sum(Expression<Func<T, decimal?>> selector)
         {
-            throw new NotImplementedException();
+            return (decimal?)DynamicSum(selector);
         }
         public double Sum(Expression<Func<T, double>> selector)
         {
-            throw new NotImplementedException();
+            return (double)DynamicSum(selector);
         }
         public double? Sum(Expression<Func<T, double?>> selector)
         {
-            throw new NotImplementedException();
+            return (double?)DynamicSum(selector);
         }
         public float Sum(Expression<Func<T, float>> selector)
         {
-            throw new NotImplementedException();
+            return (float)DynamicSum(selector);
         }
         public float? Sum(Expression<Func<T, float?>> selector)
         {
-            throw new NotImplementedException();
+            return (float?)DynamicSum(selector);
         }
         public int Sum(Expression<Func<T, int>> selector)
         {
-            throw new NotImplementedException();
+            return (int)DynamicSum(selector);
         }
         public int? Sum(Expression<Func<T, int?>> selector)
         {
-            throw new NotImplementedException();
+            return (int?)DynamicSum(selector);
         }
         public long Sum(Expression<Func<T, long>> selector)
         {
-            throw new NotImplementedException();
+            return (long)DynamicSum(selector);
         }
         public long? Sum(Expression<Func<T, long?>> selector)
         {
-            throw new NotImplementedException();
+            return (long?)DynamicSum(selector);
         }
     }
 }

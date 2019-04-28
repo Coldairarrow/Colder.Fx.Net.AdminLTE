@@ -724,7 +724,7 @@ namespace Coldairarrow.Util
 
             return Queryable.Average(dynSource, dynSelector);
         }
-        private static object DynamicSum(this IQueryable source, dynamic selector)
+        public static dynamic DynamicSum(this IQueryable source, dynamic selector)
         {
             ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
             var newBody = new StatisVisitor(newParamter).Visit(selector.Body);

@@ -46,7 +46,7 @@ namespace Coldairarrow.Console1
             //ShardingTest();
 
             var db = DbFactory.GetRepository();
-            var avg = db.GetIQueryable<Base_User>().ToSharding().Average(x => x.Sex);
+            var avg = db.GetIQueryable<Base_User>().ToSharding().Sum(x => x.Sex);
             Console.WriteLine("完成");
             Console.ReadLine();
         }
