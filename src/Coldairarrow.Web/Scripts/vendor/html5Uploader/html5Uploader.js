@@ -391,6 +391,7 @@
             } else {
                 $imgItem.find("img").css('display', 'none');
                 $imgItem.find('span').attr('data-href', src);
+                $imgItem.find('div a').css('display', 'block');
                 $imgItem.find('div a').attr('href', src);
                 $imgItem.find('div a').text(fileName);
             }
