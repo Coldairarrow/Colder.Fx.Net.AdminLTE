@@ -1401,6 +1401,7 @@
     <Content Include="Views\Demo\ZTree.cshtml" />
     <Content Include="Views\Demo\ZTreeSelect.cshtml" />
     <Content Include="Views\Demo\UploadImgForm.cshtml" />
+    <Content Include="Views\Home\Login_VerifyCode.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
