@@ -410,6 +410,15 @@ namespace Coldairarrow.Util
         {
             return (long?)DynamicSum(source, selector);
         }
+        public static dynamic DynamicSum(this IQueryable source, dynamic selector)
+        {
+            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
+            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
+            dynamic dynSelector = Expression.Lambda(newBody, newParamter);
+            dynamic dynSource = source;
+
+            return Queryable.Sum(dynSource, dynSelector);
+        }
 
         #endregion
 
@@ -723,15 +732,6 @@ namespace Coldairarrow.Util
             dynamic dynSource = source;
 
             return Queryable.Average(dynSource, dynSelector);
-        }
-        public static dynamic DynamicSum(this IQueryable source, dynamic selector)
-        {
-            ParameterExpression newParamter = Expression.Parameter(source.ElementType, "x");
-            var newBody = new StatisVisitor(newParamter).Visit(selector.Body);
-            dynamic dynSelector = Expression.Lambda(newBody, newParamter);
-            dynamic dynSource = source;
-
-            return Queryable.Sum(dynSource, dynSelector);
         }
         private static object DynamicMax(this IQueryable source, dynamic selector)
         {
