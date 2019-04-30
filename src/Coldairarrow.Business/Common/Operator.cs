@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Util;
+using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
 namespace Coldairarrow.Business.Common
 {
@@ -59,7 +60,11 @@ namespace Coldairarrow.Business.Common
         /// <returns></returns>
         public static bool IsAdmin()
         {
-            return UserId == "Admin";
+            var role = Property.RoleType;
+            if (UserId == "Admin" || role.HasFlag(RoleType.超级管理员))
+                return true;
+            else
+                return false;
         }
 
         #endregion
