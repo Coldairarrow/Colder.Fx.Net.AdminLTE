@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +10,7 @@ namespace Coldairarrow.DataRepository
     /// <summary>
     /// 数据库分布式事务,跨库事务
     /// </summary>
-    public class DistributedTransaction
+    public class DistributedTransaction : ITransaction
     {
         #region 构造函数
 
@@ -44,37 +45,40 @@ namespace Coldairarrow.DataRepository
 
         #region 外部接口
 
-        /// <summary>
-        /// 开始事务
-        /// </summary>
         public void BeginTransaction()
         {
             _repositorys.ForEach(aRepository =>
             {
                 _successDic.Add(aRepository, null);
                 (aRepository as DbRepository).BeginTransaction();
-                SetProperty(aRepository, "_openedTransaction", true);
             });
         }
 
-        /// <summary>
-        /// 结束事务
-        /// </summary>
-        /// <returns>是否成功完成</returns>
-        public bool EndTransaction()
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
+            _repositorys.ForEach(aRepository =>
+            {
+                _successDic.Add(aRepository, null);
+                (aRepository as DbRepository).BeginTransaction(isolationLevel);
+            });
+        }
+
+        public (bool Success, Exception ex) EndTransaction()
         {
             bool isOK = true;
+            Exception resEx = null;
             foreach (var aRepository in _repositorys)
             {
                 try
                 {
                     aRepository.GetDbContext().SaveChanges();
-                    Action _sqlTransaction = GetProperty(aRepository, "_sqlTransaction") as Action;
+                    Action _sqlTransaction = GetProperty(aRepository, "_transactionHandler") as Action;
                     _sqlTransaction?.Invoke();
                     _successDic[aRepository] = true;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    resEx = ex;
                     _successDic[aRepository] = false;
                     isOK = false;
                     break;
@@ -97,7 +101,7 @@ namespace Coldairarrow.DataRepository
                 aRepository.GetType().GetMethod("Dispose", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(aRepository, null);
             });
 
-            return isOK;
+            return (isOK, resEx);
         }
 
         #endregion

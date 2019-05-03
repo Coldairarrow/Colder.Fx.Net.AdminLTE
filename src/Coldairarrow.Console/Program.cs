@@ -46,19 +46,22 @@ namespace Coldairarrow.Console1
         {
             //ShardingTest();
             var db = DbFactory.GetRepository().ToSharding();
-            //Base_User newUser = new Base_User
-            //{
-            //    Id = GuidHelper.GenerateKey(),
-            //    UserName = GuidHelper.GenerateKey(),
-            //    RealName = GuidHelper.GenerateKey()
-            //};
-            //db.Insert(newUser);
-            var data = db.GetIShardingQueryable<Base_User>()
-               .Where(x => x.Id == "039ED906138B9-3B1D9CB1-147E-425E-8B33-FDE792B89411")
-               .FirstOrDefault();
-            data.RealName = "修改";
-            db.Update(data);
 
+            int num = 9;
+            Action action = null;
+            action += () =>
+            {
+                Console.WriteLine(num);
+                num++;
+            };
+            action += () =>
+            {
+                Console.WriteLine(num);
+            };
+
+            num = 10;
+            action();
+            
             Console.WriteLine("完成");
             Console.ReadLine();
         }

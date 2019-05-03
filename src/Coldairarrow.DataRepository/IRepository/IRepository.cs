@@ -8,19 +8,12 @@ using System.Linq.Expressions;
 
 namespace Coldairarrow.DataRepository
 {
-    public interface IRepository : IBaseRepository
+    public interface IRepository : IBaseRepository, ITransaction
     {
         #region 数据库连接相关方法
 
         DbContext GetDbContext();
         Action<string> HandleSqlLog { get; set; }
-
-        #endregion
-
-        #region 事物提交
-
-        void BeginTransaction();
-        bool EndTransaction();
 
         #endregion
 

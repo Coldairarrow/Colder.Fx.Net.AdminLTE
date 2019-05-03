@@ -65,12 +65,24 @@ namespace Coldairarrow.DataRepository
 
         public void Dispose()
         {
-            _db.Dispose();
+            try
+            {
+                _db.Dispose();
+            }
+            catch
+            {
+
+            }
         }
 
         public DbContext GetDbContext()
         {
             return _db;
+        }
+
+        public void CheckEntityType(Type entityType)
+        {
+            CheckModel(entityType);
         }
 
         #endregion
@@ -80,14 +92,14 @@ namespace Coldairarrow.DataRepository
         private DbContext _db { get; set; }
         private DatabaseType _dbType { get; }
         private string _conString { get; }
+        public Action<string> HandleSqlLog { get; set; }
         private void RefreshDb()
         {
-            var oldDb = _db;
+            Dispose();
             var con = DbProviderFactoryHelper.GetDbConnection(_conString, _dbType);
             var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
             _db = new BaseDbContext(con, dBCompiledModel);
-            if (oldDb != null)
-                _db.Database.Log += oldDb.Database.Log;
+            _db.Database.Log = HandleSqlLog;
         }
         private Type CheckModel(Type type)
         {

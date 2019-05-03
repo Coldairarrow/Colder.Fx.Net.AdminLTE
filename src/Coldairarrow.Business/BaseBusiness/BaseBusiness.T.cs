@@ -84,20 +84,22 @@ namespace Coldairarrow.Business
 
         #region 事物提交
 
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
+            Service.BeginTransaction(isolationLevel);
+        }
+
+        public (bool Success, Exception ex) EndTransaction()
+        {
+            return Service.EndTransaction();
+        }
+
         /// <summary>
         /// 开始事物提交
         /// </summary>
         public void BeginTransaction()
         {
             Service.BeginTransaction();
-        }
-
-        /// <summary>
-        /// 结束事物提交
-        /// </summary>
-        public bool EndTransaction()
-        {
-            return Service.EndTransaction();
         }
 
         #endregion

@@ -6,6 +6,8 @@ namespace Coldairarrow.DataRepository
 {
     public interface IRepositoryDbContext
     {
+        DbContext GetDbContext();
+        Action<string> HandleSqlLog { get; set; }
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
         DbSet Set(Type entityType);
         DbEntityEntry Entry(object entity);
@@ -13,6 +15,6 @@ namespace Coldairarrow.DataRepository
         int SaveChanges();
         void Dispose();
         Database Database { get; }
-        DbContext GetDbContext();
+        void CheckEntityType(Type entityType);
     }
 }

@@ -117,6 +117,7 @@
     <Compile Include="Sharding\ShardingHelper.cs" />
     <Compile Include="Sharding\ShardingIQueryable.T.cs" />
     <Compile Include="Transaction\DistributedTransaction.cs" />
+    <Compile Include="Transaction\ITransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

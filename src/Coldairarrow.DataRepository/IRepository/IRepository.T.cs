@@ -7,15 +7,8 @@ using System.Linq.Expressions;
 
 namespace Coldairarrow.DataRepository
 {
-    public interface IRepository<T> where T : class, new()
+    public interface IRepository<T> : ITransaction where T : class, new()
     {
-        #region 事物提交
-
-        void BeginTransaction();
-        bool EndTransaction();
-
-        #endregion
-
         #region 增加数据
 
         void Insert(T entity);

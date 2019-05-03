@@ -44,7 +44,7 @@ namespace Coldairarrow.DataRepository
                 if (_isDisposed || _db == null)
                 {
                     _db = DbFactory.GetDbContext(_conString, _dbType, _entityNamespace);
-                    _db.Database.Log += HandleSqlLog;
+                    _db.HandleSqlLog = HandleSqlLog;
                     _isDisposed = false;
                 }
 
@@ -92,20 +92,72 @@ namespace Coldairarrow.DataRepository
             var objectQueryField = internalQuery.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.Name.Equals("_objectQuery")).FirstOrDefault();
             return objectQueryField.GetValue(internalQuery) as ObjectQuery<T>;
         }
+        private void PackWork(IEnumerable<Type> entityTypes, Action work)
+        {
+            entityTypes.ForEach(x => _db.CheckEntityType(x));
+
+            if (_openedTransaction)
+                _transactionHandler += work;
+            else
+            {
+                work();
+                Commit();
+            }
+        }
+        private void PackWork(Type entityType, Action work)
+        {
+            PackWork(new List<Type> { entityType }, work);
+        }
 
         #endregion
 
         #region 事物相关
 
+        public void BeginTransaction()
+        {
+            Transaction = Db.Database.BeginTransaction();
+            _openedTransaction = true;
+        }
+
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
+            Transaction = Db.Database.BeginTransaction(isolationLevel);
+            _openedTransaction = true;
+        }
+
+        public (bool Success, Exception ex) EndTransaction()
+        {
+            bool success = true;
+            Exception resEx = null;
+            try
+            {
+                _transactionHandler?.Invoke();
+                Db.SaveChanges();
+                Transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                resEx = ex;
+                Transaction.Rollback();
+                success = false;
+            }
+            finally
+            {
+                Dispose();
+            }
+
+            return (success, resEx);
+        }
+
         /// <summary>
-        /// 是否开启事务,单库事务
+        /// 是否开启事务
         /// </summary>
         protected bool _openedTransaction { get; set; } = false;
 
         /// <summary>
-        /// 需要执行的Sql事务
+        /// 需要执行的事务处理
         /// </summary>
-        protected Action _sqlTransaction { get; set; }
+        protected Action _transactionHandler { get; set; }
 
         /// <summary>
         /// 提交到数据库
@@ -122,49 +174,22 @@ namespace Coldairarrow.DataRepository
         }
 
         /// <summary>
-        /// 释放数据,初始化状态
+        /// 释放资源
         /// </summary>
         protected void Dispose()
         {
-            Transaction?.Dispose();
-            Db?.Dispose();
-            _isDisposed = true;
-            _openedTransaction = false;
-            _sqlTransaction = null;
-        }
-
-        /// <summary>
-        /// 开始单库事物
-        /// 注意:若要使用跨库事务,请使用DistributedTransaction
-        /// </summary>
-        public void BeginTransaction()
-        {
-            Transaction = Db.Database.BeginTransaction();
-            _openedTransaction = true;
-        }
-
-        /// <summary>
-        /// 结束事物提交
-        /// </summary>
-        public bool EndTransaction()
-        {
-            bool isOK = true;
             try
             {
-                _sqlTransaction?.Invoke();
-                Db.SaveChanges();
-                Transaction.Commit();
+                Transaction?.Dispose();
+                Db?.Dispose();
+                _isDisposed = true;
+                _openedTransaction = false;
+                _transactionHandler = null;
             }
             catch
             {
-                Transaction.Rollback();
-                isOK = false;
+                
             }
-            finally
-            {
-                Dispose();
-            }
-            return isOK;
         }
 
         #endregion
@@ -211,8 +236,21 @@ namespace Coldairarrow.DataRepository
 
         public void Insert(List<object> entities)
         {
-            entities.ForEach(x => Db.Entry(x).State = EntityState.Added);
-            Commit();
+            PackWork(entities.Select(x => x.GetType()), () =>
+            {
+                entities.ForEach(x => Db.Entry(x).State = EntityState.Added);
+            });
+            //entities.ForEach(aEntity => _db.CheckEntityType(aEntity.GetType()));
+
+            //if (_openedTransaction)
+            //    _transactionHandler += action;
+            //else
+            //    action();
+
+            //void action()
+            //{
+            //    Commit();
+            //}
         }
 
         /// <summary>
@@ -559,7 +597,7 @@ namespace Coldairarrow.DataRepository
             }
             else
             {
-                _sqlTransaction += new Action(() =>
+                _transactionHandler += new Action(() =>
                 {
                     Db.Database.ExecuteSqlCommand(sql);
                 });
@@ -579,7 +617,7 @@ namespace Coldairarrow.DataRepository
             }
             else
             {
-                _sqlTransaction += new Action(() =>
+                _transactionHandler += new Action(() =>
                 {
                     Db.Database.ExecuteSqlCommand(sql, parameters.ToArray());
                 });
