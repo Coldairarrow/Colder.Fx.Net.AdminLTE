@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Coldairarrow.DataRepository
 {
-    public interface IShardingQueryable<T>
+    public interface IShardingQueryable<T> where T : class, new()
     {
         List<T> ToList();
         int Count();
@@ -14,6 +14,7 @@ namespace Coldairarrow.DataRepository
         IShardingQueryable<T> Take(int count);
         IShardingQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector);
         IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector);
+        T FirstOrDefault();
         List<T> GetPagination(Pagination pagination);
         TResult Max<TResult>(Expression<Func<T, TResult>> selector);
         TResult Min<TResult>(Expression<Func<T, TResult>> selector);

@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Coldairarrow.DataRepository
 {
@@ -37,6 +38,9 @@ namespace Coldairarrow.DataRepository
         void Delete(Type type, string key);
         void Delete(Type type, List<string> keys);
         void Delete(List<object> entities);
+        void Delete<T>(string key) where T : class, new();
+        void Delete<T>(List<string> keys) where T : class, new();
+        void Delete_Sql<T>(Expression<Func<T, bool>> condition) where T : class, new();
 
         #endregion
 
@@ -48,6 +52,7 @@ namespace Coldairarrow.DataRepository
 
         #region 查询数据
 
+        T GetEntity<T>(params object[] keyValue) where T : class, new();
         object GetEntity(Type type, params object[] keyValue);
         List<object> GetList(Type type);
         IQueryable<T> GetIQueryable<T>() where T : class, new();

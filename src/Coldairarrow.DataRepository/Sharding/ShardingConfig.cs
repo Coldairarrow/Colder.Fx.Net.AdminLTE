@@ -54,12 +54,14 @@ namespace Coldairarrow.DataRepository
                         tableBuilder.AddPhsicTable("Base_SysLog_1", "BaseDb");
                         tableBuilder.AddPhsicTable("Base_SysLog_2", "BaseDb");
                         tableBuilder.AddPhsicTable("Base_SysLog_3", "BaseDb");
-                    }, tables => RandomHelper.Next(tables));
+                    }, obj => $"Base_SysLog_{(obj.GetPropertyValue("Id").GetHashCode() % 3) + 1}");
                     absTableBuilder.AddAbsTable("Base_User", tableBuilder =>
                     {
                         //添加物理数据表
-                        tableBuilder.AddPhsicTable("Base_User", "BaseDb");
-                    }, tables => RandomHelper.Next(tables));
+                        tableBuilder.AddPhsicTable("Base_User_1", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_User_2", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_User_3", "BaseDb");
+                    }, obj => $"Base_User_{(obj.GetPropertyValue("Id").GetHashCode() % 3) + 1}");
                 });
         }
 
@@ -119,15 +121,9 @@ namespace Coldairarrow.DataRepository
             return GetTargetTables(absTableName, ReadWriteType.Read, absDbName);
         }
 
-        /// <summary>
-        /// 获取写表
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="absDbName">抽象数据库名</param>
-        /// <returns></returns>
-        public (string tableName, string conString, DatabaseType dbType) GetWriteTable(string absTableName, string absDbName = null)
+        public (string tableName, string conString, DatabaseType dbType) GetTheWriteTable(string absTableName, object obj, string absDbName = null)
         {
-            return GetTargetTables(absTableName, ReadWriteType.Write, absDbName).Single();
+            return GetTargetTables(absTableName, ReadWriteType.Write, absDbName, obj).Single();
         }
 
         #endregion
@@ -135,7 +131,7 @@ namespace Coldairarrow.DataRepository
         #region 私有成员
 
         private static ShardingConfig _instance { get; } = new ShardingConfig();
-        private List<(string tableName, string conString, DatabaseType dbType)> GetTargetTables(string absTableName,ReadWriteType opType, string absDbName)
+        private List<(string tableName, string conString, DatabaseType dbType)> GetTargetTables(string absTableName, ReadWriteType opType, string absDbName, object obj = null)
         {
             //获取抽象数据库
             AbstractDatabse db = null;
@@ -156,11 +152,11 @@ namespace Coldairarrow.DataRepository
             {
                 physicTables = absTable.PhysicTables;
             }
-            //写操作获取某个表
+            //写操作
             else
             {
-                var theTable = absTable.FindTable(absTable.PhysicTables.Select(y => y.physicTableName).ToList());
-                physicTables = absTable.PhysicTables.Where(x=>x.physicTableName==theTable).ToList();
+                var theTable = absTable.FindTable(obj);
+                physicTables = absTable.PhysicTables.Where(x => x.physicTableName == theTable).ToList();
             }
 
             //获取数据源
@@ -221,6 +217,6 @@ namespace Coldairarrow.DataRepository
     {
         public string AbsTableName { get; set; }
         public List<(string physicTableName, string dataSourceName)> PhysicTables { get; set; } = new List<(string physicTableName, string dataSourceName)>();
-        public Func<List<string>, string> FindTable { get; set; }
+        public Func<object, string> FindTable { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
-    public class ShardingQueryable<T> : IShardingQueryable<T>
+    public class ShardingQueryable<T> : IShardingQueryable<T> where T : class, new()
     {
         public ShardingQueryable(IQueryable<T> source)
         {
@@ -22,11 +22,7 @@ namespace Coldairarrow.DataRepository
         private IQueryable<T> _source { get; set; }
         private Type MapTable(Type absTable, string targetTableName)
         {
-            var config = TypeBuilderHelper.GetConfig(absTable);
-            config.Attributes.RemoveAll(x => x.Attribute == typeof(TableAttribute));
-            config.FullName = $"Coldairarrow.DataRepository.{targetTableName}";
-
-            return TypeBuilderHelper.BuildType(config);
+            return ShardingHelper.MapTable(absTable, targetTableName);
         }
         public List<T> ToList()
         {
@@ -67,13 +63,17 @@ namespace Coldairarrow.DataRepository
             //合并数据
             var resList = all;
             if (!sortColumn.IsNullOrEmpty() && !sortType.IsNullOrEmpty())
-                resList = all.OrderBy($"{sortColumn} {sortType}").ToList();
+                resList = resList.OrderBy($"{sortColumn} {sortType}").ToList();
             if (!skip.IsNullOrEmpty())
-                resList = all.Skip(skip.Value).ToList();
+                resList = resList.Skip(skip.Value).ToList();
             if (!take.IsNullOrEmpty())
-                resList = all.Skip(take.Value).ToList();
+                resList = resList.Skip(take.Value).ToList();
 
             return resList;
+        }
+        public T FirstOrDefault()
+        {
+            return ToList().FirstOrDefault();
         }
         public IShardingQueryable<T> Where(Expression<Func<T, bool>> predicate)
         {

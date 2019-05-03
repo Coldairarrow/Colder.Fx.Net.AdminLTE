@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Coldairarrow.Util;
 using Coldairarrow.Business.Base_SysManage;
+using Coldairarrow.Entity;
 using Coldairarrow.Entity.Base_SysManage;
 using System.Collections.Generic;
 using System.Linq.Dynamic;
@@ -44,9 +45,20 @@ namespace Coldairarrow.Console1
         static void Main(string[] args)
         {
             //ShardingTest();
+            var db = DbFactory.GetRepository().ToSharding();
+            //Base_User newUser = new Base_User
+            //{
+            //    Id = GuidHelper.GenerateKey(),
+            //    UserName = GuidHelper.GenerateKey(),
+            //    RealName = GuidHelper.GenerateKey()
+            //};
+            //db.Insert(newUser);
+            var data = db.GetIShardingQueryable<Base_User>()
+               .Where(x => x.Id == "039ED906138B9-3B1D9CB1-147E-425E-8B33-FDE792B89411")
+               .FirstOrDefault();
+            data.RealName = "修改";
+            db.Update(data);
 
-            var db = DbFactory.GetRepository();
-            var avg = db.GetIQueryable<Base_User>().ToSharding().Sum(x => x.Sex);
             Console.WriteLine("完成");
             Console.ReadLine();
         }

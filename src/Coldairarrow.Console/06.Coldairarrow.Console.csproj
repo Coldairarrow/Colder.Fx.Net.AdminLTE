@@ -157,7 +157,7 @@
       <Name>02.Coldairarrow.DataRepository</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj">
-      <Project>{544fe3ea-46f2-45f7-9574-d4fea111a9c1}</Project>
+      <Project>{544FE3EA-46F2-45F7-9574-D4FEA111A9C1}</Project>
       <Name>03.Coldairarrow.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj">

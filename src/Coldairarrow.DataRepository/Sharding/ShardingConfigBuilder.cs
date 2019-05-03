@@ -64,7 +64,7 @@ namespace Coldairarrow.DataRepository
             _physicTables.Add((physicTableName, dataSourceName));
         }
 
-        void IAddAbstractTable.AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, Func<List<string>, string> findTable)
+        void IAddAbstractTable.AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, Func<object, string> findTable)
         {
             IAddPhysicTable physicBuilder = new ShardingConfigBuilder();
             physicTableBuilder(physicBuilder);
@@ -128,7 +128,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="absTableName">抽象表名</param>
         /// <param name="physicTableBuilder">物理表构造器</param>
         /// <param name="findTable">分表规则</param>
-        void AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, Func<List<string>, string> findTable);
+        void AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, Func<object, string> findTable);
     }
 
     public interface IAddPhysicTable

@@ -16,15 +16,13 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="one">第一个数据仓储</param>
-        /// <param name="two">第二个数据仓储</param>
-        /// <param name="others">其它数据仓储</param>
-        public DistributedTransaction(IRepository one, IRepository two, params IRepository[] others)
+        /// <param name="repositories">其它数据仓储</param>
+        public DistributedTransaction(params IRepository[] repositories)
         {
-            if (one == null || two == null)
-                throw new Exception("参数不能为null!");
+            if (repositories == null || repositories.Length == 0)
+                throw new Exception("repositories不能为NULL且长度不为0");
 
-            _repositorys = others.Concat(new IRepository[] { one, two }).Distinct().ToList();
+            _repositorys = repositories.Distinct().ToList();
         }
 
         #endregion
