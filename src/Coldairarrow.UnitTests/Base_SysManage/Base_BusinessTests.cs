@@ -318,11 +318,14 @@ namespace Coldairarrow.UnitTests
             //失败事务
             _baseBus.DeleteAll();
             _baseBus.BeginTransaction();
-            _baseBus.Insert(_newData);
+            _baseBus.AddTransaction(() =>
+            {
+                _baseBus.Insert(_newData);
+                var newData2 = _newData.DeepClone();
+                newData2.Id = Guid.NewGuid().ToSequentialGuid();
+                _baseBus.Insert(newData2);
+            });
 
-            var newData2 = _newData.DeepClone();
-            newData2.Id = Guid.NewGuid().ToSequentialGuid();
-            _baseBus.Insert(newData2);
             bool succcess = _baseBus.EndTransaction().Success;
             Assert.AreEqual(succcess, false);
 
@@ -377,8 +380,8 @@ namespace Coldairarrow.UnitTests
             _bus1.Insert(data2);
             _bus2.Insert(data1);
             _bus2.Insert(data3);
-            bool succcess = distributedTransaction.EndTransaction().Success;
-            Assert.AreEqual(succcess, false);
+            var succcess = distributedTransaction.EndTransaction();
+            Assert.AreEqual(succcess.Success, false);
 
             //成功事务
             distributedTransaction = new DistributedTransaction(_bus1.Service, _bus2.Service);
@@ -388,10 +391,10 @@ namespace Coldairarrow.UnitTests
             _bus1.Insert(data3);
             _bus2.Insert(data1);
             _bus2.Insert(data3);
-            succcess = distributedTransaction.EndTransaction().Success;
+            succcess = distributedTransaction.EndTransaction();
             int count1 = _bus1.GetIQueryable().Count();
             int count2 = _bus2.GetIQueryable().Count();
-            Assert.AreEqual(succcess, true);
+            Assert.AreEqual(succcess.Success, true);
             Assert.AreEqual(count1, 3);
             Assert.AreEqual(count2, 2);
         }

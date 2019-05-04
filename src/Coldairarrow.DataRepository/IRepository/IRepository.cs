@@ -8,27 +8,74 @@ using System.Linq.Expressions;
 
 namespace Coldairarrow.DataRepository
 {
-    public interface IRepository : IBaseRepository, ITransaction
+    public interface IRepository : IBaseRepository, ITransaction, IDisposable
     {
         #region 数据库连接相关方法
 
+        /// <summary>
+        /// 获取DbContext
+        /// </summary>
+        /// <returns></returns>
         DbContext GetDbContext();
+
+        /// <summary>
+        /// SQL日志处理方法
+        /// </summary>
+        /// <value>
+        /// The handle SQL log.
+        /// </value>
         Action<string> HandleSqlLog { get; set; }
+
+        /// <summary>
+        /// 提交到数据库
+        /// </summary>
+        void CommitDb();
 
         #endregion
 
         #region 增加数据
 
+        /// <summary>
+        /// 添加多条记录
+        /// </summary>
+        /// <param name="entities">对象集合</param>
         void Insert(List<object> entities);
+
+        /// <summary>
+        /// 使用Bulk批量导入,速度快
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="entities">实体集合</param>
         void BulkInsert<T>(List<T> entities) where T : class, new();
 
         #endregion
 
         #region 删除数据
 
+        /// <summary>
+        /// 删除所有记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
         void DeleteAll<T>() where T : class, new();
+
+        /// <summary>
+        /// Deletes all.
+        /// </summary>
+        /// <param name="type">The type.</param>
         void DeleteAll(Type type);
+
+        /// <summary>
+        /// Deletes the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="key">The key.</param>
         void Delete(Type type, string key);
+
+        /// <summary>
+        /// Deletes the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="keys">The keys.</param>
         void Delete(Type type, List<string> keys);
         void Delete(List<object> entities);
         void Delete<T>(string key) where T : class, new();
