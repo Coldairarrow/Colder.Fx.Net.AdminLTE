@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Common;
-using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -47,6 +46,11 @@ namespace Coldairarrow.DataRepository
 
         #region 特殊方法
 
+        /// <summary>
+        /// 使用Bulk批量导入,速度快
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="entities">实体集合</param>
         public override void BulkInsert<T>(List<T> entities)
         {
             using (SqlConnection conn = new SqlConnection())
@@ -77,6 +81,12 @@ namespace Coldairarrow.DataRepository
             }
         }
 
+        /// <summary>
+        /// 通过条件删除记录
+        /// 注:使用SQL方式
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="condition">筛选条件</param>
         public override void Delete_Sql<T>(Expression<Func<T, bool>> condition)
         {
             var objectQuery = GetObjectQueryFromDbQueryable(GetIQueryable<T>().Where(condition));

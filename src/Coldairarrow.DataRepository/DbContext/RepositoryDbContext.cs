@@ -5,6 +5,9 @@ using System.Data.Entity.Infrastructure;
 
 namespace Coldairarrow.DataRepository
 {
+    /// <summary>
+    /// DbContext容器
+    /// </summary>
     public class RepositoryDbContext : IRepositoryDbContext
     {
         #region 构造函数
@@ -63,18 +66,6 @@ namespace Coldairarrow.DataRepository
             return _db.SaveChanges();
         }
 
-        public void Dispose()
-        {
-            try
-            {
-                _db.Dispose();
-            }
-            catch
-            {
-
-            }
-        }
-
         public DbContext GetDbContext()
         {
             return _db;
@@ -100,6 +91,7 @@ namespace Coldairarrow.DataRepository
             var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
             _db = new BaseDbContext(con, dBCompiledModel);
             _db.Database.Log = HandleSqlLog;
+            disposedValue = false;
         }
         private Type CheckModel(Type type)
         {
@@ -108,6 +100,36 @@ namespace Coldairarrow.DataRepository
                 RefreshDb();
 
             return model.model;
+        }
+
+        #endregion
+
+        #region Dispose
+
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _db?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~RepositoryDbContext()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

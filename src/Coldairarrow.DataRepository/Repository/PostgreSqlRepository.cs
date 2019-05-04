@@ -27,11 +27,21 @@ namespace Coldairarrow.DataRepository
 
         #region 插入数据
 
+        /// <summary>
+        /// 使用Bulk批量导入,速度快
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="entities">实体集合</param>
+        /// <exception cref="Exception">抱歉！暂不支持PostgreSql！</exception>
         public override void BulkInsert<T>(List<T> entities)
         {
             throw new Exception("抱歉！暂不支持PostgreSql！");
         }
 
+        /// <summary>
+        /// 删除所有记录
+        /// </summary>
+        /// <param name="type">实体类型</param>
         public override void DeleteAll(Type type)
         {
             string tableName = GetDbTableName(type);

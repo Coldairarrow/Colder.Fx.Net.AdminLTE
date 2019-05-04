@@ -9,6 +9,7 @@ namespace Coldairarrow.DataRepository
         public BaseDbContext(DbConnection existingConnection, DbCompiledModel model)
             : base(existingConnection, model, true)
         {
+            //取消生成的非NULL判断
             Configuration.UseDatabaseNullSemantics = true;
         }
 

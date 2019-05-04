@@ -59,54 +59,160 @@ namespace Coldairarrow.DataRepository
         void DeleteAll<T>() where T : class, new();
 
         /// <summary>
-        /// Deletes all.
+        /// 删除所有记录
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">实体类型</param>
         void DeleteAll(Type type);
 
         /// <summary>
-        /// Deletes the specified type.
+        /// 删除单条记录
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="key">The key.</param>
+        /// <param name="type">实体类型</param>
+        /// <param name="key">主键</param>
         void Delete(Type type, string key);
 
         /// <summary>
-        /// Deletes the specified type.
+        /// 删除多条记录
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="keys">The keys.</param>
+        /// <param name="type">实体类型</param>
+        /// <param name="keys">多条记录主键集合</param>
         void Delete(Type type, List<string> keys);
+
+        /// <summary>
+        /// 删除多条记录
+        /// </summary>
+        /// <param name="entities">实体对象集合</param>
         void Delete(List<object> entities);
+
+        /// <summary>
+        /// 删除单条记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="key">主键</param>
         void Delete<T>(string key) where T : class, new();
+
+        /// <summary>
+        /// 删除多条记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="keys">多条记录主键集合</param>
         void Delete<T>(List<string> keys) where T : class, new();
+
+        /// <summary>
+        /// 通过条件删除记录
+        /// 注:使用SQL方式
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="condition">筛选条件</param>
         void Delete_Sql<T>(Expression<Func<T, bool>> condition) where T : class, new();
 
         #endregion
 
         #region 更新数据
 
+        /// <summary>
+        /// 更新多条记录
+        /// </summary>
+        /// <param name="entities">实体对象集合</param>
         void Update(List<object> entities);
+
+        /// <summary>
+        /// 更新多条记录的某些属性
+        /// </summary>
+        /// <param name="entities">实体对象集合</param>
+        /// <param name="properties">属性</param>
+        void UpdateAny(List<object> entities, List<string> properties);
 
         #endregion
 
         #region 查询数据
 
+        /// <summary>
+        /// 获取单条记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
         T GetEntity<T>(params object[] keyValue) where T : class, new();
+
+        /// <summary>
+        /// 获取单条记录
+        /// </summary>
+        /// <param name="type">实体类型</param>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
         object GetEntity(Type type, params object[] keyValue);
+
+        /// <summary>
+        /// 获取列表
+        /// </summary>
+        /// <param name="type">实体类型</param>
+        /// <returns></returns>
         List<object> GetList(Type type);
+
+        /// <summary>
+        /// 获取IQueryable
+        /// 注:默认取消实体追踪
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <returns></returns>
         IQueryable<T> GetIQueryable<T>() where T : class, new();
+
+        /// <summary>
+        /// 获取IQueryable
+        /// 注:默认取消实体追踪
+        /// </summary>
+        /// <param name="type">实体泛型</param>
+        /// <returns></returns>
         IQueryable GetIQueryable(Type type);
+
+        /// <summary>
+        /// 通过SQL获取DataTable
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
+        /// <returns></returns>
         DataTable GetDataTableWithSql(string sql);
+
+        /// <summary>
+        /// 通过SQL获取DataTable
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
+        /// <param name="parameters">SQL参数</param>
+        /// <returns></returns>
         DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters);
+
+        /// <summary>
+        /// 通过SQL获取List
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="sqlStr">SQL语句</param>
+        /// <returns></returns>
         List<T> GetListBySql<T>(string sqlStr) where T : class, new();
+
+        /// <summary>
+        /// 通过SQL获取List
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="sqlStr">SQL语句</param>
+        /// <param name="parameters">SQL参数</param>
+        /// <returns></returns>
         List<T> GetListBySql<T>(string sqlStr, List<DbParameter> parameters) where T : class, new();
 
         #endregion
 
         #region 执行Sql语句
 
+        /// <summary>
+        /// 执行SQL语句
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
         void ExecuteSql(string sql);
+
+        /// <summary>
+        /// 执行SQL语句
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
+        /// <param name="parameters">SQL参数</param>
         void ExecuteSql(string sql, List<DbParameter> parameters);
 
         #endregion

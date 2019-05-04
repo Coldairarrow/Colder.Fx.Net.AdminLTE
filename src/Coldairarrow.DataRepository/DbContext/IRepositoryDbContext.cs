@@ -4,7 +4,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace Coldairarrow.DataRepository
 {
-    public interface IRepositoryDbContext
+    public interface IRepositoryDbContext : IDisposable
     {
         DbContext GetDbContext();
         Action<string> HandleSqlLog { get; set; }
@@ -13,7 +13,6 @@ namespace Coldairarrow.DataRepository
         DbEntityEntry Entry(object entity);
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         int SaveChanges();
-        void Dispose();
         Database Database { get; }
         void CheckEntityType(Type entityType);
     }
