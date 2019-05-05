@@ -195,6 +195,7 @@
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Cache\RedisCache.cs" />
     <Compile Include="Cache\SystemCache.cs" />
+    <Compile Include="ClassLibrary\ConsistentHashExpand.cs" />
     <Compile Include="ClassLibrary\ConsistentHash.cs" />
     <Compile Include="ClassLibrary\LinqKit\ExpandableQuery.cs" />
     <Compile Include="ClassLibrary\LinqKit\ExpressionExpander.cs" />

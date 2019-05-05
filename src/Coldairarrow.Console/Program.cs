@@ -20,7 +20,6 @@ namespace Coldairarrow.Console1
 {
     class Program
     {
-
         static void ShardingTest()
         {
             var db = DbFactory.GetRepository();
@@ -48,16 +47,46 @@ namespace Coldairarrow.Console1
             //ShardingTest();
             var db = DbFactory.GetRepository().ToSharding();
 
-            ConsistentHash<string> consistentHash = new ConsistentHash<string>();
-            List<string> dataList = new List<string> { "a", "b", "c", "d", "e", "f", "g", "0", "1", "2" };
-            List<string> node1 = new List<string> { "a","b","c" };
-            List<string> node2 = new List<string> { "a","b","c","d" };
+            Dictionary<string, int> rateDic = new Dictionary<string, int>();
+            ConsistentHashExpand<string> consistentHash = new ConsistentHashExpand<string>();
+            List<string> dataList = new List<string>(1000000);
+            int count = 1000000;
+            LoopHelper.Loop(count, () =>
+            {
+                dataList.Add(Guid.NewGuid().ToString());
+            });
+            
+            List<string> node1 = new List<string> { "a", "b", "c" };
+            List<string> node2 = new List<string> { "a", "b", "c", "d" };
 
             consistentHash.Init(node1);
-            Console.WriteLine(string.Join(",", dataList.Select(x => consistentHash.GetNode(x))));
-            consistentHash.Init(node2);
-            Console.WriteLine(string.Join(",", dataList.Select(x => consistentHash.GetNode(x))));
+            rateDic = new Dictionary<string, int>
+            {
+                { "a",0},
+                { "b",0},
+                { "c",0}
+            };
 
+            dataList.ForEach(aData =>
+            {
+                rateDic[consistentHash.GetNode(aData)]++;
+            });
+            Console.WriteLine(string.Join(",", rateDic.Select(x => $"{(double)x.Value/ count*100}%")));
+
+            consistentHash.Init(node2);
+            rateDic = new Dictionary<string, int>
+            {
+                { "a",0},
+                { "b",0},
+                { "c",0},
+                { "d",0}
+            };
+            dataList.ForEach(aData =>
+            {
+                rateDic[consistentHash.GetNode(aData)]++;
+            });
+            Console.WriteLine(string.Join(",", rateDic.Select(x => $"{(double)x.Value / count * 100}%")));
+            long.MaxValue
             Console.WriteLine("完成");
             Console.ReadLine();
         }
