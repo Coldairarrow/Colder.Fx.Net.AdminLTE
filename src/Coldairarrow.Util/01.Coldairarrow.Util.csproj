@@ -195,11 +195,13 @@
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Cache\RedisCache.cs" />
     <Compile Include="Cache\SystemCache.cs" />
+    <Compile Include="ClassLibrary\ConsistentHash.cs" />
     <Compile Include="ClassLibrary\LinqKit\ExpandableQuery.cs" />
     <Compile Include="ClassLibrary\LinqKit\ExpressionExpander.cs" />
     <Compile Include="ClassLibrary\LinqKit\ExpressionVisitor.cs" />
     <Compile Include="ClassLibrary\LinqKit\Extensions.cs" />
     <Compile Include="ClassLibrary\LinqKit\Linq.cs" />
+    <Compile Include="ClassLibrary\MurmurHash2.cs" />
     <Compile Include="ClassLibrary\ParentChildrenMapping.cs" />
     <Compile Include="ClassLibrary\SerialConnecter\SerialConnecter.cs" />
     <Compile Include="ClassLibrary\Sockets\SendCheckMsg.cs" />

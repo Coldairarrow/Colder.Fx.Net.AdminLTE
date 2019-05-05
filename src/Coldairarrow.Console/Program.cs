@@ -20,6 +20,7 @@ namespace Coldairarrow.Console1
 {
     class Program
     {
+
         static void ShardingTest()
         {
             var db = DbFactory.GetRepository();
@@ -47,21 +48,16 @@ namespace Coldairarrow.Console1
             //ShardingTest();
             var db = DbFactory.GetRepository().ToSharding();
 
-            int num = 9;
-            Action action = null;
-            action += () =>
-            {
-                Console.WriteLine(num);
-                num++;
-            };
-            action += () =>
-            {
-                Console.WriteLine(num);
-            };
+            ConsistentHash<string> consistentHash = new ConsistentHash<string>();
+            List<string> dataList = new List<string> { "a", "b", "c", "d", "e", "f", "g", "0", "1", "2" };
+            List<string> node1 = new List<string> { "a","b","c" };
+            List<string> node2 = new List<string> { "a","b","c","d" };
 
-            num = 10;
-            action();
-            
+            consistentHash.Init(node1);
+            Console.WriteLine(string.Join(",", dataList.Select(x => consistentHash.GetNode(x))));
+            consistentHash.Init(node2);
+            Console.WriteLine(string.Join(",", dataList.Select(x => consistentHash.GetNode(x))));
+
             Console.WriteLine("完成");
             Console.ReadLine();
         }
