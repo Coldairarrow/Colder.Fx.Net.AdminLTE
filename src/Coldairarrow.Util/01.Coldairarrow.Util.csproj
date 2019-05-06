@@ -182,6 +182,11 @@
     <Compile Include="ClassLibrary\LinqKit\Linq.cs" />
     <Compile Include="ClassLibrary\ParentChildrenMapping.cs" />
     <Compile Include="ClassLibrary\SerialConnecter\SerialConnecter.cs" />
+    <Compile Include="ClassLibrary\Snowflake\DisposableAction.cs" />
+    <Compile Include="ClassLibrary\Snowflake\IdWorker.cs" />
+    <Compile Include="ClassLibrary\Snowflake\InvalidSystemClock.cs" />
+    <Compile Include="ClassLibrary\Snowflake\SnowflakeId.cs" />
+    <Compile Include="ClassLibrary\Snowflake\TimeExtensions.cs" />
     <Compile Include="ClassLibrary\Sockets\SendCheckMsg.cs" />
     <Compile Include="ClassLibrary\Sockets\TcpSocketClient.cs" />
     <Compile Include="ClassLibrary\Sockets\TcpSocketConnection.cs" />
