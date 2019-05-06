@@ -45,48 +45,8 @@ namespace Coldairarrow.Console1
         static void Main(string[] args)
         {
             //ShardingTest();
-            var db = DbFactory.GetRepository().ToSharding();
+            var db = DbFactory.GetRepository();
 
-            Dictionary<string, int> rateDic = new Dictionary<string, int>();
-            ConsistentHashExpand<string> consistentHash = new ConsistentHashExpand<string>();
-            List<string> dataList = new List<string>(1000000);
-            int count = 1000000;
-            LoopHelper.Loop(count, () =>
-            {
-                dataList.Add(Guid.NewGuid().ToString());
-            });
-            
-            List<string> node1 = new List<string> { "a", "b", "c" };
-            List<string> node2 = new List<string> { "a", "b", "c", "d" };
-
-            consistentHash.Init(node1);
-            rateDic = new Dictionary<string, int>
-            {
-                { "a",0},
-                { "b",0},
-                { "c",0}
-            };
-
-            dataList.ForEach(aData =>
-            {
-                rateDic[consistentHash.GetNode(aData)]++;
-            });
-            Console.WriteLine(string.Join(",", rateDic.Select(x => $"{(double)x.Value/ count*100}%")));
-
-            consistentHash.Init(node2);
-            rateDic = new Dictionary<string, int>
-            {
-                { "a",0},
-                { "b",0},
-                { "c",0},
-                { "d",0}
-            };
-            dataList.ForEach(aData =>
-            {
-                rateDic[consistentHash.GetNode(aData)]++;
-            });
-            Console.WriteLine(string.Join(",", rateDic.Select(x => $"{(double)x.Value / count * 100}%")));
-            long.MaxValue
             Console.WriteLine("完成");
             Console.ReadLine();
         }

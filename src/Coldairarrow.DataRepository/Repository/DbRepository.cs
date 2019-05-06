@@ -95,7 +95,7 @@ namespace Coldairarrow.DataRepository
         }
         private void PackWork(IEnumerable<Type> entityTypes, Action work)
         {
-            entityTypes.ForEach(x => _db.CheckEntityType(x));
+            entityTypes.ForEach(x => Db.CheckEntityType(x));
 
             if (_openedTransaction)
                 _transactionHandler += work;
