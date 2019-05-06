@@ -11,6 +11,9 @@ using System;
 
 namespace Coldairarrow.Util.Snowflake
 {
+    /// <summary>
+    /// https://github.com/ccollie/snowflake-net
+    /// </summary>
     class IdWorker
     {
         public const long Twepoch = 1288834974657L;
@@ -68,11 +71,11 @@ namespace Coldairarrow.Util.Snowflake
 	
         public virtual long NextId() 
         {
-            lock(_lock) 
+            lock (_lock)
             {
                 var timestamp = TimeGen();
 
-                if (timestamp < _lastTimestamp) 
+                if (timestamp < _lastTimestamp)
                 {
                     //exceptionCounter.incr(1);
                     //log.Error("clock is moving backwards.  Rejecting requests until %d.", _lastTimestamp);
@@ -80,14 +83,16 @@ namespace Coldairarrow.Util.Snowflake
                         "Clock moved backwards.  Refusing to generate id for {0} milliseconds", _lastTimestamp - timestamp));
                 }
 
-                if (_lastTimestamp == timestamp) 
+                if (_lastTimestamp == timestamp)
                 {
                     _sequence = (_sequence + 1) & SequenceMask;
-                    if (_sequence == 0) 
+                    if (_sequence == 0)
                     {
                         timestamp = TilNextMillis(_lastTimestamp);
                     }
-                } else {
+                }
+                else
+                {
                     _sequence = 0;
                 }
 
@@ -95,7 +100,7 @@ namespace Coldairarrow.Util.Snowflake
                 var id = ((timestamp - Twepoch) << TimestampLeftShift) |
                          (DatacenterId << DatacenterIdShift) |
                          (WorkerId << WorkerIdShift) | _sequence;
-					
+
                 return id;
             }
         }
@@ -113,6 +118,6 @@ namespace Coldairarrow.Util.Snowflake
         protected virtual long TimeGen()
         {
             return System.CurrentTimeMillis();
-        }      
+        }
     }
 }
