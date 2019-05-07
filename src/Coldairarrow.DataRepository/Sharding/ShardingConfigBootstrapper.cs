@@ -7,11 +7,11 @@ namespace Coldairarrow.DataRepository
     /// <summary>
     /// 分库分表配置生成器
     /// </summary>
-    public class ShardingConfigBuilder : IShardingConfigBuilder, IAddDataSource, IAddAbstractTable, IAddAbstractDatabse, IAddPhysicDb, IAddPhysicTable
+    public class ShardingConfigBootstrapper : IShardingConfigBuilder, IAddDataSource, IAddAbstractTable, IAddAbstractDatabse, IAddPhysicDb, IAddPhysicTable
     {
         #region 构造函数
 
-        private ShardingConfigBuilder()
+        private ShardingConfigBootstrapper()
         {
 
         }
@@ -21,17 +21,17 @@ namespace Coldairarrow.DataRepository
         #region 外部接口
 
         /// <summary>
-        /// 获取生成器
+        /// 引导
         /// </summary>
         /// <returns></returns>
-        public static IShardingConfigBuilder GetBuilder()
+        public static IShardingConfigBuilder Bootstrap()
         {
-            return new ShardingConfigBuilder();
+            return new ShardingConfigBootstrapper();
         }
 
         public IShardingConfigBuilder AddDataSource(string dataSourceName, DatabaseType dbType, Action<IAddPhysicDb> physicDbBuilder)
         {
-            IAddPhysicDb builder = new ShardingConfigBuilder();
+            IAddPhysicDb builder = new ShardingConfigBootstrapper();
             physicDbBuilder(builder);
             var value = builder.GetPropertyValue("_physicDbs") as List<(string conString, ReadWriteType opType)>;
             _config.AddDataSource(dataSourceName, dbType, value);
@@ -41,7 +41,7 @@ namespace Coldairarrow.DataRepository
 
         public IShardingConfigBuilder AddAbsDb(string absDbName, Action<IAddAbstractTable> absTableBuilder)
         {
-            var builder = new ShardingConfigBuilder();
+            var builder = new ShardingConfigBootstrapper();
             absTableBuilder(builder);
             var asbTables = builder.GetPropertyValue("_absTables") as List<AbstractTable>;
             _config.AddAbsDatabase(absDbName, asbTables);
@@ -66,7 +66,7 @@ namespace Coldairarrow.DataRepository
 
         void IAddAbstractTable.AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, Func<object, string> findTable)
         {
-            IAddPhysicTable physicBuilder = new ShardingConfigBuilder();
+            IAddPhysicTable physicBuilder = new ShardingConfigBootstrapper();
             physicTableBuilder(physicBuilder);
             var value = physicBuilder.GetPropertyValue("_physicTables") as List<(string physicTableName, string dataSourceName)>;
             _absTables.Add(new AbstractTable

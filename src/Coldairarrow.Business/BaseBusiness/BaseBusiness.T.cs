@@ -78,6 +78,12 @@ namespace Coldairarrow.Business
 
         #region 外部属性
 
+        /// <summary>
+        /// 底层仓储接口,支持跨表操作
+        /// </summary>
+        /// <value>
+        /// The service.
+        /// </value>
         public IRepository Service { get; set; }
 
         #endregion
@@ -141,31 +147,27 @@ namespace Coldairarrow.Business
         #region 增加数据
 
         /// <summary>
-        /// 插入数据
+        /// 添加数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="entity">实体</param>
+        /// <param name="entity">实体对象</param>
         public void Insert(T entity)
         {
             Service.Insert<T>(entity);
         }
 
         /// <summary>
-        /// 插入数据列表
-        /// 注：若数据量较大，请使用BulkInsert
+        /// 添加多条数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="entities">实体列表</param>
+        /// <param name="entities">实体对象集合</param>
         public void Insert(List<T> entities)
         {
             Service.Insert<T>(entities);
         }
 
         /// <summary>
-        /// 使用Bulk批量插入数据
-        /// 注：适合大数据量，速度非常快,不支持事务提交（本身是一个事务）
+        /// 批量添加数据,速度快
         /// </summary>
-        /// <param name="entities">数据</param>
+        /// <param name="entities"></param>
         public void BulkInsert(List<T> entities)
         {
             Service.BulkInsert(entities);
@@ -176,36 +178,34 @@ namespace Coldairarrow.Business
         #region 删除数据
 
         /// <summary>
-        /// 删除表中所有数据
+        /// 删除所有数据
         /// </summary>
-        /// <typeparam name="T">实体</typeparam>
         public void DeleteAll()
         {
             Service.DeleteAll<T>();
         }
 
         /// <summary>
-        /// 删除一条记录
+        /// 删除指定主键数据
         /// </summary>
-        /// <param name="key">该记录主键</param>
+        /// <param name="key"></param>
         public void Delete(string key)
         {
             Service.Delete<T>(key);
         }
 
         /// <summary>
-        /// 删除多条记录
+        /// 通过主键删除多条数据
         /// </summary>
-        /// <param name="keys">主键列表</param>
+        /// <param name="keys"></param>
         public void Delete(List<string> keys)
         {
             Service.Delete<T>(keys);
         }
 
         /// <summary>
-        /// 删除一条数据
+        /// 删除单条数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="entity">实体对象</param>
         public void Delete(T entity)
         {
@@ -215,18 +215,16 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 删除多条数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="entities">数据列表</param>
+        /// <param name="entities">实体对象集合</param>
         public void Delete(List<T> entities)
         {
             Service.Delete<T>(entities);
         }
 
         /// <summary>
-        /// 通过条件删除数据
+        /// 删除指定条件数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="condition">条件</param>
+        /// <param name="condition">筛选条件</param>
         public void Delete(Expression<Func<T, bool>> condition)
         {
             Service.Delete_Sql(condition);

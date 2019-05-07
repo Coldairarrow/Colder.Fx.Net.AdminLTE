@@ -37,7 +37,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public static void Init()
         {
-            ShardingConfigBuilder.GetBuilder()
+            ShardingConfigBootstrapper.Bootstrap()
                 //添加数据源
                 .AddDataSource("BaseDb", DatabaseType.SqlServer, dbBuilder =>
                 {

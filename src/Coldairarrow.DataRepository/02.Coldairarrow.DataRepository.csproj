@@ -130,9 +130,11 @@
     <Compile Include="Sharding\Extention.Sharding.cs" />
     <Compile Include="Sharding\IShardingQueryable.T.cs" />
     <Compile Include="Sharding\ShardingConfig.cs" />
-    <Compile Include="Sharding\ShardingConfigBuilder.cs" />
+    <Compile Include="Sharding\ShardingConfigBootstrapper.cs" />
     <Compile Include="Sharding\ShardingHelper.cs" />
     <Compile Include="Sharding\ShardingIQueryable.T.cs" />
+    <Compile Include="Sharding\ShardingRule\IShardingRule.cs" />
+    <Compile Include="Sharding\ShardingRule\ModShardingRule.cs" />
     <Compile Include="Transaction\DistributedTransaction.cs" />
     <Compile Include="Transaction\ITransaction.cs" />
   </ItemGroup>
