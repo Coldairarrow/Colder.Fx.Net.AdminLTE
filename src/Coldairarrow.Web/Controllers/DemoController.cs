@@ -33,6 +33,11 @@ namespace Coldairarrow.Web.Controllers
             return View();
         }
 
+        public ActionResult DownloadFile()
+        {
+            return View();
+        }
+
         #endregion
 
         #region 接口
