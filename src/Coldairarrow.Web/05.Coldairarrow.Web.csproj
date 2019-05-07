@@ -695,6 +695,8 @@
     <Content Include="Scripts\vendor\daterangepicker\moment.min.js" />
     <Content Include="Scripts\vendor\fastclick\fastclick.js" />
     <Content Include="Scripts\vendor\fastclick\fastclick.min.js" />
+    <Content Include="Scripts\vendor\FileSaver\FileSaver.js" />
+    <Content Include="Scripts\vendor\FileSaver\FileSaver.min.js" />
     <Content Include="Scripts\vendor\flot\excanvas.js" />
     <Content Include="Scripts\vendor\flot\excanvas.min.js" />
     <Content Include="Scripts\vendor\flot\jquery.colorhelpers.js" />
@@ -1421,6 +1423,8 @@
     <Content Include="Views\Demo\ZTreeSelect.cshtml" />
     <Content Include="Views\Demo\UploadImgForm.cshtml" />
     <Content Include="Views\Home\Login_VerifyCode.cshtml" />
+    <Content Include="Scripts\vendor\FileSaver\FileSaver.min.js.map" />
+    <Content Include="Views\Demo\DownloadFile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
