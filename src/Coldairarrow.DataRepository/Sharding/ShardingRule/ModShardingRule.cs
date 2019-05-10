@@ -6,7 +6,7 @@ namespace Coldairarrow.DataRepository
     /// 取模分片规则
     /// 说明:根据某字段的HASH,然后取模后得到表名后缀
     /// 举例:Base_User_0,Base_User为抽象表名,_0为后缀
-    /// 警告:使用简单,但是难以扩容!!!
+    /// 警告:使用简单,但是扩容后需要大量数据迁移,不推荐使用
     /// </summary>
     /// <seealso cref="Coldairarrow.DataRepository.IShardingRule" />
     public class ModShardingRule : IShardingRule
@@ -17,10 +17,10 @@ namespace Coldairarrow.DataRepository
             _keyField = keyField;
             _mod = mod;
         }
-        private string _absTableName { get; }
-        private string _keyField { get; }
-        private int _mod { get; }
-        public string FindTable(object obj)
+        protected string _absTableName { get; }
+        protected string _keyField { get; }
+        protected int _mod { get; }
+        public virtual string FindTable(object obj)
         {
             return $"{_absTableName}_{obj.GetPropertyValue(_keyField).GetHashCode() % _mod}";
         }

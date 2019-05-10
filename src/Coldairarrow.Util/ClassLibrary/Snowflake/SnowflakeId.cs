@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Coldairarrow.Util.Snowflake;
+using System;
 using System.Linq;
 
-namespace Coldairarrow.Util.Snowflake
+namespace Coldairarrow.Util
 {
     /// <summary>
     /// 雪花Id,全局唯一,性能高,取代GUID

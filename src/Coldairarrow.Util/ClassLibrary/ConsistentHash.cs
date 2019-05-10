@@ -5,6 +5,11 @@ using System.Text;
 
 namespace Coldairarrow.Util
 {
+    /// <summary>
+    /// 一致性HASH,解决传统HASH的扩容难的问题
+    /// 注:常用与分布式缓存与分表
+    /// </summary>
+    /// <typeparam name="T">泛型</typeparam>
     public class ConsistentHash<T>
     {
         SortedDictionary<int, T> circle { get; set; } = new SortedDictionary<int, T>();
