@@ -55,12 +55,6 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 删除所有记录
         /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        void DeleteAll<T>() where T : class, new();
-
-        /// <summary>
-        /// 删除所有记录
-        /// </summary>
         /// <param name="type">实体类型</param>
         void DeleteAll(Type type);
 

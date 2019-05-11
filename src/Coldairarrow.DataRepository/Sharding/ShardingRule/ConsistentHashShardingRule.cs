@@ -19,7 +19,7 @@ namespace Coldairarrow.DataRepository
         }
         protected List<string> _tables { get; }
         protected ConsistentHash<string> _consistentHash { get; } = new ConsistentHash<string>();
-        public string FindTable(object obj)
+        public virtual string FindTable(object obj)
         {
             string key = obj.GetPropertyValue("Id")?.ToString();
 

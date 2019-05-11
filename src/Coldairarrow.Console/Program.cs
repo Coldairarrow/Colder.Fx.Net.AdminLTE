@@ -44,8 +44,8 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            //ShardingTest();
-            var db = DbFactory.GetRepository();
+            ShardingTest();
+            //var db = DbFactory.GetRepository();
 
             Console.WriteLine("完成");
             Console.ReadLine();

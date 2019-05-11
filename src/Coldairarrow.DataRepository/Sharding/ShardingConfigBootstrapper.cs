@@ -77,6 +77,11 @@ namespace Coldairarrow.DataRepository
             });
         }
 
+        void IAddAbstractTable.AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, IShardingRule rule)
+        {
+            (this as IAddAbstractTable).AddAbsTable(absTableName, physicTableBuilder, rule.FindTable);
+        }
+
         #endregion
 
         #region 私有成员
@@ -129,6 +134,14 @@ namespace Coldairarrow.DataRepository
         /// <param name="physicTableBuilder">物理表构造器</param>
         /// <param name="findTable">分表规则</param>
         void AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, Func<object, string> findTable);
+
+        /// <summary>
+        /// 添加抽象表
+        /// </summary>
+        /// <param name="absTableName">抽象表名</param>
+        /// <param name="physicTableBuilder">物理表构造器</param>
+        /// <param name="rule">找表规则</param>
+        void AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, IShardingRule rule);
     }
 
     public interface IAddPhysicTable

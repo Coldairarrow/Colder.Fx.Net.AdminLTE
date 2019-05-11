@@ -51,17 +51,10 @@ namespace Coldairarrow.DataRepository
                     absTableBuilder.AddAbsTable("Base_SysLog", tableBuilder =>
                     {
                         //添加物理数据表
+                        tableBuilder.AddPhsicTable("Base_SysLog_0", "BaseDb");
                         tableBuilder.AddPhsicTable("Base_SysLog_1", "BaseDb");
                         tableBuilder.AddPhsicTable("Base_SysLog_2", "BaseDb");
-                        tableBuilder.AddPhsicTable("Base_SysLog_3", "BaseDb");
-                    }, obj => $"Base_SysLog_{(obj.GetPropertyValue("Id").GetHashCode() % 3) + 1}");
-                    absTableBuilder.AddAbsTable("Base_User", tableBuilder =>
-                    {
-                        //添加物理数据表
-                        tableBuilder.AddPhsicTable("Base_User_1", "BaseDb");
-                        tableBuilder.AddPhsicTable("Base_User_2", "BaseDb");
-                        tableBuilder.AddPhsicTable("Base_User_3", "BaseDb");
-                    }, obj => $"Base_User_{(obj.GetPropertyValue("Id").GetHashCode() % 3) + 1}");
+                    }, new ModShardingRule("Base_SysLog","Id",3));
                 });
         }
 
@@ -121,9 +114,27 @@ namespace Coldairarrow.DataRepository
             return GetTargetTables(absTableName, ReadWriteType.Read, absDbName);
         }
 
+        /// <summary>
+        /// 获取特定写表
+        /// </summary>
+        /// <param name="absTableName">抽象表名</param>
+        /// <param name="obj">实体对象</param>
+        /// <param name="absDbName">抽象数据库名</param>
+        /// <returns></returns>
         public (string tableName, string conString, DatabaseType dbType) GetTheWriteTable(string absTableName, object obj, string absDbName = null)
         {
             return GetTargetTables(absTableName, ReadWriteType.Write, absDbName, obj).Single();
+        }
+
+        /// <summary>
+        /// 获取所有的写表
+        /// </summary>
+        /// <param name="absTableName">抽象表名</param>
+        /// <param name="absDbName">抽象数据库名</param>
+        /// <returns></returns>
+        public List<(string tableName, string conString, DatabaseType dbType)> GetAllWriteTables(string absTableName, string absDbName = null)
+        {
+            return GetTargetTables(absTableName, ReadWriteType.Write, absDbName, null);
         }
 
         #endregion
@@ -155,8 +166,15 @@ namespace Coldairarrow.DataRepository
             //写操作
             else
             {
-                var theTable = absTable.FindTable(obj);
-                physicTables = absTable.PhysicTables.Where(x => x.physicTableName == theTable).ToList();
+                //找特定表
+                if (!obj.IsNullOrEmpty())
+                {
+                    var theTable = absTable.FindTable(obj);
+                    physicTables = absTable.PhysicTables.Where(x => x.physicTableName == theTable).ToList();
+                }
+                //所有表
+                else
+                    physicTables = absTable.PhysicTables;
             }
 
             //获取数据源

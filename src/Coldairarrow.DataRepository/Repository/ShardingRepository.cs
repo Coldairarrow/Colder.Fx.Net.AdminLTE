@@ -39,16 +39,20 @@ namespace Coldairarrow.DataRepository
         private void WriteTable<T>(List<T> entities, Action<object, IRepository> accessData)
         {
             var mapConfigs = GetMapConfigs(entities);
-            DistributedTransaction transaction = new DistributedTransaction(mapConfigs.Select(x => x.targetDb).ToArray());
-            transaction.BeginTransaction();
-            transaction.AddTransaction(() =>
+            using (DistributedTransaction transaction = new DistributedTransaction(mapConfigs.Select(x => x.targetDb).ToArray()))
             {
+                transaction.BeginTransaction();
+
                 mapConfigs.ForEach(aConfig =>
                 {
                     accessData(aConfig.targetObj, aConfig.targetDb);
                 });
-            });
-            transaction.EndTransaction();
+
+                var (Success, ex) = transaction.EndTransaction();
+
+                if (!Success)
+                    throw ex;
+            }
         }
 
         #endregion
@@ -73,6 +77,31 @@ namespace Coldairarrow.DataRepository
         public void Insert<T>(List<T> entities) where T : class, new()
         {
             WriteTable(entities, (targetObj, targetDb) => targetDb.Insert(targetObj));
+        }
+
+        /// <summary>
+        /// 删除所有记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        public void DeleteAll<T>() where T : class, new()
+        {
+            var configs = ShardingConfig.Instance.GetAllWriteTables(typeof(T).Name);
+            var allDbs = configs.Select(x => new
+            {
+                Db = DbFactory.GetRepository(x.conString, x.dbType),
+                TargetType = MapTable(typeof(T), x.tableName)
+            }).ToList();
+            using (DistributedTransaction transaction = new DistributedTransaction(allDbs.Select(x => x.Db).ToArray()))
+            {
+                transaction.BeginTransaction();
+
+                allDbs.ForEach(x => x.Db.DeleteAll(x.TargetType));
+
+                var (Success, ex) = transaction.EndTransaction();
+
+                if (!Success)
+                    throw ex;
+            }
         }
 
         /// <summary>
