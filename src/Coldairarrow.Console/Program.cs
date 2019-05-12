@@ -44,9 +44,13 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            ShardingTest();
-            //var db = DbFactory.GetRepository();
-
+            //ShardingTest();
+            var db = DbFactory.GetRepository().ToSharding();
+            db.Insert(new Base_AppSecret
+            {
+                Id = SnowflakeId.NewSnowflakeId().ToString()
+            });
+            db.DeleteAll<Base_AppSecret>();
             Console.WriteLine("完成");
             Console.ReadLine();
         }

@@ -122,8 +122,12 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void BeginTransaction()
         {
-            _transaction = Db.Database.BeginTransaction();
             _openedTransaction = true;
+
+            _transactionHandler += () =>
+            {
+                _transaction = Db.Database.BeginTransaction();
+            };
         }
 
         /// <summary>
@@ -133,8 +137,12 @@ namespace Coldairarrow.DataRepository
         /// <param name="isolationLevel">事物级别</param>
         public void BeginTransaction(IsolationLevel isolationLevel)
         {
-            _transaction = Db.Database.BeginTransaction(isolationLevel);
             _openedTransaction = true;
+
+            _transactionHandler += () =>
+            {
+                _transaction = Db.Database.BeginTransaction(isolationLevel);
+            };
         }
 
         /// <summary>

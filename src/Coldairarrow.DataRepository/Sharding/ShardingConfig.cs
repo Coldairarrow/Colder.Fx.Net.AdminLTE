@@ -55,6 +55,14 @@ namespace Coldairarrow.DataRepository
                         tableBuilder.AddPhsicTable("Base_SysLog_1", "BaseDb");
                         tableBuilder.AddPhsicTable("Base_SysLog_2", "BaseDb");
                     }, new ModShardingRule("Base_SysLog","Id",3));
+                    //添加抽象数据表
+                    absTableBuilder.AddAbsTable("Base_AppSecret", tableBuilder =>
+                    {
+                        //添加物理数据表
+                        tableBuilder.AddPhsicTable("Base_AppSecret_0", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_AppSecret_1", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_AppSecret_2", "BaseDb");
+                    }, new ModShardingRule("Base_AppSecret", "Id", 3));
                 });
         }
 

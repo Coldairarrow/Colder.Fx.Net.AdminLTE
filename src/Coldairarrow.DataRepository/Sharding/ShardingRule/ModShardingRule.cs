@@ -22,7 +22,7 @@ namespace Coldairarrow.DataRepository
         protected int _mod { get; }
         public virtual string FindTable(object obj)
         {
-            return $"{_absTableName}_{obj.GetPropertyValue(_keyField).GetHashCode() % _mod}";
+            return $"{_absTableName}_{(uint)(obj.GetPropertyValue(_keyField).ToString().ToMurmurHash() % _mod)}";
         }
     }
 }
