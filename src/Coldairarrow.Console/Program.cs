@@ -45,12 +45,9 @@ namespace Coldairarrow.Console1
         static void Main(string[] args)
         {
             //ShardingTest();
-            var db = DbFactory.GetRepository().ToSharding();
-            db.Insert(new Base_AppSecret
-            {
-                Id = SnowflakeId.NewSnowflakeId().ToString()
-            });
-            db.DeleteAll<Base_AppSecret>();
+            var dbHelper = DbHelperFactory.GetDbHelper(DatabaseType.SqlServer, "BaseDb");
+            dbHelper.CloneTableStructure("Base_SysLog", "Base_SysLog_111111");
+
             Console.WriteLine("完成");
             Console.ReadLine();
         }

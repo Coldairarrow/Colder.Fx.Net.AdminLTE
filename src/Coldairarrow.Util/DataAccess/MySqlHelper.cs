@@ -54,36 +54,6 @@ namespace Coldairarrow.Util
 
         #region 外部接口
 
-        public override DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters)
-        {
-            DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(_dbType);
-            using (DbConnection conn = dbProviderFactory.CreateConnection())
-            {
-                conn.ConnectionString = _conStr;
-                if (conn.State != ConnectionState.Open)
-                {
-                    conn.Open();
-                }
-
-                using (DbCommand cmd = conn.CreateCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandText = sql;
-                    cmd.CommandTimeout = 5 * 60;
-                    if (parameters != null && parameters?.Count > 0)
-                        cmd.Parameters.AddRange(parameters.ToArray());
-
-                    DbDataAdapter adapter = new MySqlDataAdapter();
-                    adapter.SelectCommand = cmd;
-                    DataSet table = new DataSet();
-                    adapter.Fill(table);
-                    cmd.Parameters.Clear();
-
-                    return table.Tables[0];
-                }
-            }
-        }
-
         /// <summary>
         /// 获取数据库中的所有表
         /// </summary>
