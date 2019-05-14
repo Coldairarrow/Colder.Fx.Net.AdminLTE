@@ -198,6 +198,7 @@
     <Content Include="css\fx\desktop.css" />
     <Content Include="css\fx\permisson-form.css" />
     <Content Include="css\fx\fx-list.css" />
+    <Content Include="css\fx\style.min.css" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\appx.js" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\basejs\ContextJS\context.bootstrap.css" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\basejs\ContextJS\context.js" />
