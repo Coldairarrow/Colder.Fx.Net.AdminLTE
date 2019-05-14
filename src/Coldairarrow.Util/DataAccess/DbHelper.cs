@@ -69,7 +69,7 @@ namespace Coldairarrow.Util
         /// <param name="sql">Sql语句</param>
         /// <param name="parameters">参数</param>
         /// <returns></returns>
-        public virtual DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters)
+        public DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters)
         {
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(_dbType);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
@@ -142,6 +142,7 @@ namespace Coldairarrow.Util
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(_dbType);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
+                conn.ConnectionString = _conStr;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();
@@ -179,7 +180,7 @@ namespace Coldairarrow.Util
         /// </summary>
         /// <param name="dbTypeStr">数据类型</param>
         /// <returns></returns>
-        public virtual Type DbTypeStr_To_CsharpType(string dbTypeStr)
+        public Type DbTypeStr_To_CsharpType(string dbTypeStr)
         {
             string _dbTypeStr = dbTypeStr.ToLower();
             Type type = null;
@@ -239,6 +240,26 @@ namespace {nameSpace}
     }}
 }}";
             FileHelper.WriteTxt(fileStr, filePath, FileMode.Create);
+        }
+
+        /// <summary>
+        /// 判断是否存在存储过程
+        /// </summary>
+        /// <param name="proceName">存储过程名</param>
+        /// <returns></returns>
+        public virtual bool ExistsProcedure(string proceName)
+        {
+            throw new NotImplementedException("不支持此操作");
+        }
+
+        /// <summary>
+        /// 复制表结构
+        /// </summary>
+        /// <param name="sourceTable">原表</param>
+        /// <param name="targetTable">目标表</param>
+        public virtual void CloneTableStructure(string sourceTable, string targetTable)
+        {
+            throw new NotImplementedException("不支持此操作");
         }
 
         #endregion
