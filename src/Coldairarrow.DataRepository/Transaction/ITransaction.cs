@@ -3,25 +3,19 @@ using System.Data;
 
 namespace Coldairarrow.DataRepository
 {
-    public interface ITransaction
+    public interface ITransaction : IDisposable
     {
         /// <summary>
         /// 开始事物
         /// </summary>
-        void BeginTransaction();
+        ITransaction BeginTransaction();
 
         /// <summary>
         /// 开始事物
         /// 注:自定义事物级别
         /// </summary>
         /// <param name="isolationLevel">事物级别</param>
-        void BeginTransaction(IsolationLevel isolationLevel);
-
-        /// <summary>
-        /// 添加事物操作
-        /// </summary>
-        /// <param name="action">事物操作</param>
-        void AddTransaction(Action action);
+        ITransaction BeginTransaction(IsolationLevel isolationLevel);
 
         /// <summary>
         /// 提交事物

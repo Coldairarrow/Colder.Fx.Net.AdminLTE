@@ -29,7 +29,6 @@ namespace Coldairarrow.DataRepository
         #region 内部成员
 
         private List<IRepository> _repositorys { get; }
-        private Action _transactionHandler { get; set; }
 
         #endregion
 
@@ -38,9 +37,11 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 开始事物
         /// </summary>
-        public void BeginTransaction()
+        public ITransaction BeginTransaction()
         {
             _repositorys.ForEach(x => x.BeginTransaction());
+
+            return this;
         }
 
         /// <summary>
@@ -48,18 +49,11 @@ namespace Coldairarrow.DataRepository
         /// 注:自定义事物级别
         /// </summary>
         /// <param name="isolationLevel">事物级别</param>
-        public void BeginTransaction(IsolationLevel isolationLevel)
+        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
             _repositorys.ForEach(x => x.BeginTransaction(isolationLevel));
-        }
 
-        /// <summary>
-        /// 添加事物操作
-        /// </summary>
-        /// <param name="action">事物操作</param>
-        public void AddTransaction(Action action)
-        {
-            _transactionHandler += action;
+            return this;
         }
 
         /// <summary>
@@ -72,7 +66,6 @@ namespace Coldairarrow.DataRepository
             Exception resEx = null;
             try
             {
-                _transactionHandler?.Invoke();
                 _repositorys.ForEach(x => x.CommitDb());
                 CommitTransaction();
             }

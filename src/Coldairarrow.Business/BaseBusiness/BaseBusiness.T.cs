@@ -93,9 +93,9 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 开始事物
         /// </summary>
-        public void BeginTransaction()
+        public ITransaction BeginTransaction()
         {
-            Service.BeginTransaction();
+            return Service.BeginTransaction();
         }
 
         /// <summary>
@@ -103,18 +103,9 @@ namespace Coldairarrow.Business
         /// 注:自定义事物级别
         /// </summary>
         /// <param name="isolationLevel">事物级别</param>
-        public void BeginTransaction(IsolationLevel isolationLevel)
+        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            Service.BeginTransaction(isolationLevel);
-        }
-
-        /// <summary>
-        /// 添加事物操作
-        /// </summary>
-        /// <param name="action">事物操作</param>
-        public void AddTransaction(Action action)
-        {
-            Service.AddTransaction(action);
+            return Service.BeginTransaction(isolationLevel);
         }
 
         /// <summary>
@@ -629,6 +620,19 @@ namespace Coldairarrow.Business
         }
 
         public virtual Dictionary<string, string> CheckRepeatPropertyConfig { get; } = new Dictionary<string, string>();
+
+        #endregion
+
+        #region Dispose
+
+        /// <summary>
+        /// 执行与释放或重置非托管资源关联的应用程序定义的任务。
+        /// </summary>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void Dispose()
+        {
+            Service.Dispose();
+        }
 
         #endregion
     }

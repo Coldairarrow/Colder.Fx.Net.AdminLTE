@@ -120,7 +120,7 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 开始事物
         /// </summary>
-        public void BeginTransaction()
+        public ITransaction BeginTransaction()
         {
             _openedTransaction = true;
 
@@ -128,6 +128,8 @@ namespace Coldairarrow.DataRepository
             {
                 _transaction = Db.Database.BeginTransaction();
             };
+
+            return this;
         }
 
         /// <summary>
@@ -135,7 +137,7 @@ namespace Coldairarrow.DataRepository
         /// 注:自定义事物级别
         /// </summary>
         /// <param name="isolationLevel">事物级别</param>
-        public void BeginTransaction(IsolationLevel isolationLevel)
+        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
             _openedTransaction = true;
 
@@ -143,6 +145,8 @@ namespace Coldairarrow.DataRepository
             {
                 _transaction = Db.Database.BeginTransaction(isolationLevel);
             };
+
+            return this;
         }
 
         /// <summary>
@@ -164,7 +168,6 @@ namespace Coldairarrow.DataRepository
             Exception resEx = null;
             try
             {
-                _transactionHandler?.Invoke();
                 CommitDb();
                 CommitTransaction();
             }
@@ -200,7 +203,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void CommitTransaction()
         {
-            _transaction.Commit();
+            _transaction?.Commit();
         }
 
         /// <summary>
@@ -208,7 +211,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void RollbackTransaction()
         {
-            _transaction.Rollback();
+            _transaction?.Rollback();
         }
 
         /// <summary>

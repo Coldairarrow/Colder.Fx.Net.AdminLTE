@@ -317,31 +317,31 @@ namespace Coldairarrow.UnitTests
         {
             //失败事务
             _baseBus.DeleteAll();
-            _baseBus.BeginTransaction();
-            _baseBus.AddTransaction(() =>
+            using (var transaction = _baseBus.BeginTransaction())
             {
                 _baseBus.Insert(_newData);
                 var newData2 = _newData.DeepClone();
                 newData2.Id = Guid.NewGuid().ToSequentialGuid();
                 _baseBus.Insert(newData2);
-            });
-
-            bool succcess = _baseBus.EndTransaction().Success;
-            Assert.AreEqual(succcess, false);
+                bool succcess = _baseBus.EndTransaction().Success;
+                Assert.AreEqual(succcess, false);
+            }
 
             //成功事务
             _baseBus.DeleteAll();
-            _baseBus.BeginTransaction();
-            var newData = _newData.DeepClone();
-            newData.Id = Guid.NewGuid().ToString();
-            newData.UserId = Guid.NewGuid().ToSequentialGuid();
-            newData.UserName = Guid.NewGuid().ToSequentialGuid();
-            _baseBus.Insert(_newData);
-            _baseBus.Insert(newData);
-            succcess = _baseBus.EndTransaction().Success;
-            int count = _baseBus.GetIQueryable().Count();
-            Assert.AreEqual(succcess, true);
-            Assert.AreEqual(count, 2);
+            using (var transaction = _baseBus.BeginTransaction())
+            {
+                var newData = _newData.DeepClone();
+                newData.Id = Guid.NewGuid().ToString();
+                newData.UserId = Guid.NewGuid().ToSequentialGuid();
+                newData.UserName = Guid.NewGuid().ToSequentialGuid();
+                _baseBus.Insert(_newData);
+                _baseBus.Insert(newData);
+                bool succcess = _baseBus.EndTransaction().Success;
+                int count = _baseBus.GetIQueryable().Count();
+                Assert.AreEqual(succcess, true);
+                Assert.AreEqual(count, 2);
+            }
         }
 
         /// <summary>
@@ -373,30 +373,34 @@ namespace Coldairarrow.UnitTests
                 UserId = "2",
                 UserName = Guid.NewGuid().ToString()
             };
-            DistributedTransaction distributedTransaction = new DistributedTransaction(_bus1.Service, _bus2.Service);
-            distributedTransaction.BeginTransaction();
-            _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
-            _bus1.Insert(data1);
-            _bus1.Insert(data2);
-            _bus2.Insert(data1);
-            _bus2.Insert(data3);
-            var succcess = distributedTransaction.EndTransaction();
-            Assert.AreEqual(succcess.Success, false);
+            using (var distributedTransaction = new DistributedTransaction(_bus1.Service, _bus2.Service))
+            {
+                distributedTransaction.BeginTransaction();
+                _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
+                _bus1.Insert(data1);
+                _bus1.Insert(data2);
+                _bus2.Insert(data1);
+                _bus2.Insert(data3);
+                var succcess = distributedTransaction.EndTransaction();
+                Assert.AreEqual(succcess.Success, false);
+            }
 
             //成功事务
-            distributedTransaction = new DistributedTransaction(_bus1.Service, _bus2.Service);
-            distributedTransaction.BeginTransaction();
-            _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
-            _bus1.Insert(data1);
-            _bus1.Insert(data3);
-            _bus2.Insert(data1);
-            _bus2.Insert(data3);
-            succcess = distributedTransaction.EndTransaction();
-            int count1 = _bus1.GetIQueryable().Count();
-            int count2 = _bus2.GetIQueryable().Count();
-            Assert.AreEqual(succcess.Success, true);
-            Assert.AreEqual(count1, 3);
-            Assert.AreEqual(count2, 2);
+            using (var distributedTransaction = new DistributedTransaction(_bus1.Service, _bus2.Service))
+            {
+                distributedTransaction.BeginTransaction();
+                _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
+                _bus1.Insert(data1);
+                _bus1.Insert(data3);
+                _bus2.Insert(data1);
+                _bus2.Insert(data3);
+                var succcess = distributedTransaction.EndTransaction();
+                int count1 = _bus1.GetIQueryable().Count();
+                int count2 = _bus2.GetIQueryable().Count();
+                Assert.AreEqual(succcess.Success, true);
+                Assert.AreEqual(count1, 3);
+                Assert.AreEqual(count2, 2);
+            }
         }
 
         #endregion
