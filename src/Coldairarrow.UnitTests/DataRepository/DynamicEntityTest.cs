@@ -96,7 +96,6 @@ namespace Coldairarrow.UnitTests
                     newData2.UserId = Guid.NewGuid().ToSequentialGuid();
                     _db.Insert(newData2);
                 })();
-                throw new Exception("111");
                 //Base_UnitTest_0失败
                 new Action(() =>
                 {
