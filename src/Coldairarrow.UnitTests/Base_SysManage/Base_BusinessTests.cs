@@ -383,6 +383,8 @@ namespace Coldairarrow.UnitTests
                 _bus2.Insert(data3);
                 var succcess = distributedTransaction.EndTransaction();
                 Assert.AreEqual(succcess.Success, false);
+                Assert.AreEqual(_bus1.GetIQueryable().Count(), 0);
+                Assert.AreEqual(_bus2.GetIQueryable().Count(), 0);
             }
 
             //成功事务

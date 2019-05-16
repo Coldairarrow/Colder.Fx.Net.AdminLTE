@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Util;
 using System;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
@@ -86,8 +87,8 @@ namespace Coldairarrow.DataRepository
         public Action<string> HandleSqlLog { get; set; }
         private void RefreshDb()
         {
-            Dispose();
-            var con = DbProviderFactoryHelper.GetDbConnection(_conString, _dbType);
+            //重用DbConnection,使用底层相同的DbConnection,支持Model持热更新
+            DbConnection con = _db == null ? DbProviderFactoryHelper.GetDbConnection(_conString, _dbType) : _db.Database.Connection;
             var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
             _db = new BaseDbContext(con, dBCompiledModel);
             _db.Database.Log = HandleSqlLog;

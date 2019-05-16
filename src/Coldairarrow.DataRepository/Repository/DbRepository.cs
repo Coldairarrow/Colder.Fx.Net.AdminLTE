@@ -61,7 +61,7 @@ namespace Coldairarrow.DataRepository
         protected DatabaseType _dbType { get; set; }
         private string _entityNamespace { get; set; }
         protected bool _disposed { get; set; }
-        protected DbContextTransaction _transaction { get; set; }
+        protected DbTransaction _transaction { get; set; }
         protected static PropertyInfo GetKeyProperty(Type type)
         {
             return GetKeyPropertys(type).FirstOrDefault();
@@ -112,6 +112,16 @@ namespace Coldairarrow.DataRepository
         }
         protected bool _openedTransaction { get; set; } = false;
         protected Action _transactionHandler { get; set; }
+        private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
+        {
+            _openedTransaction = true;
+            if (isolationLevel == null)
+                _transaction = Db.Database.BeginTransaction().UnderlyingTransaction;
+            else
+                _transaction = Db.Database.BeginTransaction(isolationLevel.Value).UnderlyingTransaction;
+
+            return this;
+        }
 
         #endregion
 
@@ -122,14 +132,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public ITransaction BeginTransaction()
         {
-            _openedTransaction = true;
-
-            _transactionHandler += () =>
-            {
-                _transaction = Db.Database.BeginTransaction();
-            };
-
-            return this;
+            return _BeginTransaction();
         }
 
         /// <summary>
@@ -139,14 +142,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="isolationLevel">事物级别</param>
         public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            _openedTransaction = true;
-
-            _transactionHandler += () =>
-            {
-                _transaction = Db.Database.BeginTransaction(isolationLevel);
-            };
-
-            return this;
+            return _BeginTransaction(isolationLevel);
         }
 
         /// <summary>
