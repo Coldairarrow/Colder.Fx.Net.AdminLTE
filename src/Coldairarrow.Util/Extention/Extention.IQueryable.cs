@@ -621,7 +621,13 @@ namespace Coldairarrow.Util
                     return base.VisitMethodCall(node);
 
                 if (node.Method.Name != "Skip")
-                    return base.VisitMethodCall(node);
+                    return new ConstantVisitor(node.Arguments[1] as ConstantExpression, Expression.Constant(0)).Visit(node);
+
+                //return Expression.Call(
+                //        typeof(Queryable),
+                //        node.Method.Name,
+                //        node.Method.GetGenericArguments(),
+                //        new Expression[] { node.Arguments[0], Expression.Constant(0) });
 
                 //eliminate the method call from the expression tree by returning the object of the call.
                 return base.Visit(node.Arguments[0]);
@@ -639,10 +645,36 @@ namespace Coldairarrow.Util
                     return base.VisitMethodCall(node);
 
                 if (node.Method.Name != "Take")
-                    return base.VisitMethodCall(node);
+                {
+                    return new ConstantVisitor(node.Arguments[1] as ConstantExpression, Expression.Constant(0)).Visit(node);
+                    return Expression.Call(
+    typeof(Queryable),
+    node.Method.Name,
+    node.Method.GetGenericArguments(),
+    new Expression[] { node.Arguments[0], Expression.Constant(0) });
+
+                }
 
                 //eliminate the method call from the expression tree by returning the object of the call.
                 return base.Visit(node.Arguments[0]);
+            }
+        }
+
+        public class ConstantVisitor: ExpressionVisitor
+        {
+            public ConstantVisitor(ConstantExpression oldConstant, ConstantExpression newConstant)
+            {
+                _oldConstant = oldConstant;
+                _newConstant = newConstant;
+            }
+            private ConstantExpression _oldConstant { get; }
+            private ConstantExpression _newConstant { get; }
+            protected override Expression VisitConstant(ConstantExpression node)
+            {
+                if (node == _oldConstant)
+                    return _newConstant;
+
+                return base.VisitConstant(node);
             }
         }
 

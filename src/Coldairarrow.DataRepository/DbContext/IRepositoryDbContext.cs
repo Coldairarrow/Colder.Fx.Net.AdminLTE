@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
@@ -14,6 +15,7 @@ namespace Coldairarrow.DataRepository
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         int SaveChanges();
         Database Database { get; }
-        void CheckEntityType(Type entityType);
+        Type CheckEntityType(Type entityType);
+        void UseTransaction(DbTransaction transaction);
     }
 }

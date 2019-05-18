@@ -7,8 +7,8 @@
     <ProjectGuid>{9DECBA8F-60D7-4AA3-9A35-F0A71FB36CDC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
-    <AssemblyName>UnitTests</AssemblyName>
+    <RootNamespace>Coldairarrow.UnitTests</RootNamespace>
+    <AssemblyName>Coldairarrow.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -119,9 +119,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base_SysManage\Base_BusinessTests.cs" />
+    <Compile Include="BaseTest.cs" />
     <Compile Include="DataRepository\DynamicEntityTest.cs" />
+    <Compile Include="DataRepository\ShardingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest.cs" />
+    <Compile Include="UnitTestDemo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

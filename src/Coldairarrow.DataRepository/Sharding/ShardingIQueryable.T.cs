@@ -1,7 +1,6 @@
 ﻿using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Expressions;
@@ -67,7 +66,7 @@ namespace Coldairarrow.DataRepository
             if (!skip.IsNullOrEmpty())
                 resList = resList.Skip(skip.Value).ToList();
             if (!take.IsNullOrEmpty())
-                resList = resList.Skip(take.Value).ToList();
+                resList = resList.Take(take.Value).ToList();
 
             return resList;
         }
@@ -112,8 +111,9 @@ namespace Coldairarrow.DataRepository
 
             return Skip((pagination.page - 1) * pagination.rows).Take(pagination.rows).ToList();
         }
-        private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access)
+        private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access, IQueryable<T> newSource = null)
         {
+            newSource = newSource ?? _source;
             var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
             List<Task<dynamic>> tasks = new List<Task<dynamic>>();
             tables.ForEach(aTable =>
@@ -122,7 +122,7 @@ namespace Coldairarrow.DataRepository
                 {
                     var targetTable = MapTable(_absTableType, aTable.tableName);
                     var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
-                    var newQ = _source.ChangeSource(targetIQ);
+                    var newQ = newSource.ChangeSource(targetIQ);
 
                     return access(newQ);
                 }));
@@ -235,6 +235,11 @@ namespace Coldairarrow.DataRepository
         public long? Sum(Expression<Func<T, long?>> selector)
         {
             return (long?)DynamicSum(selector);
+        }
+        public bool Any(Expression<Func<T, bool>> predicate)
+        {
+            var newSource = _source.Where(predicate);
+            return GetStatisData(x => x.Any(), newSource).Any(x => x == true);
         }
     }
 }

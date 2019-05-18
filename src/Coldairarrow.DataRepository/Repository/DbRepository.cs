@@ -119,6 +119,7 @@ namespace Coldairarrow.DataRepository
                 _transaction = Db.Database.BeginTransaction().UnderlyingTransaction;
             else
                 _transaction = Db.Database.BeginTransaction(isolationLevel.Value).UnderlyingTransaction;
+            Db.UseTransaction(_transaction);
 
             return this;
         }
@@ -143,15 +144,6 @@ namespace Coldairarrow.DataRepository
         public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
             return _BeginTransaction(isolationLevel);
-        }
-
-        /// <summary>
-        /// 添加事物操作
-        /// </summary>
-        /// <param name="action">事物操作</param>
-        public void AddTransaction(Action action)
-        {
-            _transactionHandler += action;
         }
 
         /// <summary>
@@ -476,10 +468,11 @@ namespace Coldairarrow.DataRepository
             {
                 entities.ForEach(aEntity =>
                 {
-                    Db.Set(aEntity.GetType()).Attach(aEntity);
+                    var targetObj = aEntity.ChangeType(Db.CheckEntityType(aEntity.GetType()));
+                    Db.Set(aEntity.GetType()).Attach(targetObj);
                     properties.ForEach(aProperty =>
                     {
-                        Db.Entry(aEntity).Property(aProperty).IsModified = true;
+                        Db.Entry(targetObj).Property(aProperty).IsModified = true;
                     });
                 });
             });

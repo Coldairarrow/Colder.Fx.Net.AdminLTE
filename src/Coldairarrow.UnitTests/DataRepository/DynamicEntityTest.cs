@@ -3,69 +3,26 @@ using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Dynamic;
 
 namespace Coldairarrow.UnitTests
 {
     [TestClass]
-    public class DynamicEntityTest
+    public class DynamicEntityTest : BaseTest
     {
         #region 构造函数
-
-        static DynamicEntityTest()
-        {
-            for (int i = 1; i <= 100; i++)
-            {
-                Base_UnitTest newData = new Base_UnitTest
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Age = i,
-                    UserId = "Admin" + i,
-                    UserName = "超级管理员" + i
-                };
-                _dataList.Add(newData);
-            }
-        }
-
-        public DynamicEntityTest()
-        {
-            _db.DeleteAll<Base_UnitTest>();
-        }
 
         #endregion
 
         #region 私有成员
 
-        private IRepository _db { get; } = DbFactory.GetRepository();
-        private static Base_UnitTest _newData { get; } = new Base_UnitTest
+        protected override void Clear()
         {
-            Id = Guid.NewGuid().ToString(),
-            UserId = "Admin",
-            UserName = "超级管理员",
-            Age = 22
-        };
-
-        private static List<Base_UnitTest> _insertList { get; } = new List<Base_UnitTest>
-        {
-            new Base_UnitTest
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserId = "Admin1",
-                UserName = "超级管理员1",
-                Age = 22
-            },
-            new Base_UnitTest
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserId = "Admin2",
-                UserName = "超级管理员2",
-                Age = 22
-            }
-        };
-
-        private static List<Base_UnitTest> _dataList { get; } = new List<Base_UnitTest>();
+            _db.DeleteAll<Base_UnitTest>();
+        }
+        protected IRepository _db { get; } = DbFactory.GetRepository();
 
         private Type MapTable(Type absTable, string targetTableName)
         {
@@ -96,6 +53,7 @@ namespace Coldairarrow.UnitTests
                     newData2.UserId = Guid.NewGuid().ToSequentialGuid();
                     _db.Insert(newData2);
                 })();
+
                 //Base_UnitTest_0失败
                 new Action(() =>
                 {
@@ -111,8 +69,9 @@ namespace Coldairarrow.UnitTests
                     _db.Insert(newData2.ChangeType(targetType));
                 })();
 
-                bool succcess = _db.EndTransaction().Success;
-                Assert.AreEqual(succcess, false);
+                var (Success, ex) = _db.EndTransaction();
+                Assert.AreEqual(Success, false);
+                Assert.AreEqual(true, ex is DbUpdateException);
                 Assert.AreEqual(_db.GetIQueryable<Base_UnitTest>().Count(), 0);
                 Assert.AreEqual(_db.GetIQueryable(targetType).Count(), 0);
             }

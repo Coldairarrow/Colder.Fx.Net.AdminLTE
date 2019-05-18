@@ -16,6 +16,7 @@ namespace Coldairarrow.DataRepository
         IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector);
         T FirstOrDefault();
         List<T> GetPagination(Pagination pagination);
+        bool Any(Expression<Func<T, bool>> predicate);
         TResult Max<TResult>(Expression<Func<T, TResult>> selector);
         TResult Min<TResult>(Expression<Func<T, TResult>> selector);
         double Average(Expression<Func<T, int>> selector);

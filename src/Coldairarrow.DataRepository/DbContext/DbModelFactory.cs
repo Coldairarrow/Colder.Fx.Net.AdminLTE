@@ -54,26 +54,29 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public static (bool needRefresh, Type model) GetModel(Type type)
         {
-            bool needRefresh = false;
-            Type targetType = null;
-            if (_modelTypes.Contains(type))
-                targetType = _modelTypes.Where(x => x == type).FirstOrDefault();
-            else
+            lock (_RefreshModelLock)
             {
-                string modelId = GetModelIdentity(type);
-                if (_modelTypeMap.ContainsKey(modelId))
-                    targetType = _modelTypeMap[modelId];
+                bool needRefresh = false;
+                Type targetType = null;
+                if (_modelTypes.Contains(type))
+                    targetType = _modelTypes.Where(x => x == type).FirstOrDefault();
                 else
                 {
-                    _modelTypes.Add(type);
-                    _modelTypeMap[modelId] = type;
-                    targetType = type;
-                    needRefresh = true;
-                    RefreshModel();
+                    string modelId = GetModelIdentity(type);
+                    if (_modelTypeMap.ContainsKey(modelId))
+                        targetType = _modelTypeMap[modelId];
+                    else
+                    {
+                        _modelTypes.Add(type);
+                        _modelTypeMap[modelId] = type;
+                        targetType = type;
+                        needRefresh = true;
+                        RefreshModel();
+                    }
                 }
-            }
 
-            return (needRefresh, targetType);
+                return (needRefresh, targetType);
+            }
         }
 
         #endregion
@@ -148,6 +151,8 @@ namespace Coldairarrow.DataRepository
         {
             return $"{dbType.ToString()}{conStr}";
         }
+
+        private static object _RefreshModelLock { get; } = new object();
         private static void RefreshModel()
         {
             _dbCompiledModel.Values.ForEach(aModelInfo =>

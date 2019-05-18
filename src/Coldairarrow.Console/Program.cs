@@ -45,8 +45,35 @@ namespace Coldairarrow.Console1
         static void Main(string[] args)
         {
             //ShardingTest();
-            var dbHelper = DbHelperFactory.GetDbHelper(DatabaseType.SqlServer, "BaseDb");
-            dbHelper.CloneTableStructure("Base_SysLog", "Base_SysLog_111111");
+
+            ShardingConfigBootstrapper.Bootstrap()
+    //添加数据源
+    .AddDataSource("BaseDb", DatabaseType.SqlServer, dbBuilder =>
+    {
+                    //添加物理数据库
+                    dbBuilder.AddPhsicDb("BaseDb", ReadWriteType.ReadAndWrite);
+    })
+    //添加抽象数据库
+    .AddAbsDb("BaseDb", absTableBuilder =>
+    {
+                    //添加抽象数据表
+                    absTableBuilder.AddAbsTable("Base_UnitTest", tableBuilder =>
+        {
+                        //添加物理数据表
+                        tableBuilder.AddPhsicTable("Base_UnitTest_0", "BaseDb");
+            tableBuilder.AddPhsicTable("Base_UnitTest_1", "BaseDb");
+            tableBuilder.AddPhsicTable("Base_UnitTest_2", "BaseDb");
+        }, new ModShardingRule("Base_UnitTest", "Id", 3));
+    });
+            Base_UnitTest _newData = new Base_UnitTest
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = "Admin",
+                UserName = "超级管理员",
+                Age = 22
+            };
+            var db = DbFactory.GetRepository().ToSharding();
+            db.Insert(_newData);
 
             Console.WriteLine("完成");
             Console.ReadLine();

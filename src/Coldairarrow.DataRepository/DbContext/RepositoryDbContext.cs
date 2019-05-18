@@ -72,9 +72,15 @@ namespace Coldairarrow.DataRepository
             return _db;
         }
 
-        public void CheckEntityType(Type entityType)
+        public Type CheckEntityType(Type entityType)
         {
-            CheckModel(entityType);
+            return CheckModel(entityType);
+        }
+        private DbTransaction _transaction { get; set; }
+
+        public void UseTransaction(DbTransaction transaction)
+        {
+            _transaction = transaction;
         }
 
         #endregion
@@ -91,6 +97,7 @@ namespace Coldairarrow.DataRepository
             DbConnection con = _db == null ? DbProviderFactoryHelper.GetDbConnection(_conString, _dbType) : _db.Database.Connection;
             var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
             _db = new BaseDbContext(con, dBCompiledModel);
+            _db.Database.UseTransaction(_transaction);
             _db.Database.Log = HandleSqlLog;
             disposedValue = false;
         }

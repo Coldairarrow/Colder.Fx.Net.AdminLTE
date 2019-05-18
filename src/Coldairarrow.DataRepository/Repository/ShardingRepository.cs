@@ -39,10 +39,11 @@ namespace Coldairarrow.DataRepository
         private void WriteTable<T>(List<T> entities, Action<object, IRepository> accessData)
         {
             var mapConfigs = GetMapConfigs(entities);
-            using (DistributedTransaction transaction = new DistributedTransaction(mapConfigs.Select(x => x.targetDb).ToArray()))
-            {
-                transaction.BeginTransaction();
 
+            var dbs = mapConfigs.Select(x => x.targetDb).ToArray();
+            DistributedTransaction transaction = new DistributedTransaction(dbs);
+            using (transaction.BeginTransaction())
+            {
                 mapConfigs.ForEach(aConfig =>
                 {
                     accessData(aConfig.targetObj, aConfig.targetDb);
