@@ -30,7 +30,7 @@ namespace Coldairarrow.DataRepository
 
         #region 内部成员
 
-        private List<IRepository> _repositorys { get; }
+        private List<IRepository> _repositorys { get; } = new List<IRepository>();
         private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
         {
             List<Task> tasks = new List<Task>();

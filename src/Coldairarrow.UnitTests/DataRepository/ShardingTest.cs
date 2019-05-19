@@ -254,7 +254,6 @@ namespace Coldairarrow.UnitTests
                 {
                     _db.Insert(_newData);
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = Guid.NewGuid().ToSequentialGuid();
                     _db.Insert(newData2);
                     bool succcess = _db.EndTransaction().Success;
                     Assert.AreEqual(succcess, false);
