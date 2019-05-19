@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -42,8 +43,25 @@ namespace Coldairarrow.DataRepository
             var mapConfigs = GetMapConfigs(entities);
 
             var dbs = mapConfigs.Select(x => x.targetDb).ToArray();
-            DistributedTransaction transaction = new DistributedTransaction(dbs);
-            using (transaction.BeginTransaction())
+            if (!_openedTransaction)
+            {
+                DistributedTransaction transaction = new DistributedTransaction(dbs);
+                using (transaction.BeginTransaction())
+                {
+                    Run();
+                    var (Success, ex) = transaction.EndTransaction();
+                    if (!Success)
+                        throw ex;
+                }
+            }
+            else
+            {
+                _BeginTransactionAction(dbs);
+                _transaction.AddRepository(dbs);
+                Run();
+            }
+
+            void Run()
             {
                 List<Task> tasks = new List<Task>();
                 mapConfigs.ForEach(aConfig =>
@@ -54,10 +72,39 @@ namespace Coldairarrow.DataRepository
                     }));
                 });
                 Task.WaitAll(tasks.ToArray());
-                var (Success, ex) = transaction.EndTransaction();
+            }
+        }
+        private bool _openedTransaction { get; set; } = false;
+        private DistributedTransaction _transaction { get; set; }
+        private Action<IRepository[]> _BeginTransactionAction { get; set; }
+        private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
+        {
+            _openedTransaction = true;
+            _transaction = new DistributedTransaction();
 
-                if (!Success)
-                    throw ex;
+            _BeginTransactionAction = dbs =>
+            {
+                List<Task> tasks = new List<Task>();
+
+                dbs.ForEach(aDb =>
+                {
+                    tasks.Add(Task.Run(() =>
+                    {
+                        Begin(aDb);
+                    }));
+                });
+
+                Task.WaitAll(tasks.ToArray());
+            };
+
+            return this;
+
+            void Begin(ITransaction db)
+            {
+                if (isolationLevel == null)
+                    db.BeginTransaction();
+                else
+                    db.BeginTransaction(isolationLevel.Value);
             }
         }
 
@@ -97,16 +144,41 @@ namespace Coldairarrow.DataRepository
                 Db = DbFactory.GetRepository(x.conString, x.dbType),
                 TargetType = MapTable(typeof(T), x.tableName)
             }).ToList();
-            using (DistributedTransaction transaction = new DistributedTransaction(allDbs.Select(x => x.Db).ToArray()))
+
+            var dbs = allDbs.Select(x => x.Db).ToArray();
+
+            if (!_openedTransaction)
             {
-                transaction.BeginTransaction();
+                using (DistributedTransaction transaction = new DistributedTransaction(dbs))
+                {
+                    transaction.BeginTransaction();
 
-                allDbs.ForEach(x => x.Db.DeleteAll(x.TargetType));
+                    Run();
 
-                var (Success, ex) = transaction.EndTransaction();
+                    var (Success, ex) = transaction.EndTransaction();
 
-                if (!Success)
-                    throw ex;
+                    if (!Success)
+                        throw ex;
+                }
+            }
+            else
+            {
+                _BeginTransactionAction(dbs);
+                _transaction.AddRepository(dbs);
+                Run();
+            }
+
+            void Run()
+            {
+                List<Task> tasks = new List<Task>();
+                allDbs.ForEach(x =>
+                {
+                    tasks.Add(Task.Run(() =>
+                    {
+                        x.Db.DeleteAll(x.TargetType);
+                    }));
+                });
+                Task.WaitAll(tasks.ToArray());
             }
         }
 
@@ -215,6 +287,99 @@ namespace Coldairarrow.DataRepository
         public List<T> GetList<T>() where T : class, new()
         {
             return GetIShardingQueryable<T>().ToList();
+        }
+
+        #endregion
+
+        #region 事物处理
+
+        /// <summary>
+        /// 开始事物
+        /// </summary>
+        /// <returns></returns>
+        public ITransaction BeginTransaction()
+        {
+            return _BeginTransaction();
+        }
+
+        /// <summary>
+        /// 开始事物
+        /// 注:自定义事物级别
+        /// </summary>
+        /// <param name="isolationLevel">事物级别</param>
+        /// <returns></returns>
+        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
+        {
+            return _BeginTransaction(isolationLevel);
+        }
+
+        /// <summary>
+        /// 提交事物
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        public void CommitTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 回滚事物
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        public void RollbackTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 结束事物
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public (bool Success, Exception ex) EndTransaction()
+        {
+            return _transaction.EndTransaction();
+        }
+
+        public void CommitDb()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Dispose
+
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposedValue)
+                return;
+
+            if (disposing)
+            {
+                _transaction.Dispose();
+            }
+
+            _openedTransaction = false;
+            _BeginTransactionAction = null;
+
+            disposedValue = true;
+        }
+
+        ~ShardingRepository()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// 执行与释放或重置非托管资源关联的应用程序定义的任务。
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

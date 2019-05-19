@@ -7,7 +7,7 @@ namespace Coldairarrow.DataRepository
     /// <summary>
     /// 基数据仓储
     /// </summary>
-    public interface IBaseRepository
+    public interface IBaseRepository : ITransaction
     {
         #region 增加数据
 

@@ -19,10 +19,11 @@ namespace Coldairarrow.DataRepository
         /// <param name="repositories">其它数据仓储</param>
         public DistributedTransaction(params IRepository[] repositories)
         {
-            if (repositories == null || repositories.Length == 0)
-                throw new Exception("repositories不能为NULL且长度不为0");
+            if (repositories == null)
+                throw new Exception("repositories不能为NULL");
 
-            _repositorys = repositories.Distinct().ToList();
+            if (repositories.Length > 0)
+                _repositorys = repositories.Distinct().ToList();
         }
 
         #endregion
@@ -46,7 +47,7 @@ namespace Coldairarrow.DataRepository
 
             return this;
 
-            void Begin(IRepository db)
+            void Begin(ITransaction db)
             {
                 if (isolationLevel == null)
                     db.BeginTransaction();
@@ -54,25 +55,15 @@ namespace Coldairarrow.DataRepository
                     db.BeginTransaction(isolationLevel.Value);
             }
         }
-        
-        private void CommitDb()
-        {
-            List<Task> tasks = new List<Task>();
-
-            _repositorys.ForEach(x =>
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    x.CommitDb();
-                }));
-            });
-
-            Task.WaitAll(tasks.ToArray());
-        }
 
         #endregion
 
         #region 外部接口
+
+        public void AddRepository(params IRepository[] repositories)
+        {
+            _repositorys.AddRange(repositories.Distinct());
+        }
 
         /// <summary>
         /// 开始事物
@@ -98,6 +89,9 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public (bool Success, Exception ex) EndTransaction()
         {
+            if (_repositorys.Count == 0)
+                throw new Exception("IRepository数量不能为0");
+
             bool isOK = true;
             Exception resEx = null;
             try
@@ -117,6 +111,21 @@ namespace Coldairarrow.DataRepository
             }
 
             return (isOK, resEx);
+        }
+
+        public void CommitDb()
+        {
+            List<Task> tasks = new List<Task>();
+
+            _repositorys.ForEach(x =>
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    x.CommitDb();
+                }));
+            });
+
+            Task.WaitAll(tasks.ToArray());
         }
 
         /// <summary>

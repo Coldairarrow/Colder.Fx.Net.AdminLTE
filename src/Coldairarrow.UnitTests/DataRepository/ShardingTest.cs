@@ -240,5 +240,45 @@ namespace Coldairarrow.UnitTests
                 Assert.AreEqual(local, db);
             })();
         }
+
+        /// <summary>
+        /// 事务提交测试（单库）
+        /// </summary>
+        [TestMethod]
+        public void TransactionTest()
+        {
+            //失败事务
+            new Action(() =>
+            {
+                using (var transaction = _db.BeginTransaction())
+                {
+                    _db.Insert(_newData);
+                    var newData2 = _newData.DeepClone();
+                    newData2.Id = Guid.NewGuid().ToSequentialGuid();
+                    _db.Insert(newData2);
+                    bool succcess = _db.EndTransaction().Success;
+                    Assert.AreEqual(succcess, false);
+                }
+            })();
+
+            //成功事务
+            new Action(() =>
+            {
+                _db.DeleteAll<Base_UnitTest>();
+                using (var transaction = _db.BeginTransaction())
+                {
+                    var newData = _newData.DeepClone();
+                    newData.Id = Guid.NewGuid().ToString();
+                    newData.UserId = Guid.NewGuid().ToSequentialGuid();
+                    newData.UserName = Guid.NewGuid().ToSequentialGuid();
+                    _db.Insert(_newData);
+                    _db.Insert(newData);
+                    bool succcess = _db.EndTransaction().Success;
+                    int count = _db.GetIShardingQueryable<Base_UnitTest>().Count();
+                    Assert.AreEqual(succcess, true);
+                    Assert.AreEqual(count, 2);
+                }
+            })();
+        }
     }
 }
