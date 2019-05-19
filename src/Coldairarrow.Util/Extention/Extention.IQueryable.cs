@@ -617,20 +617,10 @@ namespace Coldairarrow.Util
         {
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
-                if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
-                    return base.VisitMethodCall(node);
+                if (node.Method.Name == "Skip")
+                    return base.Visit(node.Arguments[0]);
 
-                if (node.Method.Name != "Skip")
-                    return new ConstantVisitor(node.Arguments[1] as ConstantExpression, Expression.Constant(0)).Visit(node);
-
-                //return Expression.Call(
-                //        typeof(Queryable),
-                //        node.Method.Name,
-                //        node.Method.GetGenericArguments(),
-                //        new Expression[] { node.Arguments[0], Expression.Constant(0) });
-
-                //eliminate the method call from the expression tree by returning the object of the call.
-                return base.Visit(node.Arguments[0]);
+                return node;
             }
         }
 
@@ -641,22 +631,10 @@ namespace Coldairarrow.Util
         {
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
-                if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
-                    return base.VisitMethodCall(node);
+                if (node.Method.Name == "Take")
+                    return base.Visit(node.Arguments[0]);
 
-                if (node.Method.Name != "Take")
-                {
-                    return new ConstantVisitor(node.Arguments[1] as ConstantExpression, Expression.Constant(0)).Visit(node);
-                    return Expression.Call(
-    typeof(Queryable),
-    node.Method.Name,
-    node.Method.GetGenericArguments(),
-    new Expression[] { node.Arguments[0], Expression.Constant(0) });
-
-                }
-
-                //eliminate the method call from the expression tree by returning the object of the call.
-                return base.Visit(node.Arguments[0]);
+                return node;
             }
         }
 
@@ -674,7 +652,7 @@ namespace Coldairarrow.Util
                 if (node == _oldConstant)
                     return _newConstant;
 
-                return base.VisitConstant(node);
+                return node;
             }
         }
 

@@ -10,10 +10,12 @@ namespace Coldairarrow.DataRepository
         List<T> ToList();
         int Count();
         IShardingQueryable<T> Where(Expression<Func<T, bool>> predicate);
+        IShardingQueryable<T> Where(string predicate, params object[] values);
         IShardingQueryable<T> Skip(int count);
         IShardingQueryable<T> Take(int count);
         IShardingQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector);
         IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector);
+        IShardingQueryable<T> OrderBy(string ordering, params object[] values);
         T FirstOrDefault();
         List<T> GetPagination(Pagination pagination);
         bool Any(Expression<Func<T, bool>> predicate);

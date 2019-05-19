@@ -26,6 +26,16 @@ namespace Coldairarrow.DataRepository
 
         #region 外部接口
 
+        public static void AddObserver(IRepositoryDbContext observer)
+        {
+            _observers.Add(observer);
+        }
+
+        public static void RemoveObserver(IRepositoryDbContext observer)
+        {
+            _observers.Remove(observer);
+        }
+
         /// <summary>
         /// 获取DbCompiledModel
         /// </summary>
@@ -52,31 +62,36 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         /// <param name="type">原类型</param>
         /// <returns></returns>
-        public static (bool needRefresh, Type model) GetModel(Type type)
+        public static Type GetModel(Type type)
         {
-            lock (_RefreshModelLock)
+            Type targetType = null;
+            bool needWrite = false;
+            string modelId = string.Empty;
+            using (_RefreshModelLock.Read())
             {
-                bool needRefresh = false;
-                Type targetType = null;
                 if (_modelTypes.Contains(type))
                     targetType = _modelTypes.Where(x => x == type).FirstOrDefault();
                 else
                 {
-                    string modelId = GetModelIdentity(type);
+                    modelId = GetModelIdentity(type);
                     if (_modelTypeMap.ContainsKey(modelId))
                         targetType = _modelTypeMap[modelId];
                     else
-                    {
-                        _modelTypes.Add(type);
-                        _modelTypeMap[modelId] = type;
-                        targetType = type;
-                        needRefresh = true;
-                        RefreshModel();
-                    }
+                        needWrite = true;
                 }
-
-                return (needRefresh, targetType);
             }
+            if (needWrite)
+            {
+                using (_RefreshModelLock.Write())
+                {
+                    _modelTypes.Add(type);
+                    _modelTypeMap[modelId] = type;
+                    targetType = type;
+                    RefreshModel();
+                }
+            }
+
+            return targetType;
         }
 
         #endregion
@@ -101,6 +116,7 @@ namespace Coldairarrow.DataRepository
                 _modelTypeMap[GetModelIdentity(aType)] = aType;
             });
         }
+        private static SynchronizedCollection<IRepositoryDbContext> _observers { get; } = new SynchronizedCollection<IRepositoryDbContext>();
         private static ConcurrentDictionary<string, Type> _modelTypeMap { get; } = new ConcurrentDictionary<string, Type>();
         private static SynchronizedCollection<Type> _modelTypes { get; } = new SynchronizedCollection<Type>();
         private static ConcurrentDictionary<string, DbCompiledModelInfo> _dbCompiledModel { get; } = new ConcurrentDictionary<string, DbCompiledModelInfo>();
@@ -151,14 +167,15 @@ namespace Coldairarrow.DataRepository
         {
             return $"{dbType.ToString()}{conStr}";
         }
-
-        private static object _RefreshModelLock { get; } = new object();
+        private static UsingLock<object> _RefreshModelLock { get; } = new UsingLock<object>();
         private static void RefreshModel()
         {
             _dbCompiledModel.Values.ForEach(aModelInfo =>
             {
                 aModelInfo.DbCompiledModel = BuildDbCompiledModelInfo(aModelInfo.ConStr, aModelInfo.DatabaseType).DbCompiledModel;
             });
+
+            _observers.ForEach(x => x.RefreshDb());
         }
 
         #endregion

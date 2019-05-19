@@ -17,5 +17,6 @@ namespace Coldairarrow.DataRepository
         Database Database { get; }
         Type CheckEntityType(Type entityType);
         void UseTransaction(DbTransaction transaction);
+        void RefreshDb();
     }
 }

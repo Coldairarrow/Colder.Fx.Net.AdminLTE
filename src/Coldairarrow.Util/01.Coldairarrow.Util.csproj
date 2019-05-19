@@ -218,6 +218,7 @@
     <Compile Include="ClassLibrary\Sockets\WebSocketConnection.cs" />
     <Compile Include="ClassLibrary\Sockets\WebSocketServer.cs" />
     <Compile Include="ClassLibrary\TaskQeury.cs" />
+    <Compile Include="ClassLibrary\UsingLock.cs" />
     <Compile Include="ClassLibrary\WcfMS\BaseWcfMSService.cs" />
     <Compile Include="ClassLibrary\WcfMS\IBaseWcfMSService.cs" />
     <Compile Include="ClassLibrary\WcfMS\WcfMSClient.cs" />

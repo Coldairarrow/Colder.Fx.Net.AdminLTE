@@ -43,7 +43,7 @@ namespace Coldairarrow.DataRepository
                 {
                     var targetTable = MapTable(_absTableType, aTable.tableName);
                     var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
-                    var newQ = _source.ChangeSource(targetIQ);
+                    var newQ = noPaginSource.ChangeSource(targetIQ);
                     var list = newQ
                         .CastToList<object>()
                         .Select(x => x.ChangeType<T>())
@@ -80,6 +80,12 @@ namespace Coldairarrow.DataRepository
 
             return this;
         }
+        public IShardingQueryable<T> Where(string predicate, params object[] values)
+        {
+            _source = _source.Where(predicate, values);
+
+            return this;
+        }
         public IShardingQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector)
         {
             _source = _source.OrderBy(keySelector);
@@ -89,6 +95,12 @@ namespace Coldairarrow.DataRepository
         public IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector)
         {
             _source = _source.OrderByDescending(keySelector);
+
+            return this;
+        }
+        public IShardingQueryable<T> OrderBy(string ordering, params object[] values)
+        {
+            _source = _source.OrderBy(ordering, values);
 
             return this;
         }

@@ -24,11 +24,25 @@ namespace Coldairarrow.DataRepository
             _conString = conString;
             _dbType = dbType;
             RefreshDb();
+            DbModelFactory.AddObserver(this);
         }
 
         #endregion
 
         #region 外部接口
+
+        public Action<string> HandleSqlLog { get; set; }
+
+        public void RefreshDb()
+        {
+            //重用DbConnection,使用底层相同的DbConnection,支持Model持热更新
+            DbConnection con = _db == null ? DbProviderFactoryHelper.GetDbConnection(_conString, _dbType) : _db.Database.Connection;
+            var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
+            _db = new BaseDbContext(con, dBCompiledModel);
+            _db.Database.UseTransaction(_transaction);
+            _db.Database.Log = HandleSqlLog;
+            disposedValue = false;
+        }
 
         public Database Database => _db.Database;
 
@@ -76,7 +90,6 @@ namespace Coldairarrow.DataRepository
         {
             return CheckModel(entityType);
         }
-        private DbTransaction _transaction { get; set; }
 
         public void UseTransaction(DbTransaction transaction)
         {
@@ -87,27 +100,15 @@ namespace Coldairarrow.DataRepository
 
         #region 私有成员
 
+        private DbTransaction _transaction { get; set; }
         private DbContext _db { get; set; }
         private DatabaseType _dbType { get; }
         private string _conString { get; }
-        public Action<string> HandleSqlLog { get; set; }
-        private void RefreshDb()
-        {
-            //重用DbConnection,使用底层相同的DbConnection,支持Model持热更新
-            DbConnection con = _db == null ? DbProviderFactoryHelper.GetDbConnection(_conString, _dbType) : _db.Database.Connection;
-            var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
-            _db = new BaseDbContext(con, dBCompiledModel);
-            _db.Database.UseTransaction(_transaction);
-            _db.Database.Log = HandleSqlLog;
-            disposedValue = false;
-        }
         private Type CheckModel(Type type)
         {
-            (bool needRefresh, Type model) model = DbModelFactory.GetModel(type);
-            if (model.needRefresh)
-                RefreshDb();
+            Type model = DbModelFactory.GetModel(type);
 
-            return model.model;
+            return model;
         }
 
         #endregion
@@ -124,7 +125,7 @@ namespace Coldairarrow.DataRepository
                 {
                     _db?.Dispose();
                 }
-
+                DbModelFactory.RemoveObserver(this);
                 disposedValue = true;
             }
         }

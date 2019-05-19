@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
@@ -44,11 +45,15 @@ namespace Coldairarrow.DataRepository
             DistributedTransaction transaction = new DistributedTransaction(dbs);
             using (transaction.BeginTransaction())
             {
+                List<Task> tasks = new List<Task>();
                 mapConfigs.ForEach(aConfig =>
                 {
-                    accessData(aConfig.targetObj, aConfig.targetDb);
+                    tasks.Add(Task.Run(() =>
+                    {
+                        accessData(aConfig.targetObj, aConfig.targetDb);
+                    }));
                 });
-
+                Task.WaitAll(tasks.ToArray());
                 var (Success, ex) = transaction.EndTransaction();
 
                 if (!Success)

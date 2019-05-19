@@ -2,8 +2,10 @@
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 
 namespace Coldairarrow.UnitTests
 {
@@ -164,28 +166,79 @@ namespace Coldairarrow.UnitTests
         [TestMethod]
         public void SearchTest()
         {
-            //GetList获取表的所有数据
-            _db.Insert(_insertList);
-            var dbList = _db.GetList<Base_UnitTest>();
-            Assert.AreEqual(_insertList.OrderBy(x => x.Id).ToJson(), dbList.OrderBy(x => x.Id).ToJson());
+            _db.Insert(_dataList);
 
-            //GetIQueryable获取实体对应的表，延迟加载，主要用于支持Linq查询操作
-            int count = _db.GetIShardingQueryable<Base_UnitTest>().Where(x => x.UserId == "Admin1").Count();
-            Assert.AreEqual(1, count);
+            //GetList获取表的所有数据
+            new Action(() =>
+            {
+                var local = _dataList.OrderBy(x=>x.Id).ToJson();
+                var db = _db.GetList<Base_UnitTest>().OrderBy(x => x.Id).ToJson();
+                Assert.AreEqual(local, db);
+            })();
 
             //GetIQPagination获取分页后的数据
-            Clear();
-            _db.Insert(_dataList);
-            Pagination pagination = new Pagination
+            new Action(() =>
             {
-                SortField = "Age",
-                SortType = "asc",
-                PageIndex = 2,
-                PageRows = 20
-            };
-            dbList = _db.GetIShardingQueryable<Base_UnitTest>().GetPagination(pagination);
-            var dataList = _dataList.GetPagination(pagination);
-            Assert.AreEqual(dbList.ToJson(), dataList.ToJson());
+                Pagination pagination = new Pagination
+                {
+                    SortField = "Age",
+                    SortType = "asc",
+                    PageIndex = 2,
+                    PageRows = 20
+                };
+
+                var local = _dataList.GetPagination(pagination).ToJson();
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().GetPagination(pagination).ToJson();
+                Assert.AreEqual(local, db);
+            })();
+
+            //Max
+            new Action(() =>
+            {
+                var local = _dataList.Max(x => x.Age);
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().Max(x => x.Age);
+                Assert.AreEqual(local, db);
+            })();
+
+            //Min
+            new Action(() =>
+            {
+                var local = _dataList.Min(x => x.Age);
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().Min(x => x.Age);
+                Assert.AreEqual(local, db);
+            })();
+
+            //Average
+            new Action(() =>
+            {
+                var local = _dataList.Average(x => x.Age);
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().Average(x => x.Age);
+                Assert.AreEqual(local, db);
+            })();
+
+            //Sum
+            new Action(() =>
+            {
+                var local = _dataList.Sum(x => x.Age);
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().Sum(x => x.Age);
+                Assert.AreEqual(local, db);
+            })();
+
+            //Any
+            new Action(() =>
+            {
+                var local = _dataList.Any(x => x.Age == 99);
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().Any(x => x.Age == 99);
+                Assert.AreEqual(local, db);
+            })();
+
+            //DynamicWhere
+            new Action(() =>
+            {
+                var local = _dataList.Where("Age > 50").Count();
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().Where("Age > 50").Count();
+                Assert.AreEqual(local, db);
+            })();
         }
     }
 }

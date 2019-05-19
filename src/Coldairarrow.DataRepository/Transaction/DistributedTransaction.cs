@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
@@ -29,6 +30,45 @@ namespace Coldairarrow.DataRepository
         #region 内部成员
 
         private List<IRepository> _repositorys { get; }
+        private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
+        {
+            List<Task> tasks = new List<Task>();
+
+            _repositorys.ForEach(x =>
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    Begin(x);
+                }));
+            });
+
+            Task.WaitAll(tasks.ToArray());
+
+            return this;
+
+            void Begin(IRepository db)
+            {
+                if (isolationLevel == null)
+                    db.BeginTransaction();
+                else
+                    db.BeginTransaction(isolationLevel.Value);
+            }
+        }
+        
+        private void CommitDb()
+        {
+            List<Task> tasks = new List<Task>();
+
+            _repositorys.ForEach(x =>
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    x.CommitDb();
+                }));
+            });
+
+            Task.WaitAll(tasks.ToArray());
+        }
 
         #endregion
 
@@ -39,9 +79,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public ITransaction BeginTransaction()
         {
-            _repositorys.ForEach(x => x.BeginTransaction());
-
-            return this;
+            return _BeginTransaction();
         }
 
         /// <summary>
@@ -51,9 +89,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="isolationLevel">事物级别</param>
         public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            _repositorys.ForEach(x => x.BeginTransaction(isolationLevel));
-
-            return this;
+            return _BeginTransaction(isolationLevel);
         }
 
         /// <summary>
@@ -66,7 +102,7 @@ namespace Coldairarrow.DataRepository
             Exception resEx = null;
             try
             {
-                _repositorys.ForEach(x => x.CommitDb());
+                CommitDb();
                 CommitTransaction();
             }
             catch (Exception ex)
@@ -88,7 +124,18 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void CommitTransaction()
         {
-            _repositorys.ForEach(x => x.CommitTransaction());
+            List<Task> tasks = new List<Task>();
+
+            _repositorys.ForEach(x =>
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    x.CommitTransaction();
+                }));
+            });
+
+            Task.WaitAll(tasks.ToArray());
+            //_repositorys.ForEach(x => x.CommitTransaction());
         }
 
         /// <summary>
@@ -96,7 +143,19 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void RollbackTransaction()
         {
-            _repositorys.ForEach(x => x.RollbackTransaction());
+            List<Task> tasks = new List<Task>();
+
+            _repositorys.ForEach(x =>
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    x.RollbackTransaction();
+                }));
+            });
+
+            Task.WaitAll(tasks.ToArray());
+
+            //_repositorys.ForEach(x => x.RollbackTransaction());
         }
 
         #endregion
