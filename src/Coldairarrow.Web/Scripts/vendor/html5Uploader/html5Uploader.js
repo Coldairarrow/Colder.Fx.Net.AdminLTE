@@ -14,7 +14,7 @@
             uploadLimit: 5,  //上传数量限制，0为不限
             sizeLimit: 5,    //大小限制，M
             postData: null,
-            type: 'image' //默认图片,file则为文件
+            type:'image' //默认图片,file则为文件
         };
         var imgItemHtml = [
             '<li class="up-pic">',
@@ -285,7 +285,7 @@
                 } else {
                     $imgItem.find("img").attr({ "src": fileData, "onload": loadimg });
 
-                    //播放剩下的进度条动画
+                     //播放剩下的进度条动画
                     $imgItem.find(".pos").animate({ width: "100%" }, 500, "linear", function () {
                         $imgItem.addClass("up-over");
 
@@ -390,11 +390,10 @@
                 $imgItem.find("img").attr({ "src": src, "onload": loadimg });
             } else {
                 $imgItem.find("img").css('display', 'none');
-                $imgItem.find('span').attr('data-href', src);
-                $imgItem.find('div a').css('display', 'block');
                 $imgItem.find('div a').attr('href', src);
                 $imgItem.find('div a').text(fileName);
             }
+            $imgItem.find('span').attr('data-src', src);
 
             uploadCountCheck();
         }
