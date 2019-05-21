@@ -43,7 +43,7 @@ namespace Coldairarrow.DataRepository
             DataTable dt = entities.ToDataTable();
             using (MySqlConnection conn = new MySqlConnection())
             {
-                conn.ConnectionString = _conString;
+                conn.ConnectionString = ConnectionString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();

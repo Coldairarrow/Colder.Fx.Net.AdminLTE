@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Coldairarrow.Util;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,12 +33,18 @@ namespace Coldairarrow.DataRepository
 
         #region 内部成员
 
-        private List<IRepository> _repositorys { get; } = new List<IRepository>();
-        private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
+        private IsolationLevel? _isolationLevel { get; set; }
+        private ConcurrentDictionary<string, DbTransaction> _transactionMap { get; } = new ConcurrentDictionary<string, DbTransaction>();
+        private string GetRepositoryId(IRepository repository)
+        {
+            return $"{repository.DbType.ToString()}{repository.ConnectionString}";
+        }
+        private List<IRepository> _repositorys { get; set; } = new List<IRepository>();
+        private void _BeginTransaction(params IRepository[] repositorys)
         {
             List<Task> tasks = new List<Task>();
 
-            _repositorys.ForEach(x =>
+            repositorys.ForEach(x =>
             {
                 tasks.Add(Task.Run(() =>
                 {
@@ -45,14 +54,21 @@ namespace Coldairarrow.DataRepository
 
             Task.WaitAll(tasks.ToArray());
 
-            return this;
-
-            void Begin(ITransaction db)
+            void Begin(IRepository db)
             {
-                if (isolationLevel == null)
-                    db.BeginTransaction();
+                //同一个数据库共享同一个事物
+                string id = GetRepositoryId(db);
+                if (_transactionMap.ContainsKey(id))
+                    db.UseTransaction(_transactionMap[id]);
                 else
-                    db.BeginTransaction(isolationLevel.Value);
+                {
+                    if (_isolationLevel == null)
+                        db.BeginTransaction();
+                    else
+                        db.BeginTransaction(_isolationLevel.Value);
+
+                    _transactionMap[id] = db.GetTransaction();
+                }
             }
         }
 
@@ -62,7 +78,11 @@ namespace Coldairarrow.DataRepository
 
         public void AddRepository(params IRepository[] repositories)
         {
-            _repositorys.AddRange(repositories.Distinct());
+            var newRepositories = repositories.Distinct();
+            _repositorys.AddRange(newRepositories);
+            _repositorys = _repositorys.Distinct().ToList();
+
+            _BeginTransaction(newRepositories.ToArray());
         }
 
         /// <summary>
@@ -70,7 +90,9 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public ITransaction BeginTransaction()
         {
-            return _BeginTransaction();
+            _BeginTransaction(_repositorys.ToArray());
+
+            return this;
         }
 
         /// <summary>
@@ -80,7 +102,10 @@ namespace Coldairarrow.DataRepository
         /// <param name="isolationLevel">事物级别</param>
         public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            return _BeginTransaction(isolationLevel);
+            _isolationLevel = isolationLevel;
+            _BeginTransaction(_repositorys.ToArray());
+
+            return this;
         }
 
         /// <summary>
@@ -115,17 +140,18 @@ namespace Coldairarrow.DataRepository
 
         public void CommitDb()
         {
-            List<Task> tasks = new List<Task>();
+            //List<Task> tasks = new List<Task>();
 
-            _repositorys.ForEach(x =>
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    x.CommitDb();
-                }));
-            });
+            //_repositorys.ForEach(x =>
+            //{
+            //    tasks.Add(Task.Run(() =>
+            //    {
+            //        x.CommitDb();
+            //    }));
+            //});
 
-            Task.WaitAll(tasks.ToArray());
+            //Task.WaitAll(tasks.ToArray());
+            _repositorys.ForEach(x => x.CommitDb());
         }
 
         /// <summary>
@@ -133,18 +159,18 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void CommitTransaction()
         {
-            List<Task> tasks = new List<Task>();
+            //List<Task> tasks = new List<Task>();
 
-            _repositorys.ForEach(x =>
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    x.CommitTransaction();
-                }));
-            });
+            //_repositorys.ForEach(x =>
+            //{
+            //    tasks.Add(Task.Run(() =>
+            //    {
+            //        x.CommitTransaction();
+            //    }));
+            //});
 
-            Task.WaitAll(tasks.ToArray());
-            //_repositorys.ForEach(x => x.CommitTransaction());
+            //Task.WaitAll(tasks.ToArray());
+            _transactionMap.Values.ForEach(x => x.Commit());
         }
 
         /// <summary>
@@ -152,19 +178,19 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void RollbackTransaction()
         {
-            List<Task> tasks = new List<Task>();
+            //List<Task> tasks = new List<Task>();
 
-            _repositorys.ForEach(x =>
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    x.RollbackTransaction();
-                }));
-            });
+            //_repositorys.ForEach(x =>
+            //{
+            //    tasks.Add(Task.Run(() =>
+            //    {
+            //        x.RollbackTransaction();
+            //    }));
+            //});
 
-            Task.WaitAll(tasks.ToArray());
+            //Task.WaitAll(tasks.ToArray());
 
-            //_repositorys.ForEach(x => x.RollbackTransaction());
+            _transactionMap.Values.ForEach(x => x.Rollback());
         }
 
         #endregion

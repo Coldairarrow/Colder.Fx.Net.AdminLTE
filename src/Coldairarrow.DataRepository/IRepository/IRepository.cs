@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Coldairarrow.Util;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -10,7 +11,7 @@ namespace Coldairarrow.DataRepository
 {
     public interface IRepository : IBaseRepository, ITransaction, IDisposable
     {
-        #region 数据库连接相关方法
+        #region 数据库相关
 
         /// <summary>
         /// 获取DbContext
@@ -30,6 +31,28 @@ namespace Coldairarrow.DataRepository
         /// 提交到数据库
         /// </summary>
         void CommitDb();
+
+        /// <summary>
+        /// 连接字符串
+        /// </summary>
+        string ConnectionString { get; }
+
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
+        DatabaseType DbType { get; }
+
+        /// <summary>
+        /// 使用已存在的事物
+        /// </summary>
+        /// <param name="transaction">事物对象</param>
+        void UseTransaction(DbTransaction transaction);
+
+        /// <summary>
+        /// 获取事物对象
+        /// </summary>
+        /// <returns></returns>
+        DbTransaction GetTransaction();
 
         #endregion
 

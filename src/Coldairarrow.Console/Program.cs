@@ -46,7 +46,21 @@ namespace Coldairarrow.Console1
         static void Main(string[] args)
         {
             //ShardingTest();
-
+            var db = DbFactory.GetRepository();
+            Base_UnitTest _newData = new Base_UnitTest
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = GuidHelper.GenerateKey(),
+                UserName = "超级管理员",
+                Age = 22
+            };
+            using (db.BeginTransaction())
+            {
+                db.Insert(_newData);
+                db.Insert(_newData.DeepClone());
+                var (Success, ex) = db.EndTransaction();
+                string str = string.Empty;
+            }
             Console.WriteLine("完成");
             Console.ReadLine();
         }

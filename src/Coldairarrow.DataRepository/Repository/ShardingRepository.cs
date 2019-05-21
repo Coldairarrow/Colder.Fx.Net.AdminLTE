@@ -56,7 +56,6 @@ namespace Coldairarrow.DataRepository
             }
             else
             {
-                _BeginTransactionAction(dbs);
                 _transaction.AddRepository(dbs);
                 Run();
             }
@@ -76,36 +75,16 @@ namespace Coldairarrow.DataRepository
         }
         private bool _openedTransaction { get; set; } = false;
         private DistributedTransaction _transaction { get; set; }
-        private Action<IRepository[]> _BeginTransactionAction { get; set; }
         private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
         {
             _openedTransaction = true;
             _transaction = new DistributedTransaction();
+            if (isolationLevel == null)
+                _transaction.BeginTransaction();
+            else
+                _transaction.BeginTransaction(isolationLevel.Value);
 
-            _BeginTransactionAction = dbs =>
-            {
-                List<Task> tasks = new List<Task>();
-
-                dbs.ForEach(aDb =>
-                {
-                    tasks.Add(Task.Run(() =>
-                    {
-                        Begin(aDb);
-                    }));
-                });
-
-                Task.WaitAll(tasks.ToArray());
-            };
-
-            return this;
-
-            void Begin(ITransaction db)
-            {
-                if (isolationLevel == null)
-                    db.BeginTransaction();
-                else
-                    db.BeginTransaction(isolationLevel.Value);
-            }
+            return _transaction;
         }
 
         #endregion
@@ -163,7 +142,6 @@ namespace Coldairarrow.DataRepository
             }
             else
             {
-                _BeginTransactionAction(dbs);
                 _transaction.AddRepository(dbs);
                 Run();
             }
@@ -363,7 +341,6 @@ namespace Coldairarrow.DataRepository
             }
 
             _openedTransaction = false;
-            _BeginTransactionAction = null;
 
             disposedValue = true;
         }

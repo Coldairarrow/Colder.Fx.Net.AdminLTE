@@ -29,8 +29,8 @@ namespace Coldairarrow.DataRepository
         /// <param name="dbType">数据库类型</param>
         public DbRepository(string conString, DatabaseType dbType, string entityNamespace)
         {
-            _conString = conString;
-            _dbType = dbType;
+            ConnectionString = conString;
+            DbType = dbType;
             _entityNamespace = entityNamespace;
         }
 
@@ -44,7 +44,7 @@ namespace Coldairarrow.DataRepository
             {
                 if (_disposed || _db == null)
                 {
-                    _db = DbFactory.GetDbContext(_conString, _dbType, _entityNamespace);
+                    _db = DbFactory.GetDbContext(ConnectionString, DbType, _entityNamespace);
                     _db.HandleSqlLog = HandleSqlLog;
                     _disposed = false;
                 }
@@ -57,9 +57,7 @@ namespace Coldairarrow.DataRepository
             }
         }
         private IRepositoryDbContext _db { get; set; }
-        protected string _conString { get; set; }
-        protected DatabaseType _dbType { get; set; }
-        private string _entityNamespace { get; set; }
+        private string _entityNamespace { get; }
         protected bool _disposed { get; set; }
         protected DbTransaction _transaction { get; set; }
         protected static PropertyInfo GetKeyProperty(Type type)
@@ -175,7 +173,17 @@ namespace Coldairarrow.DataRepository
 
         #endregion
 
-        #region 数据库连接相关方法
+        #region 数据库相关
+
+        /// <summary>
+        /// 连接字符串
+        /// </summary>
+        public string ConnectionString { get; }
+
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
+        public DatabaseType DbType { get; }
 
         /// <summary>
         /// 提交到数据库
@@ -218,6 +226,28 @@ namespace Coldairarrow.DataRepository
         /// The handle SQL log.
         /// </value>
         public Action<string> HandleSqlLog { get; set; }
+
+        /// <summary>
+        /// 使用已存在的事物
+        /// </summary>
+        /// <param name="transaction">事物对象</param>
+        public void UseTransaction(DbTransaction transaction)
+        {
+            if (_transaction != null)
+                _transaction.Dispose();
+
+            _transaction = transaction;
+            Db.UseTransaction(transaction);
+        }
+
+        /// <summary>
+        /// 获取事物对象
+        /// </summary>
+        /// <returns></returns>
+        public DbTransaction GetTransaction()
+        {
+            return _transaction;
+        }
 
         #endregion
 
@@ -583,7 +613,7 @@ namespace Coldairarrow.DataRepository
             DbProviderFactory dbProviderFactory = DbProviderFactories.GetFactory(Db.Database.Connection);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
-                conn.ConnectionString = _conString;
+                conn.ConnectionString = ConnectionString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();

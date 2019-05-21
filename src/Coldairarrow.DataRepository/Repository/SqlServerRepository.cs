@@ -55,7 +55,7 @@ namespace Coldairarrow.DataRepository
         {
             using (SqlConnection conn = new SqlConnection())
             {
-                conn.ConnectionString = _conString;
+                conn.ConnectionString = ConnectionString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();
@@ -104,7 +104,7 @@ namespace Coldairarrow.DataRepository
 
             objectQuery.Parameters.ToList().ForEach(aParamter =>
             {
-                var parameter = DbProviderFactoryHelper.GetDbParameter(_dbType);
+                var parameter = DbProviderFactoryHelper.GetDbParameter(DbType);
                 parameter.ParameterName = aParamter.Name;
                 parameter.Value = aParamter.Value ?? DBNull.Value;
 
