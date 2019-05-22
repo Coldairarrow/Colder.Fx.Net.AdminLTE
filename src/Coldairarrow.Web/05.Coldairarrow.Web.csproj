@@ -1426,6 +1426,7 @@
     <Content Include="Views\Home\Login_VerifyCode.cshtml" />
     <Content Include="Scripts\vendor\FileSaver\FileSaver.min.js.map" />
     <Content Include="Views\Demo\DownloadFile.cshtml" />
+    <Content Include="Views\Demo\SelectSearch.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

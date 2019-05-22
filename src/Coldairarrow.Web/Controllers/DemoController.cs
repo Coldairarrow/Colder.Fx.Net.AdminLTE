@@ -1,4 +1,5 @@
-﻿using Coldairarrow.Util;
+﻿using Coldairarrow.Business.Base_SysManage;
+using Coldairarrow.Util;
 using System.IO;
 using System.Web.Mvc;
 
@@ -34,6 +35,11 @@ namespace Coldairarrow.Web.Controllers
         }
 
         public ActionResult DownloadFile()
+        {
+            return View();
+        }
+
+        public ActionResult SelectSearch()
         {
             return View();
         }
