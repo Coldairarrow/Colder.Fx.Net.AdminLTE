@@ -46,13 +46,8 @@ namespace Coldairarrow.DataRepository
 
             repositorys.ForEach(x =>
             {
-                tasks.Add(Task.Run(() =>
-                {
-                    Begin(x);
-                }));
+                Begin(x);
             });
-
-            Task.WaitAll(tasks.ToArray());
 
             void Begin(IRepository db)
             {
@@ -140,17 +135,6 @@ namespace Coldairarrow.DataRepository
 
         public void CommitDb()
         {
-            //List<Task> tasks = new List<Task>();
-
-            //_repositorys.ForEach(x =>
-            //{
-            //    tasks.Add(Task.Run(() =>
-            //    {
-            //        x.CommitDb();
-            //    }));
-            //});
-
-            //Task.WaitAll(tasks.ToArray());
             _repositorys.ForEach(x => x.CommitDb());
         }
 
@@ -159,17 +143,6 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void CommitTransaction()
         {
-            //List<Task> tasks = new List<Task>();
-
-            //_repositorys.ForEach(x =>
-            //{
-            //    tasks.Add(Task.Run(() =>
-            //    {
-            //        x.CommitTransaction();
-            //    }));
-            //});
-
-            //Task.WaitAll(tasks.ToArray());
             _transactionMap.Values.ForEach(x => x.Commit());
         }
 
@@ -178,18 +151,6 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void RollbackTransaction()
         {
-            //List<Task> tasks = new List<Task>();
-
-            //_repositorys.ForEach(x =>
-            //{
-            //    tasks.Add(Task.Run(() =>
-            //    {
-            //        x.RollbackTransaction();
-            //    }));
-            //});
-
-            //Task.WaitAll(tasks.ToArray());
-
             _transactionMap.Values.ForEach(x => x.Rollback());
         }
 

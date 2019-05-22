@@ -36,7 +36,12 @@ namespace Coldairarrow.DataRepository
         public void RefreshDb()
         {
             //重用DbConnection,使用底层相同的DbConnection,支持Model持热更新
-            DbConnection con = _db == null ? DbProviderFactoryHelper.GetDbConnection(_conString, _dbType) : _db.Database.Connection;
+            DbConnection con = null;
+            if (_transaction != null)
+                con = _transaction.Connection;
+            else
+                con = _db?.Database?.Connection ?? DbProviderFactoryHelper.GetDbConnection(_conString, _dbType);
+
             var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
             _db = new BaseDbContext(con, dBCompiledModel);
             _db.Database.UseTransaction(_transaction);
@@ -93,7 +98,18 @@ namespace Coldairarrow.DataRepository
 
         public void UseTransaction(DbTransaction transaction)
         {
-            _transaction = transaction;
+            if (_transaction == transaction)
+                return;
+
+            if (_transaction == null && _db.Database.Connection == transaction.Connection)
+            {
+                _transaction = transaction;
+            }
+            if (_transaction == null && _db.Database.Connection != transaction.Connection)
+            {
+                _transaction = transaction;
+                RefreshDb();
+            }
         }
 
         #endregion
@@ -125,6 +141,7 @@ namespace Coldairarrow.DataRepository
                 {
                     _db?.Dispose();
                 }
+                _transaction = null;
                 DbModelFactory.RemoveObserver(this);
                 disposedValue = true;
             }

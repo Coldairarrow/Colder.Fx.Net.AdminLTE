@@ -117,6 +117,7 @@ namespace Coldairarrow.DataRepository
                 _transaction = Db.Database.BeginTransaction().UnderlyingTransaction;
             else
                 _transaction = Db.Database.BeginTransaction(isolationLevel.Value).UnderlyingTransaction;
+
             Db.UseTransaction(_transaction);
 
             return this;
@@ -236,6 +237,7 @@ namespace Coldairarrow.DataRepository
             if (_transaction != null)
                 _transaction.Dispose();
 
+            _openedTransaction = true;
             _transaction = transaction;
             Db.UseTransaction(transaction);
         }

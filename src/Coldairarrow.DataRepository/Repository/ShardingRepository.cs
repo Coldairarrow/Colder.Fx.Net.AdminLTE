@@ -277,7 +277,9 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public ITransaction BeginTransaction()
         {
-            return _BeginTransaction();
+            _BeginTransaction();
+
+            return this;
         }
 
         /// <summary>
@@ -288,7 +290,9 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            return _BeginTransaction(isolationLevel);
+            _BeginTransaction(isolationLevel);
+
+            return this;
         }
 
         /// <summary>
@@ -316,6 +320,8 @@ namespace Coldairarrow.DataRepository
         /// <exception cref="NotImplementedException"></exception>
         public (bool Success, Exception ex) EndTransaction()
         {
+            _openedTransaction = false;
+
             return _transaction.EndTransaction();
         }
 

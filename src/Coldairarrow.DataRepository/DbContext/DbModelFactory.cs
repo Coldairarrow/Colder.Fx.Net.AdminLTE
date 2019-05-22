@@ -9,7 +9,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Coldairarrow.DataRepository
 {
@@ -50,9 +49,7 @@ namespace Coldairarrow.DataRepository
             else
             {
                 var theModelInfo = BuildDbCompiledModelInfo(conStr, dbType);
-
                 _dbCompiledModel[modelInfoId] = theModelInfo;
-
                 return theModelInfo.DbCompiledModel;
             }
         }
@@ -64,34 +61,17 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public static Type GetModel(Type type)
         {
-            Type targetType = null;
-            bool needWrite = false;
-            string modelId = string.Empty;
-            using (_RefreshModelLock.Read())
-            {
-                if (_modelTypes.Contains(type))
-                    targetType = _modelTypes.Where(x => x == type).FirstOrDefault();
-                else
-                {
-                    modelId = GetModelIdentity(type);
-                    if (_modelTypeMap.ContainsKey(modelId))
-                        targetType = _modelTypeMap[modelId];
-                    else
-                        needWrite = true;
-                }
-            }
-            if (needWrite)
-            {
-                using (_RefreshModelLock.Write())
-                {
-                    _modelTypes.Add(type);
-                    _modelTypeMap[modelId] = type;
-                    targetType = type;
-                    RefreshModel();
-                }
-            }
+            string modelName = type.Name;
 
-            return targetType;
+            if (_modelTypeMap.ContainsKey(modelName))
+                return _modelTypeMap[modelName];
+            else
+            {
+                _modelTypeMap[modelName] = type;
+                RefreshModel();
+
+                return type;
+            }
         }
 
         #endregion
@@ -112,62 +92,51 @@ namespace Coldairarrow.DataRepository
 
             types.ForEach(aType =>
             {
-                _modelTypes.Add(aType);
-                _modelTypeMap[GetModelIdentity(aType)] = aType;
+                _modelTypeMap[aType.Name] = aType;
             });
         }
         private static SynchronizedCollection<IRepositoryDbContext> _observers { get; } = new SynchronizedCollection<IRepositoryDbContext>();
         private static ConcurrentDictionary<string, Type> _modelTypeMap { get; } = new ConcurrentDictionary<string, Type>();
-        private static SynchronizedCollection<Type> _modelTypes { get; } = new SynchronizedCollection<Type>();
         private static ConcurrentDictionary<string, DbCompiledModelInfo> _dbCompiledModel { get; } = new ConcurrentDictionary<string, DbCompiledModelInfo>();
         private static DbCompiledModelInfo BuildDbCompiledModelInfo(string nameOrConStr, DatabaseType dbType)
         {
-            DbConnection connection = DbProviderFactoryHelper.GetDbConnection(nameOrConStr, dbType);
-            DbModelBuilder modelBuilder = new DbModelBuilder(DbModelBuilderVersion.Latest);
-            modelBuilder.HasDefaultSchema(GetSchema());
-            var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
-            _modelTypes.ToList().ForEach(aModel =>
+            lock (_buildCompiledModelLock)
             {
-                entityMethod.MakeGenericMethod(aModel).Invoke(modelBuilder, null);
-            });
-
-            var theModel = modelBuilder.Build(connection).Compile();
-            DbCompiledModelInfo info = new DbCompiledModelInfo
-            {
-                ConStr = connection.ConnectionString,
-                DatabaseType = dbType,
-                DbCompiledModel = theModel
-            };
-
-            return info;
-
-            string GetSchema()
-            {
-                switch (dbType)
+                DbConnection connection = DbProviderFactoryHelper.GetDbConnection(nameOrConStr, dbType);
+                DbModelBuilder modelBuilder = new DbModelBuilder(DbModelBuilderVersion.Latest);
+                modelBuilder.HasDefaultSchema(GetSchema());
+                var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
+                _modelTypeMap.Values.ToList().ForEach(aModel =>
                 {
-                    case DatabaseType.SqlServer: return "dbo";
-                    case DatabaseType.MySql: case DatabaseType.PostgreSql: return "public";
-                    case DatabaseType.Oracle: return new OracleConnectionStringBuilder(connection.ConnectionString).UserID; ;
-                    default: return "dbo";
+                    entityMethod.MakeGenericMethod(aModel).Invoke(modelBuilder, null);
+                });
+                var theModel = modelBuilder.Build(connection).Compile();
+                DbCompiledModelInfo info = new DbCompiledModelInfo
+                {
+                    ConStr = connection.ConnectionString,
+                    DatabaseType = dbType,
+                    DbCompiledModel = theModel
+                };
+
+                return info;
+
+                string GetSchema()
+                {
+                    switch (dbType)
+                    {
+                        case DatabaseType.SqlServer: return "dbo";
+                        case DatabaseType.MySql: case DatabaseType.PostgreSql: return "public";
+                        case DatabaseType.Oracle: return new OracleConnectionStringBuilder(connection.ConnectionString).UserID; ;
+                        default: return "dbo";
+                    }
                 }
             }
-        }
-        private static string GetModelIdentity(Type type)
-        {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(type.Name);
-            type.GetProperties().OrderBy(x => x.Name).ForEach(aProperty =>
-            {
-                builder.Append($"{aProperty.Name}{aProperty.PropertyType.FullName}");
-            });
-
-            return builder.ToString();
         }
         private static string GetCompiledModelIdentity(string conStr, DatabaseType dbType)
         {
             return $"{dbType.ToString()}{conStr}";
         }
-        private static UsingLock<object> _RefreshModelLock { get; } = new UsingLock<object>();
+        private static object _buildCompiledModelLock { get; } = new object();
         private static void RefreshModel()
         {
             _dbCompiledModel.Values.ForEach(aModelInfo =>
