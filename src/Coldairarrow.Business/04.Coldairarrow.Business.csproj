@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
@@ -55,6 +58,9 @@
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.1\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil, Version=0.10.1.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.10.1\lib\net40\Mono.Cecil.dll</HintPath>
@@ -128,20 +134,21 @@
     <Compile Include="00Cache\BaseCache\BaseCache.T.cs" />
     <Compile Include="00Cache\BaseCache\IBaseCache.T.cs" />
     <Compile Include="00Cache\Base_UserModelCache.cs" />
-    <Compile Include="BaseBusiness\BaseBusiness.T.cs" />
-    <Compile Include="BaseBusiness\IBaseBusiness.T.cs" />
-    <Compile Include="Base_SysManage\Base_AppSecretBusiness.cs" />
-    <Compile Include="Base_SysManage\Base_DatabaseLinkBusiness.cs" />
-    <Compile Include="Base_SysManage\Base_SysLogBusiness.cs" />
-    <Compile Include="Base_SysManage\Base_SysRoleBusiness.cs" />
-    <Compile Include="Base_SysManage\Base_UserBusiness.cs" />
-    <Compile Include="Base_SysManage\CheckSignBusiness.cs" />
-    <Compile Include="Base_SysManage\HomeBusiness.cs" />
-    <Compile Include="Base_SysManage\PermissionManage.cs" />
-    <Compile Include="Base_SysManage\RapidDevelopmentBusiness.cs" />
-    <Compile Include="Base_SysManage\UrlPermissionManage.cs" />
+    <Compile Include="Business\BaseBusiness.T.cs" />
+    <Compile Include="IBusiness\IBaseBusiness.T.cs" />
+    <Compile Include="Business\Base_SysManage\Base_AppSecretBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\Base_DatabaseLinkBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\Base_SysLogBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\Base_SysRoleBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\Base_UserBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\CheckSignBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\HomeBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\PermissionManage.cs" />
+    <Compile Include="Business\Base_SysManage\RapidDevelopmentBusiness.cs" />
+    <Compile Include="Business\Base_SysManage\UrlPermissionManage.cs" />
     <Compile Include="Common\BusHelper.cs" />
     <Compile Include="Common\Operator.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IHomeBusiness.cs" />
     <Compile Include="Logger\ElasticSearchLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LoggerFactory.cs" />

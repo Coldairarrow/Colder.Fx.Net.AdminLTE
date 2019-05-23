@@ -1,4 +1,4 @@
-﻿using Coldairarrow.Business.Base_SysManage;
+﻿using Coldairarrow.Business;
 using Coldairarrow.Business.Common;
 using Coldairarrow.Util;
 using System.Web.Mvc;
@@ -7,7 +7,12 @@ namespace Coldairarrow.Web
 {
     public class HomeController : BaseMvcController
     {
-        HomeBusiness _homeBus { get; } = new HomeBusiness();
+        public HomeController(IHomeBusiness homeBus)
+        {
+            _homeBus = homeBus;
+        }
+
+        IHomeBusiness _homeBus { get; }
 
         #region 视图功能
 
@@ -48,8 +53,6 @@ namespace Coldairarrow.Web
         #endregion
 
         #region 获取数据
-
-
 
         #endregion
 

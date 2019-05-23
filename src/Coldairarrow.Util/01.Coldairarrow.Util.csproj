@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Aspose.Cells.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="CommandLine, Version=2.3.0.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.2.3.0\lib\net45\CommandLine.dll</HintPath>
     </Reference>
@@ -191,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiSDK\CTCC_IOT_ApiSDK.cs" />
+    <Compile Include="Autofac\IDependency.cs" />
     <Compile Include="Cache\CacheHelper.cs" />
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Cache\RedisCache.cs" />

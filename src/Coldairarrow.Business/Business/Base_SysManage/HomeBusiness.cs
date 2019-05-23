@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class HomeBusiness:BaseBusiness<Base_User>
+    public class HomeBusiness : BaseBusiness<Base_User>, IHomeBusiness
     {
         public AjaxResult SubmitLogin(string userName, string password)
         {

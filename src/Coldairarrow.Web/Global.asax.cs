@@ -1,11 +1,15 @@
-﻿using AutoMapper;
+﻿using Autofac;
+using Autofac.Integration.Mvc;
+using AutoMapper;
 using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Compilation;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -26,6 +30,7 @@ namespace Coldairarrow.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
             InitAutoMapper();
+            InitAutofac();
             InitEF();
         }
 
@@ -50,6 +55,27 @@ namespace Coldairarrow.Web
                 var db = DbFactory.GetRepository();
                 db.GetIQueryable<Base_User>().ToList();
             });
+        }
+
+        private void InitAutofac()
+        {
+            var builder = new ContainerBuilder();
+
+            var baseType = typeof(IDependency);
+
+            //扫描IService和Service相关的程序集
+            var assemblys = BuildManager.GetReferencedAssemblies().Cast<Assembly>()
+                .Where(m => m.FullName.Contains("Coldairarrow")).ToList();
+
+            builder.RegisterControllers(assemblys.ToArray());
+
+            //自动注入
+            builder.RegisterAssemblyTypes(assemblys.ToArray())
+                   .Where(t => baseType.IsAssignableFrom(t) && t != baseType)
+                   .AsImplementedInterfaces()
+                   .InstancePerLifetimeScope();
+
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
         }
     }
 }
