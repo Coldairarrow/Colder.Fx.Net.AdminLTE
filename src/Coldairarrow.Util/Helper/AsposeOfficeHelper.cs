@@ -1,4 +1,5 @@
 ﻿using Aspose.Cells;
+using System;
 using System.Data;
 using System.IO;
 
@@ -10,11 +11,11 @@ namespace Coldairarrow.Util
     public class AsposeOfficeHelper
     {
         /// <summary>
-        /// 将DataTable输出为字节数组
+        /// 通过DataTable导出Excel
         /// </summary>
         /// <param name="dt">表格数据</param>
         /// <returns>Byte数组</returns>
-        public static byte[] DataTableToExcelBytes(DataTable dt)
+        public static byte[] ExportExcelByDataTable(DataTable dt)
         {
             Workbook book = new Workbook();
             Worksheet sheet = book.Worksheets[0];
@@ -40,9 +41,45 @@ namespace Coldairarrow.Util
             sheet.AutoFitRows();
 
             //将DataTable写入内存流
-            var ms = new MemoryStream();
-            book.Save(ms, SaveFormat.Excel97To2003);
-            return ms.ToArray();
+            using (var ms = new MemoryStream())
+            {
+                book.Save(ms, SaveFormat.Excel97To2003);
+                return ms.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 通过模板导出Excel
+        /// </summary>
+        /// <param name="templateFile">模板</param>
+        /// <param name="dataSource">数据源</param>
+        /// <returns>文件Byte[]</returns>
+        public static byte[] ExportExcelByTemplate(string templateFile, params (string SourceName, object Data)[] dataSource)
+        {
+            if (templateFile.IsNullOrEmpty())
+                throw new Exception("模板不能为空");
+            if (dataSource.Length == 0)
+                throw new Exception("数据源不能为空");
+
+            WorkbookDesigner designer = new WorkbookDesigner
+            {
+                Workbook = new Workbook(templateFile)
+            };
+            var workBook = designer.Workbook;
+
+            dataSource.ForEach(aDataSource =>
+            {
+                designer.SetDataSource(aDataSource.SourceName, aDataSource.Data);
+            });
+            designer.Process();
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                workBook.Save(stream, SaveFormat.Excel97To2003);
+                var fileBytes = stream.ToArray();
+
+                return fileBytes;
+            }
         }
 
         /// <summary>
