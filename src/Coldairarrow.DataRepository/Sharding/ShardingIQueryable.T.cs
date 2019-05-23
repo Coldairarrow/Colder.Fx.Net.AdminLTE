@@ -18,6 +18,7 @@ namespace Coldairarrow.DataRepository
             _transaction = transaction;
         }
         private DistributedTransaction _transaction { get; }
+        private bool _openTransaction { get => _transaction?.Disposed == false; }
         private Type _absTableType { get; }
         private string _absTableName { get; }
         private IQueryable<T> _source { get; set; }
@@ -39,26 +40,40 @@ namespace Coldairarrow.DataRepository
             //从各个分表获取数据
             var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
             List<Task<List<T>>> tasks = new List<Task<List<T>>>();
+            Dictionary<string, object> lockMap = new Dictionary<string, object>();
+            tables.GroupBy(x => x.conString)
+                .Select(x => x.Key)
+                .ForEach(x => lockMap.Add(x, new object()));
             tables.ForEach(aTable =>
             {
-                Task<List<T>> newTask = Task.Run(() =>
+                tasks.Add(Task.Run(() =>
                 {
                     var targetTable = MapTable(_absTableType, aTable.tableName);
                     var targetDb = DbFactory.GetRepository(aTable.conString, aTable.dbType);
-                    if (_transaction?.Disposed == false)
+                    if (_openTransaction)
                         _transaction.AddRepository(targetDb);
                     var targetIQ = targetDb.GetIQueryable(targetTable);
                     var newQ = noPaginSource.ChangeSource(targetIQ);
-                    var list = newQ
-                        .CastToList<object>()
-                        .Select(x => x.ChangeType<T>())
-                        .ToList();
+                    List<T> list = new List<T>();
+                    var theLock = lockMap[aTable.conString];
+                    if (_openTransaction)
+                        lock (theLock)
+                        {
+                            Run();
+                        }
+                    else
+                        Run();
 
                     return list;
-                });
-                tasks.Add(newTask);
-                if (_transaction?.Disposed == false)
-                    newTask.Wait();
+
+                    void Run()
+                    {
+                        list = newQ
+                            .CastToList<object>()
+                            .Select(x => x.ChangeType<T>())
+                            .ToList();
+                    }
+                }));
             });
             Task.WaitAll(tasks.ToArray());
             List<T> all = new List<T>();
