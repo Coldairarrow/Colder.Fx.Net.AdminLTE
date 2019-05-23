@@ -390,6 +390,7 @@
                 $imgItem.find("img").attr({ "src": src, "onload": loadimg });
             } else {
                 $imgItem.find("img").css('display', 'none');
+                $imgItem.find('div a').css('display', 'block');
                 $imgItem.find('div a').attr('href', src);
                 $imgItem.find('div a').text(fileName);
             }
