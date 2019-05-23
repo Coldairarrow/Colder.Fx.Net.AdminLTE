@@ -10,12 +10,14 @@ namespace Coldairarrow.DataRepository
 {
     public class ShardingQueryable<T> : IShardingQueryable<T> where T : class, new()
     {
-        public ShardingQueryable(IQueryable<T> source)
+        public ShardingQueryable(IQueryable<T> source, DistributedTransaction transaction = null)
         {
             _source = source;
             _absTableType = (_source.GetObjQuery() as IQueryable).ElementType;
             _absTableName = _absTableType.Name;
+            _transaction = transaction;
         }
+        private DistributedTransaction _transaction { get; }
         private Type _absTableType { get; }
         private string _absTableName { get; }
         private IQueryable<T> _source { get; set; }
@@ -39,10 +41,13 @@ namespace Coldairarrow.DataRepository
             List<Task<List<T>>> tasks = new List<Task<List<T>>>();
             tables.ForEach(aTable =>
             {
-                tasks.Add(Task.Run(() =>
+                Task<List<T>> newTask = Task.Run(() =>
                 {
                     var targetTable = MapTable(_absTableType, aTable.tableName);
-                    var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
+                    var targetDb = DbFactory.GetRepository(aTable.conString, aTable.dbType);
+                    if (_transaction?.Disposed == false)
+                        _transaction.AddRepository(targetDb);
+                    var targetIQ = targetDb.GetIQueryable(targetTable);
                     var newQ = noPaginSource.ChangeSource(targetIQ);
                     var list = newQ
                         .CastToList<object>()
@@ -50,7 +55,10 @@ namespace Coldairarrow.DataRepository
                         .ToList();
 
                     return list;
-                }));
+                });
+                tasks.Add(newTask);
+                if (_transaction?.Disposed == false)
+                    newTask.Wait();
             });
             Task.WaitAll(tasks.ToArray());
             List<T> all = new List<T>();

@@ -40,6 +40,7 @@ namespace Coldairarrow.DataRepository
             return $"{repository.DbType.ToString()}{repository.ConnectionString}";
         }
         private List<IRepository> _repositorys { get; set; } = new List<IRepository>();
+        private object _lock { get; } = new object();
         private void _BeginTransaction(params IRepository[] repositorys)
         {
             List<Task> tasks = new List<Task>();
@@ -51,18 +52,21 @@ namespace Coldairarrow.DataRepository
 
             void Begin(IRepository db)
             {
-                //同一个数据库共享同一个事物
-                string id = GetRepositoryId(db);
-                if (_transactionMap.ContainsKey(id))
-                    db.UseTransaction(_transactionMap[id]);
-                else
+                lock (_lock)
                 {
-                    if (_isolationLevel == null)
-                        db.BeginTransaction();
+                    //同一个数据库共享同一个事物
+                    string id = GetRepositoryId(db);
+                    if (_transactionMap.ContainsKey(id))
+                        db.UseTransaction(_transactionMap[id]);
                     else
-                        db.BeginTransaction(_isolationLevel.Value);
+                    {
+                        if (_isolationLevel == null)
+                            db.BeginTransaction();
+                        else
+                            db.BeginTransaction(_isolationLevel.Value);
 
-                    _transactionMap[id] = db.GetTransaction();
+                        _transactionMap[id] = db.GetTransaction();
+                    }
                 }
             }
         }
@@ -158,11 +162,11 @@ namespace Coldairarrow.DataRepository
 
         #region Dispose
 
-        private bool disposedValue = false;
+        public bool Disposed { get; set; } = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposedValue)
+            if (Disposed)
                 return;
 
             if (disposing)
@@ -170,7 +174,7 @@ namespace Coldairarrow.DataRepository
                 _repositorys.ForEach(x => x.Dispose());
             }
 
-            disposedValue = true;
+            Disposed = true;
         }
 
         ~DistributedTransaction()

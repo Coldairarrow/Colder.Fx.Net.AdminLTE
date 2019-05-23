@@ -254,7 +254,7 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         public IShardingQueryable<T> GetIShardingQueryable<T>() where T : class, new()
         {
-            return new ShardingQueryable<T>(_db.GetIQueryable<T>());
+            return new ShardingQueryable<T>(_db.GetIQueryable<T>(), _transaction);
         }
 
         /// <summary>

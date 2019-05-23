@@ -4,8 +4,10 @@ using Coldairarrow.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.UnitTests
 {
@@ -276,6 +278,35 @@ namespace Coldairarrow.UnitTests
                     int count = _db.GetIShardingQueryable<Base_UnitTest>().Count();
                     Assert.AreEqual(succcess, true);
                     Assert.AreEqual(count, 2);
+                }
+            })();
+
+            //隔离级别:RepeatableRead
+            new Action(() =>
+            {
+                Clear();
+                var db1 = DbFactory.GetShardingRepository();
+                var db2 = DbFactory.GetShardingRepository();
+                db1.Insert(_newData);
+                using (db1.BeginTransaction(IsolationLevel.RepeatableRead))
+                {
+                    //db1读=>db2写(阻塞)=>db1读=>db1提交
+                    var db1Data_1 = db1.GetIShardingQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
+
+                    var updateData = _newData.DeepClone();
+                    updateData.UserName = GuidHelper.GenerateKey();
+                    var task = Task.Run(() =>
+                    {
+                        db2.Update(updateData);
+                    });
+
+                    var db1Data_2 = db1.GetIShardingQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
+                    Assert.AreEqual(db1Data_1.ToJson(), db1Data_2.ToJson());
+
+                    db1.EndTransaction();
+                    task.Wait();
+                    var db1Data_3 = db1.GetIShardingQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
+                    Assert.AreEqual(updateData.ToJson(), db1Data_3.ToJson());
                 }
             })();
         }

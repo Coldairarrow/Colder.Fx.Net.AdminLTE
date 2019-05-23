@@ -29,6 +29,15 @@ namespace Coldairarrow.DataRepository
         }
 
         /// <summary>
+        /// 获取ShardingRepository
+        /// </summary>
+        /// <returns></returns>
+        public static IShardingRepository GetShardingRepository()
+        {
+            return new ShardingRepository(GetRepository());
+        }
+
+        /// <summary>
         /// 根据参数获取数据库的DbContext
         /// </summary>
         /// <param name="conString">初始化参数，可为连接字符串或者DbContext</param>

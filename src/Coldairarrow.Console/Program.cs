@@ -46,21 +46,46 @@ namespace Coldairarrow.Console1
         static void Main(string[] args)
         {
             //ShardingTest();
-            var db = DbFactory.GetRepository();
-            Base_UnitTest _newData = new Base_UnitTest
+            ShardingConfigBootstrapper
+                .Bootstrap()
+                //添加数据源
+                .AddDataSource("BaseDb", DatabaseType.SqlServer, dbBuilder =>
+                {
+                    //添加物理数据库
+                    dbBuilder.AddPhsicDb("BaseDb", ReadWriteType.Read);
+                    //添加物理数据库
+                    dbBuilder.AddPhsicDb("BaseDb1", ReadWriteType.ReadAndWrite);
+                })
+                //添加抽象数据库
+                .AddAbsDb("BaseDb", absTableBuilder =>
+                {
+                    //添加抽象数据表
+                    absTableBuilder.AddAbsTable("Base_UnitTest", tableBuilder =>
+                    {
+                        //添加物理数据表
+                        tableBuilder.AddPhsicTable("Base_UnitTest_0", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_UnitTest_1", "BaseDb");
+                        tableBuilder.AddPhsicTable("Base_UnitTest_2", "BaseDb");
+                    }, new ModShardingRule("Base_UnitTest", "Id", 3));
+                });
+            List<Base_UnitTest> insertList = new List<Base_UnitTest>();
+            for (int i = 1; i <= 100; i++)
             {
-                Id = Guid.NewGuid().ToString(),
-                UserId = GuidHelper.GenerateKey(),
-                UserName = "超级管理员",
-                Age = 22
-            };
-            using (db.BeginTransaction())
-            {
-                db.Insert(_newData);
-                db.Insert(_newData.DeepClone());
-                var (Success, ex) = db.EndTransaction();
-                string str = string.Empty;
+                Base_UnitTest newData = new Base_UnitTest
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Age = i,
+                    UserId = "Admin" + i,
+                    UserName = "超级管理员" + i
+                };
+                insertList.Add(newData);
             }
+
+            var db = DbFactory.GetShardingRepository();
+            //db.Insert(insertList);
+
+            var dbList = db.GetIShardingQueryable<Base_UnitTest>().ToList();
+
             Console.WriteLine("完成");
             Console.ReadLine();
         }
