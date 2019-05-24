@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.DataRepository;
+using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,7 @@ namespace Coldairarrow.Business
     /// </summary>
     /// <typeparam name="T">实体泛型</typeparam>
     /// <seealso cref="Coldairarrow.DataRepository.ITransaction" />
-    public interface IBaseBusiness<T> : ITransaction where T : class, new()
+    public interface IBaseBusiness<T> : ITransaction, IDependency where T : class, new()
     {
         #region 增加数据
 
@@ -183,6 +184,10 @@ namespace Coldairarrow.Business
         /// <param name="sql">SQL</param>
         /// <param name="spList">参数</param>
         void ExecuteSql(string sql, List<DbParameter> spList);
+
+        #endregion
+
+        #region 业务操作
 
         #endregion
     }

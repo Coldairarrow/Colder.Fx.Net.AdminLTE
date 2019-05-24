@@ -1,4 +1,4 @@
-﻿using Coldairarrow.Business.Common;
+﻿using Coldairarrow.Business;
 using Coldairarrow.Util;
 using System.Text;
 using System.Web.Mvc;
@@ -8,8 +8,15 @@ namespace Coldairarrow.Web
     /// <summary>
     /// 过滤处理全局错误信息
     /// </summary>
-    public class HandlerGlobalError : HandleErrorAttribute
+    public class HandlerGlobalError : HandleErrorAttribute, IDependency
     {
+        public HandlerGlobalError()
+        {
+            _busHelper = DependencyResolver.Current.GetService<IBusHelper>();
+        }
+
+        IBusHelper _busHelper { get; set; }
+
         /// <summary>
         /// 处理系统错误
         /// </summary>
@@ -22,7 +29,7 @@ namespace Coldairarrow.Web
             exContext.HttpContext.Response.StatusCode = 200;
 
             var theEx = exContext.Exception;
-            BusHelper.HandleException(theEx);
+            _busHelper.HandleException(theEx);
 
             AjaxResult res = new AjaxResult()
             {

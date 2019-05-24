@@ -1,14 +1,16 @@
 ﻿using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class RapidDevelopmentController : BaseMvcController
     {
-        RapidDevelopmentBusiness _rapidDevelopmentBus = new RapidDevelopmentBusiness();
+        public RapidDevelopmentController(IRapidDevelopmentBusiness rapidDevBus)
+        {
+            _rapidDevBus = rapidDevBus;
+        }
+        IRapidDevelopmentBusiness _rapidDevBus { get; }
 
         #region 视图功能
 
@@ -32,7 +34,7 @@ namespace Coldairarrow.Web
         /// <returns></returns>
         public ActionResult GetAllDbLink()
         {
-            var dataList = _rapidDevelopmentBus.GetAllDbLink();
+            var dataList = _rapidDevBus.GetAllDbLink();
 
             return Content(dataList.ToJson());
         }
@@ -51,7 +53,7 @@ namespace Coldairarrow.Web
                 RecordCount = int.MaxValue
             };
 
-            return Content(pagination.BuildTableResult_DataGrid(_rapidDevelopmentBus.GetDbTableList(linkId)).ToJson());
+            return Content(pagination.BuildTableResult_DataGrid(_rapidDevBus.GetDbTableList(linkId)).ToJson());
         }
 
         #endregion
@@ -67,7 +69,7 @@ namespace Coldairarrow.Web
         /// <param name="buildType">需要生成类型</param>
         public ActionResult BuildCode(string linkId, string areaName, string tables, string buildType)
         {
-            _rapidDevelopmentBus.BuildCode(linkId, areaName, tables, buildType);
+            _rapidDevBus.BuildCode(linkId, areaName, tables, buildType);
 
             return Success("生成成功！");
         }

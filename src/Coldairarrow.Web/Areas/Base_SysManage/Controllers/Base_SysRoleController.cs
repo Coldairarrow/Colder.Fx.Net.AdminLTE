@@ -4,11 +4,18 @@ using Coldairarrow.Util;
 using System;
 using System.Web.Mvc;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class Base_SysRoleController : BaseMvcController
     {
-        Base_SysRoleBusiness _base_SysRoleBusiness = new Base_SysRoleBusiness();
+        public Base_SysRoleController(IBase_SysRoleBusiness sysRoleBus, IPermissionManage permissionManage)
+        {
+            _sysRoleBus = sysRoleBus;
+            _permissionManage = permissionManage;
+        }
+
+        IBase_SysRoleBusiness _sysRoleBus { get; }
+        IPermissionManage _permissionManage { get; set; }
 
         #region 视图功能
 
@@ -19,7 +26,7 @@ namespace Coldairarrow.Web
 
         public ActionResult Form(string id)
         {
-            var theData = id.IsNullOrEmpty() ? new Base_SysRole() : _base_SysRoleBusiness.GetTheData(id);
+            var theData = id.IsNullOrEmpty() ? new Base_SysRole() : _sysRoleBus.GetTheData(id);
 
             return View(theData);
         }
@@ -43,7 +50,7 @@ namespace Coldairarrow.Web
         /// <returns></returns>
         public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
         {
-            var dataList = _base_SysRoleBusiness.GetDataList(condition, keyword, pagination);
+            var dataList = _sysRoleBus.GetDataList(condition, keyword, pagination);
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }
@@ -60,7 +67,7 @@ namespace Coldairarrow.Web
                 PageIndex = 1,
                 PageRows = int.MaxValue
             };
-            var dataList = _base_SysRoleBusiness.GetDataList(null, null, pagination);
+            var dataList = _sysRoleBus.GetDataList(null, null, pagination);
 
             return Content(dataList.ToJson());
         }
@@ -80,11 +87,11 @@ namespace Coldairarrow.Web
                 theData.Id = Guid.NewGuid().ToSequentialGuid();
                 theData.RoleId = Guid.NewGuid().ToSequentialGuid();
 
-                _base_SysRoleBusiness.AddData(theData);
+                _sysRoleBus.AddData(theData);
             }
             else
             {
-                _base_SysRoleBusiness.UpdateData(theData);
+                _sysRoleBus.UpdateData(theData);
             }
 
             return Success();
@@ -96,9 +103,9 @@ namespace Coldairarrow.Web
         /// <param name="theData">删除的数据</param>
         public ActionResult DeleteData(string ids)
         {
-            _base_SysRoleBusiness.DeleteData(ids.ToList<string>());
+            _sysRoleBus.DeleteData(ids.ToList<string>());
 
-            PermissionManage.ClearUserPermissionCache();
+            _permissionManage.ClearUserPermissionCache();
 
             return Success("删除成功！");
         }
@@ -109,9 +116,9 @@ namespace Coldairarrow.Web
         /// <param name="roleId">角色Id</param>
         /// <param name="permissions">权限值</param>
         /// <returns></returns>
-        public ActionResult SavePermission(string roleId,string permissions)
+        public ActionResult SavePermission(string roleId, string permissions)
         {
-            _base_SysRoleBusiness.SavePermission(roleId, permissions.ToList<string>());
+            _sysRoleBus.SavePermission(roleId, permissions.ToList<string>());
 
             return Success();
         }

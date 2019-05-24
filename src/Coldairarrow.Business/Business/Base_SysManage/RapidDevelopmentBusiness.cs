@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class RapidDevelopmentBusiness : BaseBusiness<Base_DatabaseLink>
+    public class RapidDevelopmentBusiness : BaseBusiness<Base_DatabaseLink>, IRapidDevelopmentBusiness
     {
         #region 外部接口
 
@@ -308,20 +308,20 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
                 {
                     //搜索的下拉选项
                     Type fieldType = _dbHelper.DbTypeStr_To_CsharpType(aField.Type);
-                if (fieldType == typeof(string))
-                {
-                    string newOption = $@"
+                    if (fieldType == typeof(string))
+                    {
+                        string newOption = $@"
                     <option value=""{aField.Name}"">{aField.Description}</option>";
-                    searchConditionSelectHtml.Append(newOption);
-                }
+                        searchConditionSelectHtml.Append(newOption);
+                    }
 
                     //数据表格列
-                string newCol =$@"
+                    string newCol = $@"
                 {{ title: '{aField.Description}', field: '{aField.Name}', width: '5%' }},";
-                tableColsBuilder.Append(newCol);
+                    tableColsBuilder.Append(newCol);
 
-                //Form页面中的Html
-                string newFormRow = $@"
+                    //Form页面中的Html
+                    string newFormRow = $@"
         <div class=""form-group form-group-sm"">
             <label class=""col-sm-2 control-label"">{aField.Description}</label>
             <div class=""col-sm-5"">
@@ -329,8 +329,8 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
                 <div class=""help-block with-errors""></div>
             </div>
         </div>";
-                formRowBuilder.Append(newFormRow);
-            });
+                    formRowBuilder.Append(newFormRow);
+                });
             string indexHtml =
 $@"@{{
     Layout = ""~/Views/Shared/_Layout_List.cshtml"";
@@ -479,7 +479,7 @@ $@"@{{
             FileHelper.WriteTxt(indexHtml, indexPath, FileMode.Create);
 
             //生成Form页面
-            string formHtml = 
+            string formHtml =
 $@"@using Coldairarrow.Entity.{areaName};
 @using Coldairarrow.Util;
 
@@ -549,7 +549,7 @@ $@"@using Coldairarrow.Entity.{areaName};
         private void BuildArea(string areaName)
         {
             //生成区域注册文件
-            string areaRegistrationCode = 
+            string areaRegistrationCode =
 $@"using System.Web.Mvc;
 
 namespace Coldairarrow.Web.Areas.{areaName}
@@ -576,11 +576,11 @@ namespace Coldairarrow.Web.Areas.{areaName}
 }}";
             string rootPath = AppDomain.CurrentDomain.BaseDirectory;
             string areaRegistrationPath = $@"{rootPath}Areas\{areaName}\{areaName}AreaRegistration.cs";
-            if(!FileHelper.Exists(areaRegistrationPath))
+            if (!FileHelper.Exists(areaRegistrationPath))
                 FileHelper.WriteTxt(areaRegistrationCode, areaRegistrationPath, FileMode.Create);
 
             //生成区域web.config
-            string webConfigCode = 
+            string webConfigCode =
 $@"<?xml version=""1.0""?>
 
 <configuration>
@@ -617,7 +617,7 @@ $@"<?xml version=""1.0""?>
 </configuration>";
             rootPath = AppDomain.CurrentDomain.BaseDirectory;
             string webConfigPath = $@"{rootPath}Areas\{areaName}\Views\web.config";
-            if(!FileHelper.Exists(webConfigPath))
+            if (!FileHelper.Exists(webConfigPath))
                 FileHelper.WriteTxt(webConfigCode, webConfigPath, FileMode.Create);
         }
 
@@ -647,7 +647,7 @@ $@"<?xml version=""1.0""?>
 
             return resObj;
         }
-        
+
         private DbHelper _dbHelper { get; set; }
 
         private Dictionary<string, DbTableInfo> _dbTableInfoDic { get; set; } = new Dictionary<string, DbTableInfo>();

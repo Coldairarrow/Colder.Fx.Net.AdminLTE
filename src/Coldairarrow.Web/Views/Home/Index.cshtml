@@ -1,14 +1,14 @@
 ﻿@using Coldairarrow.Util;
-@using Coldairarrow.Business.Common;
+@using Coldairarrow.Business;
 
 @{
-    var menus = SystemMenuManage.GetOperatorMenu();
+    var menus = DependencyResolver.Current.GetService<ISystemMenuManage>().GetOperatorMenu();
     var menusJson = Html.Raw(menus.ToJson());
 
     string projectName = "Colder快速开发框架";
     string projectShortName = "Colder";
     string headImg = "/css/fx/defaultAvatar.png";
-    string operatorName = Operator.Property.UserName;
+    string operatorName = DependencyResolver.Current.GetService<IOperator>().Property.UserName;
     string desktopUrl = "/Home/Desktop";
     string homeUrl = "https://github.com/Coldairarrow/Colder.Fx.Net.AdminLTE";
 }

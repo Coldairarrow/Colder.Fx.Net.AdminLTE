@@ -1,4 +1,4 @@
-﻿using Coldairarrow.Business.Common;
+﻿using Coldairarrow.Business;
 using Coldairarrow.Util;
 using System;
 using System.Text;
@@ -11,6 +11,8 @@ namespace Coldairarrow.Web
     /// </summary>
     public class CheckLoginAttribute : FilterAttribute, IActionFilter
     {
+        IOperator _operator { get; set; }
+        IBusHelper _busHelper { get; set; }
         /// <summary>
         /// Action执行之前执行
         /// </summary>
@@ -29,7 +31,7 @@ namespace Coldairarrow.Web
                 bool needLogin = filterContext.ContainsAttribute<CheckLoginAttribute>() && !filterContext.ContainsAttribute<IgnoreLoginAttribute>();
 
                 //转到登录
-                if (needLogin && !Operator.Logged())
+                if (needLogin && !_operator.Logged())
                 {
                     RedirectToLogin();
                 }
@@ -38,7 +40,7 @@ namespace Coldairarrow.Web
             }
             catch (Exception ex)
             {
-                BusHelper.HandleException(ex);
+                _busHelper.HandleException(ex);
                 RedirectToLogin();
             }
 

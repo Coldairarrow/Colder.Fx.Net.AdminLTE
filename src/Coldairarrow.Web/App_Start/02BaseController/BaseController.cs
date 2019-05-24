@@ -15,6 +15,7 @@ namespace Coldairarrow.Web
     //[IgnoreLogin]
     public class BaseController : Controller
     {
+        IBusHelper _busHelper { get; set; }
         /// <summary>
         /// 在调用操作方法前调用
         /// </summary>
@@ -182,9 +183,9 @@ namespace Coldairarrow.Web
         /// </summary>
         /// <param name="logContent">日志内容</param>
         /// <param name="logType">日志类型</param>
-        public static void WriteSysLog(string logContent, EnumType.LogType logType)
+        public void WriteSysLog(string logContent, EnumType.LogType logType)
         {
-            BaseBusiness<object>.WriteSysLog(logContent, logType);
+            _busHelper.WriteSysLog(logContent, logType);
         }
 
         /// <summary>

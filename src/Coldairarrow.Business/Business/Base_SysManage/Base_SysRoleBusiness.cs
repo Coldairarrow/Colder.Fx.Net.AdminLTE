@@ -7,8 +7,14 @@ using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class Base_SysRoleBusiness : BaseBusiness<Base_SysRole>
+    public class Base_SysRoleBusiness : BaseBusiness<Base_SysRole>, IBase_SysRoleBusiness
     {
+        public Base_SysRoleBusiness(IPermissionManage permissionManage)
+        {
+            _permissionManage = permissionManage;
+        }
+        IPermissionManage _permissionManage { get; }
+
         #region 外部接口
 
         /// <summary>
@@ -70,7 +76,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="roleId">角色Id</param>
         /// <param name="permissions">权限值</param>
-        public void SavePermission(string roleId,List<string> permissions)
+        public void SavePermission(string roleId, List<string> permissions)
         {
             Service.Delete_Sql<Base_PermissionRole>(x => x.RoleId == roleId);
             List<Base_PermissionRole> insertList = new List<Base_PermissionRole>();
@@ -78,14 +84,14 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 insertList.Add(new Base_PermissionRole
                 {
-                    Id=Guid.NewGuid().ToSequentialGuid(),
-                    RoleId=roleId,
-                    PermissionValue=newPermission
+                    Id = Guid.NewGuid().ToSequentialGuid(),
+                    RoleId = roleId,
+                    PermissionValue = newPermission
                 });
             });
 
             Service.Insert(insertList);
-            PermissionManage.ClearUserPermissionCache();
+            _permissionManage.ClearUserPermissionCache();
         }
 
         #endregion

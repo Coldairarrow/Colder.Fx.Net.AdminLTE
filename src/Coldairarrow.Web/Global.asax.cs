@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using AutoMapper;
+using Coldairarrow.Business;
 using Coldairarrow.Business.Base_SysManage;
+using Coldairarrow.Business.Cache;
 using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
@@ -26,11 +28,12 @@ namespace Coldairarrow.Web
             //注册路由
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
+            InitAutofac();
+
             //注册全局异常捕捉器
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
             InitAutoMapper();
-            InitAutofac();
             InitEF();
         }
 
@@ -41,7 +44,7 @@ namespace Coldairarrow.Web
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Base_User, Base_UserModel>();
+                cfg.CreateMap<Base_User, Base_UserDTO>();
             });
         }
 
@@ -71,9 +74,19 @@ namespace Coldairarrow.Web
 
             //自动注入
             builder.RegisterAssemblyTypes(assemblys.ToArray())
-                   .Where(t => baseType.IsAssignableFrom(t) && t != baseType)
-                   .AsImplementedInterfaces()
-                   .InstancePerLifetimeScope();
+                .Where(t => baseType.IsAssignableFrom(t) && t != baseType)
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<Base_UserDTOCache>()
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+
+            builder.RegisterType<Operator>()
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
         }

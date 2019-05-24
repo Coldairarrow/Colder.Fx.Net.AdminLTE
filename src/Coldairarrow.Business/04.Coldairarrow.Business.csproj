@@ -133,8 +133,20 @@
   <ItemGroup>
     <Compile Include="00Cache\BaseCache\BaseCache.T.cs" />
     <Compile Include="00Cache\BaseCache\IBaseCache.T.cs" />
-    <Compile Include="00Cache\Base_UserModelCache.cs" />
+    <Compile Include="00Cache\IBase_UserDTOCache.cs" />
+    <Compile Include="00Cache\Base_UserDTOCache.cs" />
     <Compile Include="Business\BaseBusiness.T.cs" />
+    <Compile Include="Business\BusHelper.cs" />
+    <Compile Include="Business\Operator.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IBase_AppSecretBusiness.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IBase_DatabaseLinkBusiness.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IBase_SysLogBusiness.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IBase_SysRoleBusiness.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IBase_UserBusiness.cs" />
+    <Compile Include="IBusiness\Base_SysManage\ICheckSignBusiness.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IRapidDevelopmentBusiness.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IPermissionManage.cs" />
+    <Compile Include="IBusiness\IBusHelper.cs" />
     <Compile Include="IBusiness\IBaseBusiness.T.cs" />
     <Compile Include="Business\Base_SysManage\Base_AppSecretBusiness.cs" />
     <Compile Include="Business\Base_SysManage\Base_DatabaseLinkBusiness.cs" />
@@ -146,9 +158,8 @@
     <Compile Include="Business\Base_SysManage\PermissionManage.cs" />
     <Compile Include="Business\Base_SysManage\RapidDevelopmentBusiness.cs" />
     <Compile Include="Business\Base_SysManage\UrlPermissionManage.cs" />
-    <Compile Include="Common\BusHelper.cs" />
-    <Compile Include="Common\Operator.cs" />
     <Compile Include="IBusiness\Base_SysManage\IHomeBusiness.cs" />
+    <Compile Include="IBusiness\IOperator.cs" />
     <Compile Include="Logger\ElasticSearchLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LoggerFactory.cs" />

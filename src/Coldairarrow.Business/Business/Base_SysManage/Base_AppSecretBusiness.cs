@@ -7,7 +7,7 @@ using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class Base_AppSecretBusiness : BaseBusiness<Base_AppSecret>
+    public class Base_AppSecretBusiness : BaseBusiness<Base_AppSecret>, IBase_AppSecretBusiness
     {
         #region 外部接口
 

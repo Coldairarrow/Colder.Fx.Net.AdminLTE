@@ -1,5 +1,4 @@
 using Coldairarrow.Business.Cache;
-using Coldairarrow.Business.Common;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
@@ -10,9 +9,18 @@ using System.Linq.Expressions;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class Base_UserBusiness : BaseBusiness<Base_User>
+    public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness
     {
-        static Base_UserModelCache _cache { get; } = new Base_UserModelCache();
+        public Base_UserBusiness(IBase_UserDTOCache sysUserCache, IOperator @operator, IPermissionManage permissionManage)
+        {
+            _sysUserCache = sysUserCache;
+            _operator = @operator;
+            _permissionManage = permissionManage;
+        }
+
+        IBase_UserDTOCache _sysUserCache { get; }
+        IOperator _operator { get; }
+        IPermissionManage _permissionManage { get; }
 
         #region 外部接口
 
@@ -22,11 +30,11 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <param name="condition">查询类型</param>
         /// <param name="keyword">关键字</param>
         /// <returns></returns>
-        public List<Base_UserModel> GetDataList(string condition, string keyword, Pagination pagination)
+        public List<Base_UserDTO> GetDataList(string condition, string keyword, Pagination pagination)
         {
-            var where = LinqHelper.True<Base_UserModel>();
+            var where = LinqHelper.True<Base_UserDTO>();
 
-            Expression<Func<Base_User, Base_UserModel>> selectExpre = a => new Base_UserModel
+            Expression<Func<Base_User, Base_UserDTO>> selectExpre = a => new Base_UserDTO
             {
 
             };
@@ -39,12 +47,12 @@ namespace Coldairarrow.Business.Base_SysManage
             if (!condition.IsNullOrEmpty() && !keyword.IsNullOrEmpty())
                 q = q.Where($@"{condition}.Contains(@0)", keyword);
 
-            var list= q.Where(where).GetPagination(pagination).ToList();
+            var list = q.Where(where).GetPagination(pagination).ToList();
             SetProperty(list);
 
             return list;
 
-            void SetProperty(List<Base_UserModel> users)
+            void SetProperty(List<Base_UserDTO> users)
             {
                 //补充用户角色属性
                 List<string> userIds = users.Select(x => x.UserId).ToList();
@@ -88,11 +96,11 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         public void UpdateData(Base_User theData)
         {
-            if (theData.UserId == "Admin" && Operator.UserId != theData.UserId)
+            if (theData.UserId == "Admin" && _operator.UserId != theData.UserId)
                 throw new Exception("禁止更改超级管理员！");
 
             Update(theData);
-            _cache.UpdateCache(theData.UserId);
+            _sysUserCache.UpdateCache(theData.UserId);
         }
 
         public void SetUserRole(string userId, List<string> roleIds)
@@ -106,8 +114,8 @@ namespace Coldairarrow.Business.Base_SysManage
             }).ToList();
 
             Service.Insert(insertList);
-            _cache.UpdateCache(userId);
-            PermissionManage.UpdateUserPermissionCache(userId);
+            _sysUserCache.UpdateCache(userId);
+            _permissionManage.UpdateUserPermissionCache(userId);
         }
 
         /// <summary>
@@ -122,16 +130,16 @@ namespace Coldairarrow.Business.Base_SysManage
             var userIds = GetIQueryable().Where(x => ids.Contains(x.UserId)).Select(x => x.UserId).ToList();
 
             Delete(ids);
-            _cache.UpdateCache(userIds);
+            _sysUserCache.UpdateCache(userIds);
         }
 
         /// <summary>
         /// 获取当前操作者信息
         /// </summary>
         /// <returns></returns>
-        public static Base_UserModel GetCurrentUser()
+        public Base_UserDTO GetCurrentUser()
         {
-            return GetTheUser(Operator.UserId);
+            return GetTheUser(_operator.UserId);
         }
 
         /// <summary>
@@ -139,12 +147,12 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns></returns>
-        public static Base_UserModel GetTheUser(string userId)
+        public Base_UserDTO GetTheUser(string userId)
         {
-            return _cache.GetCache(userId);
+            return _sysUserCache.GetCache(userId);
         }
 
-        public static List<string> GetUserRoleIds(string userId)
+        public List<string> GetUserRoleIds(string userId)
         {
             return GetTheUser(userId).RoleIdList;
         }
@@ -154,10 +162,10 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="oldPwd">老密码</param>
         /// <param name="newPwd">新密码</param>
-        public AjaxResult ChangePwd(string oldPwd,string newPwd)
+        public AjaxResult ChangePwd(string oldPwd, string newPwd)
         {
             AjaxResult res = new AjaxResult() { Success = true };
-            string userId = Operator.UserId;
+            string userId = _operator.UserId;
             oldPwd = oldPwd.ToMD5String();
             newPwd = newPwd.ToMD5String();
             var theUser = GetIQueryable().Where(x => x.UserId == userId && x.Password == oldPwd).FirstOrDefault();
@@ -172,7 +180,7 @@ namespace Coldairarrow.Business.Base_SysManage
                 Update(theUser);
             }
 
-            _cache.UpdateCache(userId);
+            _sysUserCache.UpdateCache(userId);
 
             return res;
         }
@@ -216,31 +224,5 @@ namespace Coldairarrow.Business.Base_SysManage
         #region 数据模型
 
         #endregion
-    }
-
-    public class Base_UserModel : Base_User
-    {
-        public string RoleNames { get => string.Join(",", RoleNameList); }
-
-        public List<string> RoleIdList { get; set; }
-
-        public List<string> RoleNameList { get; set; }
-
-        public EnumType.RoleType RoleType
-        {
-            get
-            {
-                int type = 0;
-
-                var values = typeof(EnumType.RoleType).GetEnumValues();
-                foreach (var aValue in values)
-                {
-                    if (RoleNames.Contains(aValue.ToString()))
-                        type += (int)aValue;
-                }
-
-                return (EnumType.RoleType)type;
-            }
-        }
     }
 }

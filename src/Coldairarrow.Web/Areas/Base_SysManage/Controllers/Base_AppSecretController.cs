@@ -4,11 +4,18 @@ using Coldairarrow.Util;
 using System;
 using System.Web.Mvc;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class Base_AppSecretController : BaseMvcController
     {
-        Base_AppSecretBusiness _base_AppSecretBusiness = new Base_AppSecretBusiness();
+        public Base_AppSecretController(IBase_AppSecretBusiness appSecretBus, IPermissionManage permissionManage)
+        {
+            _appSecretBus = appSecretBus;
+            _permissionManage = permissionManage;
+        }
+
+        IBase_AppSecretBusiness _appSecretBus { get; }
+        IPermissionManage _permissionManage { get; set; }
 
         #region 视图功能
 
@@ -19,7 +26,7 @@ namespace Coldairarrow.Web
 
         public ActionResult Form(string id)
         {
-            var theData = id.IsNullOrEmpty() ? new Base_AppSecret() : _base_AppSecretBusiness.GetTheData(id);
+            var theData = id.IsNullOrEmpty() ? new Base_AppSecret() : _appSecretBus.GetTheData(id);
 
             return View(theData);
         }
@@ -43,7 +50,7 @@ namespace Coldairarrow.Web
         /// <returns></returns>
         public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
         {
-            var dataList = _base_AppSecretBusiness.GetDataList(condition, keyword, pagination);
+            var dataList = _appSecretBus.GetDataList(condition, keyword, pagination);
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }
@@ -58,17 +65,17 @@ namespace Coldairarrow.Web
         /// <param name="theData">保存的数据</param>
         public ActionResult SaveData(Base_AppSecret theData)
         {
-            if(theData.Id.IsNullOrEmpty())
+            if (theData.Id.IsNullOrEmpty())
             {
                 theData.Id = Guid.NewGuid().ToSequentialGuid();
 
-                _base_AppSecretBusiness.AddData(theData);
+                _appSecretBus.AddData(theData);
 
                 WriteSysLog($"添加应用Id:{theData.AppId}", EnumType.LogType.接口密钥管理);
             }
             else
             {
-                _base_AppSecretBusiness.UpdateData(theData);
+                _appSecretBus.UpdateData(theData);
                 WriteSysLog($"更改应用Id:{theData.AppId}", EnumType.LogType.接口密钥管理);
             }
 
@@ -82,7 +89,7 @@ namespace Coldairarrow.Web
         public ActionResult DeleteData(string ids)
         {
             var idList = ids.ToList<string>();
-            _base_AppSecretBusiness.DeleteData(idList);
+            _appSecretBus.DeleteData(idList);
             WriteSysLog($"删除自然主键为:{string.Join(",", idList)}的应用Id数据", EnumType.LogType.接口密钥管理);
 
             return Success("删除成功！");
@@ -90,7 +97,7 @@ namespace Coldairarrow.Web
 
         public ActionResult SavePermission(string appId, string permissions)
         {
-            PermissionManage.SetAppIdPermission(appId, permissions.ToList<string>());
+            _permissionManage.SetAppIdPermission(appId, permissions.ToList<string>());
 
             return Success();
         }

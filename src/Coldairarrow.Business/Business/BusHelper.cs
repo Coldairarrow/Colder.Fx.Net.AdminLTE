@@ -4,21 +4,31 @@ using Coldairarrow.Util;
 using System;
 using System.Threading.Tasks;
 
-namespace Coldairarrow.Business.Common
+namespace Coldairarrow.Business
 {
-    static public class BusHelper
+    public class BusHelper : IBusHelper
     {
+        #region 构造函数
+
+        public BusHelper(IBase_UserBusiness sysUserBus)
+        {
+            _sysUserBus = sysUserBus;
+        }
+        private IBase_UserBusiness _sysUserBus { get; }
+
+        #endregion
+
         /// <summary>
         /// 写入日志
         /// </summary>
         /// <param name="logContent">日志内容</param>
         /// <param name="logType">日志类型</param>
-        public static void WriteSysLog(string logContent, EnumType.LogType logType)
+        public void WriteSysLog(string logContent, EnumType.LogType logType)
         {
             string userName = null;
             try
             {
-                userName = Base_UserBusiness.GetCurrentUser().UserName;
+                userName = _sysUserBus.GetCurrentUser().UserName;
             }
             catch
             {
@@ -49,7 +59,7 @@ namespace Coldairarrow.Business.Common
         /// 处理系统异常
         /// </summary>
         /// <param name="ex">异常对象</param>
-        public static void HandleException(Exception ex)
+        public void HandleException(Exception ex)
         {
             string msg = ExceptionHelper.GetExceptionAllMsg(ex);
             WriteSysLog(msg, EnumType.LogType.系统异常);

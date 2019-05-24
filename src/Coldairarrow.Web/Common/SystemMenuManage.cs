@@ -1,5 +1,5 @@
-﻿using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Business.Common;
+﻿using Coldairarrow.Business;
+using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,17 @@ namespace Coldairarrow.Web
     /// <summary>
     /// 系统菜单管理
     /// </summary>
-    public static class SystemMenuManage
+    public class SystemMenuManage : ISystemMenuManage
     {
         #region 构造函数
+
+        public SystemMenuManage(IOperator @operator, IPermissionManage permissionManage)
+        {
+            _operator = @operator;
+            _permissionManage = permissionManage;
+        }
+        IOperator _operator { get; }
+        IPermissionManage _permissionManage { get; }
 
         /// <summary>
         /// 静态构造函数
@@ -121,7 +129,7 @@ namespace Coldairarrow.Web
         /// 获取系统所有菜单
         /// </summary>
         /// <returns></returns>
-        public static List<Menu> GetAllSysMenu()
+        public List<Menu> GetAllSysMenu()
         {
             return _allMenu.DeepClone();
         }
@@ -130,14 +138,14 @@ namespace Coldairarrow.Web
         /// 获取用户菜单
         /// </summary>
         /// <returns></returns>
-        public static List<Menu> GetOperatorMenu()
+        public List<Menu> GetOperatorMenu()
         {
             List<Menu> resList = GetAllSysMenu();
 
-            if (Operator.IsAdmin())
+            if (_operator.IsAdmin())
                 return resList;
 
-            var userPermissions = PermissionManage.GetUserPermissionValues(Operator.UserId);
+            var userPermissions = _permissionManage.GetUserPermissionValues(_operator.UserId);
             RemoveNoPermission(resList, userPermissions);
 
             return resList;
@@ -161,22 +169,4 @@ namespace Coldairarrow.Web
 
         #endregion
     }
-
-    #region 数据模型
-
-    public class Menu
-    {
-        public string id { get => url ?? GuidHelper.GenerateKey(); }
-        public string text { get; set; }
-        public string icon { get; set; }
-        public string url { get => SystemMenuManage.GetUrl(_url); set => _url = value; }
-        public string _url { get; set; }
-        public string Permission { get; set; }
-        public bool IsShow { get; set; } = true;
-        public string targetType { get; } = "iframe-tab";
-        public bool isHeader { get; } = false;
-        public List<Menu> children { get; set; }
-    }
-
-    #endregion
 }

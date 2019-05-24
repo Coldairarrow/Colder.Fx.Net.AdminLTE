@@ -5,11 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class Base_SysLogController : BaseMvcController
     {
-        Base_SysLogBusiness _base_SysLogBusiness = new Base_SysLogBusiness();
+        public Base_SysLogController(IBase_SysLogBusiness sysLogBus)
+        {
+            _sysLogBus = sysLogBus;
+        }
+
+        IBase_SysLogBusiness _sysLogBus { get; }
 
         #region  ”Õºπ¶ƒ‹
 
@@ -40,7 +45,7 @@ namespace Coldairarrow.Web
             DateTime? endTime,
             Pagination pagination)
         {
-            var dataList = _base_SysLogBusiness.GetLogList(logContent, logType, opUserName, startTime, endTime, pagination);
+            var dataList = _sysLogBus.GetLogList(logContent, logType, opUserName, startTime, endTime, pagination);
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }

@@ -1,10 +1,8 @@
-﻿using Coldairarrow.Business.Common;
-using Coldairarrow.Entity.Base_SysManage;
+﻿using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Xml.Linq;
 using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
@@ -13,8 +11,15 @@ namespace Coldairarrow.Business.Base_SysManage
     /// <summary>
     /// 权限管理静态类
     /// </summary>
-    public static class PermissionManage
+    public class PermissionManage : IPermissionManage
     {
+        public PermissionManage(IOperator @operator)
+        {
+            _operator = @operator;
+        }
+        IBase_UserBusiness _sysUserBus { get; set; }
+        IOperator _operator { get; }
+
         #region 构造函数
 
         /// <summary>
@@ -85,6 +90,15 @@ namespace Coldairarrow.Business.Base_SysManage
 
             return permissionModules;
         }
+        /// <summary>
+        /// 获取所有权限模块
+        /// </summary>
+        /// <returns></returns>
+        private static List<PermissionModule> GetAllPermissionModules()
+        {
+            return _allPermissionModules.DeepClone();
+        }
+
         private static string _cacheKey { get; } = "Permission";
         private static string BuildCacheKey(string key)
         {
@@ -96,19 +110,10 @@ namespace Coldairarrow.Business.Base_SysManage
         #region 所有权限
 
         /// <summary>
-        /// 获取所有权限模块
-        /// </summary>
-        /// <returns></returns>
-        public static List<PermissionModule> GetAllPermissionModules()
-        {
-            return _allPermissionModules.DeepClone();
-        }
-
-        /// <summary>
         /// 获取所有权限值
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetAllPermissionValues()
+        public List<string> GetAllPermissionValues()
         {
             return _allPermissionValues.DeepClone();
         }
@@ -122,7 +127,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="roleId"></param>
         /// <returns></returns>
-        public static List<PermissionModule> GetRolePermissionModules(string roleId)
+        public List<PermissionModule> GetRolePermissionModules(string roleId)
         {
             BaseBusiness<Base_PermissionRole> _db = new BaseBusiness<Base_PermissionRole>();
             List<string> permissions = new List<string>();
@@ -144,7 +149,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="appId"></param>
         /// <returns></returns>
-        public static List<PermissionModule> GetAppIdPermissionModules(string appId)
+        public List<PermissionModule> GetAppIdPermissionModules(string appId)
         {
             var hasPermissions = GetAppIdPermissionValues(appId);
 
@@ -156,7 +161,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="appId"></param>
         /// <returns></returns>
-        public static List<string> GetAppIdPermissionValues(string appId)
+        public List<string> GetAppIdPermissionValues(string appId)
         {
             string cacheKey = BuildCacheKey(appId);
             var permissions = CacheHelper.Cache.GetCache<List<string>>(cacheKey);
@@ -176,7 +181,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="appId">AppId</param>
         /// <param name="permissions">权限值列表</param>
-        public static void SetAppIdPermission(string appId, List<string> permissions)
+        public void SetAppIdPermission(string appId, List<string> permissions)
         {
             //更新缓存
             string cacheKey = BuildCacheKey(appId);
@@ -211,9 +216,9 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public static List<PermissionModule> GetUserPermissionModules(string userId)
+        public List<PermissionModule> GetUserPermissionModules(string userId)
         {
-            var userInfo = Base_UserBusiness.GetTheUser(userId);
+            var userInfo = _sysUserBus.GetTheUser(userId);
             List<string> hasPermissions = new List<string>();
             if (userInfo.RoleType.HasFlag(RoleType.超级管理员))
                 hasPermissions = _allPermissionValues.DeepClone();
@@ -228,7 +233,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns></returns>
-        public static List<string> GetUserPermissionValues(string userId)
+        public List<string> GetUserPermissionValues(string userId)
         {
             string cacheKey = BuildCacheKey(userId);
             var permissions = CacheHelper.Cache.GetCache<List<string>>(cacheKey)?.DeepClone();
@@ -247,7 +252,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <param name="permissions">权限值列表</param>
-        public static void SetUserPermission(string userId, List<string> permissions)
+        public void SetUserPermission(string userId, List<string> permissions)
         {
             //更新数据库
             BaseBusiness<Base_UnitTest> _db = new BaseBusiness<Base_UnitTest>();
@@ -282,7 +287,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <summary>
         /// 清除所有用户权限缓存
         /// </summary>
-        public static void ClearUserPermissionCache()
+        public void ClearUserPermissionCache()
         {
             BaseBusiness<Base_UnitTest> _db = new BaseBusiness<Base_UnitTest>();
             var userIdList = _db.Service.GetIQueryable<Base_User>().Select(x => x.UserId).ToList();
@@ -296,7 +301,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// 更新用户权限缓存
         /// </summary>
         /// <param name="userId"><用户Id/param>
-        public static void UpdateUserPermissionCache(string userId)
+        public void UpdateUserPermissionCache(string userId)
         {
             string cacheKey = BuildCacheKey(userId);
             List<string> permissions = new List<string>();
@@ -304,7 +309,7 @@ namespace Coldairarrow.Business.Base_SysManage
             BaseBusiness<Base_PermissionUser> _db = new BaseBusiness<Base_PermissionUser>();
             var userPermissions = _db.GetIQueryable().Where(x => x.UserId == userId).Select(x => x.PermissionValue).ToList();
             var theUser = _db.Service.GetIQueryable<Base_User>().Where(x => x.UserId == userId).FirstOrDefault();
-            var roleIdList = Base_UserBusiness.GetUserRoleIds(userId);
+            var roleIdList = _sysUserBus.GetUserRoleIds(userId);
             var rolePermissions = _db.Service.GetIQueryable<Base_PermissionRole>().Where(x => roleIdList.Contains(x.RoleId)).GroupBy(x => x.PermissionValue).Select(x => x.Key).ToList();
             var existsPermissions = userPermissions.Concat(rolePermissions).Distinct();
 
@@ -320,12 +325,12 @@ namespace Coldairarrow.Business.Base_SysManage
         /// 获取当前操作者拥有的所有权限值
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetOperatorPermissionValues()
+        public List<string> GetOperatorPermissionValues()
         {
-            if (Operator.IsAdmin())
+            if (_operator.IsAdmin())
                 return GetAllPermissionValues();
             else
-                return GetUserPermissionValues(Operator.UserId);
+                return GetUserPermissionValues(_operator.UserId);
         }
 
         /// <summary>
@@ -333,30 +338,11 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         /// <param name="value">权限值</param>
         /// <returns></returns>
-        public static bool OperatorHasPermissionValue(string value)
+        public bool OperatorHasPermissionValue(string value)
         {
             return GetOperatorPermissionValues().Exists(x => x.ToLower() == value.ToLower());
         }
 
         #endregion
     }
-
-    #region 数据模型
-
-    public class PermissionModule
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public List<PermissionItem> Items { get; set; }
-    }
-
-    public class PermissionItem
-    {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public bool IsChecked { get; set; }
-    }
-
-    #endregion
 }

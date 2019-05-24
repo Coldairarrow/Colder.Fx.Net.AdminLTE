@@ -11,6 +11,8 @@ namespace Coldairarrow.Web
     /// </summary>
     public class CheckAppIdPermissionAttribute : FilterAttribute, IActionFilter
     {
+        IPermissionManage _permissionManage { get; set; }
+
         /// <summary>
         /// Action执行之前执行
         /// </summary>
@@ -42,7 +44,7 @@ namespace Coldairarrow.Web
             if (thePermission == null)
                 return;
             string needPermission = thePermission.PermissionValue;
-            bool hasPermission = PermissionManage.GetAppIdPermissionValues(appId).Any(x => x.ToLower() == needPermission.ToLower());
+            bool hasPermission = _permissionManage.GetAppIdPermissionValues(appId).Any(x => x.ToLower() == needPermission.ToLower());
             if (hasPermission)
                 return;
             else

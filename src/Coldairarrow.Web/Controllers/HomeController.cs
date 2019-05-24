@@ -1,5 +1,4 @@
 ﻿using Coldairarrow.Business;
-using Coldairarrow.Business.Common;
 using Coldairarrow.Util;
 using System.Web.Mvc;
 
@@ -7,12 +6,14 @@ namespace Coldairarrow.Web
 {
     public class HomeController : BaseMvcController
     {
-        public HomeController(IHomeBusiness homeBus)
+        public HomeController(IHomeBusiness homeBus, IOperator @operator)
         {
             _homeBus = homeBus;
+            _operator = @operator;
         }
 
         IHomeBusiness _homeBus { get; }
+        IOperator _operator { get; }
 
         #region 视图功能
 
@@ -24,7 +25,7 @@ namespace Coldairarrow.Web
         [IgnoreLogin]
         public ActionResult Login()
         {
-            if (Operator.Logged())
+            if (_operator.Logged())
             {
                 string loginUrl = Url.Content("~/");
                 string script = $@"    
@@ -71,7 +72,7 @@ namespace Coldairarrow.Web
         /// </summary>
         public ActionResult Logout()
         {
-            Operator.Logout();
+            _operator.Logout();
 
             return Success("注销成功！");
         }

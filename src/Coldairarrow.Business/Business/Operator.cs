@@ -2,17 +2,19 @@
 using Coldairarrow.Util;
 using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
-namespace Coldairarrow.Business.Common
+namespace Coldairarrow.Business
 {
     /// <summary>
     /// 操作者
     /// </summary>
-    public static class Operator
+    public class Operator : IOperator
     {
+        public IBase_UserBusiness _sysUserBus { get; set; }
+
         /// <summary>
         /// 当前操作者UserId
         /// </summary>
-        public static string UserId
+        public string UserId
         {
             get
             {
@@ -23,7 +25,7 @@ namespace Coldairarrow.Business.Common
             }
         }
 
-        public static Base_UserModel Property { get => Base_UserBusiness.GetTheUser(UserId); }
+        public Base_UserDTO Property { get => _sysUserBus.GetTheUser(UserId); }
 
         #region 操作方法
 
@@ -31,7 +33,7 @@ namespace Coldairarrow.Business.Common
         /// 是否已登录
         /// </summary>
         /// <returns></returns>
-        public static bool Logged()
+        public bool Logged()
         {
             return !UserId.IsNullOrEmpty();
         }
@@ -40,7 +42,7 @@ namespace Coldairarrow.Business.Common
         /// 登录
         /// </summary>
         /// <param name="userId">用户逻辑主键Id</param>
-        public static void Login(string userId)
+        public void Login(string userId)
         {
             SessionHelper.Session["UserId"] = userId;
         }
@@ -48,7 +50,7 @@ namespace Coldairarrow.Business.Common
         /// <summary>
         /// 注销
         /// </summary>
-        public static void Logout()
+        public void Logout()
         {
             SessionHelper.Session["UserId"] = null;
             SessionHelper.RemoveSessionCookie();
@@ -58,7 +60,7 @@ namespace Coldairarrow.Business.Common
         /// 判断是否为超级管理员
         /// </summary>
         /// <returns></returns>
-        public static bool IsAdmin()
+        public bool IsAdmin()
         {
             var role = Property.RoleType;
             if (UserId == "Admin" || role.HasFlag(RoleType.超级管理员))

@@ -1,5 +1,4 @@
-﻿using Coldairarrow.Business.Common;
-using Coldairarrow.DataRepository;
+﻿using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
@@ -58,6 +57,8 @@ namespace Coldairarrow.Business
         {
             SetService(conStr, dbType, entityNamespace);
         }
+
+        private IBusHelper _busHelper { get; set; }
 
         #endregion
 
@@ -578,18 +579,18 @@ namespace Coldairarrow.Business
         /// </summary>
         /// <param name="logContent">日志内容</param>
         /// <param name="logType">日志类型</param>
-        public static void WriteSysLog(string logContent, EnumType.LogType logType)
+        public void WriteSysLog(string logContent, EnumType.LogType logType)
         {
-            BusHelper.WriteSysLog(logContent, logType);
+            _busHelper.WriteSysLog(logContent, logType);
         }
 
         /// <summary>
         /// 处理系统异常
         /// </summary>
         /// <param name="ex">异常对象</param>
-        public static void HandleException(Exception ex)
+        public void HandleException(Exception ex)
         {
-            BusHelper.HandleException(ex);
+            _busHelper.HandleException(ex);
         }
 
         /// <summary>
