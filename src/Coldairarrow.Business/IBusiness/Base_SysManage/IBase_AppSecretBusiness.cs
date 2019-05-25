@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public interface IBase_AppSecretBusiness : IDependency
+    public interface IBase_AppSecretBusiness
     {
         #region 外部接口
 

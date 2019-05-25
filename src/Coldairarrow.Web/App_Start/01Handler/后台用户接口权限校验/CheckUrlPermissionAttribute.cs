@@ -12,6 +12,7 @@ namespace Coldairarrow.Web
     public class CheckUrlPermissionAttribute : FilterAttribute, IActionFilter
     {
         public IPermissionManage _permissionManage { get; set; }
+        public IUrlPermissionManage _urlPermissionManage { get; set; }
 
         /// <summary>
         /// Action执行之前执行
@@ -25,11 +26,11 @@ namespace Coldairarrow.Web
                 return;
             }
             //判断是否需要校验
-            bool needCheck = filterContext.ContainsAttribute<CheckUrlPermissionAttribute>() && !filterContext.ContainsAttribute<IgnoreUrlPermissionAttribute>();
+            bool needCheck = !filterContext.ContainsAttribute<IgnoreUrlPermissionAttribute>();
             if (!needCheck)
                 return;
 
-            var allUrlPermissions = UrlPermissionManage.GetAllUrlPermissions();
+            var allUrlPermissions = _urlPermissionManage.GetAllUrlPermissions();
             string requestUrl = filterContext.HttpContext.Request.Url.ToString().ToLower();
             var thePermission = allUrlPermissions.Where(x => requestUrl.Contains(x.Url.ToLower())).FirstOrDefault();
             if (thePermission == null)

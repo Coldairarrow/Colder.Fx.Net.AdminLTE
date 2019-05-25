@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public static class UrlPermissionManage
+    public class UrlPermissionManage : IUrlPermissionManage, IDependency
     {
         #region 构造函数
 
@@ -47,24 +47,11 @@ namespace Coldairarrow.Business.Base_SysManage
         /// 获取所有URL需要的权限
         /// </summary>
         /// <returns></returns>
-        public static List<ActionPermission> GetAllUrlPermissions()
+        public List<ActionPermission> GetAllUrlPermissions()
         {
             return _allUrlPermissions.DeepClone();
         }
 
         #endregion
     }
-
-    #region 数据模型
-
-    /// <summary>
-    /// URL接口权限
-    /// </summary>
-    public class ActionPermission
-    {
-        public string Url { get; set; }
-        public string PermissionValue { get; set; }
-    }
-
-    #endregion
 }

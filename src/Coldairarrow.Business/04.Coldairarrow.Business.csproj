@@ -146,6 +146,7 @@
     <Compile Include="IBusiness\Base_SysManage\ICheckSignBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IRapidDevelopmentBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IPermissionManage.cs" />
+    <Compile Include="IBusiness\Base_SysManage\IUrlPermissionManage.cs" />
     <Compile Include="IBusiness\IBusHelper.cs" />
     <Compile Include="IBusiness\IBaseBusiness.T.cs" />
     <Compile Include="Business\Base_SysManage\Base_AppSecretBusiness.cs" />

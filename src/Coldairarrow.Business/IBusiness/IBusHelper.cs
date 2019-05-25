@@ -1,10 +1,9 @@
 ﻿using Coldairarrow.Entity.Base_SysManage;
-using Coldairarrow.Util;
 using System;
 
 namespace Coldairarrow.Business
 {
-    public interface IBusHelper : IDependency
+    public interface IBusHelper
     {
         /// <summary>
         /// 写入日志

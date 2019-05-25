@@ -12,6 +12,7 @@ namespace Coldairarrow.Web
     public class CheckAppIdPermissionAttribute : FilterAttribute, IActionFilter
     {
         public IPermissionManage _permissionManage { get; set; }
+        public IUrlPermissionManage _urlPermissionManage { get; set; }
 
         /// <summary>
         /// Action执行之前执行
@@ -26,7 +27,7 @@ namespace Coldairarrow.Web
             }
             AjaxResult res = new AjaxResult();
             //判断是否需要校验
-            bool needCheck = filterContext.ContainsAttribute<CheckAppIdPermissionAttribute>() && !filterContext.ContainsAttribute<IgnoreAppIdPermissionAttribute>();
+            bool needCheck = !filterContext.ContainsAttribute<IgnoreAppIdPermissionAttribute>();
             if (!needCheck)
                 return;
 
@@ -38,7 +39,7 @@ namespace Coldairarrow.Web
                 filterContext.Result = new ContentResult { Content = res.ToJson(), ContentEncoding = Encoding.UTF8 };
             }
             string appId = allRequestParams["appId"]?.ToString();
-            var allUrlPermissions = UrlPermissionManage.GetAllUrlPermissions();
+            var allUrlPermissions = _urlPermissionManage.GetAllUrlPermissions();
             string requestUrl = filterContext.HttpContext.Request.Url.ToString().ToLower();
             var thePermission = allUrlPermissions.Where(x => requestUrl.Contains(x.Url.ToLower())).FirstOrDefault();
             if (thePermission == null)

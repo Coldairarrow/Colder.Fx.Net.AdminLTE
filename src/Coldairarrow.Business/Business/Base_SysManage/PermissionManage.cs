@@ -90,15 +90,10 @@ namespace Coldairarrow.Business.Base_SysManage
 
             return permissionModules;
         }
-        /// <summary>
-        /// 获取所有权限模块
-        /// </summary>
-        /// <returns></returns>
         private static List<PermissionModule> GetAllPermissionModules()
         {
             return _allPermissionModules.DeepClone();
         }
-
         private static string _cacheKey { get; } = "Permission";
         private static string BuildCacheKey(string key)
         {

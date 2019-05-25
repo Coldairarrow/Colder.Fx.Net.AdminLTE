@@ -16,8 +16,14 @@ namespace Coldairarrow.Business
     /// 作者：Coldairarrow
     /// </summary>
     /// <typeparam name="T">泛型约束（数据库实体）</typeparam>
-    public class BaseBusiness<T> : IBaseBusiness<T> where T : class, new()
+    public class BaseBusiness<T> : IBaseBusiness<T>, ICircleDependency where T : class, new()
     {
+        #region DI
+
+        public IBusHelper _busHelper { get; set; }
+
+        #endregion
+
         #region 构造函数
 
         /// <summary>
@@ -57,8 +63,6 @@ namespace Coldairarrow.Business
         {
             SetService(conStr, dbType, entityNamespace);
         }
-
-        private IBusHelper _busHelper { get; set; }
 
         #endregion
 

@@ -6,7 +6,7 @@ using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class Base_DatabaseLinkBusiness : BaseBusiness<Base_DatabaseLink>, IBase_DatabaseLinkBusiness
+    public class Base_DatabaseLinkBusiness : BaseBusiness<Base_DatabaseLink>, IBase_DatabaseLinkBusiness, IDependency
     {
         #region 外部接口
 

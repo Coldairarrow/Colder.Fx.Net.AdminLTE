@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness
+    public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, IDependency
     {
         public Base_UserBusiness(IBase_UserDTOCache sysUserCache, IOperator @operator, IPermissionManage permissionManage)
         {
@@ -22,6 +22,8 @@ namespace Coldairarrow.Business.Base_SysManage
         IOperator _operator { get; }
         IPermissionManage _permissionManage { get; }
 
+        public override EnumType.LogType LogType => EnumType.LogType.系统用户管理;
+
         #region 外部接口
 
         /// <summary>
@@ -32,6 +34,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <returns></returns>
         public List<Base_UserDTO> GetDataList(string condition, string keyword, Pagination pagination)
         {
+            //WriteSysLog($"获取用户列表");
             var where = LinqHelper.True<Base_UserDTO>();
 
             Expression<Func<Base_User, Base_UserDTO>> selectExpre = a => new Base_UserDTO

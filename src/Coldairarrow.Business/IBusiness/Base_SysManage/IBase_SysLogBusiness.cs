@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public interface IBase_SysLogBusiness : IDependency
+    public interface IBase_SysLogBusiness
     {
         #region 外部接口
 

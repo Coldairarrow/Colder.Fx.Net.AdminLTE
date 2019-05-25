@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class HomeBusiness : BaseBusiness<Base_User>, IHomeBusiness
+    public class HomeBusiness : BaseBusiness<Base_User>, IHomeBusiness, IDependency
     {
         public HomeBusiness(IOperator theOperator)
         {

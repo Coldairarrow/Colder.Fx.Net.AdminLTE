@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public interface IBase_UserBusiness : IDependency
+    public interface IBase_UserBusiness
     {
         List<Base_UserDTO> GetDataList(string condition, string keyword, Pagination pagination);
 

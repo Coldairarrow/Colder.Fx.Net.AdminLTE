@@ -11,7 +11,7 @@ namespace Coldairarrow.Web
     /// <summary>
     /// 系统菜单管理
     /// </summary>
-    public class SystemMenuManage : ISystemMenuManage
+    public class SystemMenuManage : ISystemMenuManage, IDependency
     {
         #region 构造函数
 

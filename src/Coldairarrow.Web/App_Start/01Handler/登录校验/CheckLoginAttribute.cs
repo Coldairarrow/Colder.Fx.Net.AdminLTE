@@ -29,7 +29,7 @@ namespace Coldairarrow.Web
                     return;
                 }
                 //判断是否需要登录
-                bool needLogin = filterContext.ContainsAttribute<CheckLoginAttribute>() && !filterContext.ContainsAttribute<IgnoreLoginAttribute>();
+                bool needLogin = !filterContext.ContainsAttribute<IgnoreLoginAttribute>();
 
                 //转到登录
                 if (needLogin && !_operator.Logged())

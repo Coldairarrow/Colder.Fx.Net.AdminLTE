@@ -7,7 +7,7 @@ using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class Base_SysRoleBusiness : BaseBusiness<Base_SysRole>, IBase_SysRoleBusiness
+    public class Base_SysRoleBusiness : BaseBusiness<Base_SysRole>, IBase_SysRoleBusiness, IDependency
     {
         public Base_SysRoleBusiness(IPermissionManage permissionManage)
         {

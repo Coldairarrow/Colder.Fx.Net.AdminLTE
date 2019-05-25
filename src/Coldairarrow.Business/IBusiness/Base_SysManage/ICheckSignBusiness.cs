@@ -3,7 +3,7 @@ using System.Web;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public interface ICheckSignBusiness : IDependency
+    public interface ICheckSignBusiness
     {
         /// <summary>
         /// 判断是否有权限操作接口

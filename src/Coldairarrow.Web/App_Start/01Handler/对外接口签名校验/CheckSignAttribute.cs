@@ -36,19 +36,20 @@ time=2017-01-01 23:00:00
 3 用申请到的appSecret连接到接拼装字符串尾部，然后进行32位MD5加密，最后将到得MD5加密摘要转化成大写,即得到签名sign
 
 示例：拼接字符串为a1appIdxxxb2c3time2017-01-01 23:00:00,appSecret为xxx,则sign=DBC4DB3A404576DB0D3D5F1F8547526B     
-    */    
+    */
     /// <summary>
     /// 校验签名
     /// </summary>
     public class CheckSignAttribute : FilterAttribute, IActionFilter
     {
+        public ICheckSignBusiness _checkSignBusiness { get; set; }
+
         /// <summary>
         /// Action执行之前执行
         /// </summary>
         /// <param name="filterContext"></param>
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            CheckSignBusiness _checkSignBusiness = new CheckSignBusiness();
 
             //若为本地测试，则不需要校验
             if (GlobalSwitch.RunModel == RunModel.LocalTest)
@@ -57,7 +58,7 @@ time=2017-01-01 23:00:00
             }
 
             //判断是否需要签名
-            bool needSign = filterContext.ContainsAttribute<CheckSignAttribute>() && !filterContext.ContainsAttribute<IgnoreSignAttribute>();
+            bool needSign = !filterContext.ContainsAttribute<IgnoreSignAttribute>();
 
             //不需要签名
             if (!needSign)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public interface IRapidDevelopmentBusiness : IDependency
+    public interface IRapidDevelopmentBusiness
     {
         /// <summary>
         /// 获取所有数据库连接

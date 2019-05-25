@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class Base_SysLogBusiness : BaseBusiness<Base_SysLog>, IBase_SysLogBusiness
+    public class Base_SysLogBusiness : BaseBusiness<Base_SysLog>, IBase_SysLogBusiness, IDependency
     {
         #region 外部接口
 

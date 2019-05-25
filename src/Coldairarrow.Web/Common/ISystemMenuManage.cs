@@ -6,7 +6,7 @@ namespace Coldairarrow.Web
     /// <summary>
     /// 系统菜单管理
     /// </summary>
-    public interface ISystemMenuManage : IDependency
+    public interface ISystemMenuManage
     {
         #region 外部接口
 

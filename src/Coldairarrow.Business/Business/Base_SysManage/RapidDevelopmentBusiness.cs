@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class RapidDevelopmentBusiness : BaseBusiness<Base_DatabaseLink>, IRapidDevelopmentBusiness
+    public class RapidDevelopmentBusiness : BaseBusiness<Base_DatabaseLink>, IRapidDevelopmentBusiness, IDependency
     {
         #region 外部接口
 

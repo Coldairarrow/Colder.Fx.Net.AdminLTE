@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business
 {
-    public class BusHelper : IBusHelper
+    public class BusHelper : IBusHelper, ICircleDependency
     {
-        #region 构造函数
+        #region DI
 
-        public BusHelper(IBase_UserBusiness sysUserBus)
-        {
-            _sysUserBus = sysUserBus;
-        }
-        private IBase_UserBusiness _sysUserBus { get; }
+        public IBase_UserBusiness _sysUserBus { get; set; }
 
         #endregion
 

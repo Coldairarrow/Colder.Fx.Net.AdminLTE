@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
-    public class CheckSignBusiness : BaseBusiness<Base_AppSecret>, ICheckSignBusiness
+    public class CheckSignBusiness : BaseBusiness<Base_AppSecret>, ICheckSignBusiness, IDependency
     {
         /// <summary>
         /// 判断是否有权限操作接口
