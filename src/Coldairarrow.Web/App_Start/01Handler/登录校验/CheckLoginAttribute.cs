@@ -11,8 +11,9 @@ namespace Coldairarrow.Web
     /// </summary>
     public class CheckLoginAttribute : FilterAttribute, IActionFilter
     {
-        IOperator _operator { get; set; }
-        IBusHelper _busHelper { get; set; }
+        public IOperator _operator { get; set; }
+        public IBusHelper _busHelper { get; set; }
+
         /// <summary>
         /// Action执行之前执行
         /// </summary>

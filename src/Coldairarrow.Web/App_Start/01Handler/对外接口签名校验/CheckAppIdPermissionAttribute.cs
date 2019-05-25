@@ -11,7 +11,7 @@ namespace Coldairarrow.Web
     /// </summary>
     public class CheckAppIdPermissionAttribute : FilterAttribute, IActionFilter
     {
-        IPermissionManage _permissionManage { get; set; }
+        public IPermissionManage _permissionManage { get; set; }
 
         /// <summary>
         /// Action执行之前执行

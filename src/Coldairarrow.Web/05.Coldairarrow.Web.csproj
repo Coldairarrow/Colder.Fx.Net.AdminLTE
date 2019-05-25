@@ -1217,6 +1217,7 @@
     <Compile Include="App_Start\02BaseController\BaseApiController.cs" />
     <Compile Include="App_Start\02BaseController\BaseMvcController.cs" />
     <Compile Include="App_Start\03Extentions\Extention.UrlHelper.cs" />
+    <Compile Include="App_Start\DependencyViewPage.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Base_SysManage\Base_SysManageAreaRegistration.cs" />

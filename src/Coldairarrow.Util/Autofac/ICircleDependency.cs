@@ -1,9 +1,9 @@
 ﻿namespace Coldairarrow.Util
 {
     /// <summary>
-    /// 注入标记
+    /// 循环依赖注入标记
     /// </summary>
-    public interface IDependency
+    public interface ICircleDependency
     {
 
     }

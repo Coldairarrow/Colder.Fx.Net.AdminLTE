@@ -1,9 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using AutoMapper;
-using Coldairarrow.Business;
 using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Business.Cache;
 using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
@@ -65,28 +63,33 @@ namespace Coldairarrow.Web
             var builder = new ContainerBuilder();
 
             var baseType = typeof(IDependency);
+            var baseTypeCircle = typeof(ICircleDependency);
 
-            //扫描IService和Service相关的程序集
+            //Coldairarrow相关程序集
             var assemblys = BuildManager.GetReferencedAssemblies().Cast<Assembly>()
-                .Where(m => m.FullName.Contains("Coldairarrow")).ToList();
+                .Where(x => x.FullName.Contains("Coldairarrow")).ToList();
 
-            builder.RegisterControllers(assemblys.ToArray());
-
-            //自动注入
+            //自动注入IDependency接口
             builder.RegisterAssemblyTypes(assemblys.ToArray())
-                .Where(t => baseType.IsAssignableFrom(t) && t != baseType)
+                .Where(x => baseType.IsAssignableFrom(x) && x != baseType)
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Base_UserDTOCache>()
+            //自动注入IDependency接口,循环依赖注入
+            builder.RegisterAssemblyTypes(assemblys.ToArray())
+                .Where(x => baseTypeCircle.IsAssignableFrom(x) && x != baseTypeCircle)
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope()
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
 
-            builder.RegisterType<Operator>()
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope()
-                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+            //注册Controller
+            builder.RegisterControllers(assemblys.ToArray());
+
+            //注册Filter
+            builder.RegisterFilterProvider();
+
+            //注册View
+            builder.RegisterSource(new ViewRegistrationSource());
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
         }

@@ -7,7 +7,7 @@ namespace Coldairarrow.Business
     /// <summary>
     /// 操作者
     /// </summary>
-    public class Operator : IOperator
+    public class Operator : IOperator, ICircleDependency
     {
         public IBase_UserBusiness _sysUserBus { get; set; }
 

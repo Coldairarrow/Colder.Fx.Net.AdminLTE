@@ -1,8 +1,9 @@
-﻿@using Coldairarrow.Business.Base_SysManage;
+﻿@inherits  DependencyViewPage
 
 @{
     Layout = "~/Views/Shared/_Layout_List.cshtml";
-    var manageSysPermission = PermissionManage.OperatorHasPermissionValue("sysuser.manageSysPermission");
+        
+    var manageSysPermission = this.PermissionManage.OperatorHasPermissionValue("sysuser.manageSysPermission");
 }
 
 <div class="fx-content">

@@ -11,14 +11,14 @@ namespace Coldairarrow.Business.Base_SysManage
     /// <summary>
     /// 权限管理静态类
     /// </summary>
-    public class PermissionManage : IPermissionManage
+    public class PermissionManage : IPermissionManage, ICircleDependency
     {
         public PermissionManage(IOperator @operator)
         {
             _operator = @operator;
         }
-        IBase_UserBusiness _sysUserBus { get; set; }
-        IOperator _operator { get; }
+        public IBase_UserBusiness _sysUserBus { get; set; }
+        public IOperator _operator { get; }
 
         #region 构造函数
 

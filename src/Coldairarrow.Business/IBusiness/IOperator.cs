@@ -1,12 +1,11 @@
 ﻿using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Util;
 
 namespace Coldairarrow.Business
 {
     /// <summary>
     /// 操作者
     /// </summary>
-    public interface IOperator : IDependency
+    public interface IOperator
     {
         /// <summary>
         /// 当前操作者UserId

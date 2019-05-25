@@ -7,7 +7,7 @@ namespace Coldairarrow.Business.Base_SysManage
     /// <summary>
     /// 权限管理静态类
     /// </summary>
-    public interface IPermissionManage : IDependency
+    public interface IPermissionManage
     {
         #region 所有权限
 

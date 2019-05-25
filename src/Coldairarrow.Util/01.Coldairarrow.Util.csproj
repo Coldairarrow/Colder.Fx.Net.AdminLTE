@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiSDK\CTCC_IOT_ApiSDK.cs" />
+    <Compile Include="Autofac\ICircleDependency.cs" />
     <Compile Include="Autofac\IDependency.cs" />
     <Compile Include="Cache\CacheHelper.cs" />
     <Compile Include="Cache\ICache.cs" />

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Coldairarrow.Business.Cache
 {
-    public class Base_UserDTOCache : BaseCache<Base_UserDTO>, IBase_UserDTOCache
+    public class Base_UserDTOCache : BaseCache<Base_UserDTO>, IBase_UserDTOCache, ICircleDependency
     {
         public IBase_UserBusiness _sysUserBus { get; set; }
         protected override string _moduleKey => "Base_UserModel";

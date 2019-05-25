@@ -1,6 +1,7 @@
-﻿@using Coldairarrow.Entity.Base_SysManage;
+﻿@inherits  DependencyViewPage
+
+@using Coldairarrow.Entity.Base_SysManage;
 @using Coldairarrow.Util;
-@using Coldairarrow.Business.Base_SysManage;
 
 @{
     Layout = "~/Views/Shared/_Layout_Form.cshtml";
@@ -9,7 +10,7 @@
     object roleIds = "[]";
     if (!obj.Id.IsNullOrEmpty())
     {
-        roleIds = Html.Raw(Base_UserBusiness.GetUserRoleIds(obj.UserId).ToJson());
+        roleIds = Html.Raw(this.SysUserBus.GetUserRoleIds(obj.UserId).ToJson());
     }
     string str = obj.ToJson();
     var objStr = Html.Raw(obj.ToJson());
