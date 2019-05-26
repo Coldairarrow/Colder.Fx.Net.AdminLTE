@@ -16,11 +16,11 @@ namespace Coldairarrow.Business
     /// 作者：Coldairarrow
     /// </summary>
     /// <typeparam name="T">泛型约束（数据库实体）</typeparam>
-    public class BaseBusiness<T> : IBaseBusiness<T>, ICircleDependency where T : class, new()
+    public class BaseBusiness<T> : IBaseBusiness<T>, IDependency where T : class, new()
     {
         #region DI
 
-        public IBusHelper _busHelper { get; set; }
+        public IBusHelper BusHelper { protected get; set; }
 
         #endregion
 
@@ -585,7 +585,7 @@ namespace Coldairarrow.Business
         /// <param name="logType">日志类型</param>
         public void WriteSysLog(string logContent, EnumType.LogType logType)
         {
-            _busHelper.WriteSysLog(logContent, logType);
+            BusHelper.WriteSysLog(logContent, logType);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace Coldairarrow.Business
         /// <param name="ex">异常对象</param>
         public void HandleException(Exception ex)
         {
-            _busHelper.HandleException(ex);
+            BusHelper.HandleException(ex);
         }
 
         /// <summary>

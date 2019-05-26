@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using Autofac.Integration.Mvc;
 using AutoMapper;
 using Coldairarrow.Business.Base_SysManage;
@@ -69,27 +70,34 @@ namespace Coldairarrow.Web
             var assemblys = BuildManager.GetReferencedAssemblies().Cast<Assembly>()
                 .Where(x => x.FullName.Contains("Coldairarrow")).ToList();
 
-            //自动注入IDependency接口
+            //自动注入IDependency接口,支持AOP
             builder.RegisterAssemblyTypes(assemblys.ToArray())
                 .Where(x => baseType.IsAssignableFrom(x) && x != baseType)
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                .PropertiesAutowired()
+                .InstancePerLifetimeScope()
+                .EnableInterfaceInterceptors()
+                .InterceptedBy(typeof(Interceptor));
 
-            //自动注入IDependency接口,循环依赖注入
+            //自动注入ICircleDependency接口,循环依赖注入,不支持AOP
             builder.RegisterAssemblyTypes(assemblys.ToArray())
                 .Where(x => baseTypeCircle.IsAssignableFrom(x) && x != baseTypeCircle)
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope()
-                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .InstancePerLifetimeScope();
 
             //注册Controller
-            builder.RegisterControllers(assemblys.ToArray());
+            builder.RegisterControllers(assemblys.ToArray())
+                .PropertiesAutowired();
 
             //注册Filter
             builder.RegisterFilterProvider();
 
             //注册View
             builder.RegisterSource(new ViewRegistrationSource());
+
+            //AOP
+            builder.RegisterType<Interceptor>();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
         }

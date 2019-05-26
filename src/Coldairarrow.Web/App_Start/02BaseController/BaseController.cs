@@ -15,7 +15,12 @@ namespace Coldairarrow.Web
     //[IgnoreLogin]
     public class BaseController : Controller
     {
-        IBusHelper _busHelper { get; set; }
+        #region DI
+
+        public IBusHelper BusHelper { protected get; set; }
+
+        #endregion
+
         /// <summary>
         /// 在调用操作方法前调用
         /// </summary>
@@ -185,7 +190,7 @@ namespace Coldairarrow.Web
         /// <param name="logType">日志类型</param>
         public void WriteSysLog(string logContent, EnumType.LogType logType)
         {
-            _busHelper.WriteSysLog(logContent, logType);
+            BusHelper.WriteSysLog(logContent, logType);
         }
 
         /// <summary>

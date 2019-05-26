@@ -35,8 +35,14 @@
     <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Extras.DynamicProxy, Version=4.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.DynamicProxy.4.5.0\lib\net45\Autofac.Extras.DynamicProxy.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="CommandLine, Version=2.3.0.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.2.3.0\lib\net45\CommandLine.dll</HintPath>
@@ -123,6 +129,24 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -131,13 +155,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="00Cache\BaseCache\BaseCache.T.cs" />
-    <Compile Include="00Cache\BaseCache\IBaseCache.T.cs" />
-    <Compile Include="00Cache\IBase_UserDTOCache.cs" />
-    <Compile Include="00Cache\Base_UserDTOCache.cs" />
+    <Compile Include="00Filter\DeleteDataLogAttribute.cs" />
+    <Compile Include="00Filter\EditDataLogAttribute.cs" />
+    <Compile Include="00Filter\AddDataLogAttribute.cs" />
+    <Compile Include="00Filter\WriteDataLogAttribute.cs" />
+    <Compile Include="01Cache\BaseCache\BaseCache.T.cs" />
+    <Compile Include="01Cache\BaseCache\IBaseCache.T.cs" />
+    <Compile Include="01Cache\IBase_UserDTOCache.cs" />
+    <Compile Include="01Cache\Base_UserDTOCache.cs" />
     <Compile Include="Business\BaseBusiness.T.cs" />
     <Compile Include="Business\BusHelper.cs" />
     <Compile Include="Business\Operator.cs" />
+    <Compile Include="Business\TestBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_AppSecretBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_DatabaseLinkBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_SysLogBusiness.cs" />
@@ -161,6 +190,7 @@
     <Compile Include="Business\Base_SysManage\UrlPermissionManage.cs" />
     <Compile Include="IBusiness\Base_SysManage\IHomeBusiness.cs" />
     <Compile Include="IBusiness\IOperator.cs" />
+    <Compile Include="IBusiness\ITestBusiness.cs" />
     <Compile Include="Logger\ElasticSearchLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LoggerFactory.cs" />

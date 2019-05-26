@@ -1,5 +1,4 @@
-﻿using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Entity.Base_SysManage;
+﻿using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace Coldairarrow.Business
     {
         #region DI
 
-        public IBase_UserBusiness _sysUserBus { get; set; }
+        public IOperator Operator { private get; set; }
 
         #endregion
 
@@ -24,7 +23,7 @@ namespace Coldairarrow.Business
             string userName = null;
             try
             {
-                userName = _sysUserBus.GetCurrentUser().UserName;
+                userName = Operator.Property.RealName;
             }
             catch
             {
