@@ -1,3 +1,4 @@
+using AutoMapper;
 using Coldairarrow.Business.Cache;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
@@ -5,52 +6,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Linq.Expressions;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
     public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, IDependency
     {
+        #region DI
+
         public Base_UserBusiness(IBase_UserDTOCache sysUserCache, IOperator @operator, IPermissionManage permissionManage)
         {
             _sysUserCache = sysUserCache;
             _operator = @operator;
             _permissionManage = permissionManage;
         }
-
         IBase_UserDTOCache _sysUserCache { get; }
         IOperator _operator { get; }
         IPermissionManage _permissionManage { get; }
+
+        #endregion
 
         public override EnumType.LogType LogType => EnumType.LogType.系统用户管理;
 
         #region 外部接口
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        public List<Base_UserDTO> GetDataList(string condition, string keyword, Pagination pagination)
+        public List<Base_UserDTO> GetDataList(Pagination pagination, string userId = null, string keyword = null)
         {
-            //WriteSysLog($"获取用户列表");
-            var where = LinqHelper.True<Base_UserDTO>();
-
-            Expression<Func<Base_User, Base_UserDTO>> selectExpre = a => new Base_UserDTO
+            var where = LinqHelper.True<Base_User>();
+            if (!userId.IsNullOrEmpty())
+                where = where.And(x => x.Id == userId);
+            if (!keyword.IsNullOrEmpty())
             {
+                where = where.And(x =>
+                    x.UserName.Contains(keyword)
+                    || x.RealName.Contains(keyword));
+            }
 
-            };
-            selectExpre = selectExpre.BuildExtendSelectExpre();
+            var list = GetIQueryable().Where(where).GetPagination(pagination).ToList()
+                .Select(x => Mapper.Map<Base_UserDTO>(x))
+                .ToList();
 
-            var q = from a in GetIQueryable().AsExpandable()
-                    select selectExpre.Invoke(a);
-
-            //模糊查询
-            if (!condition.IsNullOrEmpty() && !keyword.IsNullOrEmpty())
-                q = q.Where($@"{condition}.Contains(@0)", keyword);
-
-            var list = q.Where(where).GetPagination(pagination).ToList();
             SetProperty(list);
 
             return list;
@@ -58,20 +52,21 @@ namespace Coldairarrow.Business.Base_SysManage
             void SetProperty(List<Base_UserDTO> users)
             {
                 //补充用户角色属性
-                List<string> userIds = users.Select(x => x.UserId).ToList();
+                List<string> userIds = users.Select(x => x.Id).ToList();
                 var userRoles = (from a in Service.GetIQueryable<Base_UserRoleMap>()
-                                 join b in Service.GetIQueryable<Base_SysRole>() on a.RoleId equals b.RoleId
+                                 join b in Service.GetIQueryable<Base_SysRole>() on a.RoleId equals b.Id
                                  where userIds.Contains(a.UserId)
                                  select new
                                  {
                                      a.UserId,
-                                     b.RoleId,
+                                     RoleId= b.Id,
                                      b.RoleName
                                  }).ToList();
                 users.ForEach(aUser =>
                 {
-                    aUser.RoleIdList = userRoles.Where(x => x.UserId == aUser.UserId).Select(x => x.RoleId).ToList();
-                    aUser.RoleNameList = userRoles.Where(x => x.UserId == aUser.UserId).Select(x => x.RoleName).ToList();
+                    var roleList = userRoles.Where(x => x.UserId == aUser.Id);
+                    aUser.RoleIdList = roleList.Select(x => x.RoleId).ToList();
+                    aUser.RoleNameList = roleList.Select(x => x.RoleName).ToList();
                 });
             }
         }
@@ -104,11 +99,23 @@ namespace Coldairarrow.Business.Base_SysManage
             new string[] { "用户名" })]
         public void UpdateData(Base_User theData)
         {
-            if (theData.UserId == "Admin" && _operator.UserId != theData.UserId)
+            if (theData.Id == "Admin" && _operator.UserId != theData.Id)
                 throw new Exception("禁止更改超级管理员！");
 
             Update(theData);
-            _sysUserCache.UpdateCache(theData.UserId);
+            _sysUserCache.UpdateCache(theData.Id);
+        }
+
+        [DataDeleteLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
+        public void DeleteData(List<string> ids)
+        {
+            var adminUser = GetTheUser("Admin");
+            if (ids.Contains(adminUser.Id))
+                throw new Exception("超级管理员是内置账号,禁止删除！");
+            var userIds = GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToList();
+
+            Delete(ids);
+            _sysUserCache.UpdateCache(userIds);
         }
 
         public void SetUserRole(string userId, List<string> roleIds)
@@ -126,36 +133,6 @@ namespace Coldairarrow.Business.Base_SysManage
             _permissionManage.UpdateUserPermissionCache(userId);
         }
 
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="theData">删除的数据</param>
-        [DataDeleteLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
-        public void DeleteData(List<string> ids)
-        {
-            var adminUser = GetTheUser("Admin");
-            if (ids.Contains(adminUser.Id))
-                throw new Exception("超级管理员是内置账号,禁止删除！");
-            var userIds = GetIQueryable().Where(x => ids.Contains(x.UserId)).Select(x => x.UserId).ToList();
-
-            Delete(ids);
-            _sysUserCache.UpdateCache(userIds);
-        }
-
-        /// <summary>
-        /// 获取当前操作者信息
-        /// </summary>
-        /// <returns></returns>
-        public Base_UserDTO GetCurrentUser()
-        {
-            return GetTheUser(_operator.UserId);
-        }
-
-        /// <summary>
-        /// 获取用户信息
-        /// </summary>
-        /// <param name="userId">用户Id</param>
-        /// <returns></returns>
         public Base_UserDTO GetTheUser(string userId)
         {
             return _sysUserCache.GetCache(userId);
@@ -177,7 +154,7 @@ namespace Coldairarrow.Business.Base_SysManage
             string userId = _operator.UserId;
             oldPwd = oldPwd.ToMD5String();
             newPwd = newPwd.ToMD5String();
-            var theUser = GetIQueryable().Where(x => x.UserId == userId && x.Password == oldPwd).FirstOrDefault();
+            var theUser = GetIQueryable().Where(x => x.Id == userId && x.Password == oldPwd).FirstOrDefault();
             if (theUser == null)
             {
                 res.Success = false;

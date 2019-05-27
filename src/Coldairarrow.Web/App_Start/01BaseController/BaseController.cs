@@ -11,8 +11,6 @@ namespace Coldairarrow.Web
     /// <summary>
     /// Mvc基控制器
     /// </summary>
-    /// 
-    //[IgnoreLogin]
     public class BaseController : Controller
     {
         #region DI
@@ -38,15 +36,6 @@ namespace Coldairarrow.Web
                 HttpContext.Request.Cookies.Add(sessionCookie);
                 HttpContext.Response.Cookies.Add(sessionCookie);
             }
-        }
-
-        protected override FileContentResult File(byte[] fileContents, string contentType, string fileDownloadName)
-        {
-            string agent = Request.UserAgent.ToLower();
-            if (!agent.Contains("firefox"))
-                fileDownloadName = HttpUtility.UrlEncode(fileDownloadName);
-
-            return base.File(fileContents, contentType, fileDownloadName);
         }
 
         /// <summary>
@@ -170,6 +159,18 @@ namespace Coldairarrow.Web
         public ActionResult DataTable_Easyui(object dataList, Pagination pagination)
         {
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
+        }
+
+        /// <summary>
+        /// 返回数据表格数据
+        /// 注：BootstrapTable格式
+        /// </summary>
+        /// <param name="dataList">数据列表</param>
+        /// <param name="pagination">分页参数</param>
+        /// <returns></returns>
+        public ActionResult DataTable_Bootstrap(object dataList, Pagination pagination)
+        {
+            return Content(pagination.BuildTableResult_BootstrapTable(dataList).ToJson());
         }
 
         /// <summary>

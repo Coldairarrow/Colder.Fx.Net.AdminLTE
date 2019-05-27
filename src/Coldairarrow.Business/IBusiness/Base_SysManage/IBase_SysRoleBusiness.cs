@@ -1,6 +1,7 @@
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System.Collections.Generic;
+using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
@@ -8,13 +9,7 @@ namespace Coldairarrow.Business.Base_SysManage
     {
         #region 外部接口
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        List<Base_SysRole> GetDataList(string condition, string keyword, Pagination pagination);
+        List<Base_SysRoleDTO> GetDataList(Pagination pagination, string roldId = null, string roleName = null);
 
         /// <summary>
         /// 获取指定的单条数据
@@ -22,6 +17,8 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <param name="id">主键</param>
         /// <returns></returns>
         Base_SysRole GetTheData(string id);
+
+        Base_SysRoleDTO GetTheInfo(string id);
 
         /// <summary>
         /// 添加数据
@@ -56,5 +53,10 @@ namespace Coldairarrow.Business.Base_SysManage
         #region 数据模型
 
         #endregion
+    }
+
+    public class Base_SysRoleDTO: Base_SysRole
+    {
+        public RoleType? RoleType { get => RoleName?.ToEnum<RoleType>(); }
     }
 }

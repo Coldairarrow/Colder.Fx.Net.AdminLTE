@@ -1,9 +1,9 @@
+using AutoMapper;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
@@ -17,21 +17,22 @@ namespace Coldairarrow.Business.Base_SysManage
 
         #region 外部接口
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        public List<Base_SysRole> GetDataList(string condition, string keyword, Pagination pagination)
+        public List<Base_SysRoleDTO> GetDataList(Pagination pagination, string roldId = null, string roleName = null)
         {
-            var q = GetIQueryable();
+            var where = LinqHelper.True<Base_SysRole>();
+            if (!roldId.IsNullOrEmpty())
+                where = where.And(x => x.Id == roldId);
+            if (!roleName.IsNullOrEmpty())
+                where = where.And(x => x.RoleName.Contains(roleName));
 
-            //模糊查询
-            if (!condition.IsNullOrEmpty() && !keyword.IsNullOrEmpty())
-                q = q.Where($@"{condition}.Contains(@0)", keyword);
+            var list = GetIQueryable()
+                .Where(where)
+                .GetPagination(pagination)
+                .ToList()
+                .Select(x => Mapper.Map<Base_SysRoleDTO>(x))
+                .ToList();
 
-            return q.GetPagination(pagination).ToList();
+            return list;
         }
 
         /// <summary>
@@ -42,6 +43,11 @@ namespace Coldairarrow.Business.Base_SysManage
         public Base_SysRole GetTheData(string id)
         {
             return GetEntity(id);
+        }
+
+        public Base_SysRoleDTO GetTheInfo(string id)
+        {
+            return GetDataList(new Pagination(), id).FirstOrDefault();
         }
 
         /// <summary>
@@ -93,6 +99,7 @@ namespace Coldairarrow.Business.Base_SysManage
             Service.Insert(insertList);
             _permissionManage.ClearUserPermissionCache();
         }
+
 
         #endregion
 

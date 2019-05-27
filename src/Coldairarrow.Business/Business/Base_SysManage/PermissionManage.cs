@@ -13,12 +13,13 @@ namespace Coldairarrow.Business.Base_SysManage
     /// </summary>
     public class PermissionManage : IPermissionManage, ICircleDependency
     {
-        public PermissionManage(IOperator @operator)
-        {
-            _operator = @operator;
-        }
+        #region DI
+
         public IBase_UserBusiness _sysUserBus { get; set; }
-        public IOperator _operator { get; }
+        public IOperator _operator { get; set; }
+        public IBase_SysRoleBusiness RoleBus { get; set; }
+
+        #endregion
 
         #region 构造函数
 
@@ -126,7 +127,7 @@ namespace Coldairarrow.Business.Base_SysManage
         {
             BaseBusiness<Base_PermissionRole> _db = new BaseBusiness<Base_PermissionRole>();
             List<string> permissions = new List<string>();
-            var theRoleInfo = _db.Service.GetIQueryable<Base_SysRole>().Where(x => x.RoleId == roleId).FirstOrDefault();
+            var theRoleInfo = RoleBus.GetTheInfo(roleId);
             if (theRoleInfo.RoleType == EnumType.RoleType.超级管理员)
                 permissions = _allPermissionValues.DeepClone();
             else
@@ -285,7 +286,7 @@ namespace Coldairarrow.Business.Base_SysManage
         public void ClearUserPermissionCache()
         {
             BaseBusiness<Base_UnitTest> _db = new BaseBusiness<Base_UnitTest>();
-            var userIdList = _db.Service.GetIQueryable<Base_User>().Select(x => x.UserId).ToList();
+            var userIdList = _db.Service.GetIQueryable<Base_User>().Select(x => x.Id).ToList();
             userIdList.ForEach(aUserId =>
             {
                 CacheHelper.Cache.RemoveCache(BuildCacheKey(aUserId));
@@ -303,7 +304,7 @@ namespace Coldairarrow.Business.Base_SysManage
 
             BaseBusiness<Base_PermissionUser> _db = new BaseBusiness<Base_PermissionUser>();
             var userPermissions = _db.GetIQueryable().Where(x => x.UserId == userId).Select(x => x.PermissionValue).ToList();
-            var theUser = _db.Service.GetIQueryable<Base_User>().Where(x => x.UserId == userId).FirstOrDefault();
+            var theUser = _db.Service.GetIQueryable<Base_User>().Where(x => x.Id == userId).FirstOrDefault();
             var roleIdList = _sysUserBus.GetUserRoleIds(userId);
             var rolePermissions = _db.Service.GetIQueryable<Base_PermissionRole>().Where(x => roleIdList.Contains(x.RoleId)).GroupBy(x => x.PermissionValue).Select(x => x.Key).ToList();
             var existsPermissions = userPermissions.Concat(rolePermissions).Distinct();

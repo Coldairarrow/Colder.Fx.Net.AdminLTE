@@ -1,7 +1,6 @@
 using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -9,6 +8,8 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class Base_UserController : BaseMvcController
     {
+        #region DI
+
         public Base_UserController(IBase_UserBusiness sysUserBus, IPermissionManage permissionManage)
         {
             _sysUserBus = sysUserBus;
@@ -16,6 +17,8 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         }
         IBase_UserBusiness _sysUserBus { get; }
         IPermissionManage _permissionManage { get; set; }
+
+        #endregion
 
         #region 视图功能
 
@@ -47,24 +50,18 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 
         #region 获取数据
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
+        public ActionResult GetDataList(Pagination pagination, string keyword)
         {
-            var dataList = _sysUserBus.GetDataList(condition, keyword, pagination);
+            var dataList = _sysUserBus.GetDataList(pagination, null, keyword);
 
-            return Content(pagination.BuildTableResult_BootstrapTable(dataList).ToJson());
+            return DataTable_Bootstrap(dataList, pagination);
         }
 
         public ActionResult GetDataList_NoPagin(string values, string q)
         {
-            var resList = _sysUserBus.BuildSelectResult(values, q, "RealName", "UserId");
+            var resList = _sysUserBus.BuildSelectResult(values, q, "RealName", "Id");
 
-            return Content(resList.ToJson());
+            return JsonContent(resList.ToJson());
         }
 
         #endregion
@@ -78,8 +75,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.Id = Guid.NewGuid().ToSequentialGuid();
-                theData.UserId = Guid.NewGuid().ToSequentialGuid();
+                theData.Id = SnowflakeId.NewSnowflakeId().ToString();
 
                 _sysUserBus.AddData(theData);
             }
@@ -91,7 +87,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
             //角色设置
             if (!RoleIdList.IsNullOrEmpty())
             {
-                _sysUserBus.SetUserRole(theData.UserId, RoleIdList.ToList<string>());
+                _sysUserBus.SetUserRole(theData.Id, RoleIdList.ToList<string>());
             }
 
             return Success();

@@ -12,15 +12,10 @@ namespace Coldairarrow.Entity.Base_SysManage
     {
 
         /// <summary>
-        /// 代理主键
+        /// 用户Id
         /// </summary>
         [Key, Column(Order = 1)]
         public String Id { get; set; }
-
-        /// <summary>
-        /// 用户Id,逻辑主键
-        /// </summary>
-        public String UserId { get; set; }
 
         /// <summary>
         /// 用户名

@@ -1,7 +1,6 @@
 using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System;
 using System.Web.Mvc;
 
 namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
@@ -42,17 +41,11 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 
         #region 获取数据
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
+        public ActionResult GetDataList(Pagination pagination, string roleName)
         {
-            var dataList = _sysRoleBus.GetDataList(condition, keyword, pagination);
+            var dataList = _sysRoleBus.GetDataList(pagination, null, roleName);
 
-            return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
+            return DataTable_Bootstrap(dataList, pagination);
         }
 
         /// <summary>
@@ -62,12 +55,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         /// <returns></returns>
         public ActionResult GetDataList_NoPagin()
         {
-            Pagination pagination = new Pagination
-            {
-                PageIndex = 1,
-                PageRows = int.MaxValue
-            };
-            var dataList = _sysRoleBus.GetDataList(null, null, pagination);
+            var dataList = _sysRoleBus.GetDataList(new Pagination());
 
             return Content(dataList.ToJson());
         }
@@ -84,8 +72,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         {
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.Id = Guid.NewGuid().ToSequentialGuid();
-                theData.RoleId = Guid.NewGuid().ToSequentialGuid();
+                theData.Id = SnowflakeId.NewSnowflakeId().ToString();
 
                 _sysRoleBus.AddData(theData);
             }

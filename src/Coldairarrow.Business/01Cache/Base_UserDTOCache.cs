@@ -6,14 +6,11 @@ namespace Coldairarrow.Business.Cache
 {
     public class Base_UserDTOCache : BaseCache<Base_UserDTO>, IBase_UserDTOCache, ICircleDependency
     {
-        public IBase_UserBusiness _sysUserBus { get; set; }
-        protected override string _moduleKey => "Base_UserModel";
+        public IBase_UserBusiness SysUserBus { get; set; }
+        protected override string _moduleKey => "Base_UserDTO";
         protected override Base_UserDTO GetDbData(string key)
         {
-            if (key.IsNullOrEmpty())
-                return null;
-
-            return _sysUserBus.GetDataList("UserId", key, new Pagination()).FirstOrDefault();
+            return SysUserBus.GetDataList(new Pagination(), key).FirstOrDefault();
         }
     }
 }
