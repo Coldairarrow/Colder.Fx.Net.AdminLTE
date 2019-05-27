@@ -16,6 +16,7 @@ using System.Data.Common;
 using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Console1
 {
@@ -45,47 +46,24 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            //ShardingTest();
-            ShardingConfigBootstrapper
-                .Bootstrap()
-                //添加数据源
-                .AddDataSource("BaseDb", DatabaseType.SqlServer, dbBuilder =>
-                {
-                    //添加物理数据库
-                    dbBuilder.AddPhsicDb("BaseDb", ReadWriteType.Read);
-                    //添加物理数据库
-                    dbBuilder.AddPhsicDb("BaseDb1", ReadWriteType.ReadAndWrite);
-                })
-                //添加抽象数据库
-                .AddAbsDb("BaseDb", absTableBuilder =>
-                {
-                    //添加抽象数据表
-                    absTableBuilder.AddAbsTable("Base_UnitTest", tableBuilder =>
-                    {
-                        //添加物理数据表
-                        tableBuilder.AddPhsicTable("Base_UnitTest_0", "BaseDb");
-                        tableBuilder.AddPhsicTable("Base_UnitTest_1", "BaseDb");
-                        tableBuilder.AddPhsicTable("Base_UnitTest_2", "BaseDb");
-                    }, new ModShardingRule("Base_UnitTest", "Id", 3));
-                });
-            List<Base_UnitTest> insertList = new List<Base_UnitTest>();
-            for (int i = 1; i <= 100; i++)
+            List<Task> tasks = new List<Task>();
+            LoopHelper.Loop(4, () =>
             {
-                Base_UnitTest newData = new Base_UnitTest
+                tasks.Add(Task.Run(() =>
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Age = i,
-                    UserId = "Admin" + i,
-                    UserName = "超级管理员" + i
-                };
-                insertList.Add(newData);
-            }
-
-            var db = DbFactory.GetShardingRepository();
-            //db.Insert(insertList);
-
-            var dbList = db.GetIShardingQueryable<Base_UnitTest>().ToList();
-
+                    LoopHelper.Loop(1000000, () =>
+                    {
+                        var db = DbFactory.GetRepository();
+                        db.Insert(new Base_UnitTest
+                        {
+                            Id = SnowflakeId.NewSnowflakeId().ToString(),
+                            UserId= SnowflakeId.NewSnowflakeId().ToString(),
+                            UserName= SnowflakeId.NewSnowflakeId().ToString()
+                        });
+                    });
+                }));
+            });
+            Task.WaitAll(tasks.ToArray());
             Console.WriteLine("完成");
             Console.ReadLine();
         }

@@ -87,12 +87,9 @@ namespace Coldairarrow.Business.Base_SysManage
         }
 
         [DataAddLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
-        [DataRepeatValidate
-            (
-                new string[] { "UserName" },
-                new string[] { "用户名" }
-            )
-        ]
+        [DataRepeatValidate(
+            new string[] { "UserName" },
+            new string[] { "用户名" })]
         public void AddData(Base_User newData)
         {
             Insert(newData);
@@ -102,12 +99,9 @@ namespace Coldairarrow.Business.Base_SysManage
         /// 更新数据
         /// </summary>
         [DataEditLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
-        [DataRepeatValidate
-            (
-                new string[] { "UserName" },
-                new string[] { "用户名" }
-            )
-        ]
+        [DataRepeatValidate(
+            new string[] { "UserName" },
+            new string[] { "用户名" })]
         public void UpdateData(Base_User theData)
         {
             if (theData.UserId == "Admin" && _operator.UserId != theData.UserId)
