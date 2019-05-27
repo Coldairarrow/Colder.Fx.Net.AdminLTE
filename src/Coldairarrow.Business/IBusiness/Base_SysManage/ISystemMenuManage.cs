@@ -1,7 +1,7 @@
 ﻿using Coldairarrow.Util;
 using System.Collections.Generic;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Business.Base_SysManage
 {
     /// <summary>
     /// 系统菜单管理
@@ -32,7 +32,7 @@ namespace Coldairarrow.Web
         public string id { get => url ?? GuidHelper.GenerateKey(); }
         public string text { get; set; }
         public string icon { get; set; }
-        public string url { get => SystemMenuManage.GetUrl(_url); set => _url = value; }
+        public string url { get => PathHelper.GetUrl(_url); set => _url = value; }
         public string _url { get; set; }
         public string Permission { get; set; }
         public bool IsShow { get; set; } = true;

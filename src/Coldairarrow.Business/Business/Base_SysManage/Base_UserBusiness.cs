@@ -86,19 +86,28 @@ namespace Coldairarrow.Business.Base_SysManage
             return GetEntity(id);
         }
 
-        [AddDataLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
+        [DataAddLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
+        [DataRepeatValidate
+            (
+                new string[] { "UserName" },
+                new string[] { "用户名" }
+            )
+        ]
         public void AddData(Base_User newData)
         {
-            if (GetIQueryable().Any(x => x.UserName == newData.UserName))
-                throw new Exception("该用户名已存在！");
-
             Insert(newData);
         }
 
         /// <summary>
         /// 更新数据
         /// </summary>
-        [EditDataLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
+        [DataEditLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
+        [DataRepeatValidate
+            (
+                new string[] { "UserName" },
+                new string[] { "用户名" }
+            )
+        ]
         public void UpdateData(Base_User theData)
         {
             if (theData.UserId == "Admin" && _operator.UserId != theData.UserId)
@@ -127,7 +136,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// 删除数据
         /// </summary>
         /// <param name="theData">删除的数据</param>
-        [DeleteDataLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
+        [DataDeleteLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
         public void DeleteData(List<string> ids)
         {
             var adminUser = GetTheUser("Admin");

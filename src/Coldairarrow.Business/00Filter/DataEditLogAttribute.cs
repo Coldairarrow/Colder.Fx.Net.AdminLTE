@@ -4,9 +4,9 @@ using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
 namespace Coldairarrow.Business
 {
-    public class AddDataLogAttribute : WriteDataLogAttribute
+    class DataEditLogAttribute : WriteDataLogAttribute
     {
-        public AddDataLogAttribute(LogType logType, string dataName, string nameField)
+        public DataEditLogAttribute(LogType logType, string dataName, string nameField)
             : base(logType, dataName, nameField)
         {
         }
@@ -14,7 +14,7 @@ namespace Coldairarrow.Business
         public override void OnActionExecuted(IInvocation invocation)
         {
             var obj = invocation.Arguments[0];
-            BusHelper.WriteSysLog($"添加{_dataName}:{obj.GetPropertyValue(_nameField)?.ToString()}", _logType);
+            BusHelper.WriteSysLog($"修改{_dataName}:{obj.GetPropertyValue(_nameField)?.ToString()}", _logType);
         }
 
         public override void OnActionExecuting(IInvocation invocation)

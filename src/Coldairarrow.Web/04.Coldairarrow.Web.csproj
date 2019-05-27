@@ -1208,21 +1208,21 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\01Handler\POST请求过滤\PostRequestAttribute.cs" />
-    <Compile Include="App_Start\01Handler\参数非空校验\CheckParamNotEmptyAttribute.cs" />
-    <Compile Include="App_Start\01Handler\对外接口签名校验\CheckSignAttribute.cs" />
-    <Compile Include="App_Start\01Handler\对外接口签名校验\CheckAppIdPermissionAttribute.cs" />
-    <Compile Include="App_Start\01Handler\对外接口签名校验\IgnoreAppIdPermissionAttribute.cs" />
-    <Compile Include="App_Start\01Handler\后台用户接口权限校验\IgnoreUrlPermissionAttribute.cs" />
-    <Compile Include="App_Start\01Handler\后台用户接口权限校验\CheckUrlPermissionAttribute.cs" />
-    <Compile Include="App_Start\01Handler\登录校验\CheckLoginAttribute.cs" />
-    <Compile Include="App_Start\01Handler\全局错误过滤\HandlerGlobalError.cs" />
-    <Compile Include="App_Start\01Handler\登录校验\IgnoreLoginAttribute.cs" />
-    <Compile Include="App_Start\01Handler\对外接口签名校验\IgnoreSignAttribute.cs" />
-    <Compile Include="App_Start\02BaseController\BaseController.cs" />
-    <Compile Include="App_Start\02BaseController\BaseApiController.cs" />
-    <Compile Include="App_Start\02BaseController\BaseMvcController.cs" />
-    <Compile Include="App_Start\03Extentions\Extention.UrlHelper.cs" />
+    <Compile Include="App_Start\00Filter\POST请求过滤\PostRequestAttribute.cs" />
+    <Compile Include="App_Start\00Filter\参数非空校验\CheckParamNotEmptyAttribute.cs" />
+    <Compile Include="App_Start\00Filter\对外接口签名校验\CheckSignAttribute.cs" />
+    <Compile Include="App_Start\00Filter\对外接口签名校验\CheckAppIdPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\对外接口签名校验\IgnoreAppIdPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\后台用户接口权限校验\IgnoreUrlPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\后台用户接口权限校验\CheckUrlPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\登录校验\CheckLoginAttribute.cs" />
+    <Compile Include="App_Start\00Filter\全局错误过滤\HandlerGlobalError.cs" />
+    <Compile Include="App_Start\00Filter\登录校验\IgnoreLoginAttribute.cs" />
+    <Compile Include="App_Start\00Filter\对外接口签名校验\IgnoreSignAttribute.cs" />
+    <Compile Include="App_Start\01BaseController\BaseController.cs" />
+    <Compile Include="App_Start\01BaseController\BaseApiController.cs" />
+    <Compile Include="App_Start\01BaseController\BaseMvcController.cs" />
+    <Compile Include="App_Start\02Extentions\Extention.UrlHelper.cs" />
     <Compile Include="App_Start\DependencyViewPage.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -1235,8 +1235,6 @@
     <Compile Include="Areas\Base_SysManage\Controllers\CityController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\CommonController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\RapidDevelopmentController.cs" />
-    <Compile Include="Common\ISystemMenuManage.cs" />
-    <Compile Include="Common\SystemMenuManage.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -1452,21 +1450,21 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coldairarrow.Business\04.Coldairarrow.Business.csproj">
+    <ProjectReference Include="..\Coldairarrow.Business\03.Coldairarrow.Business.csproj">
       <Project>{62858a89-da3c-4658-8219-580780d435c9}</Project>
-      <Name>04.Coldairarrow.Business</Name>
+      <Name>03.Coldairarrow.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.DataRepository\02.Coldairarrow.DataRepository.csproj">
+    <ProjectReference Include="..\Coldairarrow.DataRepository\01.Coldairarrow.DataRepository.csproj">
       <Project>{01C93A6B-76C5-4B10-B8B9-2F173B5F9441}</Project>
-      <Name>02.Coldairarrow.DataRepository</Name>
+      <Name>01.Coldairarrow.DataRepository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj">
+    <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj">
       <Project>{544fe3ea-46f2-45f7-9574-d4fea111a9c1}</Project>
-      <Name>03.Coldairarrow.Entity</Name>
+      <Name>02.Coldairarrow.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj">
+    <ProjectReference Include="..\Coldairarrow.Util\00.Coldairarrow.Util.csproj">
       <Project>{7095b12b-7ff2-4b6b-8c6c-654197edaa34}</Project>
-      <Name>01.Coldairarrow.Util</Name>
+      <Name>00.Coldairarrow.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

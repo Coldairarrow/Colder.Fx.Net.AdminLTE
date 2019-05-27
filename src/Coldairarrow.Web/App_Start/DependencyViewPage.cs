@@ -1,6 +1,5 @@
 ﻿using Coldairarrow.Business;
 using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Web;
 
 namespace System.Web.Mvc
 {

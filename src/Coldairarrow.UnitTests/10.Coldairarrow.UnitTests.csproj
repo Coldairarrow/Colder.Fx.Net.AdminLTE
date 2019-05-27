@@ -136,21 +136,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coldairarrow.Business\04.Coldairarrow.Business.csproj">
+    <ProjectReference Include="..\Coldairarrow.Business\03.Coldairarrow.Business.csproj">
       <Project>{62858A89-DA3C-4658-8219-580780D435C9}</Project>
-      <Name>04.Coldairarrow.Business</Name>
+      <Name>03.Coldairarrow.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.DataRepository\02.Coldairarrow.DataRepository.csproj">
+    <ProjectReference Include="..\Coldairarrow.DataRepository\01.Coldairarrow.DataRepository.csproj">
       <Project>{01C93A6B-76C5-4B10-B8B9-2F173B5F9441}</Project>
-      <Name>02.Coldairarrow.DataRepository</Name>
+      <Name>01.Coldairarrow.DataRepository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj">
+    <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj">
       <Project>{544FE3EA-46F2-45F7-9574-D4FEA111A9C1}</Project>
-      <Name>03.Coldairarrow.Entity</Name>
+      <Name>02.Coldairarrow.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj">
+    <ProjectReference Include="..\Coldairarrow.Util\00.Coldairarrow.Util.csproj">
       <Project>{7095B12B-7FF2-4B6B-8C6C-654197EDAA34}</Project>
-      <Name>01.Coldairarrow.Util</Name>
+      <Name>00.Coldairarrow.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

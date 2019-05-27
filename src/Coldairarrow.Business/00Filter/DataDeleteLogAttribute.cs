@@ -7,9 +7,9 @@ using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
 namespace Coldairarrow.Business
 {
-    public class DeleteDataLogAttribute : WriteDataLogAttribute
+    public class DataDeleteLogAttribute : WriteDataLogAttribute
     {
-        public DeleteDataLogAttribute(LogType logType, string dataName, string nameField)
+        public DataDeleteLogAttribute(LogType logType, string dataName, string nameField)
             : base(logType, dataName, nameField)
         {
         }

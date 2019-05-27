@@ -70,13 +70,10 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
                 theData.Id = Guid.NewGuid().ToSequentialGuid();
 
                 _appSecretBus.AddData(theData);
-
-                WriteSysLog($"添加应用Id:{theData.AppId}", EnumType.LogType.接口密钥管理);
             }
             else
             {
                 _appSecretBus.UpdateData(theData);
-                WriteSysLog($"更改应用Id:{theData.AppId}", EnumType.LogType.接口密钥管理);
             }
 
             return Success();
@@ -88,9 +85,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         /// <param name="theData">删除的数据</param>
         public ActionResult DeleteData(string ids)
         {
-            var idList = ids.ToList<string>();
-            _appSecretBus.DeleteData(idList);
-            WriteSysLog($"删除自然主键为:{string.Join(",", idList)}的应用Id数据", EnumType.LogType.接口密钥管理);
+            _appSecretBus.DeleteData(ids.ToList<string>());
 
             return Success("删除成功！");
         }

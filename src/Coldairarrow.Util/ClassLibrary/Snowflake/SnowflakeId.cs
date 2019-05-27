@@ -20,7 +20,7 @@ namespace Coldairarrow.Util
         }
         static SnowflakeId()
         {
-            _idWorker = new IdWorker(1, 1);
+            _idWorker = new IdWorker(GlobalSwitch.WorkerId, GlobalSwitch.WorkerId);
         }
         private static IdWorker _idWorker { get; }
         public long Id { get; set; }

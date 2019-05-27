@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{62858A89-DA3C-4658-8219-580780D435C9}</ProjectGuid>
+    <ProjectGuid>{01C93A6B-76C5-4B10-B8B9-2F173B5F9441}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Coldairarrow.Business</RootNamespace>
-    <AssemblyName>Coldairarrow.Business</AssemblyName>
+    <RootNamespace>Coldairarrow.DataRepository</RootNamespace>
+    <AssemblyName>Coldairarrow.DataRepository</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,8 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,20 +33,8 @@
     <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Extras.DynamicProxy, Version=4.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Extras.DynamicProxy.4.5.0\lib\net45\Autofac.Extras.DynamicProxy.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="CommandLine, Version=2.3.0.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.2.3.0\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
-    <Reference Include="Elasticsearch.Net, Version=6.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elasticsearch.Net.6.1.0\lib\net45\Elasticsearch.Net.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -56,14 +42,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.1.1.1\lib\netstandard1.1\Microsoft.Extensions.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.1\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    <Reference Include="EntityFramework6.Npgsql, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework6.Npgsql.3.2.0\lib\net45\EntityFramework6.Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -80,8 +60,11 @@
     <Reference Include="Mono.Cecil.Rocks, Version=0.10.1.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.10.1\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
-    <Reference Include="Nest, Version=6.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\NEST.6.1.0\lib\net45\Nest.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.8.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.8.8\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -89,20 +72,22 @@
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="Npgsql, Version=4.0.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.4.0.3\lib\net451\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.18.3.0\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="StackExchange.Redis, Version=1.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.2.4\lib\net45\StackExchange.Redis.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -112,23 +97,19 @@
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.1\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -155,66 +136,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="00Filter\DeleteDataLogAttribute.cs" />
-    <Compile Include="00Filter\EditDataLogAttribute.cs" />
-    <Compile Include="00Filter\AddDataLogAttribute.cs" />
-    <Compile Include="00Filter\WriteDataLogAttribute.cs" />
-    <Compile Include="01Cache\BaseCache\BaseCache.T.cs" />
-    <Compile Include="01Cache\BaseCache\IBaseCache.T.cs" />
-    <Compile Include="01Cache\IBase_UserDTOCache.cs" />
-    <Compile Include="01Cache\Base_UserDTOCache.cs" />
-    <Compile Include="Business\BaseBusiness.T.cs" />
-    <Compile Include="Business\BusHelper.cs" />
-    <Compile Include="Business\Operator.cs" />
-    <Compile Include="Business\TestBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IBase_AppSecretBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IBase_DatabaseLinkBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IBase_SysLogBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IBase_SysRoleBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IBase_UserBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\ICheckSignBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IRapidDevelopmentBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IPermissionManage.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IUrlPermissionManage.cs" />
-    <Compile Include="IBusiness\IBusHelper.cs" />
-    <Compile Include="IBusiness\IBaseBusiness.T.cs" />
-    <Compile Include="Business\Base_SysManage\Base_AppSecretBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\Base_DatabaseLinkBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\Base_SysLogBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\Base_SysRoleBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\Base_UserBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\CheckSignBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\HomeBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\PermissionManage.cs" />
-    <Compile Include="Business\Base_SysManage\RapidDevelopmentBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\UrlPermissionManage.cs" />
-    <Compile Include="IBusiness\Base_SysManage\IHomeBusiness.cs" />
-    <Compile Include="IBusiness\IOperator.cs" />
-    <Compile Include="IBusiness\ITestBusiness.cs" />
-    <Compile Include="Logger\ElasticSearchLogger.cs" />
-    <Compile Include="Logger\ILogger.cs" />
-    <Compile Include="Logger\LoggerFactory.cs" />
-    <Compile Include="Logger\RDBMSLogger.cs" />
+    <Compile Include="DbContext\BaseDbContext.cs" />
+    <Compile Include="DbContext\RepositoryDbContext.cs" />
+    <Compile Include="DbContext\DbModelFactory.cs" />
+    <Compile Include="DbContext\IRepositoryDbContext.cs" />
+    <Compile Include="DbFactory.cs" />
+    <Compile Include="IRepository\IBaseRepository.cs" />
+    <Compile Include="IRepository\IRepository.cs" />
+    <Compile Include="IRepository\IShardingRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\MySqlRepository.cs" />
+    <Compile Include="Repository\DbRepository.cs" />
+    <Compile Include="Repository\PostgreSqlRepository.cs" />
+    <Compile Include="Repository\OracleRepository.cs" />
+    <Compile Include="Repository\ShardingRepository.cs" />
+    <Compile Include="Repository\SqlServerRepository.cs" />
+    <Compile Include="Sharding\Extention.Sharding.cs" />
+    <Compile Include="Sharding\IShardingQueryable.T.cs" />
+    <Compile Include="Sharding\ShardingConfig.cs" />
+    <Compile Include="Sharding\ShardingConfigBootstrapper.cs" />
+    <Compile Include="Sharding\ShardingHelper.cs" />
+    <Compile Include="Sharding\ShardingIQueryable.T.cs" />
+    <Compile Include="Sharding\ShardingRule\ConsistentHashShardingRule.cs" />
+    <Compile Include="Sharding\ShardingRule\IShardingRule.cs" />
+    <Compile Include="Sharding\ShardingRule\ModShardingRule.cs" />
+    <Compile Include="Sharding\ShardingRule\SnowflakeModShardingRule.cs" />
+    <Compile Include="Transaction\DistributedTransaction.cs" />
+    <Compile Include="Transaction\ITransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coldairarrow.DataRepository\02.Coldairarrow.DataRepository.csproj">
-      <Project>{01c93a6b-76c5-4b10-b8b9-2f173b5f9441}</Project>
-      <Name>02.Coldairarrow.DataRepository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj">
-      <Project>{544fe3ea-46f2-45f7-9574-d4fea111a9c1}</Project>
-      <Name>03.Coldairarrow.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj">
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Coldairarrow.Util\00.Coldairarrow.Util.csproj">
       <Project>{7095b12b-7ff2-4b6b-8c6c-654197edaa34}</Project>
-      <Name>01.Coldairarrow.Util</Name>
+      <Name>00.Coldairarrow.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

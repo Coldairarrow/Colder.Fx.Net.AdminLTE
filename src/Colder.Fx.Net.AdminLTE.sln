@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01.Coldairarrow.Util", "Coldairarrow.Util\01.Coldairarrow.Util.csproj", "{7095B12B-7FF2-4B6B-8C6C-654197EDAA34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00.Coldairarrow.Util", "Coldairarrow.Util\00.Coldairarrow.Util.csproj", "{7095B12B-7FF2-4B6B-8C6C-654197EDAA34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02.Coldairarrow.DataRepository", "Coldairarrow.DataRepository\02.Coldairarrow.DataRepository.csproj", "{01C93A6B-76C5-4B10-B8B9-2F173B5F9441}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01.Coldairarrow.DataRepository", "Coldairarrow.DataRepository\01.Coldairarrow.DataRepository.csproj", "{01C93A6B-76C5-4B10-B8B9-2F173B5F9441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03.Coldairarrow.Entity", "Coldairarrow.Entity\03.Coldairarrow.Entity.csproj", "{544FE3EA-46F2-45F7-9574-D4FEA111A9C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02.Coldairarrow.Entity", "Coldairarrow.Entity\02.Coldairarrow.Entity.csproj", "{544FE3EA-46F2-45F7-9574-D4FEA111A9C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04.Coldairarrow.Business", "Coldairarrow.Business\04.Coldairarrow.Business.csproj", "{62858A89-DA3C-4658-8219-580780D435C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03.Coldairarrow.Business", "Coldairarrow.Business\03.Coldairarrow.Business.csproj", "{62858A89-DA3C-4658-8219-580780D435C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05.Coldairarrow.Web", "Coldairarrow.Web\05.Coldairarrow.Web.csproj", "{3CD25499-8291-48BB-9A24-D99BC1675A0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04.Coldairarrow.Web", "Coldairarrow.Web\04.Coldairarrow.Web.csproj", "{3CD25499-8291-48BB-9A24-D99BC1675A0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "06.Coldairarrow.Console", "Coldairarrow.Console\06.Coldairarrow.Console.csproj", "{78A6219E-EF16-4B0A-9F8B-DF1BED594C70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05.Coldairarrow.Console", "Coldairarrow.Console\05.Coldairarrow.Console.csproj", "{78A6219E-EF16-4B0A-9F8B-DF1BED594C70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10.Coldairarrow.UnitTests", "Coldairarrow.UnitTests\10.Coldairarrow.UnitTests.csproj", "{9DECBA8F-60D7-4AA3-9A35-F0A71FB36CDC}"
 EndProject

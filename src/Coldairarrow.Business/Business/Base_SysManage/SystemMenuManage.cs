@@ -1,12 +1,10 @@
-﻿using Coldairarrow.Business;
-using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.Business.Base_SysManage
 {
     /// <summary>
     /// 系统菜单管理

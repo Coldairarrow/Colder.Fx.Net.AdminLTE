@@ -200,11 +200,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiSDK\CTCC_IOT_ApiSDK.cs" />
-    <Compile Include="Autofac\BaseFilterAttribute.cs" />
-    <Compile Include="Autofac\ICircleDependency.cs" />
-    <Compile Include="Autofac\IDependency.cs" />
-    <Compile Include="Autofac\IFilter.cs" />
-    <Compile Include="Autofac\Interceptor.cs" />
+    <Compile Include="DI\BaseFilterAttribute.cs" />
+    <Compile Include="DI\ICircleDependency.cs" />
+    <Compile Include="DI\IDependency.cs" />
+    <Compile Include="DI\IFilter.cs" />
+    <Compile Include="DI\Interceptor.cs" />
     <Compile Include="Cache\CacheHelper.cs" />
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Cache\RedisCache.cs" />
