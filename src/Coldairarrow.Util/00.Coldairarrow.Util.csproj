@@ -251,7 +251,7 @@
     <Compile Include="Helper\ExpressionHelper.cs" />
     <Compile Include="Helper\PathHelper.cs" />
     <Compile Include="Helper\RandomHelper.cs" />
-    <Compile Include="Helper\GuidHelper.cs" />
+    <Compile Include="Helper\IdHelper.cs" />
     <Compile Include="Helper\IocHelper.cs" />
     <Compile Include="Helper\LogHelper.cs" />
     <Compile Include="Helper\LoopHelper.cs" />

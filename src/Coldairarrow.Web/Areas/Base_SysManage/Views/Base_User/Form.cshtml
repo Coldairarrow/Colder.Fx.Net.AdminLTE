@@ -10,7 +10,7 @@
     object roleIds = "[]";
     if (!obj.Id.IsNullOrEmpty())
     {
-        roleIds = Html.Raw(this.SysUserBus.GetUserRoleIds(obj.UserId).ToJson());
+        roleIds = Html.Raw(this.SysUserBus.GetUserRoleIds(obj.Id).ToJson());
     }
     string str = obj.ToJson();
     var objStr = Html.Raw(obj.ToJson());
@@ -86,7 +86,7 @@
             $('#roleList').selectpicker({
                 url: '/Base_SysManage/Base_SysRole/GetDataList_NoPagin',
                 value: roleIds,
-                valueField: 'RoleId',
+                valueField: 'Id',
                 textField: 'RoleName'
                 //pleaseSelect: false
             });

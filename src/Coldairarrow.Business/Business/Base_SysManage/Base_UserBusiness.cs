@@ -123,7 +123,7 @@ namespace Coldairarrow.Business.Base_SysManage
             Service.Delete_Sql<Base_UserRoleMap>(x => x.UserId == userId);
             var insertList = roleIds.Select(x => new Base_UserRoleMap
             {
-                Id = GuidHelper.GenerateKey(),
+                Id = IdHelper.GetId(),
                 UserId = userId,
                 RoleId = x
             }).ToList();
@@ -192,7 +192,7 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 insertList.Add(new Base_PermissionUser
                 {
-                    Id = Guid.NewGuid().ToSequentialGuid(),
+                    Id = IdHelper.GetId(),
                     UserId = userId,
                     PermissionValue = newPermission
                 });

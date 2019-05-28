@@ -1,13 +1,14 @@
 using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System;
 using System.Web.Mvc;
 
 namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class Base_AppSecretController : BaseMvcController
     {
+        #region DI
+
         public Base_AppSecretController(IBase_AppSecretBusiness appSecretBus, IPermissionManage permissionManage)
         {
             _appSecretBus = appSecretBus;
@@ -17,7 +18,9 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         IBase_AppSecretBusiness _appSecretBus { get; }
         IPermissionManage _permissionManage { get; set; }
 
-        #region 视图功能
+        #endregion
+
+        #region 视图
 
         public ActionResult Index()
         {
@@ -40,24 +43,18 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 
         #endregion
 
-        #region 获取数据
+        #region 获取
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
+        public ActionResult GetDataList(Pagination pagination, string keyword)
         {
-            var dataList = _appSecretBus.GetDataList(condition, keyword, pagination);
+            var dataList = _appSecretBus.GetDataList(pagination, keyword);
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }
 
         #endregion
 
-        #region 提交数据
+        #region 提交
 
         /// <summary>
         /// 保存
@@ -67,7 +64,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         {
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.Id = Guid.NewGuid().ToSequentialGuid();
+                theData.Id = IdHelper.GetId();
 
                 _appSecretBus.AddData(theData);
             }

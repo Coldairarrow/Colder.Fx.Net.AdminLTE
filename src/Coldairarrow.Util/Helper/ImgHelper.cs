@@ -155,7 +155,7 @@ namespace Coldairarrow.Util
             if (imgBase64OrUrl.Contains("data:image"))
             {
                 Image img = ImgHelper.GetImgFromBase64Url(imgBase64OrUrl);
-                string fileName = $"{GuidHelper.GenerateKey()}.jpg";
+                string fileName = $"{IdHelper.GetId()}.jpg";
 
                 string dir = Path.Combine(HttpContext.Current.Server.MapPath("~/"), "Upload", "Img");
                 if (!Directory.Exists(dir))

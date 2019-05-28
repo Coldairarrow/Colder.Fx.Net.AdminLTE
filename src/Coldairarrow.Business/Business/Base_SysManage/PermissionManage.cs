@@ -194,7 +194,7 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 insertList.Add(new Base_PermissionAppId
                 {
-                    Id = Guid.NewGuid().ToSequentialGuid(),
+                    Id = IdHelper.GetId(),
                     AppId = appId,
                     PermissionValue = newPermission
                 });
@@ -268,7 +268,7 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 insertList.Add(new Base_PermissionUser
                 {
-                    Id = Guid.NewGuid().ToSequentialGuid(),
+                    Id = IdHelper.GetId(),
                     UserId = userId,
                     PermissionValue = newPermission
                 });

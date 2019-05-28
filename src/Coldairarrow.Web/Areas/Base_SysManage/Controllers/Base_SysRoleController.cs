@@ -72,7 +72,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         {
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.Id = SnowflakeId.NewSnowflakeId().ToString();
+                theData.Id = IdHelper.GetId();
 
                 _sysRoleBus.AddData(theData);
             }

@@ -90,7 +90,7 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 insertList.Add(new Base_PermissionRole
                 {
-                    Id = Guid.NewGuid().ToSequentialGuid(),
+                    Id = IdHelper.GetId(),
                     RoleId = roleId,
                     PermissionValue = newPermission
                 });

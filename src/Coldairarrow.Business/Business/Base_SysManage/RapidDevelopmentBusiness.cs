@@ -257,7 +257,7 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
         {{
             if(theData.Id.IsNullOrEmpty())
             {{
-                theData.Id = Guid.NewGuid().ToSequentialGuid();
+                theData.Id = IdHelper.GetId();
 
                 {varBusiness}.AddData(theData);
             }}

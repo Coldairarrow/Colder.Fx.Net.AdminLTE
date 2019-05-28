@@ -31,7 +31,7 @@ namespace Coldairarrow.Business
             }
             Base_SysLog newLog = new Base_SysLog
             {
-                Id = Guid.NewGuid().ToSequentialGuid(),
+                Id = IdHelper.GetId(),
                 LogType = logType.ToString(),
                 LogContent = logContent.Replace("\r\n", "<br />").Replace("  ", "&nbsp;&nbsp;"),
                 OpTime = DateTime.Now,

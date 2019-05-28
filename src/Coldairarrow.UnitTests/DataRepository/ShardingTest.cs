@@ -270,8 +270,8 @@ namespace Coldairarrow.UnitTests
                 {
                     var newData = _newData.DeepClone();
                     newData.Id = Guid.NewGuid().ToString();
-                    newData.UserId = Guid.NewGuid().ToSequentialGuid();
-                    newData.UserName = Guid.NewGuid().ToSequentialGuid();
+                    newData.UserId = IdHelper.GetId();
+                    newData.UserName = IdHelper.GetId();
                     _db.Insert(_newData);
                     _db.Insert(newData);
                     bool succcess = _db.EndTransaction().Success;
@@ -294,7 +294,7 @@ namespace Coldairarrow.UnitTests
                     var db1Data_1 = db1.GetIShardingQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
 
                     var updateData = _newData.DeepClone();
-                    updateData.UserName = GuidHelper.GenerateKey();
+                    updateData.UserName = IdHelper.GetId();
                     var task = Task.Run(() =>
                     {
                         db2.Update(updateData);

@@ -57,7 +57,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         {
             if(theData.Id.IsNullOrEmpty())
             {
-                theData.Id = Guid.NewGuid().ToSequentialGuid();
+                theData.Id = IdHelper.GetId();
 
                 _dbLinkBus.AddData(theData);
             }

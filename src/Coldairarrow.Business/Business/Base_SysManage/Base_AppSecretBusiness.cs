@@ -1,9 +1,7 @@
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
@@ -11,19 +9,17 @@ namespace Coldairarrow.Business.Base_SysManage
     {
         #region 外部接口
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        public List<Base_AppSecret> GetDataList(string condition, string keyword, Pagination pagination)
+        public List<Base_AppSecret> GetDataList(Pagination pagination, string keyword)
         {
             var q = GetIQueryable();
-
-            //模糊查询
-            if (!condition.IsNullOrEmpty() && !keyword.IsNullOrEmpty())
-                q = q.Where($@"{condition}.Contains(@0)", keyword);
+            var where = LinqHelper.True<Base_AppSecret>();
+            if (!keyword.IsNullOrEmpty())
+            {
+                where = where.And(x => 
+                    x.AppId.Contains(keyword)
+                    || x.AppSecret.Contains(keyword)
+                    || x.AppName.Contains(keyword));
+            }
 
             return q.GetPagination(pagination).ToList();
         }
@@ -78,7 +74,7 @@ namespace Coldairarrow.Business.Base_SysManage
             {
                 insertList.Add(new Base_PermissionAppId
                 {
-                    Id = Guid.NewGuid().ToSequentialGuid(),
+                    Id = IdHelper.GetId(),
                     AppId = appId,
                     PermissionValue = newPermission
                 });

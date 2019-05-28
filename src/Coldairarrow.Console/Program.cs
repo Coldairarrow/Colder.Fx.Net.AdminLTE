@@ -56,9 +56,9 @@ namespace Coldairarrow.Console1
                         var db = DbFactory.GetRepository();
                         db.Insert(new Base_UnitTest
                         {
-                            Id = SnowflakeId.NewSnowflakeId().ToString(),
-                            UserId= SnowflakeId.NewSnowflakeId().ToString(),
-                            UserName= SnowflakeId.NewSnowflakeId().ToString()
+                            Id = IdHelper.GetId(),
+                            UserId= IdHelper.GetId(),
+                            UserName= IdHelper.GetId()
                         });
                     });
                 }));

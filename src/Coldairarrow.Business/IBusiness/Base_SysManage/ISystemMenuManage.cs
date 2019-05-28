@@ -29,7 +29,7 @@ namespace Coldairarrow.Business.Base_SysManage
 
     public class Menu
     {
-        public string id { get => url ?? GuidHelper.GenerateKey(); }
+        public string id { get => url ?? IdHelper.GetId(); }
         public string text { get; set; }
         public string icon { get; set; }
         public string url { get => PathHelper.GetUrl(_url); set => _url = value; }

@@ -278,7 +278,7 @@ namespace Coldairarrow.UnitTests
                 {
                     _baseBus.Insert(_newData);
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = Guid.NewGuid().ToSequentialGuid();
+                    newData2.Id = IdHelper.GetId();
                     _baseBus.Insert(newData2);
                     bool succcess = _baseBus.EndTransaction().Success;
                     Assert.AreEqual(succcess, false);
@@ -293,8 +293,8 @@ namespace Coldairarrow.UnitTests
                 {
                     var newData = _newData.DeepClone();
                     newData.Id = Guid.NewGuid().ToString();
-                    newData.UserId = Guid.NewGuid().ToSequentialGuid();
-                    newData.UserName = Guid.NewGuid().ToSequentialGuid();
+                    newData.UserId = IdHelper.GetId();
+                    newData.UserName = IdHelper.GetId();
                     _baseBus.Insert(_newData);
                     _baseBus.Insert(newData);
                     bool succcess = _baseBus.EndTransaction().Success;
@@ -317,7 +317,7 @@ namespace Coldairarrow.UnitTests
                     var db1Data_1 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
 
                     var updateData = _newData.DeepClone();
-                    updateData.UserName = GuidHelper.GenerateKey();
+                    updateData.UserName = IdHelper.GetId();
                     var task = Task.Run(() =>
                     {
                         db2.Update(updateData);

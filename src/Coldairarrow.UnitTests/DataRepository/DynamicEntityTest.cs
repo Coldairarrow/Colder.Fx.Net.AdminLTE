@@ -49,8 +49,8 @@ namespace Coldairarrow.UnitTests
                     _db.Insert(_newData);
 
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = Guid.NewGuid().ToSequentialGuid();
-                    newData2.UserId = Guid.NewGuid().ToSequentialGuid();
+                    newData2.Id = IdHelper.GetId();
+                    newData2.UserId = IdHelper.GetId();
                     _db.Insert(newData2);
                 })();
 
@@ -62,10 +62,10 @@ namespace Coldairarrow.UnitTests
                     _db.Insert(_newData.ChangeType(targetType));
 
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = Guid.NewGuid().ToSequentialGuid();
+                    newData2.Id = IdHelper.GetId();
 
                     //UserId唯一导致异常
-                    //newData2.UserId = Guid.NewGuid().ToSequentialGuid();
+                    //newData2.UserId = IdHelper.GetId();
                     _db.Insert(newData2.ChangeType(targetType));
                 })();
 
@@ -88,8 +88,8 @@ namespace Coldairarrow.UnitTests
                     _db.Insert(_newData);
 
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = Guid.NewGuid().ToSequentialGuid();
-                    newData2.UserId = Guid.NewGuid().ToSequentialGuid();
+                    newData2.Id = IdHelper.GetId();
+                    newData2.UserId = IdHelper.GetId();
                     _db.Insert(newData2);
                 })();
 
@@ -101,8 +101,8 @@ namespace Coldairarrow.UnitTests
                     _db.Insert(_newData.ChangeType(targetType));
 
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = Guid.NewGuid().ToSequentialGuid();
-                    newData2.UserId = Guid.NewGuid().ToSequentialGuid();
+                    newData2.Id = IdHelper.GetId();
+                    newData2.UserId = IdHelper.GetId();
                     _db.Insert(newData2.ChangeType(targetType));
                 })();
 
