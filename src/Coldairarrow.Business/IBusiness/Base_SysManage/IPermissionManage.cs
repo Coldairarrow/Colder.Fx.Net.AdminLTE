@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Coldairarrow.Util;
 using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_SysManage
 {
     /// <summary>
-    /// 权限管理静态类
+    /// 权限管理接口
     /// </summary>
     public interface IPermissionManage
     {
@@ -119,7 +119,7 @@ namespace Coldairarrow.Business.Base_SysManage
 
     public class PermissionItem
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = IdHelper.GetId();
         public string Name { get; set; }
         public string Value { get; set; }
         public bool IsChecked { get; set; }

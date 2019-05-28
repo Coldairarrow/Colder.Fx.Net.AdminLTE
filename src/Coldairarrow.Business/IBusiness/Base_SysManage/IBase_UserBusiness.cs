@@ -8,14 +8,13 @@ namespace Coldairarrow.Business.Base_SysManage
     {
         List<Base_UserDTO> GetDataList(Pagination pagination, string userId = null, string keyword = null);
         Base_User GetTheData(string id);
-        Base_UserDTO GetTheUser(string userId);
+        Base_UserDTO GetTheInfo(string userId);
         void AddData(Base_User newData);
         void UpdateData(Base_User theData);
         void DeleteData(List<string> ids);
         void SetUserRole(string userId, List<string> roleIds);
         List<string> GetUserRoleIds(string userId);
         AjaxResult ChangePwd(string oldPwd, string newPwd);
-        void SavePermission(string userId, List<string> permissions);
         List<Base_User> BuildSelectResult(string selectedValueJson, string q, string textFiled, string valueField);
     }
 

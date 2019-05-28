@@ -9,12 +9,16 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class Base_SysLogController : BaseMvcController
     {
+        #region DI
+
         public Base_SysLogController(IBase_SysLogBusiness sysLogBus)
         {
             _sysLogBus = sysLogBus;
         }
 
         IBase_SysLogBusiness _sysLogBus { get; }
+
+        #endregion
 
         #region 视图功能
 
@@ -38,14 +42,14 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         /// <param name="pagination">分页参数</param>
         /// <returns></returns>
         public ActionResult GetLogList(
+            Pagination pagination,
             string logContent,
             string logType,
             string opUserName,
             DateTime? startTime,
-            DateTime? endTime,
-            Pagination pagination)
+            DateTime? endTime)
         {
-            var dataList = _sysLogBus.GetLogList(logContent, logType, opUserName, startTime, endTime, pagination);
+            var dataList = _sysLogBus.GetLogList(pagination, logContent, logType, opUserName, startTime, endTime);
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }
@@ -53,6 +57,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         public ActionResult GetLogTypeList()
         {
             List<object> logTypeList = new List<object>();
+
             Enum.GetNames(typeof(EnumType.LogType)).ForEach(aName =>
             {
                 logTypeList.Add(new { Name = aName, Value = aName });

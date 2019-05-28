@@ -20,14 +20,14 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <param name="pagination">·ÖÒ³²ÎÊý</param>
         /// <returns></returns>
         public List<Base_SysLog> GetLogList(
+            Pagination pagination,
             string logContent,
             string logType,
             string opUserName,
             DateTime? startTime,
-            DateTime? endTime,
-            Pagination pagination)
+            DateTime? endTime)
         {
-            return LoggerFactory.GetLogger().GetLogList(logContent, logType, opUserName, startTime, endTime, pagination);
+            return LoggerFactory.GetLogger().GetLogList(pagination, logContent, logType, opUserName, startTime, endTime);
         }
 
         #endregion

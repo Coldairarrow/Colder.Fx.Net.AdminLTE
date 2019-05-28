@@ -1,7 +1,6 @@
 using AutoMapper;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,11 +8,15 @@ namespace Coldairarrow.Business.Base_SysManage
 {
     public class Base_SysRoleBusiness : BaseBusiness<Base_SysRole>, IBase_SysRoleBusiness, IDependency
     {
+        #region DI
+
         public Base_SysRoleBusiness(IPermissionManage permissionManage)
         {
             _permissionManage = permissionManage;
         }
         IPermissionManage _permissionManage { get; }
+
+        #endregion
 
         #region 外部接口
 
@@ -99,7 +102,6 @@ namespace Coldairarrow.Business.Base_SysManage
             Service.Insert(insertList);
             _permissionManage.ClearUserPermissionCache();
         }
-
 
         #endregion
 

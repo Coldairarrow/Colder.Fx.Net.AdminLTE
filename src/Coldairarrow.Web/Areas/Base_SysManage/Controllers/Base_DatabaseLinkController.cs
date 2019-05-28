@@ -1,18 +1,21 @@
 using Coldairarrow.Business.Base_SysManage;
 using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System;
 using System.Web.Mvc;
 
 namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 {
     public class Base_DatabaseLinkController : BaseMvcController
     {
+        #region DI
+
         public Base_DatabaseLinkController(IBase_DatabaseLinkBusiness dbLinkBus)
         {
             _dbLinkBus = dbLinkBus;
         }
         IBase_DatabaseLinkBusiness _dbLinkBus { get; }
+
+        #endregion
 
         #region 视图功能
 
@@ -32,17 +35,12 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
 
         #region 获取数据
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="condition">查询类型</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
+        public ActionResult GetDataList()
         {
-            var dataList = _dbLinkBus.GetDataList(condition, keyword, pagination);
+            Pagination pagination = new Pagination();
+            var dataList = _dbLinkBus.GetDataList(pagination);
 
-            return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
+            return DataTable_Bootstrap(dataList, pagination);
         }
 
         #endregion

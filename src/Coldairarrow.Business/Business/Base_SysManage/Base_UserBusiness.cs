@@ -25,7 +25,11 @@ namespace Coldairarrow.Business.Base_SysManage
 
         #endregion
 
-        public override EnumType.LogType LogType => EnumType.LogType.系统用户管理;
+        #region 重写
+
+        protected override EnumType.LogType LogType => EnumType.LogType.系统用户管理;
+
+        #endregion
 
         #region 外部接口
 
@@ -59,7 +63,7 @@ namespace Coldairarrow.Business.Base_SysManage
                                  select new
                                  {
                                      a.UserId,
-                                     RoleId= b.Id,
+                                     RoleId = b.Id,
                                      b.RoleName
                                  }).ToList();
                 users.ForEach(aUser =>
@@ -71,14 +75,14 @@ namespace Coldairarrow.Business.Base_SysManage
             }
         }
 
-        /// <summary>
-        /// 获取指定的单条数据
-        /// </summary>
-        /// <param name="id">主键</param>
-        /// <returns></returns>
         public Base_User GetTheData(string id)
         {
             return GetEntity(id);
+        }
+
+        public Base_UserDTO GetTheInfo(string userId)
+        {
+            return _sysUserCache.GetCache(userId);
         }
 
         [DataAddLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
@@ -90,9 +94,6 @@ namespace Coldairarrow.Business.Base_SysManage
             Insert(newData);
         }
 
-        /// <summary>
-        /// 更新数据
-        /// </summary>
         [DataEditLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
         [DataRepeatValidate(
             new string[] { "UserName" },
@@ -109,7 +110,7 @@ namespace Coldairarrow.Business.Base_SysManage
         [DataDeleteLog(EnumType.LogType.系统用户管理, "用户", "RealName")]
         public void DeleteData(List<string> ids)
         {
-            var adminUser = GetTheUser("Admin");
+            var adminUser = GetTheInfo("Admin");
             if (ids.Contains(adminUser.Id))
                 throw new Exception("超级管理员是内置账号,禁止删除！");
             var userIds = GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToList();
@@ -133,21 +134,11 @@ namespace Coldairarrow.Business.Base_SysManage
             _permissionManage.UpdateUserPermissionCache(userId);
         }
 
-        public Base_UserDTO GetTheUser(string userId)
-        {
-            return _sysUserCache.GetCache(userId);
-        }
-
         public List<string> GetUserRoleIds(string userId)
         {
-            return GetTheUser(userId).RoleIdList;
+            return GetTheInfo(userId).RoleIdList;
         }
 
-        /// <summary>
-        /// 更改密码
-        /// </summary>
-        /// <param name="oldPwd">老密码</param>
-        /// <param name="newPwd">新密码</param>
         public AjaxResult ChangePwd(string oldPwd, string newPwd)
         {
             AjaxResult res = new AjaxResult() { Success = true };
@@ -169,36 +160,6 @@ namespace Coldairarrow.Business.Base_SysManage
             _sysUserCache.UpdateCache(userId);
 
             return res;
-        }
-
-        /// <summary>
-        /// 保存权限
-        /// </summary>
-        /// <param name="userId">用户Id</param>
-        /// <param name="permissions">权限值</param>
-        public void SavePermission(string userId, List<string> permissions)
-        {
-            Service.Delete_Sql<Base_PermissionUser>(x => x.UserId == userId);
-            var roleIdList = Service.GetIQueryable<Base_UserRoleMap>().Where(x => x.UserId == userId).Select(x => x.RoleId).ToList();
-            var existsPermissions = Service.GetIQueryable<Base_PermissionRole>()
-                .Where(x => roleIdList.Contains(x.RoleId) && permissions.Contains(x.PermissionValue))
-                .GroupBy(x => x.PermissionValue)
-                .Select(x => x.Key)
-                .ToList();
-            permissions.RemoveAll(x => existsPermissions.Contains(x));
-
-            List<Base_PermissionUser> insertList = new List<Base_PermissionUser>();
-            permissions.ForEach(newPermission =>
-            {
-                insertList.Add(new Base_PermissionUser
-                {
-                    Id = IdHelper.GetId(),
-                    UserId = userId,
-                    PermissionValue = newPermission
-                });
-            });
-
-            Service.Insert(insertList);
         }
 
         #endregion

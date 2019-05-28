@@ -194,10 +194,12 @@
     <Compile Include="Business\Base_SysManage\UrlPermissionManage.cs" />
     <Compile Include="IBusiness\Base_SysManage\IHomeBusiness.cs" />
     <Compile Include="IBusiness\IOperator.cs" />
+    <Compile Include="IBusiness\ProjectManage\IDev_ProjectBusiness.cs" />
     <Compile Include="Logger\ElasticSearchLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LoggerFactory.cs" />
     <Compile Include="Logger\RDBMSLogger.cs" />
+    <Compile Include="Business\ProjectManage\Dev_ProjectBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

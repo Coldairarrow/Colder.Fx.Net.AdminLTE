@@ -571,9 +571,9 @@ namespace Coldairarrow.Business
 
         #region 其它操作
 
-        public virtual EnumType.LogType LogType { get => throw new Exception("请在子类重写"); }
+        protected virtual EnumType.LogType LogType { get => throw new Exception("请在子类重写"); }
 
-        public void WriteSysLog(string logContent)
+        protected void WriteSysLog(string logContent)
         {
             WriteSysLog(logContent, LogType);
         }

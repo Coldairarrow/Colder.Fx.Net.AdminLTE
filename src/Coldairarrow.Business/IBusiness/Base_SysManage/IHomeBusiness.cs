@@ -1,6 +1,6 @@
 ﻿using Coldairarrow.Util;
 
-namespace Coldairarrow.Business
+namespace Coldairarrow.Business.Base_SysManage
 {
     public interface IHomeBusiness
     {

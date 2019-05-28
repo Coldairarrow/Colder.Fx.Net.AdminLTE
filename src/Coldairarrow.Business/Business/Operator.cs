@@ -25,7 +25,7 @@ namespace Coldairarrow.Business
             }
         }
 
-        public Base_UserDTO Property { get => _sysUserBus.GetTheUser(UserId); }
+        public Base_UserDTO Property { get => _sysUserBus.GetTheInfo(UserId); }
 
         #region 操作方法
 

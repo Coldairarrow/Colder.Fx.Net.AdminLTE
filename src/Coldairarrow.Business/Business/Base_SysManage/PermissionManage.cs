@@ -214,7 +214,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <returns></returns>
         public List<PermissionModule> GetUserPermissionModules(string userId)
         {
-            var userInfo = _sysUserBus.GetTheUser(userId);
+            var userInfo = _sysUserBus.GetTheInfo(userId);
             List<string> hasPermissions = new List<string>();
             if (userInfo.RoleType.HasFlag(RoleType.超级管理员))
                 hasPermissions = _allPermissionValues.DeepClone();

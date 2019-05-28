@@ -1235,6 +1235,8 @@
     <Compile Include="Areas\Base_SysManage\Controllers\CityController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\CommonController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\RapidDevelopmentController.cs" />
+    <Compile Include="Areas\ProjectManage\Controllers\Dev_ProjectController.cs" />
+    <Compile Include="Areas\ProjectManage\ProjectManageAreaRegistration.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -1272,6 +1274,9 @@
     <Content Include="Areas\Base_SysManage\Views\Base_User\Index.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\Form.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml" />
+    <Content Include="Areas\ProjectManage\Views\Dev_Project\Form.cshtml" />
+    <Content Include="Areas\ProjectManage\Views\Dev_Project\Index.cshtml" />
+    <Content Include="Areas\ProjectManage\Views\web.config" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
