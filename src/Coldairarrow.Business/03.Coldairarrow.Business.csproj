@@ -170,6 +170,7 @@
     <Compile Include="Business\Base_SysManage\SystemMenuManage.cs" />
     <Compile Include="Business\BusHelper.cs" />
     <Compile Include="Business\Operator.cs" />
+    <Compile Include="Business\ProjectManage\Dev_ProjectTypeBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_AppSecretBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_DatabaseLinkBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_SysLogBusiness.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="IBusiness\Base_SysManage\IHomeBusiness.cs" />
     <Compile Include="IBusiness\IOperator.cs" />
     <Compile Include="IBusiness\ProjectManage\IDev_ProjectBusiness.cs" />
+    <Compile Include="IBusiness\ProjectManage\IDev_ProjectTypeBusiness.cs" />
     <Compile Include="Logger\ElasticSearchLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LoggerFactory.cs" />

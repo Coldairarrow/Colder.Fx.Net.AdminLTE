@@ -64,6 +64,7 @@ namespace Coldairarrow.Business.Base_SysManage
                 //业务层
                 if (buildTypeList.Exists(x => x.ToLower() == "business"))
                 {
+                    BuildIBusiness(areaName, aTable);
                     BuildBusiness(areaName, aTable);
                 }
                 //控制器
@@ -102,166 +103,81 @@ namespace Coldairarrow.Business.Base_SysManage
         }
 
         /// <summary>
-        /// 生成业务逻辑代码
+        /// 生成业务逻辑接口
         /// </summary>
         /// <param name="areaName">区域名</param>
         /// <param name="entityName">实体名</param>
         private void BuildIBusiness(string areaName, string entityName)
         {
+            string className = $"I{entityName}Business";
             string code =
 $@"using Coldairarrow.Entity.{areaName};
 using Coldairarrow.Util;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.{areaName}
 {{
-    public class {entityName}Business : BaseBusiness<{entityName}>
+    public interface {className}
     {{
-        #region 外部接口
-
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name=""condition"">查询类型</param>
-        /// <param name=""keyword"">关键字</param>
-        /// <returns></returns>
-        public List<{entityName}> GetDataList(string condition, string keyword, Pagination pagination)
-        {{
-            var q = GetIQueryable();
-
-            //模糊查询
-            if (!condition.IsNullOrEmpty() && !keyword.IsNullOrEmpty())
-                q = q.Where($@""{{condition}}.Contains(@0)"", keyword);
-
-            return q.GetPagination(pagination).ToList();
-        }}
-
-        /// <summary>
-        /// 获取指定的单条数据
-        /// </summary>
-        /// <param name=""id"">主键</param>
-        /// <returns></returns>
-        public {entityName} GetTheData(string id)
-        {{
-            return GetEntity(id);
-        }}
-
-        /// <summary>
-        /// 添加数据
-        /// </summary>
-        /// <param name=""newData"">数据</param>
-        public void AddData({entityName} newData)
-        {{
-            Insert(newData);
-        }}
-
-        /// <summary>
-        /// 更新数据
-        /// </summary>
-        public void UpdateData({entityName} theData)
-        {{
-            Update(theData);
-        }}
-
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name=""theData"">删除的数据</param>
-        public void DeleteData(List<string> ids)
-        {{
-            Delete(ids);
-        }}
-
-        #endregion
-
-        #region 私有成员
-
-        #endregion
-
-        #region 数据模型
-
-        #endregion
+        List<{entityName}> GetDataList(Pagination pagination, string condition, string keyword);
+        {entityName} GetTheData(string id);
+        void AddData({entityName} newData);
+        void UpdateData({entityName} theData);
+        void DeleteData(List<string> ids);
     }}
 }}";
-            string rootPath = AppDomain.CurrentDomain.BaseDirectory;
-            string areaPath = rootPath.Replace("Coldairarrow.Web", "Coldairarrow.Business") + areaName;
-            string filePath = $@"{areaPath}\{entityName}Business.cs";
+            string rootPath = AppDomain.CurrentDomain.BaseDirectory.Replace("Coldairarrow.Web", "Coldairarrow.Business"); ;
+            string filePath = Path.Combine(rootPath, "IBusiness", areaName, $"{className}.cs");
 
             FileHelper.WriteTxt(code, filePath, FileMode.Create);
         }
 
         /// <summary>
-        /// 生成业务逻辑代码
+        /// 生成业务逻辑实现
         /// </summary>
         /// <param name="areaName">区域名</param>
         /// <param name="entityName">实体名</param>
         private void BuildBusiness(string areaName, string entityName)
         {
+            string className = $"{entityName}Business";
             string code =
 $@"using Coldairarrow.Entity.{areaName};
 using Coldairarrow.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 
 namespace Coldairarrow.Business.{areaName}
 {{
-    public class {entityName}Business : BaseBusiness<{entityName}>
+    public class {className} : BaseBusiness<{entityName}>, I{className}, IDependency
     {{
         #region 外部接口
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name=""condition"">查询类型</param>
-        /// <param name=""keyword"">关键字</param>
-        /// <returns></returns>
-        public List<{entityName}> GetDataList(string condition, string keyword, Pagination pagination)
+        public List<{entityName}> GetDataList(Pagination pagination, string condition, string keyword)
         {{
             var q = GetIQueryable();
-
-            //模糊查询
+            //筛选
             if (!condition.IsNullOrEmpty() && !keyword.IsNullOrEmpty())
                 q = q.Where($@""{{condition}}.Contains(@0)"", keyword);
 
             return q.GetPagination(pagination).ToList();
         }}
 
-        /// <summary>
-        /// 获取指定的单条数据
-        /// </summary>
-        /// <param name=""id"">主键</param>
-        /// <returns></returns>
         public {entityName} GetTheData(string id)
         {{
             return GetEntity(id);
         }}
 
-        /// <summary>
-        /// 添加数据
-        /// </summary>
-        /// <param name=""newData"">数据</param>
         public void AddData({entityName} newData)
         {{
             Insert(newData);
         }}
 
-        /// <summary>
-        /// 更新数据
-        /// </summary>
         public void UpdateData({entityName} theData)
         {{
             Update(theData);
         }}
 
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name=""theData"">删除的数据</param>
         public void DeleteData(List<string> ids)
         {{
             Delete(ids);
@@ -278,9 +194,8 @@ namespace Coldairarrow.Business.{areaName}
         #endregion
     }}
 }}";
-            string rootPath = AppDomain.CurrentDomain.BaseDirectory;
-            string areaPath = rootPath.Replace("Coldairarrow.Web", "Coldairarrow.Business") + areaName;
-            string filePath = $@"{areaPath}\{entityName}Business.cs";
+            string rootPath = AppDomain.CurrentDomain.BaseDirectory.Replace("Coldairarrow.Web", "Coldairarrow.Business"); ;
+            string filePath = Path.Combine(rootPath, "Business", areaName, $"{className}.cs");
 
             FileHelper.WriteTxt(code, filePath, FileMode.Create);
         }
@@ -292,19 +207,28 @@ namespace Coldairarrow.Business.{areaName}
         /// <param name="entityName">实体名</param>
         private void BuildController(string areaName, string entityName)
         {
-            string varBusiness = $@"_{entityName.ToFirstLowerStr()}Business";
+            string ibusName = $"I{entityName}Business";
+            string varBusiness = $@"{entityName.ToFirstLowerStr()}Bus";
+            string _varBusiness = $@"_{entityName.ToFirstLowerStr()}Bus";
             string code =
 $@"using Coldairarrow.Business.{areaName};
 using Coldairarrow.Entity.{areaName};
 using Coldairarrow.Util;
-using System;
 using System.Web.Mvc;
 
 namespace Coldairarrow.Web.Areas.{areaName}.Controllers
 {{
     public class {entityName}Controller : BaseMvcController
     {{
-        {entityName}Business {varBusiness} = new {entityName}Business();
+        #region DI
+
+        public {entityName}Controller({ibusName} {varBusiness})
+        {{
+            {_varBusiness} = {varBusiness};
+        }}
+        {ibusName} {_varBusiness} {{ get; }}
+
+        #endregion
 
         #region 视图功能
 
@@ -315,7 +239,7 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
 
         public ActionResult Form(string id)
         {{
-            var theData = id.IsNullOrEmpty() ? new {entityName}() : {varBusiness}.GetTheData(id);
+            var theData = id.IsNullOrEmpty() ? new {entityName}() : {_varBusiness}.GetTheData(id);
 
             return View(theData);
         }}
@@ -327,14 +251,15 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
         /// <summary>
         /// 获取数据列表
         /// </summary>
+        /// <param name=""pagination"">分页参数</param>
         /// <param name=""condition"">查询类型</param>
         /// <param name=""keyword"">关键字</param>
         /// <returns></returns>
-        public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
+        public ActionResult GetDataList(Pagination pagination, string condition, string keyword)
         {{
-            var dataList = {varBusiness}.GetDataList(condition, keyword, pagination);
+            var dataList = {_varBusiness}.GetDataList(pagination, condition, keyword);
 
-            return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
+            return DataTable_Bootstrap(dataList, pagination);
         }}
 
         #endregion
@@ -347,15 +272,15 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
         /// <param name=""theData"">保存的数据</param>
         public ActionResult SaveData({entityName} theData)
         {{
-            if(theData.Id.IsNullOrEmpty())
+            if (theData.Id.IsNullOrEmpty())
             {{
                 theData.Id = IdHelper.GetId();
 
-                {varBusiness}.AddData(theData);
+                {_varBusiness}.AddData(theData);
             }}
             else
             {{
-                {varBusiness}.UpdateData(theData);
+                {_varBusiness}.UpdateData(theData);
             }}
 
             return Success();
@@ -367,7 +292,7 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
         /// <param name=""theData"">删除的数据</param>
         public ActionResult DeleteData(string ids)
         {{
-            {varBusiness}.DeleteData(ids.ToList<string>());
+            {_varBusiness}.DeleteData(ids.ToList<string>());
 
             return Success(""删除成功！"");
         }}
