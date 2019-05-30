@@ -427,6 +427,7 @@
     <Content Include="Scripts\vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.uk.js" />
     <Content Include="Scripts\vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Scripts\vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-TW.js" />
+    <Content Include="Scripts\vendor\bootstrap-pwdbox\bootstrapPwdBox.js" />
     <Content Include="Scripts\vendor\bootstrap-select\bootstrap-select-extends.js" />
     <Content Include="Scripts\vendor\bootstrap-select\bootstrap-select.js" />
     <Content Include="Scripts\vendor\bootstrap-select\bootstrap-select.min.css" />

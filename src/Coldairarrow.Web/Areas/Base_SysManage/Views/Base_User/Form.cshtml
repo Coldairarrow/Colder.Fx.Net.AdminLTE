@@ -27,7 +27,8 @@
         <div class="form-group form-group-sm">
             <label class="col-sm-2 control-label">密码</label>
             <div class="col-sm-5">
-                <input name="Pwd" type="password" class="form-control" autocomplete="new-password">
+                <input id="Pwd" name="Pwd" style="display:none" type="text" class="form-control">
+                <input id="Pwd_Show" type="text" class="form-control">
                 <div class="help-block with-errors"></div>
             </div>
         </div>
@@ -67,57 +68,73 @@
     </form>
 </div>
 <script>
-        var theEntity = @objStr;
-        var roleIds =@roleIds;
+    var theEntity = @objStr;
+    var roleIds =@roleIds;
 
-        $(function () {
-            initEvent();
+    $(function () {
+        initEvent();
+    });
+
+    //事件绑定
+    function initEvent() {
+        $('#Pwd_Show').bind('input propertychange', function () {
+            var real = $('#Pwd').val();
+            var show = $(this).val();
+
+            if (show.length > real.length) {
+                real += show[show.length - 1];
+            } else {
+                real = real.substring(0, real.length - 1);
+            }
+
+            $('#Pwd').val(real);
+
+            console.log('密码:' + real);
+            console.log('显示:' + real.replace(/./g,'●'));
         });
 
-        //事件绑定
-        function initEvent() {
-            $('#Sex').selectpicker({
-                value: theEntity.Sex
-            });
-            $('#Birthday').datetimepicker({
-                language: 'zh-CN',
-                minView: 2//日期选择
-            });
-            $('#roleList').selectpicker({
-                url: '/Base_SysManage/Base_SysRole/GetDataList_NoPagin',
-                value: roleIds,
-                valueField: 'Id',
-                textField: 'RoleName'
-                //pleaseSelect: false
-            });
-            //表单校验
-            $('#form').validator().on('submit', function (e) {
-                //校验成功
-                if (!e.isDefaultPrevented()) {
-                    e.preventDefault();
+        $('#Sex').selectpicker({
+            value: theEntity.Sex
+        });
+        $('#Birthday').datetimepicker({
+            language: 'zh-CN',
+            minView: 2//日期选择
+        });
+        $('#roleList').selectpicker({
+            url: '/Base_SysManage/Base_SysRole/GetDataList_NoPagin',
+            value: roleIds,
+            valueField: 'Id',
+            textField: 'RoleName'
+            //pleaseSelect: false
+        });
+        //表单校验
+        $('#form').validator().on('submit', function (e) {
+            //校验成功
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
 
-                    var values = $('#form').getValues();
-                    $.extend(theEntity, values);
-                    theEntity['RoleIdList'] = JSON.stringify(theEntity['roleList'] || []);
-                    loading();
-                    $.postJSON('/Base_SysManage/Base_User/SaveData', theEntity, function (resJson) {
-                        loading(false);
+                var values = $('#form').getValues();
+                $.extend(theEntity, values);
+                theEntity['RoleIdList'] = JSON.stringify(theEntity['roleList'] || []);
+                loading();
+                $.postJSON('/Base_SysManage/Base_User/SaveData', theEntity, function (resJson) {
+                    loading(false);
 
-                        if (resJson.Success) {
-                            parent.$('#dataTable').bootstrapTable('refresh');
-                            parent.dialogSuccess();
-                            dialogClose();
-                        }
-                        else {
-                            dialogError(resJson.Msg);
-                        }
-                    });
-                }
-            })
-        }
+                    if (resJson.Success) {
+                        parent.$('#dataTable').bootstrapTable('refresh');
+                        parent.dialogSuccess();
+                        dialogClose();
+                    }
+                    else {
+                        dialogError(resJson.Msg);
+                    }
+                });
+            }
+        })
+    }
 
-        //提交表单
-        function submitForm() {
-            $('#submit').trigger('click');
-        }
+    //提交表单
+    function submitForm() {
+        $('#submit').trigger('click');
+    }
 </script>
