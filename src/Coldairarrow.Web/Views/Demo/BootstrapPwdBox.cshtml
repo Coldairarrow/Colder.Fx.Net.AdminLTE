@@ -32,38 +32,52 @@
             return len;
         }
     }
+    // 设置光标位置
+    function setCursor(textDom, pos) {
+        if (textDom.setSelectionRange) {
+            // IE Support
+            textDom.focus();
+            textDom.setSelectionRange(pos, pos);
+        } else if (textDom.createTextRange) {
+            // Firefox support
+            var range = textDom.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
+    }
     //事件绑定
     function initEvent() {
         $('#Pwd_Show').bind('input propertychange', function () {
-            console.log(getCursor(this));
+            var p = getCursor(this);
+            console.log(p);
             var real = $('#Pwd').val();
             var show = $(this).val();
 
-            //if (real.length == 0) {
-            //    real = show;
-            //}
-            //if (show.length == 0) {
-            //    real = '';
-            //    show = '';
-            //}
-
             var reg = /(●*)([^●]*)(●*)/;
             reg.test(show);
+
             var showL1 = RegExp.$1;
             var showL2 = RegExp.$2;
             var showL3 = RegExp.$3;
-            var realL1 = real.substring(0, showL1.length);
-            var realL2 = showL2;
-            var tmpL2 = Math.abs(showL2.length - Math.abs(show.length - real.length));
-            var realL3 = real.substr(realL1.length + tmpL2, real.length - (realL1.length + tmpL2));
-            real = realL1 + realL2 + realL3;
+
+            //增加或替换
+            if (showL2.length > 0) {
+                var realL1 = real.substr(0, showL1.length);
+                var realL2 = showL2;
+                var realL3 = real.substr(real.length - showL3.length, showL3.length);
+                real = realL1 + realL2 + realL3;
+            } else {//仅删除
+                var realL1 = real.substr(0, p);
+                var realL2 = real.substr(p + (real.length - show.length));
+                real = realL1 + realL2;
+            }
 
             show = real.replace(/./g, '●');
             $('#Pwd').val(real);
             $('#Pwd_Show').val(show);
-
-            console.log('密码:' + real);
-            console.log('显示:' + show);
+            setCursor(this, p);
         });
     }
 </script>
