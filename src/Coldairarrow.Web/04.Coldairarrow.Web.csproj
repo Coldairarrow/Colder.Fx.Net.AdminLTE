@@ -1440,6 +1440,7 @@
     <Content Include="Scripts\vendor\FileSaver\FileSaver.min.js.map" />
     <Content Include="Views\Demo\DownloadFile.cshtml" />
     <Content Include="Views\Demo\SelectSearch.cshtml" />
+    <Content Include="Views\Demo\BootstrapPwdBox.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -43,6 +43,11 @@ namespace Coldairarrow.Web.Controllers
             return View();
         }
 
+        public ActionResult BootstrapPwdBox()
+        {
+            return View();
+        }
+
         #endregion
 
         #region 接口
