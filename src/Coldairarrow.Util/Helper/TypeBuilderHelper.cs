@@ -76,7 +76,7 @@ namespace Coldairarrow.Util
         private static TypeBuilder GetTypeBuilder(string typeFullName, string assemblyName)
         {
             var an = new AssemblyName(assemblyName);
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(an, AssemblyBuilderAccess.Run);
+            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(an, AssemblyBuilderAccess.Run);
             ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
             TypeBuilder tb = moduleBuilder.DefineType(typeFullName,
                     TypeAttributes.Public |
