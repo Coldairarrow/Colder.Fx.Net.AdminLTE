@@ -7,7 +7,7 @@
     <ProjectGuid>{78A6219E-EF16-4B0A-9F8B-DF1BED594C70}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Coldairarrow.Console1</RootNamespace>
-    <AssemblyName>Coldairarrow.Console</AssemblyName>
+    <AssemblyName>Coldairarrow.Console1</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
