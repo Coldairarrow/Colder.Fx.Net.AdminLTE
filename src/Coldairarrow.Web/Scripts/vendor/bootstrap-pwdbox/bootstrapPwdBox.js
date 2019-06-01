@@ -16,7 +16,13 @@
         var id = this[0].id;
         var $hidObj = $(this);
         var required = this[0].required ? ' required ' : '';
-        var placeholder = ' placeholder="' + $(this).attr('placeholder') + '" ';
+        //var placeholder = '';
+        //var thePlaceholder = $(this).attr('placeholder');
+        //if (thePlaceholder) {
+        //    placeholder = ' placeholder="' + thePlaceholder + '" ';
+        //}
+        var placeholder = $(this).attr('placeholder') ? ' placeholder="' + $(this).attr('placeholder') + '" ' : '';
+
         var $showObj = $('<input id="_ ' + id + '" type="text" autocomplete="off" class="' + $hidObj.attr('class') + '"' + required + placeholder + '>');
         $hidObj.after($showObj);
 
