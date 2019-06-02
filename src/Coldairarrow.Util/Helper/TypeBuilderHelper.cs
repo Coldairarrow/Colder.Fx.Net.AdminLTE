@@ -33,7 +33,7 @@ namespace Coldairarrow.Util
                 AddProperty(tb, aProperty.PropertyName, aProperty.PropertyType, aProperty.Attributes);
             });
 
-            return tb.CreateType();
+            return tb.CreateTypeInfo();
         }
 
         /// <summary>
