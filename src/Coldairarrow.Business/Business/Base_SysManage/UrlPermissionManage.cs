@@ -1,6 +1,5 @@
 ﻿using Coldairarrow.Util;
 using System.Collections.Generic;
-using System.Web;
 using System.Xml.Linq;
 
 namespace Coldairarrow.Business.Base_SysManage
@@ -23,7 +22,7 @@ namespace Coldairarrow.Business.Base_SysManage
         private static void InitAllUrlPermissions()
         {
             List<ActionPermission> resList = new List<ActionPermission>();
-            string filePath = HttpContext.Current.Server.MapPath(_configFile);
+            string filePath = PathHelper.GetAbsolutePath(_configFile);
             XElement xe = XElement.Load(filePath);
             xe.Elements("action")?.ForEach(aUrl =>
             {

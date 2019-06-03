@@ -2,7 +2,6 @@
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -55,35 +54,7 @@ namespace Coldairarrow.Business.Base_SysManage
         /// <returns></returns>
         private Dictionary<string, object> GetAllRequestParams(HttpContext context)
         {
-            Dictionary<string, object> allParams = new Dictionary<string, object>();
-
-            var request = context.Request;
-            List<string> paramKeys = new List<string>();
-            var getParams = request.QueryString.AllKeys.ToList();
-            var postParams = request.Form.AllKeys.ToList();
-            paramKeys.AddRange(getParams);
-            paramKeys.AddRange(postParams);
-
-            paramKeys.ForEach(aParam =>
-            {
-                allParams.Add(aParam, request[aParam]);
-            });
-
-            string contentType = request.ContentType.ToLower();
-
-            //若为POST的application/json
-            if (contentType.Contains("application/json"))
-            {
-                var stream = request.InputStream;
-                stream.Position = 0;
-                string str = new StreamReader(stream).ReadToEnd();
-                var obj = str.ToJObject();
-                foreach (var aProperty in obj)
-                {
-                    allParams.Add(aProperty.Key, aProperty.Value);
-                }
-            }
-            return allParams;
+            return HttpHelper.GetAllRequestParams(context);
         }
 
         /// <summary>
