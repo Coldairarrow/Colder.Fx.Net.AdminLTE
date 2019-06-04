@@ -17,6 +17,7 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Coldairarrow.Console1
 {
@@ -46,24 +47,34 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            List<Task> tasks = new List<Task>();
-            LoopHelper.Loop(4, () =>
+            SynchronizedCollection<string> list = new SynchronizedCollection<string>();
+            SynchronizedCollection<Task> tasks = new SynchronizedCollection<Task>();
+            LoopHelper.Loop(2, () =>
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    LoopHelper.Loop(10000000, () =>
+                    {
+                        Console.WriteLine("1");
+                        list.Add(IdHelper.GetId());
+                        Thread.Sleep(1);
+                    });
+                }));
+            });
+
+            LoopHelper.Loop(2, () =>
             {
                 tasks.Add(Task.Run(() =>
                 {
                     LoopHelper.Loop(1000000, () =>
                     {
-                        var db = DbFactory.GetRepository();
-                        db.Insert(new Base_UnitTest
-                        {
-                            Id = IdHelper.GetId(),
-                            UserId= IdHelper.GetId(),
-                            UserName= IdHelper.GetId()
-                        });
+                        Console.WriteLine(DateTime.Now);
+                        list.Remove(list[list.Count]);
+                        Thread.Sleep(1);
                     });
                 }));
             });
-            Task.WaitAll(tasks.ToArray());
+
             Console.WriteLine("完成");
             Console.ReadLine();
         }
