@@ -1,6 +1,4 @@
-﻿using Coldairarrow.Util;
-using System.IO;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Coldairarrow.Web.Controllers
 {
@@ -51,49 +49,6 @@ namespace Coldairarrow.Web.Controllers
         #endregion
 
         #region 接口
-
-        public ActionResult UploadFile(string fileBase64, string fileName,string data)
-        {
-            byte[] bytes = fileBase64.ToBytes_FromBase64Str();
-            string fileDir = System.Web.HttpContext.Current.Server.MapPath("~/Upload/File");
-            if (!Directory.Exists(fileDir))
-                Directory.CreateDirectory(fileDir);
-            string filePath = Path.Combine(fileDir, fileName);
-            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                using (MemoryStream m = new MemoryStream(bytes))
-                {
-                    m.WriteTo(fileStream);
-                }
-            }
-
-            return Success();
-        }
-
-        public ActionResult UploadImg(string fileName, string data)
-        {
-            //byte[] bytes = ImgHelper.GetBase64String(data).ToBytes_FromBase64Str();
-            var url = ImgHelper.GetImgUrl(data);
-            //string fileDir = System.Web.HttpContext.Current.Server.MapPath("~/Upload/File");
-            //if (!Directory.Exists(fileDir))
-            //    Directory.CreateDirectory(fileDir);
-            //string filePath = Path.Combine(fileDir, fileName);
-            //using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
-            //{
-            //    using (MemoryStream m = new MemoryStream(bytes))
-            //    {
-            //        m.WriteTo(fileStream);
-            //    }
-            //}
-            
-
-            var res = new
-            {
-                success=true,
-                src=url
-            };
-            return JsonContent(res.ToJson());
-        }
 
         #endregion
     }

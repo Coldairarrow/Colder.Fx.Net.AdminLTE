@@ -32,7 +32,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
             byte[] bytes = fileBase64.ToBytes_FromBase64Str();
 
             string relativeDir = $"/Upload/File/{Guid.NewGuid().ToString()}";
-            string absoluteDir = System.Web.HttpContext.Current.Server.MapPath($"~{relativeDir}");
+            string absoluteDir = PathHelper.GetAbsolutePath($"~{relativeDir}");
             if (!Directory.Exists(absoluteDir))
                 Directory.CreateDirectory(absoluteDir);
             string filePath = Path.Combine(absoluteDir, fileName);
