@@ -1230,6 +1230,7 @@
     <Compile Include="Areas\Base_SysManage\Base_SysManageAreaRegistration.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\Base_AppSecretController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\Base_DatabaseLinkController.cs" />
+    <Compile Include="Areas\Base_SysManage\Controllers\Base_DepartmentController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\Base_SysLogController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\Base_SysRoleController.cs" />
     <Compile Include="Areas\Base_SysManage\Controllers\Base_UserController.cs" />
@@ -1273,6 +1274,8 @@
     <Content Include="Areas\Base_SysManage\Views\Base_User\Index.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\Form.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_Department\Form.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_Department\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
@@ -1435,7 +1438,7 @@
     <Content Include="Views\Demo\TreeGrid.cshtml" />
     <Content Include="Views\Demo\ZTree.cshtml" />
     <Content Include="Views\Demo\ZTreeSelect.cshtml" />
-    <Content Include="Views\Demo\UploadImgForm.cshtml" />
+    <Content Include="Views\Demo\UploadFile.cshtml" />
     <Content Include="Views\Home\Login_VerifyCode.cshtml" />
     <Content Include="Scripts\vendor\FileSaver\FileSaver.min.js.map" />
     <Content Include="Views\Demo\DownloadFile.cshtml" />

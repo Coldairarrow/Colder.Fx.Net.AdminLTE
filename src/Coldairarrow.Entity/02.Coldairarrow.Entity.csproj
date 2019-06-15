@@ -129,6 +129,7 @@
   <ItemGroup>
     <Compile Include="Base_SysManage\Base_AppSecret.cs" />
     <Compile Include="Base_SysManage\Base_DatabaseLink.cs" />
+    <Compile Include="Base_SysManage\Base_Department.cs" />
     <Compile Include="Base_SysManage\Base_PermissionAppId.cs" />
     <Compile Include="Base_SysManage\Base_PermissionRole.cs" />
     <Compile Include="Base_SysManage\Base_PermissionUser.cs" />
