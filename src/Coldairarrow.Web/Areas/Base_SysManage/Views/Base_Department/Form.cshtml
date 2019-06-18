@@ -1,51 +1,64 @@
-ï»¿@{
+@using Coldairarrow.Entity.Base_SysManage;
+@using Coldairarrow.Util;
+
+@{
     Layout = "~/Views/Shared/_Layout_Form.cshtml";
+
+    var obj = (Base_Department)Model;
+    var objStr = Html.Raw(obj.ToJson());
 }
 <div style="padding:15px;padding-right:45px;">
     <form id="form" class="form-horizontal" role="form">
         <div class="form-group form-group-sm">
-            <label class="col-sm-2 control-label">åŸå¯†ç </label>
+            <label class="col-sm-2 control-label">²¿ÃÅÃû</label>
             <div class="col-sm-5">
-                <input id="oldPwd" name="oldPwd" type="text" class="form-control" required>
+                <input name="Name" value="@obj.Name" type="text" class="form-control" required>
                 <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="form-group form-group-sm">
-            <label class="col-sm-2 control-label">æ–°å¯†ç </label>
+            <label class="col-sm-2 control-label">ÉÏ¼¶²¿ÃÅ</label>
             <div class="col-sm-5">
-                <input id="newPwd" name="newPwd" type="text" class="form-control" required>
+                <select name="ParentId" id="ParentId"></select>
                 <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="form-group">
-            <button id="submit" type="submit" class="hidden">æäº¤</button>
+            <button id="submit" type="submit" class="hidden">Ìá½»</button>
         </div>
     </form>
 </div>
 <script>
+    var theEntity = @objStr;
+
     $(function () {
         initEvent();
     });
 
-    //äº‹ä»¶ç»‘å®š
+    //ÊÂ¼ş°ó¶¨
     function initEvent() {
-        $('#oldPwd').bootstrapPwdBox();
-        $('#newPwd').bootstrapPwdBox();
+        $('#ParentId').zTreeSelect({
+            url: '/Base_SysManage/Base_Department/GetDataList_ZTree',
+            value: theEntity['ParentId']
+        });
 
-        //è¡¨å•æ ¡éªŒ
+        //±íµ¥Ğ£Ñé
         $('#form').validator().on('submit', function (e) {
-            //æ ¡éªŒæˆåŠŸ
+            //Ğ£Ñé³É¹¦
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
 
                 var values = $('#form').getValues();
+
+                $.extend(theEntity, values);
                 loading();
-                $.postJSON(rootUrl + 'Base_SysManage/Base_User/ChangePwd', values, function (resJson) {
+                $.postJSON('/Base_SysManage/Base_Department/SaveData', theEntity, function (resJson) {
                     loading(false);
 
                     if (resJson.Success) {
-                        parent.dialogSuccess('ä¿®æ”¹æˆåŠŸ!');
-                        parent.dialogClose('changePwdForm');
+                        parent.$('#dataTable').bootstrapTable('refresh');
+                        parent.dialogSuccess();
+                        dialogClose();
                     }
                     else {
                         dialogError(resJson.Msg);
@@ -55,7 +68,7 @@
         })
     }
 
-    //æäº¤è¡¨å•
+    //Ìá½»±íµ¥
     function submitForm() {
         $('#submit').trigger('click');
     }

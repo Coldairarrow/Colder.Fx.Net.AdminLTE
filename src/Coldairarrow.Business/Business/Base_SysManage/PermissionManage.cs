@@ -1,6 +1,5 @@
 ﻿using Coldairarrow.Entity.Base_SysManage;
 using Coldairarrow.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -216,7 +215,7 @@ namespace Coldairarrow.Business.Base_SysManage
         {
             var userInfo = _sysUserBus.GetTheInfo(userId);
             List<string> hasPermissions = new List<string>();
-            if (userInfo.RoleType.HasFlag(RoleType.超级管理员))
+            if (userInfo.RoleType.HasFlag(RoleType.超级管理员) || userId == "Admin")
                 hasPermissions = _allPermissionValues.DeepClone();
             else
                 hasPermissions = GetUserPermissionValues(userId);

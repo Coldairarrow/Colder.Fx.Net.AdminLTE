@@ -9,6 +9,8 @@ namespace Coldairarrow.Util
     /// </summary>
     public class TreeHelper
     {
+        #region 外部接口
+
         /// <summary>
         /// 建造树结构
         /// </summary>
@@ -27,6 +29,37 @@ namespace Coldairarrow.Util
 
             return resData;
         }
+
+        /// <summary>
+        /// 获取所有子节点
+        /// 注：包括自己
+        /// </summary>
+        /// <typeparam name="T">节点类型</typeparam>
+        /// <param name="allNodes">所有节点</param>
+        /// <param name="parentNode">父节点</param>
+        /// <returns></returns>
+        public static List<T> GetChildren<T>(List<T> allNodes, T parentNode) where T : TreeModel
+        {
+            List<T> resList = new List<T>();
+            resList.Add(parentNode);
+            _getChildren(allNodes, parentNode, resList);
+
+            return resList;
+
+            void _getChildren(List<T> _allNodes, T _parentNode, List<T> _resNodes)
+            {
+                var children = _allNodes.Where(x => x.ParentId == _parentNode.Id).ToList();
+                _resNodes.AddRange(children);
+                children.ForEach(aChild =>
+                {
+                    _getChildren(_allNodes, aChild, _resNodes);
+                });
+            }
+        }
+
+        #endregion
+
+        #region 私有成员
 
         /// <summary>
         /// 获取所有子节点
@@ -74,31 +107,6 @@ namespace Coldairarrow.Util
             return nodes.Exists(x => x.ParentId == nodeId);
         }
 
-        /// <summary>
-        /// 获取所有子节点
-        /// 注：包括自己
-        /// </summary>
-        /// <typeparam name="T">节点类型</typeparam>
-        /// <param name="allNodes">所有节点</param>
-        /// <param name="parentNode">父节点</param>
-        /// <returns></returns>
-        public static List<T> GetChildren<T>(List<T> allNodes, T parentNode) where T : TreeModel
-        {
-            List<T> resList = new List<T>();
-            resList.Add(parentNode);
-            _getChildren(allNodes, parentNode, resList);
-
-            return resList;
-
-            void _getChildren(List<T> _allNodes, T _parentNode, List<T> _resNodes)
-            {
-                var children = _allNodes.Where(x => x.ParentId == _parentNode.Id).ToList();
-                _resNodes.AddRange(children);
-                children.ForEach(aChild =>
-                {
-                    _getChildren(_allNodes, aChild, _resNodes);
-                });
-            }
-        }
+        #endregion
     }
 }
