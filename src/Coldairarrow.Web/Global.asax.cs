@@ -100,7 +100,10 @@ namespace Coldairarrow.Web
             //AOP
             builder.RegisterType<Interceptor>();
 
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
+            var container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+            AutofacHelper.Container = container;
         }
     }
 }
