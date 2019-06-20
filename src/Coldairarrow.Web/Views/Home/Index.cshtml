@@ -11,6 +11,7 @@
     string headImg = "/css/fx/defaultAvatar.png";
     string operatorName = this.Operator.Property.UserName;
     string desktopUrl = "/Home/Desktop";
+    string tapName = "简介";
     string homeUrl = "https://github.com/Coldairarrow/Colder.Fx.Net.AdminLTE";
 }
 <!DOCTYPE html>
@@ -432,7 +433,7 @@
             var desktop = '@desktopUrl';
             addTabs({
                 id: desktop,
-                title: '商机管理',
+                title: '@tapName',
                 close: true,
                 url: desktop,
             });

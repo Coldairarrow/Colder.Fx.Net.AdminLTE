@@ -1,7 +1,35 @@
 # Colder¿ìËÙ¿ª·¢¿ò¼ÜÎÄµµ(NET452+AdminLTE°æ)
 
-#1.¼ò½é
+# Ä¿Â¼
+- [¼ò½é](#¼ò½é)
+- [»ù´¡×¼±¸](#»ù´¡×¼±¸)
+	- [¿ª·¢»·¾³ÒªÇó](#¿ª·¢»·¾³ÒªÇó)
+	- [»ù´¡Êý¾Ý¿â¹¹½¨](#»ù´¡Êý¾Ý¿â¹¹½¨)
+	- [Êý¾Ý¿âÉè¼Æ¹æ·¶](#Êý¾Ý¿âÉè¼Æ¹æ·¶)
+	- [ÔËÐÐ](#ÔËÐÐ)
+- [ÏêÏ¸½Ì³Ì](#ÏêÏ¸½Ì³Ì)
+	- [´úÂë¼Ü¹¹](#´úÂë¼Ü¹¹)
+		- [×ÜÌå¼Ü¹¹](#×ÜÌå¼Ü¹¹)
+		- [»ù´¡ÉèÊ©²ã](#»ù´¡ÉèÊ©²ã)
+		- [Êý¾Ý²Ö´¢²ã](#Êý¾Ý²Ö´¢²ã)
+		- [Êý¾ÝÊµÌå²ã](#Êý¾ÝÊµÌå²ã)
+		- [ÒµÎñÂß¼­²ã](#ÒµÎñÂß¼­²ã)
+		- [Ó¦ÓÃÕ¹Ê¾²ã](#Ó¦ÓÃÕ¹Ê¾²ã)
+	- [¹¦ÄÜ¼Ü¹¹](#¹¦ÄÜ¼Ü¹¹)
+		- [È«¾ÖÅäÖÃ](#¹¦ÄÜ¼Ü¹¹)
+		- [¿ìËÙ¿ª·¢](#¿ìËÙ¿ª·¢)
+		- [¹ÜÀíÔ±µÇÂ¼](#¿ìËÙ¿ª·¢)
+		- [ÏµÍ³ÓÃ»§¹ÜÀí](#ÏµÍ³ÓÃ»§¹ÜÀí)
+		- [ÏµÍ³½ÇÉ«¹ÜÀí](#ÏµÍ³½ÇÉ«¹ÜÀí)
+		- [È¨ÏÞ¹ÜÀí](#È¨ÏÞ¹ÜÀí)
+		- [½Ó¿ÚÃØÔ¿¹ÜÀí](#½Ó¿ÚÃØÔ¿¹ÜÀí)
+		- [ÏµÍ³ÈÕÖ¾](#ÏµÍ³ÈÕÖ¾)
+- [³£¼ûÒÉÎÊ](#³£¼ûÒÉÎÊ)
+	- [ÈçºÎ½øÐÐÁª±í²éÑ¯](#ÈçºÎ½øÐÐÁª±í²éÑ¯)
+	- [ÈçºÎÇÐ»»Êý¾Ý¿â](#ÈçºÎÇÐ»»Êý¾Ý¿â)
+	- [ÈçºÎÊ¹ÓÃ±ðµÄÊý¾Ý¿â£¨¼´·ÇÄ¬ÈÏµÄÏµÍ³Êý¾Ý¿â£©](#ÈçºÎÊ¹ÓÃ±ðµÄÊý¾Ý¿â£¨¼´·ÇÄ¬ÈÏµÄÏµÍ³Êý¾Ý¿â£©)
 
+# ¼ò½é
 ±¾¿ò¼ÜÖ¼ÔÚ¼«´óµÄÌá¸ß¿ª·¢Ð§ÂÊ
 
 Ê¹ÓÃ¼¼ÊõÕ»£º
@@ -26,83 +54,64 @@
 ÆäÏà¹Ø°æ±¾Çë¿´ÏÂ±í£º
 
 | **.NET°æ±¾** | **Ç°¶ËUI** | **µØÖ·** |
-|-|||
-| .NET4.52| AdminLTE   | <https://github.com/Coldairarrow/Colder.Fx.Net.AdminLTE>              |
-| .NET4.52     | Easyui     | <https://github.com/Coldairarrow/Coldairarrow.Fx.Net.Easyui.GitHub>   |
-| .NET Core2.1 | Easyui     | <https://github.com/Coldairarrow/Coldairarrow.Fx.Core.Easyui.GitHub>  |
-| .NET4.0      | Easyui     | <https://github.com/Coldairarrow/Coldairarrow.Fx.Net40.Easyui.GitHub> |
+|-|-|-|
+| Core2.2 | AdminLTE | <https://github.com/Coldairarrow/Colder.Fx.Core.AdminLTE> |
+| .NET4.52 | AdminLTE | <https://github.com/Coldairarrow/Colder.Fx.Net.AdminLTE> |
+| .NET4.52 |Easyui| <https://github.com/Coldairarrow/Coldairarrow.Fx.Net.Easyui.GitHub>|
+| Core2.1 | Easyui|<https://github.com/Coldairarrow/Coldairarrow.Fx.Core.Easyui.GitHub>|
+| .NET4.0 | Easyui|<https://github.com/Coldairarrow/Coldairarrow.Fx.Net40.Easyui.GitHub>|
 
 ºóÌ¨Õ¹Ê¾ÈçÏÂ£º
 
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/4397a1708d4b134325e9c264b00e180b.png)
+![](https://s2.ax1x.com/2019/06/20/VvTLSs.png)
 
-»ù´¡×¼±¸
-========
+#»ù´¡×¼±¸
 
-¿ª·¢»·¾³ÒªÇó
-------------
+## ¿ª·¢»·¾³ÒªÇó£º
 
 ²Ù×÷ÏµÍ³£ºWindows 10
-
 ¿ª·¢¹¤¾ß£ºVisual Studio 2017
-
 SDK£º°²×°.NET4.52¼°ÒÔÉÏ
-
 Êý¾Ý¿â£ºSQLServer2008 R2¼°ÒÔÉÏ
 
-»ù´¡Êý¾Ý¿â¹¹½¨
---------------
+## »ù´¡Êý¾Ý¿â¹¹½¨£º
+- Êý¾Ý¿â´´½¨
+Ä¿Â¼"/docs/³õÊ¼»¯ÎÄ¼þ"ÖÐÓÐËùÐèµÄÊý¾Ý¿â×ÊÁÏ
+![](https://s2.ax1x.com/2019/06/20/VxpO5n.png)
+ÆäÖÐSQLServerÊý¾Ý¿â¿ÉÍ¨¹ý.bakÎÄ¼þ»¹Ô­Êý¾Ý¿â»òÕßÍ¨¹ý.mdf¸½¼Ó
+ÆäËüÊý¾Ý¿âÐèÒªÏÈÊÖ¶¯´´½¨Êý¾Ý¿â£¬È»ºóÖ´ÐÐ¶ÔÓ¦µÄSQL½Å±¾¼´¿É
 
-Ê¹ÓÃ±¾¿ò¼ÜÐèÒª¹¹½¨»ù´¡Êý¾Ý¿â£¬¾ßÌå²½ÖèÈçÏÂ£º
-
-´´½¨»ù´¡Êý¾Ý¿âµÄSql½Å±¾ÎÄ¼þÔÚ£º/docs/³õÊ¼»¯ÎÄ¼þ/db.sql£¬ÔÚÊý¾Ý¿âÖÐÔËÐÐdb.sql½Å±¾¼´¿É´´½¨Êý¾Ý¿â:
-Colder.Fx.Net.AdminLTE
-
-ÈôSqlÔËÐÐ³ö´í£¬ÇëÖ±½ÓÊ¹ÓÃÍ¬Ä¿Â¼ÏÂµÄdb.bak»¹Ô­Êý¾Ý¿â
-
+- Á¬½Ó×Ö·û´®ÅäÖÃ
 ´ò¿ªsrcÄ¿Â¼ÏÂColder.Fx.Net.AdminLTEµÄ½â¾ö·½°¸£¬ÈçÏÂÍ¼
 
 ![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/bf515908fa1475c05265920466f4aee3.png)
 
-ÈçÏÂÍ¼ËùÊ¾ÒÀ´ÎÕ¹¿ª05.Coldairarrow.Web=\>Config=\>database.config£¬ÅäÖÃÊý¾Ý¿âÁ¬½Ó×Ö·û´®£¬name²»ÓÃÐÞ¸Ä£¬connectionString¸ÄÎªÉÏÊö´´½¨µÄÊý¾Ý¿â£¨Èô²»Çå³þÊý¾Ý¿âÁ¬½Ó×Ö·û´®Çë×ÔÐÐ°Ù¶ÈËÑË÷½Ì³Ì£©
-
+ÈçÏÂÍ¼ËùÊ¾ÒÀ´ÎÕ¹¿ª05.Coldairarrow.Web/Config/database.config£¬ÅäÖÃÊý¾Ý¿âÁ¬½Ó×Ö·û´®£¬name²»ÓÃÐÞ¸Ä£¬connectionString¸ÄÎªÉÏÊö´´½¨µÄÊý¾Ý¿â£¨Èô²»Çå³þÊý¾Ý¿âÁ¬½Ó×Ö·û´®Çë×ÔÐÐ°Ù¶ÈËÑË÷½Ì³Ì£©
 ![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/9198e1dd732803ef99d5b8ddeea7daba.png)
 
-×Ô´Ë»ù´¡Êý¾Ý¿âÅäÖÃÍê³É¡£
-
-Êý¾Ý¿âÉè¼Æ¹æ·¶
---------------
+## Êý¾Ý¿âÉè¼Æ¹æ·¶
 
 ÓÉÓÚ±¾¿ò¼ÜÖ§³Ö×Ô¶¯Éú³É´úÂëµÄºËÐÄ¹¦ÄÜ£¬´Ë¹¦ÄÜÊÇ¸ù¾ÝÊý¾Ý¿âµÄ±í½á¹¹À´Éú³É´úÂëµÄ
+Òò´Ë¹æ¶¨Ã¿ÕÅ±í¶¼ÓÐÒ»¸öÖ÷¼ü£¬ÁÐÃûÎªId£¬ÀàÐÍÎª×Ö·û´®£¬Êµ¼ÊÌí¼ÓÊý¾ÝÊ±Ä¬ÈÏÊ¹ÓÃSnowflakeId(Ñ©»¨Id,TwitterÉè¼ÆµÄ·Ö²¼Ê½Ç÷ÊÆ×ÔÔöId,Èô²»Çå³þÇë×ÔÐÐ°Ù¶ÈÏà¹Ø×ÊÁÏ)£¬±íÖÐµÄÃ¿¸öÁÐ¶¼ÐèÒªÓÐÃèÊöÐÅÏ¢£¨½¨ÒéÕâÑù²Ù×÷£¬Èô²»°´ÕÕÕâ¸ö±ê×¼ÔòÐèÒªÒ»Ð©¶îÍâµÄ¸Ä¶¯²ÅÄÜ¹»³É¹¦ÔËÐÐ£©¡£
 
-Òò´Ë¹æ¶¨Ã¿ÕÅ±í¶¼ÓÐÒ»¸öÖ÷¼ü£¬ÁÐÃûÎªId£¬ÀàÐÍÎª×Ö·û´®£¬Êµ¼ÊÌí¼ÓÊý¾ÝÊ±Ä¬ÈÏÊ¹ÓÃGUIDµÄ×Ö·û´®ÐÎÊ½£¬±íÖÐµÄÃ¿¸öÁÐ¶¼ÐèÒªÓÐÃèÊöÐÅÏ¢£¨½¨ÒéÕâÑù²Ù×÷£¬Èô²»°´ÕÕÕâ¸ö±ê×¼ÔòÐèÒªÒ»Ð©¶îÍâµÄ¸Ä¶¯²ÅÄÜ¹»³É¹¦ÔËÐÐ£©¡£
+![](https://s2.ax1x.com/2019/06/20/VxPl9I.png)
 
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/2036647b5267b02aa537f563b66b7647.png)
-
-ÔËÐÐ
-----
+## ÔËÐÐ
 
 ÇëÏÈ»¹Ô­Nuget°ü
-
 È»ºó½«05.Coldairarrow.WebÉèÎªÆô¶¯ÏîÄ¿£¬³É¹¦ÔËÐÐ¼´¿É½øÈëÒÔÏÂÒ³Ãæ
+![](https://s2.ax1x.com/2019/06/20/VvTLSs.png)
 
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/4397a1708d4b134325e9c264b00e180b.png)
-
-ÏêÏ¸½Ì³Ì
-========
-
-´úÂë¼Ü¹¹
---------
-
+# ÏêÏ¸½Ì³Ì
+## ´úÂë¼Ü¹¹
 ### ×ÜÌå¼Ü¹¹
-
-![WEBºóÌ¨¿ìËÙ¿ª·¢¿ò¼ÜÏµÍ³¼Ü¹¹Éè¼Æ (4)](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/aeedbeae75be3a7a8cee3c6dcd8fcbd2.png)
+![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/aeedbeae75be3a7a8cee3c6dcd8fcbd2.png)
 
 ¿ò¼Ü×é³É½á¹¹Ò»¹²·ÖÎª5²ã£¬ÈçÉÏÍ¼ËùÊ¾£¬·Ö±ðÈçÏÂ£º
 
 »ù´¡ÉèÊ©²ã£º´Ë²ãÎª×îµ×²ã£¬¿ÉÒÔÎªÆäÓàËùÓÐ²ã·þÎñ¡£Ö÷ÒªÌá¹©ÁËÏîÄ¿¿ª·¢ËùÐèµÄ¸÷ÖÖ°ïÖúÀà£ºÊý¾Ý¿â·ÃÎÊ°ïÖúÀà¡¢ÎÄ¼þ²Ù×÷°ïÖúÀà¡¢¶þÎ¬ÂëÉú³É°ïÖúÀà¡¢·Ö¼ðÑ¹Ëõ°ïÖúÀàµÈµÈÆäÓà°ïÖúÀà£»ÍØÕ¹Àà£º×Ö·û´®ÍØÕ¹Àà¡¢¼¯ºÏ²Ù×÷ÍØÕ¹Àà¡¢±í´ïÊ½Ê÷ÍØÕ¹ÀàµÈµÈÆäÓàÍØÕ¹Àà£»»¹¼¯³ÉÁË¸öÈË±àÐ´µÄSocketÍ¨Ñ¶¿ò¼Ü£¬WCFÍØÕ¹Ê¹ÓÃ¿ò¼Ü£¬Windows·þÎñÈÝÆ÷¡£ÕâÐ©·á¸»µÄÀà¿â¶¼ÊÇÎª¿ª·¢ÈËÔ±Ìá¹©ÁË¿ª·¢ÖÐ³£ÓÃµÄ¹¦ÄÜ£¬Îª¿ìËÙ¿ª·¢Ìá¹©Ç¿ÓÐÁ¦µÄ±£ÕÏ¡£
 
-Êý¾Ý²Ö´¢²ã£ºÕâ²ãÖ÷ÒªÎª¶ÔÊý¾Ý¿â²Ù×÷CRUDµÄ¼òµ¥·â×°£¬ÒÔEntityFrameworkÎªºËÐÄ£¬²ÉÓÃ¼òµ¥¹¤³§¡¢³éÏó¹¤³§¡¢¹¤³§·½·¨¡¢Èý¸ö¹¤³§Éè¼ÆÄ£Ê½£¬Ê¹¿ª·¢ÈËÔ±½øÐÐCRUDÖ»ÐèÒª¼«Îª¼òµ¥µÄ´úÂë¼´¿ÉÍê³É¡£±¾²ã»¹Ìá¹©ÁËÊý¾Ý¿âÊÂÎñµÄÖ§³Ö£¬¸üÊÇÌá¹©ÁË·Ö²¼Ê½ÊÂÎñÖ§³Ö£¬ÎªÊý¾Ý¿â²Ù×÷Ìá¹©±Ø±¸µÄ±£ÕÏ¡£Ê¹ÓÃ±¾²ãÌá¹©µÄ½Ó¿Ú£¬ÎÞÐè¹ØÐÄ¾ßÌåµÄÊý¾Ý¿âÀàÐÍ£¬±ÈÈçÊÇ²ÉÓÃSQLServerÊý¾Ý¿â»òÕßMySQLÊý¾Ý¿â£¬¿ª·¢ÈËÔ±Ö»ÐèÒª¹ØÐÄ¾ßÌåµÄÒµÎñÂß¼­ÊµÏÖ£¬ÄÄÅÂ¸ü»»Êý¾Ý¿â£¬Ò²ÎÞÐè¸ü¸ÄÒµÎñÂß¼­´úÂë£¬Ö»ÐèÒª¸ü¸Ä¼òµ¥µÄÊý¾Ý¿âÅäÖÃ¼´¿É¡£×ÜÖ®£¬±¾²ãÎª¿ª·¢ÈËÔ±¶ÔÊý¾Ý¿âµÄ²Ù×÷Ìá¹©ÁË¼òµ¥¸ßÐ§µÄ²Ù×÷½Ó¿Ú£¬¿ÉÒÔ¼«´óµÄÌá¸ß¿ª·¢Ð§ÂÊ¡£
+Êý¾Ý²Ö´¢²ã£ºÕâ²ãÖ÷ÒªÎª¶ÔÊý¾Ý¿â²Ù×÷CRUDµÄ¼òµ¥·â×°£¬ÒÔEntityFrameworkÎªºËÐÄ£¬²ÉÓÃ¼òµ¥¹¤³§¡¢³éÏó¹¤³§¡¢¹¤³§·½·¨¡¢Èý¸ö¹¤³§Éè¼ÆÄ£Ê½£¬Ê¹¿ª·¢ÈËÔ±½øÐÐCRUDÖ»ÐèÒª¼«Îª¼òµ¥µÄ´úÂë¼´¿ÉÍê³É¡£±¾²ã»¹Ìá¹©ÁËÊý¾Ý¿âÊÂÎñµÄÖ§³Ö£¬¸üÊÇÌá¹©ÁË·Ö²¼Ê½ÊÂÎñÖ§³Ö£¬ÎªÊý¾Ý¿â²Ù×÷Ìá¹©±Ø±¸µÄ±£ÕÏ,²¢ÇÒÖ§³ÖÊý¾Ý¿â¶ÁÐ´·ÖÀë·Ö¿â·Ö±í¡£Ê¹ÓÃ±¾²ãÌá¹©µÄ½Ó¿Ú£¬ÎÞÐè¹ØÐÄ¾ßÌåµÄÊý¾Ý¿âÀàÐÍ£¬±ÈÈçÊÇ²ÉÓÃSQLServerÊý¾Ý¿â»òÕßMySQLÊý¾Ý¿â£¬¿ª·¢ÈËÔ±Ö»ÐèÒª¹ØÐÄ¾ßÌåµÄÒµÎñÂß¼­ÊµÏÖ£¬ÄÄÅÂ¸ü»»Êý¾Ý¿â£¬Ò²ÎÞÐè¸ü¸ÄÒµÎñÂß¼­´úÂë£¬Ö»ÐèÒª¸ü¸Ä¼òµ¥µÄÊý¾Ý¿âÅäÖÃ¼´¿É¡£×ÜÖ®£¬±¾²ãÎª¿ª·¢ÈËÔ±¶ÔÊý¾Ý¿âµÄ²Ù×÷Ìá¹©ÁË¼òµ¥¸ßÐ§µÄ²Ù×÷½Ó¿Ú£¬¿ÉÒÔ¼«´óµÄÌá¸ß¿ª·¢Ð§ÂÊ¡£
 
 ÊµÌå²ã£ºÕâ²ãÖ÷ÒªÎªORM¿ò¼ÜÊý¾Ý¿â±í¶ÔÓ¦µÄÊµÌåÀà£¬ÎªÒµÎñÂß¼­²ãºÍÓ¦ÓÃ²ã·þÎñ¡£
 
@@ -115,34 +124,31 @@ MVCÍøÕ¾£¬ÆäÊµÒ²¿ÉÒÔ·ºÖ¸ÆäÓàµÄ±íÏÖÐÎÊ½£º¿ØÖÆÌ¨³ÌÐò¡¢Windows·þÎñ³ÌÐò¡¢WinForm³ÌÐò¡
 
 ´Ë²ãÎª×îµ×²ã£¬¿ÉÒÔÎªÆäÓàËùÓÐ²ã·þÎñ¡£Ö÷ÒªÌá¹©ÁËÏîÄ¿¿ª·¢ËùÐèµÄ¸÷ÖÖÀà¿â£¬Ö÷ÒªÎªÒÔÏÂ¼¸ÖÖÀà¿â£º
 
-1.  ÍØÕ¹°ïÖúÀà
+- ÍØÕ¹°ïÖúÀà
 
-ÀûÓÃC\#µÄÓï·¨ÌÇ£¨ÊÇÓÉÓ¢¹ú¼ÆËã»ú¿ÆÑ§¼Ò±ËµÃ¡¤Ô¼º²¡¤À¼´ï£¨Peter J.
+ÀûÓÃC#µÄÓï·¨ÌÇ£¨ÊÇÓÉÓ¢¹ú¼ÆËã»ú¿ÆÑ§¼Ò±ËµÃ¡¤Ô¼º²¡¤À¼´ï£¨Peter J.
 Landin£©·¢Ã÷µÄÒ»¸öÊõÓï£¬Ö¸¼ÆËã»úÓïÑÔÖÐÌí¼ÓµÄÄ³ÖÖÓï·¨£¬ÕâÖÖÓï·¨¶ÔÓïÑÔµÄ¹¦ÄÜ²¢Ã»ÓÐÓ°Ïì£¬µ«ÊÇ¸ü·½±ã³ÌÐòÔ±Ê¹ÓÃ£©£¬¿ÉÒÔÔÚÀàÉÏÍØÕ¹×Ô¶¨Òå·½·¨£¬ÕâÑù¿ª·¢ÈËÔ±ÔÚÊ¹ÓÃµÄÊ±ºò¾Í¿ÉÒÔÊ®·ÖµÄ·½±ã£¬¼ÈÄÜ¼õÉÙÖØ¸´µÄ´úÂëÓÖÄÜ¼Ó¿ì¿ª·¢Ð§ÂÊ¡£¾ßÌå°üº¬µ«²»ÏÞÓÚÒÔÏÂÀà£º
 
 ObjectÍØÕ¹£ºObjectÊÇËùÓÐÀàµÄ»ùÀà¡£ÏÖÔÚÇ°ºó¶ËÊý¾Ý½»»¥ÖÐ£¬²ÉÓÃJSONÊÇÑ¡Ôñ£¬Òò´Ë¶ÔÏóJSONÐòÁÐ»¯Óë·´ÐòÁÐ»¯µÄÊ¹ÓÃ¾ÍÊ®·ÖµÄÆµ·±£¬Í¨¹ý¸øObjectÍØÕ¹ToJson·½·¨£¬¾Í¿ÉÒÔ½«Êý¾Ý¶ÔÏóÖ±½Ó×ªÎª¶ÔÓ¦µÄJSON×Ö·û´®£¬ÄÜ¹»¼«´óµÄ¼ò»¯JSONÐòÁÐ»¯ËùÐèÒªµÄ´úÂë¡£
 
 ByteÍØÕ¹£ºByte£¬¼´×Ö½Ú£¬Ò»¸ö×Ö½ÚÊÇ8¸ö±ÈÌØÎ»£¬Ê®½øÖÆÊýÖµ·¶Î§ÔÚ0-255¡£ÓÉÓÚByteÓë¶þ½øÖÆÊÇÖ±½Ó¶ÔÓ¦µÄ£¬¶ø¼ÆËã»úÖÐÒ»ÇÐÊý¾Ý¶¼ÊÇ¶þ½øÖÆ£¬ËùÒÔ¹ØÓÚByteÓëÆäËûÊý¾ÝÀàÐÍÖ®¼äµÄ×ª»»¾ÍÏÔµÃÓÈÎªÖØÒª£¬±àÐ´ByteÏà¹ØµÄÍØÕ¹·½·¨ÄÜ¹»·½±ãByteµÄÊ¹ÓÃ¡£ÀýÈç£¬ÍØÕ¹½«ByteÊý×é×ªÎª16½øÖÆ×Ö·û´®µÄ·½·¨£¬ÄÜ¹»½«×Ö½ÚÊý×éÖ±½Ó×ªÎª¶ÔÓ¦µÄ16½øÖÆ×Ö·û´®£¬ÏÖÔÚÎïÁªÍøµÄ·¢Õ¹Ò²Ê®·ÖµÄÑ¸ËÙ£¬ÔÚÎïÁªÍø¿ª·¢ÖÐ£¬¹Ø¼üÊÇ½¨Á¢ÓëÓ²¼þÖ®¼äµÄÍ¨ÐÅ£¬µ«ÊÇÓÉÓÚÓ²¼þµÄÅäÖÃÒ»°ã¶¼²»¸ß£¬Òò´ËÓëÓ²¼þÖ®¼äµÄÍ¨ÐÅ´ó¶àÒÔ×Ö½ÚÎªµ¥Î»£¬ÕâÖÖÇé¿öÏÂ£¬Ê¹ÓÃ¸ÃÍØÕ¹·½·¨¾Í¿ÉÒÔÌá¸ß¿ª·¢Ð§ÂÊ¡£
 
-ExpressionÍØÕ¹£ºExpression£¬¼´±í´ïÊ½Ê÷£¬ÔÚLINQ²éÑ¯ÖÐ¾­³£Ê¹ÓÃ¡£ÔÚÈÕ³£Ê¹ÓÃÖÐ,WhereÉ¸Ñ¡¹À¼ÆÊÇÓÃµÃ×î¶àµÄ£¬µ«ÊÇ´ó¶àÊý¿ª·¢ÈËÔ±¶¼ÊÇÊ¹ÓÃ×îÔ­Ê¼µÄWhereÉ¸Ñ¡£¬µ±É¸Ñ¡Ìõ¼þÔö¶à£¬É¸Ñ¡Ìõ¼þ±ä¸´ÔÓµÄÊ±ºò£¬Ô­Ê¼µÄWhereËäÈ»Ò²¿ÉÒÔÊ¤ÈÎ£¬µ«ÊÇ¾Í»áµ¼ÖÂ´úÂëÖØ¸´£¬²»¹»¼ò½àÑÅ¹Û£¬´ËÊ±¿ÉÒÔÎªExpression\<Func\<T,
-bool\>\>ÀàÍØÕ¹AndÓëOr·½·¨£¬ÆäÖÐAndÊÇ¡°Óë¡±²Ù×÷£¬OrÊÇ¡°»ò¡±²Ù×÷£¬ÕâÑù¾Í¿ÉÒÔ½«¶à¸öÉ¸Ñ¡Ìõ¼þÆ´½ÓÔÚÒ»Æð£¬Ê®·ÖµÄÊµÓÃ¡£
+ExpressionÍØÕ¹£ºExpression£¬¼´±í´ïÊ½Ê÷£¬ÔÚLINQ²éÑ¯ÖÐ¾­³£Ê¹ÓÃ¡£ÔÚÈÕ³£Ê¹ÓÃÖÐ,WhereÉ¸Ñ¡¹À¼ÆÊÇÓÃµÃ×î¶àµÄ£¬µ«ÊÇ´ó¶àÊý¿ª·¢ÈËÔ±¶¼ÊÇÊ¹ÓÃ×îÔ­Ê¼µÄWhereÉ¸Ñ¡£¬µ±É¸Ñ¡Ìõ¼þÔö¶à£¬É¸Ñ¡Ìõ¼þ±ä¸´ÔÓµÄÊ±ºò£¬Ô­Ê¼µÄWhereËäÈ»Ò²¿ÉÒÔÊ¤ÈÎ£¬µ«ÊÇ¾Í»áµ¼ÖÂ´úÂëÖØ¸´£¬²»¹»¼ò½àÑÅ¹Û£¬´ËÊ±¿ÉÒÔÎªExpression< < Func< T, bool > >ÀàÍØÕ¹AndÓëOr·½·¨£¬ÆäÖÐAndÊÇ¡°Óë¡±²Ù×÷£¬OrÊÇ¡°»ò¡±²Ù×÷£¬ÕâÑù¾Í¿ÉÒÔ½«¶à¸öÉ¸Ñ¡Ìõ¼þÆ´½ÓÔÚÒ»Æð£¬Ê®·ÖµÄÊµÓÃ¡£
 
-IQueryable\<T\>ÍØÕ¹£ºIQueryable\<T\>ÊÇÌá¹©Õë¶ÔÌØ¶¨Êý¾ÝÔ´£¨ÆäÖÐÊý¾ÝÀàÐÍÎ´Î´Öª£©ÆÀ¹À²éÑ¯µÄ¹¦ÄÜ½Ó¿Ú£¬ÆäÔÚEntityFrameworkÖÐ·¢»Ó×ÅÖØÒªµÄ×÷ÓÃ¡£ÀýÈç£¬ÔÚºóÌ¨¹ÜÀíÏµÍ³ÖÐ£¬Êý¾Ý±í¸ñµÄÊ¹ÓÃ×îÎªÆÕ±é£¬Ç°¶ËÏòºóÌ¨ÇëÇó±í¸ñÊý¾ÝÊ±£¬²»ÍâºõÐèÒªÒÔÏÂ¼¸¸ö²ÎÊý£ºµ±Ç°ÇëÇóÒ³Âë¡¢Ã¿Ò³¼ÇÂ¼Êý¡¢ÅÅÐòÁÐÓëÅÅÐòÀàÐÍ£¬ÕâÐ©²ÎÊýÔÚÃ¿¸öÇëÇó±í¸ñÊý¾ÝÇëÇóÖÐ¶¼ÐèÒª´¦Àí£¬ÕâÊ±£¬Í¨¹ý¸øIQueryable\<T\>ÍØÕ¹GetPagination\<T\>·½·¨£¬Ö»ÐèÒª´«Èë·ÖÒ³²ÎÊý£¬¾Í¿ÉÒÔ»ñÈ¡ËùÐèµÄÊý¾Ý±í¸ñÊý¾Ý£¬Ê®·ÖµÄ·½±ã¸ßÐ§¡£
+IQueryable< T >ÍØÕ¹£ºIQueryable< T >ÊÇÌá¹©Õë¶ÔÌØ¶¨Êý¾ÝÔ´£¨ÆäÖÐÊý¾ÝÀàÐÍÎ´Î´Öª£©ÆÀ¹À²éÑ¯µÄ¹¦ÄÜ½Ó¿Ú£¬ÆäÔÚEntityFrameworkÖÐ·¢»Ó×ÅÖØÒªµÄ×÷ÓÃ¡£ÀýÈç£¬ÔÚºóÌ¨¹ÜÀíÏµÍ³ÖÐ£¬Êý¾Ý±í¸ñµÄÊ¹ÓÃ×îÎªÆÕ±é£¬Ç°¶ËÏòºóÌ¨ÇëÇó±í¸ñÊý¾ÝÊ±£¬²»ÍâºõÐèÒªÒÔÏÂ¼¸¸ö²ÎÊý£ºµ±Ç°ÇëÇóÒ³Âë¡¢Ã¿Ò³¼ÇÂ¼Êý¡¢ÅÅÐòÁÐÓëÅÅÐòÀàÐÍ£¬ÕâÐ©²ÎÊýÔÚÃ¿¸öÇëÇó±í¸ñÊý¾ÝÇëÇóÖÐ¶¼ÐèÒª´¦Àí£¬ÕâÊ±£¬Í¨¹ý¸øIQueryable < T >ÍØÕ¹GetPagination < T  >·½·¨£¬Ö»ÐèÒª´«Èë·ÖÒ³²ÎÊý£¬¾Í¿ÉÒÔ»ñÈ¡ËùÐèµÄÊý¾Ý±í¸ñÊý¾Ý£¬Ê®·ÖµÄ·½±ã¸ßÐ§¡£
 
 1.  ¹¤¾ß°ïÖúÀà
 
 Ö÷ÒªÌá¹©ÁË³£ÓÃµÄÒ»Ð©°ïÖúÀà£¬°üº¬µ«²»ÏÞÓÚ£º
 
-Office°ì¹«ÎÄµµµ¼Èëµ¼³ö°ïÖúÀà£ºµ±½ñ£¬Ëæ×ÅÈËÃÇ»·±£ÒâÊ¶µÄÔöÇ¿£¬ÒÔ¼°¸÷ÐÐÒµ¶Ô°ì¹«Ä£Ê½ÐèÇóµÄ²»¶ÏÉý¼¶£¬ÏÖ´ú»¯¡¢ÐÅÏ¢»¯½¨Éè²½·¥µÄ¼Ó¿ì£¬ÎÞÖ½»¯°ì¹«ÒÑ¾­ÓÉ¸ÅÄîÖð½¥Ó¦ÓÃµ½¶à¸öÐÐÒµÁìÓòÖÐ£¬°ì¹«ÖÐ£¬¸÷ÖÖ°ì¹«ÎÄ¼þ£¬ÓÈÆäÊÇExcelÎÄ¼þÓëWordÎÄ¼þ¾­³£ÐèÒªµ¼ÈëÓëµ¼³ö£¬µ«ÊÇC\#²Ù×÷ExcelÓëWordÎÄ¼þ²¢²»¼òµ¥£¬¾­³£À§ÈÅ×Å¿ª·¢Õß£¬ÓÉ´Ë£¬±¾¿ò¼ÜÌá¹©ÁËOfficeÎÄµµ²Ù×÷°ïÖúÀà£¬·â×°¼ò»¯ÁË¶Ô°ì¹«ÎÄµµµÄ³£ÓÃ²Ù×÷£¬ÄÜ¹»½µµÍ¿ª·¢ÄÑ¶È£¬Ìá¸ß¿ª·¢Ð§ÂÊ¡£
+Office°ì¹«ÎÄµµµ¼Èëµ¼³ö°ïÖúÀà£ºµ±½ñ£¬Ëæ×ÅÈËÃÇ»·±£ÒâÊ¶µÄÔöÇ¿£¬ÒÔ¼°¸÷ÐÐÒµ¶Ô°ì¹«Ä£Ê½ÐèÇóµÄ²»¶ÏÉý¼¶£¬ÏÖ´ú»¯¡¢ÐÅÏ¢»¯½¨Éè²½·¥µÄ¼Ó¿ì£¬ÎÞÖ½»¯°ì¹«ÒÑ¾­ÓÉ¸ÅÄîÖð½¥Ó¦ÓÃµ½¶à¸öÐÐÒµÁìÓòÖÐ£¬°ì¹«ÖÐ£¬¸÷ÖÖ°ì¹«ÎÄ¼þ£¬ÓÈÆäÊÇExcelÎÄ¼þÓëWordÎÄ¼þ¾­³£ÐèÒªµ¼ÈëÓëµ¼³ö£¬µ«ÊÇC#²Ù×÷ExcelÓëWordÎÄ¼þ²¢²»¼òµ¥£¬¾­³£À§ÈÅ×Å¿ª·¢Õß£¬ÓÉ´Ë£¬±¾¿ò¼ÜÌá¹©ÁËOfficeÎÄµµ²Ù×÷°ïÖúÀà£¬·â×°¼ò»¯ÁË¶Ô°ì¹«ÎÄµµµÄ³£ÓÃ²Ù×÷£¬ÄÜ¹»½µµÍ¿ª·¢ÄÑ¶È£¬Ìá¸ß¿ª·¢Ð§ÂÊ¡£
 
 HTTPÇëÇóÄ£Äâ°ïÖúÀà£ºÔÚ´«Í³ÍøÕ¾¿ª·¢ÖÐ£¬Ò»°ã¶¼ÊÇÇ°¶Ëä¯ÀÀÆ÷ÏòºóÌ¨·¢ÆðÇëÇó£¬µ«ÊÇ£¬ÏÖÔÚµÄÏµÍ³ÓëÏµÍ³Ö®¼äµÄºÏ×÷Ô½À´Ô½½ôÃÜ£¬¾­³£ÐèÒªºó¶ËÏòºó¶Ë·¢ÆðÇëÇó£¬¼´ÐèÒªºó¶ËÄ£ÄâHTTPÇëÇó£¬µ«±àÐ´Ò»¸öÍêÕûµÄHTTPÇëÇó²¢²»ÊÇÄÇÃ´ÈÝÒ×£¬Òò´Ë±¾¿ò¼ÜÌá¹©HTTPÇëÇó°ïÖúÀà£¬¿ª·¢ÈËÔ±Ö»ÐèÒª´«ÈëÐèÒªÇëÇóµÄURLµØÖ·Óë²ÎÊý¼´¿ÉÍê³ÉHTTPÇëÇó²Ù×÷£¬Ê¹ÓÃÆðÀ´¼òµ¥¸ßÐ§£¬ÄÜ¹»¼«´óµÄÌá¸ß¿ª·¢Ð§ÂÊ¡£
 
 1.  »º´æ²Ù×÷°ïÖúÀà
 
 ÔÚÏÖ´ú»¯ÏµÍ³¿ª·¢ÖÐ£¬Ëæ×ÅÒµÎñÁ¿µÄÔö´ó£¬ÏµÍ³ÐÔÄÜ¾ÍÄÑÒÔÂú×ãÒªÇó£¬Òª´ïµ½ÐÔÄÜÒªÇó£¬Ò»·½Ãæ¿ÉÒÔ²ÉÓÃ¸üºÃµÄÓ²¼þ£¬µ«ÊÇ³É±¾½Ï¸ß£¬¶øÁíÒ»·½Ãæ¾ÍÊÇÊ¹ÓÃ»º´æ£¬ÓÐÐ§Ê¹ÓÃ»º´æÄÜ¹»Ìá¸ßÍÌÍÂÁ¿Óë²¢·¢Á¿£¬ËùÐè³É±¾½ÏµÍ£¬ÊÇ¾ø´ó¶àÊýÓÃ»§µÄÊ×Ñ¡¡£
-
-.NET
-Framework¿ò¼ÜÌá¹©ÁËÏµÍ³»º´æ£¬ËäÈ»Ê¹ÓÃ¼òµ¥·½±ã£¬µ«ÊÇ²»Ö§³Ö·Ö²¼Ê½£¬Òò´Ë´ó¶àÑ¡ÔñÖîÈçRedisºÍMemcached»º´æ£¬µ«ÊÇ²»Í¬µÄ»º´æÎª¿ª·¢ÕßÌá¹©µÄ½Ó¿Ú²»Ò»Ñù£¬µ±Ê¹ÓÃ²»Í¬µÄ»º´æÊ±¿ª·¢ÈËÔ±ÓÖÐèÒªÈ¥Ñ§Ï°±ðµÄ»º´æ²Ù×÷½Ó¿Ú£¬Ê®·ÖµÄÂé·³£¬Îª½â¾öÕâ¸öÎÊÌâ£¬±¾¿ò¼ÜÌá¹©ÁË»º´æ²Ù×÷°ïÖúÀà¡£»º´æ²Ù×÷°ïÖúÀà½«»º´æºËÐÄ²Ù×÷³éÏó¶¨Òå³É²Ù×÷½Ó¿Ú£ºÌí¼Ó»º´æ¡¢É¾³ý»º´æ¡¢ÉèÖÃ»º´æ¹ýÆÚÊ±¼ä£¬È»ºóÔÙÓÃRedisÓëÏµÍ³»º´æÊµÏÖ³éÏó½Ó¿Ú£¬µ±Ê¹ÓÃ»º´æÊ±¿ÉÒÔÊ¹ÓÃÍ¬ÑùµÄ²Ù×÷½Ó¿Ú²Ù×÷²»Í¬µÄ»º´æ£¬ÄÜ¹»½µµÍ¿ª·¢ÈËÔ±Ñ§Ï°³É±¾£¬Ìá¸ß¿ª·¢Ð§ÂÊ¡£
+.NETFramework¿ò¼ÜÌá¹©ÁËÏµÍ³»º´æ£¬ËäÈ»Ê¹ÓÃ¼òµ¥·½±ã£¬µ«ÊÇ²»Ö§³Ö·Ö²¼Ê½£¬Òò´Ë´ó¶àÑ¡ÔñÖîÈçRedisºÍMemcached»º´æ£¬µ«ÊÇ²»Í¬µÄ»º´æÎª¿ª·¢ÕßÌá¹©µÄ½Ó¿Ú²»Ò»Ñù£¬µ±Ê¹ÓÃ²»Í¬µÄ»º´æÊ±¿ª·¢ÈËÔ±ÓÖÐèÒªÈ¥Ñ§Ï°±ðµÄ»º´æ²Ù×÷½Ó¿Ú£¬Ê®·ÖµÄÂé·³£¬Îª½â¾öÕâ¸öÎÊÌâ£¬±¾¿ò¼ÜÌá¹©ÁË»º´æ²Ù×÷°ïÖúÀà¡£»º´æ²Ù×÷°ïÖúÀà½«»º´æºËÐÄ²Ù×÷³éÏó¶¨Òå³É²Ù×÷½Ó¿Ú£ºÌí¼Ó»º´æ¡¢É¾³ý»º´æ¡¢ÉèÖÃ»º´æ¹ýÆÚÊ±¼ä£¬È»ºóÔÙÓÃRedisÓëÏµÍ³»º´æÊµÏÖ³éÏó½Ó¿Ú£¬µ±Ê¹ÓÃ»º´æÊ±¿ÉÒÔÊ¹ÓÃÍ¬ÑùµÄ²Ù×÷½Ó¿Ú²Ù×÷²»Í¬µÄ»º´æ£¬ÄÜ¹»½µµÍ¿ª·¢ÈËÔ±Ñ§Ï°³É±¾£¬Ìá¸ß¿ª·¢Ð§ÂÊ¡£
 
 1.  Êý¾Ý¿â²Ù×÷°ïÖúÀà
 
@@ -151,7 +157,6 @@ Framework¿ò¼ÜÌá¹©ÁËÏµÍ³»º´æ£¬ËäÈ»Ê¹ÓÃ¼òµ¥·½±ã£¬µ«ÊÇ²»Ö§³Ö·Ö²¼Ê½£¬Òò´Ë´ó¶àÑ¡ÔñÖîÈ
 ### Êý¾Ý²Ö´¢²ã
 
 ÔÚºó¶Ë¿ª·¢ÖÐ£¬Êý¾Ý¿â²Ù×÷ÊÇ×îÆµ·±µÄ£¬Ã¿Ò»¸öºó¶Ë¿ª·¢ÈËÔ±»ò¶à»òÉÙ¶¼»á½Ó´¥£¬ÉõÖÁ²»ÉÙ¿ª·¢ÈËÔ±Ã¿ÌìµÄ¹¤×÷¾ÍÊÇÓëÊý¾Ý¿â´ò½»µÀ£¬ËùÒÔ¿É¼ûÊý¾Ý¿â²Ù×÷ÊÇ¶àÃ´µÄÖØÒª¡£ÔÚÏÖÔÚ¿ª·¢µÄ¹ý³ÌÖÐ£¬¾ø´ó¶àÊý¿ª·¢ÈËÔ±Ö»ÊÇÒÔ±àÐ´SQLÓï¾äµÄ·½Ê½²Ù×÷Êý¾Ý¿â£¬ÕâÖÖ·½Ê½ÊÇ²Ù×÷Êý¾Ý¿â×î»ù±¾×îÔ­Ê¼µÄ·½Ê½£¬¼òµ¥¸ßÐ§£¬µ«ÊÇÔÚ±àÐ´SQLÓï¾äµÄ¹ý³ÌÖÐ£¬¼«ÈÝÒ×ÒòÂí»¢´óÒâ¶ø±àÐ´´íÎó£¬¾Í»á³öÏÖÒ»¸öÏÖÏó£º¿ª·¢ÈËÔ±Ãæ¶Ô×ÅÒ»¶ÑSQLÓï¾äÔÚDEBUG£¬¶øÇÒÃ¿´Î¶¼ÐèÒª¿ª·¢ÈËÔ±×Ô¼ºÈ¥ÊÖÐ´SQLÓï¾ä£¬Æä¿ª·¢Ð§ÂÊ¼«µÍ¡£ÄÄÅÂ¿ª·¢ÈËÔ±×ã¹»³öÉ«£¬ÄÜ¹»±£Ö¤±àÐ´µÄSQLÓï¾ä½ÏµÍµÄ³ö´íÂÊ£¬µ«ÊÇ£¬²»Í¬µÄÊý¾Ý¿âËùÐèÒªµÄSQLÓï¾ä»¹ÊÇÓÐ²îÒìµÄ£¬Õâ¾ÍÐèÒª¿ª·¢ÈËÔ±Ñ§Ï°²»Í¬µÄÊý¾Ý¿âSQLÓï·¨£¬Ìí¼ÓÑ§Ï°³É±¾¡£¶øÇÒÔÚÏîÄ¿¿ª·¢ÖÐÄÑÃâ»áÓöµ½¸ü»»Êý¾Ý¿âµÄÇé¿ö£¬ÕâÊ±»¹ÐèÒª»¨·Ñ´óÁ¿µÄ¾«Á¦È¥½øÐÐÐÞ¸ÄSQLÓï¾ä¡£
-
 ÔÚ±¾¿ò¼ÜµÄÊý¾Ý²Ö´¢²ãÖÐ£¬ÉÏÊöÎÊÌâ¼´¿ÉÓ­ÈÐ¶ø½â¡£Êý¾Ý²Ö´¢²ã£¬²»Í¬ÓÚ´«Í³Èý²ã¼Ü¹¹ÖÐµÄÊý¾Ý²ã£¬ÆäºËÐÄ¼Ì³Ð¹ØÏµÍ¼ÈçÏÂÍ¼ËùÊ¾£¨Í¼6-1£©£º
 
 ![Êý¾Ý²Ö´¢²ãÀàÍ¼](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/7c6b996db3f7d50c53e6a15585ad9357.png)
@@ -162,129 +167,9 @@ Framework¿ò¼ÜÌá¹©ÁËÏµÍ³»º´æ£¬ËäÈ»Ê¹ÓÃ¼òµ¥·½±ã£¬µ«ÊÇ²»Ö§³Ö·Ö²¼Ê½£¬Òò´Ë´ó¶àÑ¡ÔñÖîÈ
 FrameworkÎª»ù´¡£¬·â×°ÊµÏÖÁË´ó²¿·ÖIRepositoryËùÐèµÄ²Ù×÷£¬SqlServerRepository¡¢MySqlRepositoryºÍPostgreSqlRepository·Ö±ðÊµÏÖ¾ßÌåÊý¾Ý¿â¶ÔÓ¦µÄÊý¾Ý²Ö´¢£¬¶øÇÒ¼Ì³Ð×ÔÍ¬Ò»¸öÊý¾Ý²Ù×÷½Ó¿ÚIRepository£¬Òò´ËÔÚ¾ßÌåµÄÊ¹ÓÃÉÏ£¬¿ÉÒÔÊµÏÖÒÔÍ¬Ò»¸ö²Ù×÷·½·¨·ÃÎÊ²»Í¬µÄÊý¾Ý¿â£¬µ±Óöµ½ÐèÒª¸ü»»Êý¾Ý¿âµÄÇé¿öÊ±£¬²ÉÓÃ±¾¿ò¼Ü¿ª·¢µÄÏµÍ³ÄÜ¹»²»¸Ä´úÂë¶øÕý³£ÔËÐÐ£¬ÕâÒ»µãÄÜ¹»¼«´óµÄ½µµÍÈí¼þ¿ª·¢³É±¾¡£²¢ÇÒÒÔEntity
 FrameworkÎªºËÐÄ£¬²»ÐèÒª±àÐ´SQLÓï¾ä¾ÍÄÜ¹»Íê³É¾ø´ó²¿·ÖµÄÊý¾Ý¿â²Ù×÷£¬ÔÙ¼ÓÉÏ¼ò½àµÄLINQÅäºÏ£¬³¹µ×½«¿ª·¢ÈËÔ±´ÓSQLÓï¾äÖÐ½â·Å³öÀ´£¬ÈÃ¿ª·¢ÈËÔ±ÄÜ¹»¸ü¼Ó×¨×¢ÓÚÒµÎñÂß¼­µÄÊµÏÖ£¬ÄÜ¹»¼«´óµÄÌá¸ßÈí¼þ¿ª·¢Ð§ÂÊ¡£
 
-IRepository´úÂëÈçÏÂ£º
-
-using System;
-
-using System.Collections.Generic;
-
-using System.Data;
-
-using System.Data.Common;
-
-using System.Data.Entity;
-
-using System.Linq;
-
-using System.Linq.Expressions;
-
-namespace Coldairarrow.DataRepository
-
-{
-
-public interface IRepository
-
-{
-
-\#region Êý¾Ý¿âÁ¬½ÓÏà¹Ø·½·¨
-
-DbContext GetDbContext();
-
-\#endregion
-
-\#region ÊÂÎïÌá½»
-
-/// \<summary\>
-
-/// ¿ªÊ¼µ¥¿âÊÂÎï
-
-/// ×¢Òâ:ÈôÒªÊ¹ÓÃ¿ç¿âÊÂÎñ,ÇëÊ¹ÓÃDistributedTransaction
-
-/// \</summary\>
-
-void BeginTransaction();
-
-bool EndTransaction();
-
-\#endregion
-
-\#region Ôö¼ÓÊý¾Ý
-
-void Insert\<T\>(T entity) where T : class, new();
-
-void Insert\<T\>(List\<T\> entities) where T : class, new();
-
-void BulkInsert\<T\>(List\<T\> entities) where T : class, new();
-
-\#endregion
-
-\#region É¾³ýÊý¾Ý
-
-void DeleteAll\<T\>() where T : class, new();
-
-void Delete\<T\>(string key) where T : class, new();
-
-void Delete\<T\>(List\<string\> keys) where T : class, new();
-
-void Delete\<T\>(T entity) where T : class, new();
-
-void Delete\<T\>(List\<T\> entities) where T : class, new();
-
-void Delete\<T\>(Expression\<Func\<T, bool\>\> condition) where T : class,
-new();
-
-\#endregion
-
-\#region ¸üÐÂÊý¾Ý
-
-void Update\<T\>(T entity) where T : class, new();
-
-void Update\<T\>(List\<T\> entities) where T : class, new();
-
-void UpdateAny\<T\>(T entity, List\<string\> properties) where T : class, new();
-
-void UpdateAny\<T\>(List\<T\> entities, List\<string\> properties) where T :
-class, new();
-
-\#endregion
-
-\#region ²éÑ¯Êý¾Ý
-
-T GetEntity\<T\>(object keyValue) where T : class, new();
-
-List\<T\> GetList\<T\>() where T : class, new();
-
-IQueryable\<T\> GetIQueryable\<T\>() where T : class, new();
-
-DataTable GetDataTableWithSql(string sql);
-
-DataTable GetDataTableWithSql(string sql, List\<DbParameter\> parameters);
-
-List\<T\> GetListBySql\<T\>(string sqlStr) where T : class, new();
-
-List\<T\> GetListBySql\<T\>(string sqlStr, List\<DbParameter\> parameters) where
-T : class, new();
-
-\#endregion
-
-\#region Ö´ÐÐSqlÓï¾ä
-
-void ExecuteSql(string sql);
-
-void ExecuteSql(string sql, List\<DbParameter\> parameters);
-
-\#endregion
-
-}
-
-}
-
 ### Êý¾ÝÊµÌå²ã
 
-ÓÉÓÚ¿ò¼ÜÖ÷Òª²ÉÓÃÁËEntity
-Framework×÷ÎªORM¿ò¼Ü£¬ÕâÆäÖÐÊý¾Ý¿âÊµÌåÓ³Éä±Ø²»¿ÉÉÙ£¬ÐèÒª½«Êý¾Ý¿âÖÐÃ¿ÕÅ±íÓ³Éäµ½ÀàÖÐ£¬²¢ÇÒÒ»ÕÅ±íÒ»¸öÀà¡£ÕâÐ©ÊµÌåÀà¼´ÄÜ¹»×÷ÎªÊý¾Ý¿â²Ù×÷ÖÐµÄÊµÌå£¬»¹ÄÜ¹»×÷ÎªDTO(Data
-Transfer
-Object)£¬½«ÕâÐ©ÊµÌåÀà»®·ÖÎª¶ÀÁ¢µÄÒ»²ã£¬ÄÜ¹»·½±ã¶ÔÊµÌåµÄ¹ÜÀí£¬Ò×ÓÚ¿ª·¢ÓëÎ¬»¤¡£
+ÓÉÓÚ¿ò¼ÜÖ÷Òª²ÉÓÃÁËEntityFramework×÷ÎªORM¿ò¼Ü£¬ÕâÆäÖÐÊý¾Ý¿âÊµÌåÓ³Éä±Ø²»¿ÉÉÙ£¬ÐèÒª½«Êý¾Ý¿âÖÐÃ¿ÕÅ±íÓ³Éäµ½ÀàÖÐ£¬²¢ÇÒÒ»ÕÅ±íÒ»¸öÀà¡£ÕâÐ©ÊµÌåÀà¼´ÄÜ¹»×÷ÎªÊý¾Ý¿â²Ù×÷ÖÐµÄÊµÌå£¬»¹ÄÜ¹»×÷ÎªDTO(Data Transfer Object)£¬½«ÕâÐ©ÊµÌåÀà»®·ÖÎª¶ÀÁ¢µÄÒ»²ã£¬ÄÜ¹»·½±ã¶ÔÊµÌåµÄ¹ÜÀí£¬Ò×ÓÚ¿ª·¢ÓëÎ¬»¤¡£
 
 ### ÒµÎñÂß¼­²ã
 
@@ -296,12 +181,11 @@ Object)£¬½«ÕâÐ©ÊµÌåÀà»®·ÖÎª¶ÀÁ¢µÄÒ»²ã£¬ÄÜ¹»·½±ã¶ÔÊµÌåµÄ¹ÜÀí£¬Ò×ÓÚ¿ª·¢ÓëÎ¬»¤¡£
 
 Í¼6-2 ÒµÎñÂß²ã´ÎÍ¼
 
-ÈçÉÏÍ¼ËùÊ¾£ºÊ×ÏÈ¶¨ÒåÁËÒ»¸öÒµÎñÂß¼­»ùÀàBaseBusiness\<T\>£¬¸Ã»ùÀàÊµÏÖÁËËùÓÐµ÷ÓÃÊý¾Ý²Ö´¢µÄ·½·¨£¬ÆäÓàËùÓÐÒµÎñ´¦ÀíÀà¶¼ÐèÒª¼Ì³Ð×Ô»ùÀàBaseBusiness\<T\>£¬ÆäÖÐ·ºÐÍTÎªÊý¾Ý¿âÊµÌå£¬Ò»°ãÄ¬ÈÏ²Ù×÷µ«ÕÅ±í£¬µ«ÔÚÊµ¼ÊÔËÓÃÖÐÁ¬±í²Ù×÷Ê®·ÖµÄÆÕ±é£¬Òò´ËÔÚBaseBusinessÖÐÌá¹©ÁËServiceÊôÐÔ£¬¸ÃÊôÐÔÎªIRepositoryÀàÐÍ£¬Òò´Ë¿ÉÒÔ²Ù×÷·ºÐÍ½Ó¿Ú£¬´«Èë²»Í¬µÄÊµÌåÀàÐÍ¼´¿É¶ÔÓ¦µ½ËùÐè±íµÄ²Ù×÷£¬¹Ê¶øÖ§³ÖÁª±í²Ù×÷£¬·½±ã¿ª·¢ÈËÔ±²Ù×÷Êý¾Ý¿â¡£»ùÀà»¹Ìá¹©ÁËÍ¨ÓÃÒµÎñÂß¼­·µ»ØÊý¾Ý£¬SuccessºÍError·Ö±ð¶ÔÓ¦³É¹¦ÇëÇó·µ»ØºÍÊ§°ÜÇëÇó·µ»Ø£¬Í³Ò»Êý¾Ý¸ñÊ½£¬·½±ãÇ°ºó¶Ë¿ª·¢¶Ô½Ó¡£
+ÈçÉÏÍ¼ËùÊ¾£ºÊ×ÏÈ¶¨ÒåÁËÒ»¸öÒµÎñÂß¼­»ùÀàBaseBusiness < T >£¬¸Ã»ùÀàÊµÏÖÁË³£ÓÃµÄÒµÎñ²Ù×÷·½·¨£¬ÆäÓàËùÓÐÒµÎñ´¦ÀíÀà¶¼ÐèÒª¼Ì³Ð×Ô»ùÀàBaseBusiness < T >£¬ÆäÖÐ·ºÐÍTÎªÊý¾Ý¿âÊµÌå£¬Ò»°ãÄ¬ÈÏ²Ù×÷µ¥ÕÅ±í£¬µ«ÔÚÊµ¼ÊÔËÓÃÖÐÁ¬±í²Ù×÷Ê®·ÖµÄÆÕ±é£¬Òò´ËÔÚBaseBusinessÖÐÌá¹©ÁËServiceÊôÐÔ£¬¸ÃÊôÐÔÎªIRepositoryÀàÐÍ£¬Òò´Ë¿ÉÒÔ²Ù×÷·ºÐÍ½Ó¿Ú£¬´«Èë²»Í¬µÄÊµÌåÀàÐÍ¼´¿É¶ÔÓ¦µ½ËùÐè±íµÄ²Ù×÷£¬¹Ê¶øÖ§³ÖÁª±í²Ù×÷£¬·½±ã¿ª·¢ÈËÔ±²Ù×÷Êý¾Ý¿â¡£»ùÀà»¹Ìá¹©ÁËÍ¨ÓÃÒµÎñÂß¼­·µ»ØÊý¾Ý£¬SuccessºÍError·Ö±ð¶ÔÓ¦³É¹¦ÇëÇó·µ»ØºÍÊ§°ÜÇëÇó·µ»Ø£¬Í³Ò»Êý¾Ý¸ñÊ½£¬·½±ãÇ°ºó¶Ë¿ª·¢¶Ô½Ó¡£
 
 ### Ó¦ÓÃÕ¹Ê¾²ã
 
-Õâ²ãÒ²¿ÉÒÔ³ÆÖ®ÎªÓ¦ÓÃ²ã£¬ÆäÓàµÄ²ã±íÏÖÐÎÊ½¶¼ÊÇÀà¿â£¬¶øÕâÒ»²ã¸ºÔð¾ßÌåÏîÄ¿Ó¦ÓÃµÄÊµÊ©£¬±ÈÈç¿ÉÒÔÊ¹ÓÃ¿ØÖÆÌ¨³ÌÐò¡¢Windows·þÎñ³ÌÐò¡¢WinForm³ÌÐò¡¢WCF³ÌÐòµÈµÈ,ÔÚ±¾ÏîÄ¿ÖÐÊ¹ÓÃÁËASP.NET
-MVCÍøÕ¾ÏîÄ¿¸ºÔð¾ßÌå¹¦ÄÜµÄÊµÏÖ¡£
+Õâ²ãÒ²¿ÉÒÔ³ÆÖ®ÎªÓ¦ÓÃ²ã£¬ÆäÓàµÄ²ã±íÏÖÐÎÊ½¶¼ÊÇÀà¿â£¬¶øÕâÒ»²ã¸ºÔð¾ßÌåÏîÄ¿Ó¦ÓÃµÄÊµÊ©£¬±ÈÈç¿ÉÒÔÊ¹ÓÃ¿ØÖÆÌ¨³ÌÐò¡¢Windows·þÎñ³ÌÐò¡¢WinForm³ÌÐò¡¢WCF³ÌÐòµÈµÈ,ÔÚ±¾ÏîÄ¿ÖÐÊ¹ÓÃÁËASP.NET MVCÍøÕ¾ÏîÄ¿¸ºÔð¾ßÌå¹¦ÄÜµÄÊµÏÖ¡£
 
 AOP£¨Aspect Oriented
 Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½µµÍÄ£¿éÖ®¼äµÄñîºÏ¶È£¬Ìá¸ß³ÌÐò¿ÉÓÃÐÔ£¬Í¬Ê±Ìá¸ß¿ª·¢Ð§ÂÊ¡£±¾¿ò¼ÜÖÐÖ÷ÒªÊ¹ÓÃÁËÒÔÏÂAOP£º
@@ -312,36 +196,30 @@ Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½
 
 Ó¦ÓÃ²ã»¹ÔÚÊÓÍ¼ÖÐÊ¹ÓÃÁËÍ¨ÓÃ²¼¾ÖÄ£°å£¬²¢Í³Ò»ÁË´úÂë¹æ·¶£¬ÔÙ¼¯³ÉÁËJQueryÒÔ¼°Ò»Ð©ÆäËü³£ÓÃµÄJSÀà¿â£¬ÒÔLayuiÎªÖ÷ÒªÇ°¶ËUI¿ò¼Ü£¬½çÃæ·ç¸ñÍ³Ò»£¬¿ª·¢Ð§ÂÊ¸ß¡£
 
-¹¦ÄÜ¼Ü¹¹
---------
-
+## ¹¦ÄÜ¼Ü¹¹
 ### È«¾ÖÅäÖÃ
-
-ÔÚ01.Coldairarrow.UtilÖÐµÄGlobalSwitchÀàÖÐ£¬ÉèÖÃÁË¸÷¸ö²ÎÊý£¬ÆäÖÐRunModelÐèÒªÖØµã¹Ø×¢Ò»ÏÂ£¬ÈôRunModel==RunModel.LocalTest£¬ÔòÏµÍ³»áÖ±½ÓÌø¹ýµÇÂ¼£¬Ä¬ÈÏÊ¹ÓÃAdmin³¬¼¶¹ÜÀíÔ±µÇÂ¼£¬ÆäËü²ÎÊýÇë¿´×¢ÊÍ¡£
+ÔÚ01.Coldairarrow.UtilÖÐµÄGlobalSwitchÀàÖÐ£¬ÉèÖÃÁË¸÷¸ö²ÎÊý£¬ÆäÖÐRunModelÐèÒªÖØµã¹Ø×¢Ò»ÏÂ£¬ÈôRunModel==RunModel.LocalTest£¬ÔòÏµÍ³»áÖ±½Ó**Ìø¹ýµÇÂ¼**£¬Ä¬ÈÏÊ¹ÓÃAdmin³¬¼¶¹ÜÀíÔ±µÇÂ¼£¬ÆäËü²ÎÊýÇë¿´×¢ÊÍ¡£
 
 ### ¿ìËÙ¿ª·¢
 
 Ê¹ÓÃ´Ë¹¦ÄÜÇëÈ·±£GlobalSwitch.RunModel= RunModel.LocalTest
-
 ´Ë¹¦ÄÜÎª±¾¿ò¼ÜµÄºËÐÄ¹¦ÄÜ£¬ÄÜ¹»×Ô¶¯Éú²úÍêÕûµÄ¿ÉÔËÐÐ´úÂë£¬¾ßÌåÊ¹ÓÃÈçÏÂ£º
 
+- ÅäÖÃÊý¾ÝÔ´
+
 Ê×Ñ¡ÐèÒªÓÐÊý¾Ý¿âÔ´£¬ÒòÎª´úÂëÉú³ÉÊÇ¸ù¾ÝÊý¾Ý¿â±íÀ´Éú³ÉµÄ¡£
-
-²Ëµ¥£º¿ª·¢=\>¿ìËÙ¿ª·¢=\>Êý¾Ý¿âÁ¬½Ó¹ÜÀí
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/e3ca030146a14590952fef3174d61302.png)
-
+²Ëµ¥£º¿ª·¢=>¿ª·¢=>Êý¾Ý¿âÁ¬½Ó¹ÜÀí
+![](https://s2.ax1x.com/2019/06/20/Vxk9Ag.png)
 ÈôÁÐ±íÖÐÃ»ÓÐÄ¿±êÊý¾ÝÔ´£¬ÔòÌí¼ÓÊý¾Ý¿âÁ¬½Ó
-
 ![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/a5fd19bf7f4b513e6d1dbdad05b92c0d.png)
-
 Êý¾ÝÁ¬½ÓÃû¡¢Á¬½Ó×Ö·û´®¡¢Êý¾Ý¿âÀàÐÍ¼´¿É¡£Ìí¼ÓÍê³Éºó¼´¿É¿´µ½Á¬½Ó×Ö·û´®ÐÅÏ¢¡£
 
+- Éú³É´úÂë
+
 ÓÐÁËÊý¾Ý¿âÁ¬½ÓÖ®ºó£¬¼´¿É½øÐÐ´úÂëÉú³É¡£
+²Ëµ¥£º¿ª·¢=>¿ìËÙ¿ª·¢=>´úÂëÉú³É
 
-²Ëµ¥£º¿ª·¢=\>¿ìËÙ¿ª·¢=\>´úÂëÉú³É
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/765261eff0314966d87140c2f89c9f46.png)
+![](https://s2.ax1x.com/2019/06/20/VxkYDK.png)
 
 Ñ¡ÔñÊý¾Ý¿â£¬È»ºó¹´Ñ¡ÐèÒªÉú³É´úÂëµÄÊý¾Ý¿â±í£¬µã»÷Éú³É´úÂë»áµ¯³öÉú³ÉÑ¡Ïî£¨ÕâÀïÔÝÊ±Ö»ÄÜ¹´Ñ¡Dev_Project£¬ÆäÓà±íÈ«ÊÇÏµÍ³»ù´¡±í£¬²»Òª¹´Ñ¡£¬·ñÔò»á±»¸²¸Ç£¬µ¼ÖÂÒì³££¬Çë¹´Ñ¡×Ô¼ºµÄÒµÎñ±í½øÐÐÉú³É£©£º
 
@@ -355,25 +233,24 @@ Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½
 
 ÕâÀïÊ¾ÀýÌîÐ´ProjectManage£¬µã»÷Éú³É°´Å¥£¬¼´¿ÉÍê³É´úÂëÉú³É¡£Éú³ÉºóµÄ´úÂëÔÚÏîÄ¿½â¾ö·½°¸ÖÐ£¬½«´úÂëÎÄ¼þ°üÀ¨½øÈëÏîÄ¿
 
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/a92dafe0e3fbb15cf31d00aea13bc647.png)
+Ä¬ÈÏÉú³ÉºóµÄÎÄ¼þÊÇ**Òþ²Ø**µÄ£¬ÐèÒªµã»÷ÏÔÊ¾ËùÓÐÎÄ¼þ°´Å¥£¬¼´¿É¿´µ½Éú³ÉºóµÄÐÂÎÄ¼þ
 
-Ä¬ÈÏÉú³ÉºóµÄÎÄ¼þÊÇÒþ²ØµÄ£¬ÐèÒªµã»÷ÏÔÊ¾ËùÓÐÎÄ¼þ°´Å¥£¬¼´¿É¿´µ½Éú³ÉºóµÄÐÂÎÄ¼þ
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/39917f16adc28c948879bb28e3095517.png)
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/71eab7be91b21eb5831a880188115914.png)
+![](https://s2.ax1x.com/2019/06/20/VxkqVU.png)
 
 ÓÒ¼üÐÂµÄÎÄ¼þ¼Ð£¬°üÀ¨ÔÚÏîÄ¿ÖÐ
-
+ÊµÌå²ã£º
+![](https://s2.ax1x.com/2019/06/20/VxA6zR.png)
+ÒµÎñ²ã½Ó¿Ú¼°ÊµÏÖ£º
+![](https://s2.ax1x.com/2019/06/20/VxAHSA.png)
+¿ØÖÆÆ÷¼°ÊÓÍ¼£º
+![](https://s2.ax1x.com/2019/06/20/VxEGTO.png)
 ÓÉÓÚÊÇÐÂÉú³ÉµÄ´úÂë£¬ËùÒÔ²ÅÅäÖÃÐÂµÄ²Ëµ¥
 
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/1c7a04caf98924562b98b5d19af5e8bb.png)
+![](https://s2.ax1x.com/2019/06/20/VxEDnP.png)
 
 ÈçÉÏÍ¼£¬ÔÚWebÏîÄ¿ÖÐµÄConfig/SystemMenu.configÖÐÅäÖÃ²Ëµ¥£¬Ä£·ÂÔ­ÓÐ²Ëµ¥¼´¿É£¬ÆäÖÐurlÊÇÖ¸Ò³ÃæµÄÂ·¾¶£¬PermissionÊÇÖ¸ÈôÐèÒª·ÃÎÊ´Ë²Ëµ¥ÐèÒªµÄÈ¨ÏÞ£¨¶ÔÓ¦È¨ÏÞÅäÖÃ£©£¬ÈôÃ»ÓÐ´ËÈ¨ÏÞ£¬Ôò²Ëµ¥Ò²ÖÐ²»»áÏÔÊ¾´Ë²Ëµ¥£¬ÐÞ¸ÄÍê³ÉºóÖØÐÂ±àÒëÉú³É£¨È¨ÏÞÏà¹ØÄ£¿é½øÐÐÁË»º´æ£¬ÖØÐÂÉú³É»áÇå»º´æ£©£¬ÖØÐÂÔËÐÐ¼´¿É¿´µ½ÐÂµÄÏîÄ¿²Ëµ¥ÈçÏÂ£º
 
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/28096e3417af971be7b6a5b41477bc78.png)
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/3a92ef1ce96151a0881bd8e0887b574c.png)
+![](https://s2.ax1x.com/2019/06/20/VxVSHK.png)
 
 Õû¸ö´úÂëÉú³É¹ý³Ì£¬ÎÞÐè±àÐ´´úÂë¼´¿ÉÍê³ÉÒ»ÕÅ±íµÄCRUD£¬µ±È»ÐèÒª¸ù¾Ý¾ßÌåÒµÎñÖÐ½øÐÐÏàÓ¦µÄÐÞ¸Ä£¬±¾´ÎÊ¾ÀýÖÐ×Ö¶Î±È½ÏÉÙ£¬µ«ÊÇµ±Ò»ÕÅ±íµÄ×Ö¶ÎºÜ¶àÊ±£¬ÄÇÃ´´Ë¹¦ÄÜÄÜ¹»½«¿ª·¢Ð§ÂÊÌá¸ß¼¸¸öµµ´Î¡£
 
@@ -392,32 +269,21 @@ Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½
 ### ÏµÍ³ÓÃ»§¹ÜÀí
 
 ¹ÜÀíÏµÍ³µÇÂ¼µÄÓÃ»§
-
-²Ëµ¥£ºÏµÍ³=\>ÓÃ»§¹ÜÀí£¬ÈçÏÂÒ³Ãæ
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/71270e03db7afefb8091002eed1d87e8.png)
-
-µã»÷ÓÒ²àÉèÖÃÈ¨ÏÞ£¬¿ÉÒÔÉèÖÃÓÃ»§È¨ÏÞ£¬ÏêÇé¼û\<È¨ÏÞ¹ÜÀí\>Ä£¿é
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/fffb02499695a127cc370c43e32c4b02.png)
-
+²Ëµ¥£ºÏµÍ³=>ÓÃ»§¹ÜÀí
+µã»÷ÓÒ²àÉèÖÃÈ¨ÏÞ£¬¿ÉÒÔÉèÖÃÓÃ»§È¨ÏÞ£¬ÏêÇé¼û<È¨ÏÞ¹ÜÀí>Ä£¿é
 ¾ßÌåÈ¨ÏÞÏà¹ØÅäÖÃ¼ûÈ¨ÏÞ¹ÜÀíÄ£¿é
 
 ### ÏµÍ³½ÇÉ«¹ÜÀí
 
 ¹ÜÀíÏµÍ³½ÇÉ«£¬½ÇÉ«ÊÇÈ¨ÏÞµÄÔØÌå£¬ºÏÀí·ÖÅä½ÇÉ«ÓÐÀûÓÚÈ¨ÏÞ¹ÜÀí
-
-²Ëµ¥£ºÏµÍ³=\>½ÇÉ«¹ÜÀí
-
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/6c34c2cd0fc95db019125a3b5b171d62.png)
-
-²Ù×÷ÖÐ¿ÉÒÔÉèÖÃ½ÇÉ«µÄÈ¨ÏÞ£¬ÏêÇé¼û\<È¨ÏÞ¹ÜÀí\>Ä£¿é
+²Ëµ¥£ºÏµÍ³=>½ÇÉ«¹ÜÀí
+²Ù×÷ÖÐ¿ÉÒÔÉèÖÃ½ÇÉ«µÄÈ¨ÏÞ£¬ÏêÇé¼û<È¨ÏÞ¹ÜÀí>Ä£¿é
 
 ### È¨ÏÞ¹ÜÀí
 
 Ò»°ãÇé¿öÏÂ£¬ºóÌ¨¹ÜÀíÏµÍ³¶àÉÙ»áÉæ¼°È¨ÏÞ¹ÜÀí£¬Òò´Ë±¾¿ò¼ÜÌá¹©ÁËÒ»¸öÁé»î¡¢¸ßÐ§¡¢¼ò½àµÄÈ¨ÏÞ¹ÜÀíÏµÍ³¡£
 
-Ê×ÏÈ£¬È¨ÏÞ·ÖÎªÁ½ÖÖ£¬¼´²Ù×÷È¨ÏÞºÍÊý¾ÝÈ¨ÏÞ£¬ÆäÖÐ²Ù×÷È¨ÏÞ±¨»õÏµÍ³ÓÃ»§È¨ÏÞºÍAppIdÈ¨ÏÞ£¬ÏµÍ³ÓÃ»§È¨ÏÞ¾ÍÊÇÖ¸²Ù×÷ÓÃ»§¾ß±¸ÄÄÐ©È¨ÏÞ£¬¶øµ±¶ÔÍâÌá¹©Api½Ó¿ÚÊ±£¬ÎªÁË±£Ö¤½Ó¿ÚµÄ°²È«ÐÔ£¨Èô²»ÔÚÒâ¿ÉºöÂÔ£©£¬Í¨³£»áÌá¹©½Ó¿ÚÇ©ÃûËã·¨£¬ÆäÖÐAppIdºÍAppSecretÊÇ±Ø±¸µÄ£¬Í¨¹ý¶ÔAppIdÉèÖÃÈ¨ÏÞ£¬¼´¿É¿ØÖÆ½Ó¿ÚµÄÈ¨ÏÞ¡£Êý¾ÝÈ¨ÏÞ±È½Ï¸´ÔÓ£¬Èô²ÉÓÃ´¿SQL·½Ê½£¬ÄÇÃ´»á¸ü¼Ó¸´ÔÓ£¬±¾¿ò¼ÜÈ«³Ì²ÉÓÃEF×÷ÎªORM¿ò¼Ü£¬Í¨¹ý¶ÔIQueryable\<T\>½øÐÐ¹ýÂË£¬¼´¿ÉÍê³ÉÊý¾ÝÈ¨ÏÞ¿ØÖÆ¡£
+Ê×ÏÈ£¬È¨ÏÞ·ÖÎªÁ½ÖÖ£¬¼´**²Ù×÷È¨ÏÞ**ºÍÊý¾ÝÈ¨ÏÞ£¬ÆäÖÐ²Ù×÷È¨ÏÞ°üÀ¨ÏµÍ³ÓÃ»§È¨ÏÞºÍAppIdÈ¨ÏÞ£¬ÏµÍ³ÓÃ»§È¨ÏÞ¾ÍÊÇÖ¸²Ù×÷ÓÃ»§¾ß±¸ÄÄÐ©È¨ÏÞ£¬¶øµ±¶ÔÍâÌá¹©Api½Ó¿ÚÊ±£¬ÎªÁË±£Ö¤½Ó¿ÚµÄ°²È«ÐÔ£¨Èô²»ÔÚÒâ¿ÉºöÂÔ£©£¬Í¨³£»áÌá¹©½Ó¿ÚÇ©ÃûËã·¨£¬ÆäÖÐAppIdºÍAppSecretÊÇ±Ø±¸µÄ£¬Í¨¹ý¶ÔAppIdÉèÖÃÈ¨ÏÞ£¬¼´¿É¿ØÖÆ½Ó¿ÚµÄÈ¨ÏÞ¡£**Êý¾ÝÈ¨ÏÞ**±È½Ï¸´ÔÓ£¬Èô²ÉÓÃ´¿SQL·½Ê½£¬ÄÇÃ´»á¸ü¼Ó¸´ÔÓ£¬±¾¿ò¼ÜÈ«³Ì²ÉÓÃEF×÷ÎªORM¿ò¼Ü£¬Í¨¹ý¶ÔIQueryable< T >½øÐÐ¹ýÂË£¬¼´¿ÉÍê³ÉÊý¾ÝÈ¨ÏÞ¿ØÖÆ£¬ÏêÏ¸Ê¹ÓÃ·½Ê½¼û**ÓÃ»§¹ÜÀí**¡£
 
 ÓÃ»§È¨ÏÞ£ºÈô¶ÔÃ¿¸öÓÃ»§¶¼ÉèÖÃ¶ÔÓ¦µÄÈ¨ÏÞ£¬ÄÇÃ´¹¤×÷Á¿ÎÞÒÉÊÇÊ®·Ö¾Þ´óµÄ£¬Òò´ËÒýÈëÁË½ÇÉ«µÄ¸ÅÄî£¬½ÇÉ«ÊÇÈ¨ÏÞµÄ¼¯ºÏÔØÌå£¬ÄÇÃ´ÊôÓÚ´Ë½ÇÉ«µÄÓÃ»§¾Í¼Ì³ÐÁË½ÇÉ«µÄÈ¨ÏÞ£¬µ±È»Ä³Ð©ÌØÊâÓÃ»§ÐèÒªÓµÓÐ×Ô¼ºµÄ²»ÊôÓÚ½ÇÉ«µÄÌØÊâÈ¨ÏÞ£¬Òò´Ë×îÖÕÓÃ»§ÓµÓÐµÄÈ¨ÏÞ¾ÍÊÇ×Ô¼ºµÄÈ¨ÏÞºÍËùÊô½ÇÉ«È¨ÏÞµÄ²¢¼¯¡£
 
@@ -445,7 +311,7 @@ Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½
 
 Õâ¸ö·½·¨ÊÇÅÐ¶Ï²Ù×÷ÕßÓÃ»§ÊÇ·ñº¬ÓÐsysuser.manageÈ¨ÏÞÖµ£¬ÆäÖÐsysuserÊÇÖ¸Permission.configÖÐ¶¨ÒåµÄmoduleµÄvalueÊôÐÔ£¬manageÊÇÖ¸permissionÖÐµÄvalueÊôÐÔ£¬ÓÃ.Á¬½Ó¼´ÊÇ×îÖÕÈ¨ÏÞÖµ¡£
 
-¸üÏêÏ¸µÄÊ¹ÓÃ·½Ê½£¬Çë²Î¿¼Ô´´úÂë¡£
+¸üÏêÏ¸µÄÊ¹ÓÃ·½Ê½£¬Çë²Î¿¼Ô´´úÂëÖÐµÄ**ÓÃ»§¹ÜÀí**Ä£¿é¡£
 
 ### ½Ó¿ÚÃØÔ¿¹ÜÀí
 
@@ -455,17 +321,13 @@ Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½
 
 ### ÏµÍ³ÈÕÖ¾
 
-²Ëµ¥£ºÏµÍ³=\>ÏµÍ³ÈÕÖ¾
+²Ëµ¥£ºÏµÍ³=>ÏµÍ³ÈÕÖ¾
 
-![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/9743e1ed093c95b2db4a5b2f94468bb7.png)
+# ³£¼ûÒÉÎÊ
 
-³£¼ûÒÉÎÊ
-========
+## ÈçºÎ½øÐÐÁª±í²éÑ¯
 
-ÈçºÎ½øÐÐÁª±í²éÑ¯£¿
-------------------
-
-¿ò¼ÜÊ¹ÓÃEF+LINQ½øÐÐÁª±í²Ù×÷£¬ºËÐÄÔÚÓÚ¶ÔIQueryable\<T\>µÄÊ¹ÓÃ£¬Áí¿ÉÍøÉÏËÑEF+LINQµÄÏà¹Ø½Ì³Ì¡£
+¿ò¼ÜÊ¹ÓÃEF+LINQ½øÐÐÁª±í²Ù×÷£¬ºËÐÄÔÚÓÚ¶ÔIQueryable< T >µÄÊ¹ÓÃ£¬Áí¿ÉÍøÉÏËÑEF+LINQµÄÏà¹Ø½Ì³Ì¡£
 
 Ê¾ÀýÈçÏÂÍ¼£º
 
@@ -473,15 +335,15 @@ Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½
 
 ![D:\\ÎÄµµ\\Tencent Files\\862520575\\Image\\C2C\\%7ZU5J_S5BTRFI91AF2Z81E.png](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/77dc5839af208d8b34cd5f8fb7737866.png)
 
-ÈçºÎÇÐ»»Êý¾Ý¿â£¿
-----------------
+Ô´Âë¿É²Î¿¼**Base_UserBusiness.GetDataList**
+
+## ÈçºÎÇÐ»»Êý¾Ý¿â
 
 ÔÚ01.Coldairarrow.UtilÏîÄ¿ÖÐµÄGlobalSwitch£¬½«DatabaseType¸ÄÎªÐèÒªµÄ¼´¿É£¬¶ÔÓ¦µÄÊý¾Ý¿âÁ¬½Ó×Ö·û´®µ±È»Ò²Òª¸ÄÎª¶ÔÓ¦Êý¾Ý¿âµÄ
 
 ![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/12dadb7b8d1e1c3b03346a2bab14a783.png)
 
-ÈçºÎÊ¹ÓÃ±ðµÄÊý¾Ý¿â£¨¼´·ÇÄ¬ÈÏµÄÏµÍ³Êý¾Ý¿â£©
-------------------------------------------
+## ÈçºÎÊ¹ÓÃ±ðµÄÊý¾Ý¿â£¨¼´·ÇÄ¬ÈÏµÄÏµÍ³Êý¾Ý¿â£©
 
 ÔÚ¾ßÌåµÄBusinessÀàÖÐÖØÐ´¸¸ÀàBaseBusinessµÄ¹¹Ôìº¯Êý¼´¿É£¬°´ÕÕ×Ô¼ºµÄÐèÇóÖØÐ´¶ÔÓ¦µÄ¹¹Ôìº¯Êý,Í¬Ê±ÐèÒªÈ·±£Êý¾Ý¿âÁ¬½Ó×Ö·û´®ÒÑÌí¼Ó
 
@@ -489,21 +351,21 @@ Programming£©Ê¹ÓÃ£ºAOP£¬¼´ÃæÏòÇÐÆ¬±à³Ì£¬ÀûÓÃAOPÄÜ¹»½«ÏµÍ³¸÷¸ö²¿·Ö½øÐÐ¸ôÀë£¬´Ó¶ø½
 
 ![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/595213325962326dacfdb657ae9a8c86.png)
 
-½áÓï
-====
+# ½áÓï
 
 »¶Ó­Ê¹ÓÃ±¾¿ò¼Ü£¬Èô¾õµÃ²»´í£¬Çë±ÈÐÄ
 
-![https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536642906843&di=1a0e84336a3b4c068deab1a2d2fc342d&imgtype=0&src=http%3A%2F%2Fwww.ghost64.com%2Fqqtupian%2FzixunImg%2Flocal%2F2017%2F05%2F25%2F14956980289595.jpg](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/04abaa3d37fa01b4c4058c8163aab6a8.jpg)
+![](https://raw.githubusercontent.com/Coldairarrow/UploadFiles/master/Colder.Fx.Net.AdminLTE/04abaa3d37fa01b4c4058c8163aab6a8.jpg)
 
 Github:<https://github.com/Coldairarrow>£¬ÇëStatrt
 
 ²©¿ÍÔ°£º<https://www.cnblogs.com/coldairarrow/>
 
-QQÈº£º373144077
+QQÈº1:373144077£¨ÒÑÂú£©
+QQÈº2:579202910
 
 ±¾ÈË½«»á¶ÔÕâ¸ö¿ìËÙ¿ª·¢¿ò¼Ü²»¶ÏÍêÉÆÓëÎ¬»¤£¬Ï£ÍûÄÜ¹»°ïÖúµ½¸÷Î»
 
 ÈôÓöµ½ÈÎºÎÎÊÌâ»òÐèÒª¼¼ÊõÖ§³Ö£¬ÇëÁªÏµÎÒ¡£
 
-\---------------------Ñ§Ï°ÓÀÎÞÖ¹¾³£¬¼¼ÊõÓÀÎÞÉÏÏÞ£¬´úÂë¾ÍÊÇÒÕÊõ-----------------------
+------Ñ§Ï°ÓÀÎÞÖ¹¾³£¬¼¼ÊõÓÀÎÞÉÏÏÞ£¬´úÂë¾ÍÊÇÒÕÊõ------
