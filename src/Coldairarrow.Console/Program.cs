@@ -84,36 +84,21 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            SynchronizedCollection<string> list = new SynchronizedCollection<string>();
-            SynchronizedCollection<Task> tasks = new SynchronizedCollection<Task>();
-            LoopHelper.Loop(2, () =>
+            //4线程并发访问,每次库存减1,统计成功次数
+            string id = "1142102264211705856";
+            var db = DbFactory.GetRepository();
+            List<Task> tasks = new List<Task>();
+            LoopHelper.Loop(4, () =>
             {
-                tasks.Add(Task.Run(() =>
-                {
-                    LoopHelper.Loop(10000000, () =>
-                    {
-                        Console.WriteLine("1");
-                        list.Add(IdHelper.GetId());
-                        Thread.Sleep(1);
-                    });
-                }));
-            });
-
-            LoopHelper.Loop(2, () =>
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    LoopHelper.Loop(1000000, () =>
-                    {
-                        Console.WriteLine(DateTime.Now);
-                        list.Remove(list[list.Count]);
-                        Thread.Sleep(1);
-                    });
-                }));
+                
             });
 
             Console.WriteLine("完成");
-            Console.ReadLine();
+
+            IRepository GetDB()
+            {
+                return DbFactory.GetRepository();
+            }
         }
     }
 }

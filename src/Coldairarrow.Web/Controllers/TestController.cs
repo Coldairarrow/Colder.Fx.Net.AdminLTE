@@ -8,5 +8,16 @@ namespace Coldairarrow.Web
         {
             return View();
         }
+
+        [CheckSign]
+        public ActionResult RequestTest()
+        {
+            return Content("aa");
+        }
+
+        public ActionResult RequestDemo()
+        {
+            return View();
+        }
     }
 }
