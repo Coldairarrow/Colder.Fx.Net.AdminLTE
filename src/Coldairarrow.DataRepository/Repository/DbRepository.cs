@@ -674,7 +674,12 @@ namespace Coldairarrow.DataRepository
         /// <param name="sql">SQL语句</param>
         public int ExecuteSql(string sql)
         {
-            return Db.Database.ExecuteSqlCommand(sql);
+            int count = Db.Database.ExecuteSqlCommand(sql);
+
+            if (!_openedTransaction)
+                Dispose();
+
+            return count;
         }
 
         /// <summary>
@@ -684,7 +689,12 @@ namespace Coldairarrow.DataRepository
         /// <param name="parameters">SQL参数</param>
         public int ExecuteSql(string sql, List<DbParameter> parameters)
         {
-            return Db.Database.ExecuteSqlCommand(sql, parameters.ToArray());
+            int count = Db.Database.ExecuteSqlCommand(sql, parameters.ToArray());
+
+            if (!_openedTransaction)
+                Dispose();
+
+            return count;
         }
 
         #endregion
