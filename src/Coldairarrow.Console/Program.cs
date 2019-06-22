@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
+using System.Data;
 
 namespace Coldairarrow.Console1
 {
@@ -81,24 +82,11 @@ namespace Coldairarrow.Console1
             watch.Stop();
             Console.WriteLine($"分表后耗时:{watch.ElapsedMilliseconds}ms");
         }
-
         static void Main(string[] args)
         {
-            //4线程并发访问,每次库存减1,统计成功次数
-            string id = "1142102264211705856";
-            var db = DbFactory.GetRepository();
-            List<Task> tasks = new List<Task>();
-            LoopHelper.Loop(4, () =>
-            {
-                
-            });
 
             Console.WriteLine("完成");
-
-            IRepository GetDB()
-            {
-                return DbFactory.GetRepository();
-            }
+            Console.ReadLine();
         }
     }
 }
