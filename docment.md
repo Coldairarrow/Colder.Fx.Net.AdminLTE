@@ -428,7 +428,7 @@ AddDataSourceÊÇÖ¸Ìí¼ÓÊý¾ÝÔ´£¬Êý¾ÝÔ´¿ÉÒÔ¿´×ö³éÏóÊý¾Ý¿â£¬Ò»¸öÊý¾ÝÔ´°üº¬ÁËÒ»×éÍ¬ÀàÐ
 ![](https://s2.ax1x.com/2019/06/22/Z9Qe91.png)
 
 ÉÏÊöµÄ·ÖÆ¬¹æÔò¸÷ÓÐÓÅÁÓ£¬¶¼ÊµÏÖIShardingRule½Ó¿Ú£¬Êµ¼ÊÉÏÖ»ÐèÒªÊµÏÖFindTable·½·¨¼´¿ÉÊµÏÖ×Ô¶¨Òå·ÖÆ¬¹æÔò¡£
-Êµ¼ÊÊ¹ÓÃÖÐ¸öÈËÍÆ¼öÊ¹ÓÃ**Ñ©»¨IdµÄmod·ÖÆ¬¹æ**£¬ÕâÒ²ÊÇÎªÊ²Ã´Ç°ÃæÊý¾Ý¿âÉè¼Æ¹æ·¶ÖÐÄ¬ÈÏÊ¹ÓÃÑ©»¨Id×÷ÎªÊý¾Ý¿âÖ÷¼üµÄÔ­Òò£¨PS£¬Ö®Ç°°æ±¾Ê¹ÓÃGUID×÷ÎªÖ÷¼ü±»¸÷ÖÖÏÓÆú£¬Õâ´Î¿´ÄãÃÇÔõÃ´Ëµ£©![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561205621627&di=108f671b1c1b2d714c85f098c78e1bb4&imgtype=0&src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20181025%2F22%2F1540476004-sWcISuHJyM.jpg)
+Êµ¼ÊÊ¹ÓÃÖÐ¸öÈËÍÆ¼öÊ¹ÓÃ**Ñ©»¨IdµÄmod·ÖÆ¬¹æ**£¬ÕâÒ²ÊÇÎªÊ²Ã´Ç°ÃæÊý¾Ý¿âÉè¼Æ¹æ·¶ÖÐÄ¬ÈÏÊ¹ÓÃÑ©»¨Id×÷ÎªÊý¾Ý¿âÖ÷¼üµÄÔ­Òò£¨PS£¬Ö®Ç°°æ±¾Ê¹ÓÃGUID×÷ÎªÖ÷¼ü±»¸÷ÖÖÏÓÆú£¬Õâ´Î¿´ÄãÃÇÔõÃ´Ëµ£©![](https://s2.ax1x.com/2019/06/22/Z9hrdK.jpg)
 
 - Ê¹ÓÃ·½Ê½
 ÅäÖÃÍê³É£¬ÏÂÃæ¿ªÊ¼Ê¹ÓÃ£¬Ê¹ÓÃ·½Ê½**·Ç³£¼òµ¥**£¬ÓëÆ½³£Ê¹ÓÃ»ù±¾Ò»ÖÂ
