@@ -28,7 +28,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 网站根地址
         /// </summary>
-        public static string WebRootUrl { get; set; } = "http://localhost:39026";
+        public static string WebRootUrl { get; set; } = "http://localhost:9599";
 
         #endregion
 

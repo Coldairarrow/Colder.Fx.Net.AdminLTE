@@ -178,7 +178,6 @@
     <Compile Include="IBusiness\Base_SysManage\IBase_SysLogBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_SysRoleBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_UserBusiness.cs" />
-    <Compile Include="IBusiness\Base_SysManage\ICheckSignBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IDataPermission.cs" />
     <Compile Include="IBusiness\Base_SysManage\IRapidDevelopmentBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IPermissionManage.cs" />
@@ -191,7 +190,6 @@
     <Compile Include="Business\Base_SysManage\Base_SysLogBusiness.cs" />
     <Compile Include="Business\Base_SysManage\Base_SysRoleBusiness.cs" />
     <Compile Include="Business\Base_SysManage\Base_UserBusiness.cs" />
-    <Compile Include="Business\Base_SysManage\CheckSignBusiness.cs" />
     <Compile Include="Business\Base_SysManage\HomeBusiness.cs" />
     <Compile Include="Business\Base_SysManage\PermissionManage.cs" />
     <Compile Include="Business\Base_SysManage\RapidDevelopmentBusiness.cs" />

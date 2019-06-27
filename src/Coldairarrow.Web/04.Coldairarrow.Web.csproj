@@ -1212,8 +1212,8 @@
     <Compile Include="App_Start\00Filter\POST请求过滤\PostRequestAttribute.cs" />
     <Compile Include="App_Start\00Filter\参数非空校验\CheckParamNotEmptyAttribute.cs" />
     <Compile Include="App_Start\00Filter\对外接口签名校验\CheckSignAttribute.cs" />
-    <Compile Include="App_Start\00Filter\对外接口签名校验\CheckAppIdPermissionAttribute.cs" />
-    <Compile Include="App_Start\00Filter\对外接口签名校验\IgnoreAppIdPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\AppId权限过滤\CheckAppIdPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\AppId权限过滤\IgnoreAppIdPermissionAttribute.cs" />
     <Compile Include="App_Start\00Filter\后台用户接口权限校验\IgnoreUrlPermissionAttribute.cs" />
     <Compile Include="App_Start\00Filter\后台用户接口权限校验\CheckUrlPermissionAttribute.cs" />
     <Compile Include="App_Start\00Filter\登录校验\CheckLoginAttribute.cs" />
@@ -1444,6 +1444,7 @@
     <Content Include="Views\Demo\DownloadFile.cshtml" />
     <Content Include="Views\Demo\SelectSearch.cshtml" />
     <Content Include="Views\Demo\BootstrapPwdBox.cshtml" />
+    <Content Include="Views\Demo\ApiSignDemo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
