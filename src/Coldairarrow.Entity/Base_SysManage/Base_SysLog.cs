@@ -20,6 +20,11 @@ namespace Coldairarrow.Entity.Base_SysManage
         public String Id { get; set; }
 
         /// <summary>
+        /// 日志级别
+        /// </summary>
+        public string Level { get; set; }
+
+        /// <summary>
         /// 日志类型
         /// </summary>
         [Keyword]

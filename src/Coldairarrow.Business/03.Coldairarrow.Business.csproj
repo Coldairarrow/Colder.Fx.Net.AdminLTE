@@ -170,7 +170,6 @@
     <Compile Include="Business\Base_SysManage\Base_DepartmentBusiness.cs" />
     <Compile Include="Business\Base_SysManage\DataPermission.cs" />
     <Compile Include="Business\Base_SysManage\SystemMenuManage.cs" />
-    <Compile Include="Business\BusHelper.cs" />
     <Compile Include="Business\Operator.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_AppSecretBusiness.cs" />
     <Compile Include="IBusiness\Base_SysManage\IBase_DatabaseLinkBusiness.cs" />
@@ -184,7 +183,6 @@
     <Compile Include="IBusiness\Base_SysManage\IPermissionManage.cs" />
     <Compile Include="IBusiness\Base_SysManage\ISystemMenuManage.cs" />
     <Compile Include="IBusiness\Base_SysManage\IUrlPermissionManage.cs" />
-    <Compile Include="IBusiness\IBusHelper.cs" />
     <Compile Include="IBusiness\IBaseBusiness.T.cs" />
     <Compile Include="Business\Base_SysManage\Base_AppSecretBusiness.cs" />
     <Compile Include="Business\Base_SysManage\Base_DatabaseLinkBusiness.cs" />
@@ -198,10 +196,13 @@
     <Compile Include="Business\Base_SysManage\UrlPermissionManage.cs" />
     <Compile Include="IBusiness\Base_SysManage\IHomeBusiness.cs" />
     <Compile Include="IBusiness\IOperator.cs" />
-    <Compile Include="Logger\ElasticSearchLogger.cs" />
+    <Compile Include="Logger\BaseTarget.cs" />
+    <Compile Include="Logger\ElasticSearchTarget.cs" />
     <Compile Include="Logger\ILogger.cs" />
-    <Compile Include="Logger\LoggerFactory.cs" />
-    <Compile Include="Logger\RDBMSLogger.cs" />
+    <Compile Include="Logger\ILogSearcher.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\LoggerConfig.cs" />
+    <Compile Include="Logger\RDBMSTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

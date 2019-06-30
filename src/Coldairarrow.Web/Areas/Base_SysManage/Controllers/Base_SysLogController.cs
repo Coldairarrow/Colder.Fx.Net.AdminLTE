@@ -44,12 +44,13 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         public ActionResult GetLogList(
             Pagination pagination,
             string logContent,
+            string level,
             string logType,
             string opUserName,
             DateTime? startTime,
             DateTime? endTime)
         {
-            var dataList = _sysLogBus.GetLogList(pagination, logContent, logType, opUserName, startTime, endTime);
+            var dataList = _sysLogBus.GetLogList(pagination, logContent, logType, level, opUserName, startTime, endTime);
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }
@@ -58,7 +59,7 @@ namespace Coldairarrow.Web.Areas.Base_SysManage.Controllers
         {
             List<object> logTypeList = new List<object>();
 
-            Enum.GetNames(typeof(EnumType.LogType)).ForEach(aName =>
+            Enum.GetNames(typeof(LogType)).ForEach(aName =>
             {
                 logTypeList.Add(new { Name = aName, Value = aName });
             });

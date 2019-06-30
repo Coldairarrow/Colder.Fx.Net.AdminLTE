@@ -8,9 +8,10 @@ namespace Coldairarrow.Business.Base_SysManage
     {
         List<Base_AppSecret> GetDataList(Pagination pagination, string keyword);
         Base_AppSecret GetTheData(string id);
-        void AddData(Base_AppSecret newData);
-        void UpdateData(Base_AppSecret theData);
-        void DeleteData(List<string> ids);
-        void SavePermission(string appId, List<string> permissions);
+        string GetAppSecret(string appId);
+        AjaxResult AddData(Base_AppSecret newData);
+        AjaxResult UpdateData(Base_AppSecret theData);
+        AjaxResult DeleteData(List<string> ids);
+        AjaxResult SavePermission(string appId, List<string> permissions);
     }
 }

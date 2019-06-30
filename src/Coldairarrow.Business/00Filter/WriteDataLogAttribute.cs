@@ -1,13 +1,11 @@
 ﻿using Coldairarrow.Util;
 using System;
-using System.Web.Mvc;
-using static Coldairarrow.Entity.Base_SysManage.EnumType;
 
 namespace Coldairarrow.Business
 {
     public abstract class WriteDataLogAttribute : BaseFilterAttribute
     {
-        public WriteDataLogAttribute(LogType logType, string dataName, string nameField)
+        public WriteDataLogAttribute(LogType logType, string nameField, string dataName)
         {
             _logType = logType;
             _dataName = dataName;
@@ -17,6 +15,6 @@ namespace Coldairarrow.Business
         protected string _dataName { get; }
         protected string _nameField { get; }
         protected Type _entityType { get; }
-        protected IBusHelper BusHelper { get; } = DependencyResolver.Current.GetService<IBusHelper>();
+        protected ILogger Logger { get; } = AutofacHelper.GetService<ILogger>();
     }
 }
