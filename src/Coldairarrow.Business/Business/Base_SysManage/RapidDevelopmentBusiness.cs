@@ -121,9 +121,9 @@ namespace Coldairarrow.Business.{areaName}
     {{
         List<{entityName}> GetDataList(Pagination pagination, string condition, string keyword);
         {entityName} GetTheData(string id);
-        void AddData({entityName} newData);
-        void UpdateData({entityName} theData);
-        void DeleteData(List<string> ids);
+        AjaxResult AddData({entityName} newData);
+        AjaxResult UpdateData({entityName} theData);
+        AjaxResult DeleteData(List<string> ids);
     }}
 }}";
             string rootPath = AppDomain.CurrentDomain.BaseDirectory.Replace("Coldairarrow.Web", "Coldairarrow.Business"); ;
@@ -168,19 +168,25 @@ namespace Coldairarrow.Business.{areaName}
             return GetEntity(id);
         }}
 
-        public void AddData({entityName} newData)
+        public AjaxResult AddData({entityName} newData)
         {{
             Insert(newData);
+
+            return Success();
         }}
 
-        public void UpdateData({entityName} theData)
+        public AjaxResult UpdateData({entityName} theData)
         {{
             Update(theData);
+
+            return Success();
         }}
 
-        public void DeleteData(List<string> ids)
+        public AjaxResult DeleteData(List<string> ids)
         {{
             Delete(ids);
+
+            return Success();
         }}
 
         #endregion
@@ -272,18 +278,19 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
         /// <param name=""theData"">保存的数据</param>
         public ActionResult SaveData({entityName} theData)
         {{
+            AjaxResult res;
             if (theData.Id.IsNullOrEmpty())
             {{
                 theData.Id = IdHelper.GetId();
 
-                {_varBusiness}.AddData(theData);
+                res = {_varBusiness}.AddData(theData);
             }}
             else
             {{
-                {_varBusiness}.UpdateData(theData);
+                res = {_varBusiness}.UpdateData(theData);
             }}
 
-            return Success();
+            return JsonContent(res.ToJson());
         }}
 
         /// <summary>
@@ -292,9 +299,9 @@ namespace Coldairarrow.Web.Areas.{areaName}.Controllers
         /// <param name=""theData"">删除的数据</param>
         public ActionResult DeleteData(string ids)
         {{
-            {_varBusiness}.DeleteData(ids.ToList<string>());
+            var res = {_varBusiness}.DeleteData(ids.ToList<string>());
 
-            return Success(""删除成功！"");
+            return JsonContent(res.ToJson());
         }}
 
         #endregion

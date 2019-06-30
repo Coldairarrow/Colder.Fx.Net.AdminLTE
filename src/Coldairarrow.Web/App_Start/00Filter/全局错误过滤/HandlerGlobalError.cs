@@ -12,10 +12,10 @@ namespace Coldairarrow.Web
     {
         public HandlerGlobalError()
         {
-            _busHelper = DependencyResolver.Current.GetService<IBusHelper>();
+            _logger = DependencyResolver.Current.GetService<ILogger>();
         }
 
-        IBusHelper _busHelper { get; set; }
+        ILogger _logger { get; set; }
 
         /// <summary>
         /// 处理系统错误
@@ -29,7 +29,7 @@ namespace Coldairarrow.Web
             exContext.HttpContext.Response.StatusCode = 200;
 
             var theEx = exContext.Exception;
-            _busHelper.HandleException(theEx);
+            _logger.Error(theEx);
 
             AjaxResult res = new AjaxResult()
             {

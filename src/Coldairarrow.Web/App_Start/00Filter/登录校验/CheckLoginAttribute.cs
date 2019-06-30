@@ -12,7 +12,7 @@ namespace Coldairarrow.Web
     public class CheckLoginAttribute : FilterAttribute, IActionFilter
     {
         public IOperator _operator { get; set; }
-        public IBusHelper _busHelper { get; set; }
+        public ILogger _logger { get; set; }
 
         /// <summary>
         /// Action执行之前执行
@@ -41,7 +41,7 @@ namespace Coldairarrow.Web
             }
             catch (Exception ex)
             {
-                _busHelper.HandleException(ex);
+                _logger.Error(ex);
                 RedirectToLogin();
             }
 
