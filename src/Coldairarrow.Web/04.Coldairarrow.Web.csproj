@@ -1444,6 +1444,7 @@
     <Content Include="Views\Demo\DownloadFile.cshtml" />
     <Content Include="Views\Demo\SelectSearch.cshtml" />
     <Content Include="Views\Demo\BootstrapPwdBox.cshtml" />
+    <Content Include="Views\Demo\ApiSignDemo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
