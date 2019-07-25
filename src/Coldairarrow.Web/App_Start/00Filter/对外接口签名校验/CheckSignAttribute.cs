@@ -21,15 +21,23 @@ namespace Coldairarrow.Web
 令:
 
 appId=xxx
+
 appSecret=xxx
+
 time=2017-01-01 23:00:00
+
 guid=d0595245-60db-495d-9c0e-fea931b8d69a
+
 请求的body={"aaa":"aaa"}
 
 1: 依次拼接appId+time+guid+body+appSecret得到xxx2017-01-01 23:00:00d0595245-60db-495d-9c0e-fea931b8d69a{"aaa":"aaa"}xxx
+
 2: 将上面拼接字符串进行MD5(32位)即可得到签名
+
 sign=MD5(xxx2017-01-01 23:00:00d0595245-60db-495d-9c0e-fea931b8d69a{"aaa":"aaa"}xxx)
+
     =4e30f1eca521485c208f642a7d927ff0
+
 3: 在header中携带上述的appId、time、guid、sign即可
 
 详细使用Demo请看:
@@ -59,13 +67,13 @@ HttpHelper.SafeSignRequest
                 return;
 
             var request = filterContext.HttpContext.Request;
-            string appId = request.Headers["appId"].ToString();
+            string appId = request.Headers["appId"]?.ToString();
             if (appId.IsNullOrEmpty())
             {
                 ReturnError("缺少header:appId");
                 return;
             }
-            string time = request.Headers["time"].ToString();
+            string time = request.Headers["time"]?.ToString();
             if (time.IsNullOrEmpty())
             {
                 ReturnError("缺少header:time");
@@ -77,7 +85,7 @@ HttpHelper.SafeSignRequest
                 return;
             }
 
-            string guid = request.Headers["guid"].ToString();
+            string guid = request.Headers["guid"]?.ToString();
             if (guid.IsNullOrEmpty())
             {
                 ReturnError("缺少header:guid");
@@ -95,7 +103,7 @@ HttpHelper.SafeSignRequest
 
             string body = request.InputStream.ReadToString();
 
-            string sign = request.Headers["sign"].ToString();
+            string sign = request.Headers["sign"]?.ToString();
             if (sign.IsNullOrEmpty())
             {
                 ReturnError("缺少header:sign");
