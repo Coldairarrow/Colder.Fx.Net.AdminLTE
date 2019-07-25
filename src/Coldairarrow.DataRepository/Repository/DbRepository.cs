@@ -45,7 +45,7 @@ namespace Coldairarrow.DataRepository
                 if (_disposed || _db == null)
                 {
                     _db = DbFactory.GetDbContext(ConnectionString, DbType, _entityNamespace);
-                    _db.HandleSqlLog = HandleSqlLog;
+                    //_db.HandleSqlLog = HandleSqlLog;
                     _disposed = false;
                 }
 
@@ -226,7 +226,7 @@ namespace Coldairarrow.DataRepository
         /// <value>
         /// The handle SQL log.
         /// </value>
-        public Action<string> HandleSqlLog { get; set; }
+        public Action<string> HandleSqlLog { set => Db.HandleSqlLog = value; }
 
         /// <summary>
         /// 使用已存在的事物

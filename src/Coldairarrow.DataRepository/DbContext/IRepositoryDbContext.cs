@@ -8,7 +8,7 @@ namespace Coldairarrow.DataRepository
     public interface IRepositoryDbContext : IDisposable
     {
         DbContext GetDbContext();
-        Action<string> HandleSqlLog { get; set; }
+        Action<string> HandleSqlLog { set; }
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
         DbSet Set(Type entityType);
         DbEntityEntry Entry(object entity);
