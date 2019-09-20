@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Util;
 using System;
+using System.IO;
 
 namespace Coldairarrow.Business
 {
@@ -30,7 +31,7 @@ namespace Coldairarrow.Business
                 {
                     Name = LoggerConfig.LoggerName,
                     Layout = layout,
-                    FileName= $"${{basedir}}/A_logs/{DateTime.Now.ToString("yyyy-MM")}/{DateTime.Now.ToString("yyyy-MM-dd")}.txt"
+                    FileName = Path.Combine(Directory.GetCurrentDirectory(), "logs", "${date:format=yyyy-MM-dd}.txt")
                 });
             }
 
@@ -59,7 +60,7 @@ namespace Coldairarrow.Business
             NLog.LogEventInfo log = new NLog.LogEventInfo(NLog.LogLevel.FromString(logLevel.ToString()), "sysLogger", msg);
             log.Properties[LoggerConfig.Data] = data;
             log.Properties[LoggerConfig.LogType] = logType.ToString();
-            log.Properties[LoggerConfig.OpUserName] = _operator.Property.UserName;
+            log.Properties[LoggerConfig.OpUserName] = _operator?.Property?.UserName;
 
             _nLogger.Log(log);
         }
