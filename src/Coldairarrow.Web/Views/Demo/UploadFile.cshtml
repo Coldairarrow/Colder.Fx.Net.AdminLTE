@@ -27,5 +27,11 @@
             type:'file' //file即可上传文件也可上传图片
         });
     });
+
+    $('#submit').click(function () {
+        //获取上传后的url
+        var url = $('#WorkerContractImg').html5Uploader('getUploadFiles');
+        console.log(url);
+    });
 </script>
 
