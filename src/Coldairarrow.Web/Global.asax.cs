@@ -41,11 +41,13 @@ namespace Coldairarrow.Web
         /// </summary>
         private void InitAutoMapper()
         {
-            Mapper.Initialize(cfg =>
+            var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Base_User, Base_UserDTO>();
                 cfg.CreateMap<Base_SysRole, Base_SysRoleDTO>();
             });
+
+            AutoMapperHelper.Mapper = configuration.CreateMapper();
         }
 
         /// <summary>

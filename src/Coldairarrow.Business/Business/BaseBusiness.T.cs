@@ -1,4 +1,5 @@
-﻿using Coldairarrow.DataRepository;
+﻿using AutoMapper;
+using Coldairarrow.DataRepository;
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,13 @@ namespace Coldairarrow.Business
         #region DI
 
         public ILogger Logger { protected get; set; }
+
+
+        #endregion
+
+        #region 属性
+
+        public static readonly IMapper Mapper = AutoMapperHelper.Mapper;
 
         #endregion
 
