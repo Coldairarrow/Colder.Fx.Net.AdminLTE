@@ -27,11 +27,11 @@ namespace Coldairarrow.Web
             //注册路由
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            InitAutofac();
-
             //注册全局异常捕捉器
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
+            InitId();
+            InitAutofac();
             InitAutoMapper();
             InitEF();
         }
@@ -106,6 +106,16 @@ namespace Coldairarrow.Web
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
             AutofacHelper.Container = container;
+        }
+
+        private void InitId()
+        {
+            new IdHelperBootstrapper()
+                //设置WorkerId
+                .SetWorkderId(ConfigHelper.GetValue("WorkerId").ToLong())
+                //使用Zookeeper
+                //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
+                .Boot();
         }
     }
 }
