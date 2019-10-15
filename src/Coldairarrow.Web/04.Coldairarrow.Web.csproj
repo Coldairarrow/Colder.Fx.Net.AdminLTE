@@ -1,9 +1,7 @@
-﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
-  <Import Project="..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3CD25499-8291-48BB-9A24-D99BC1675A0D}</ProjectGuid>
+    <ProjectGuid>{D3BA91DB-6110-43F2-80FA-7584B22074C5}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -27,8 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-    <TargetFrameworkProfile />
+    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,24 +35,11 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
-    <TypeScriptModuleKind />
-    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-    <TypeScriptOutFile />
-    <TypeScriptOutDir />
-    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
-    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
-    <TypeScriptSourceMap>True</TypeScriptSourceMap>
-    <TypeScriptMapRoot />
-    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -75,31 +59,7 @@
       <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandLine, Version=2.6.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.2.6.0\lib\net461\CommandLine.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetty.Buffers, Version=0.6.0.0, Culture=neutral, PublicKeyToken=bc13ca065fa06c29, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetty.Buffers.0.6.0\lib\net45\DotNetty.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetty.Codecs, Version=0.6.0.0, Culture=neutral, PublicKeyToken=bc13ca065fa06c29, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetty.Codecs.0.6.0\lib\net45\DotNetty.Codecs.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetty.Common, Version=0.6.0.0, Culture=neutral, PublicKeyToken=bc13ca065fa06c29, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetty.Common.0.6.0\lib\net45\DotNetty.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetty.Transport, Version=0.6.0.0, Culture=neutral, PublicKeyToken=bc13ca065fa06c29, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetty.Transport.0.6.0\lib\net45\DotNetty.Transport.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNettyRPC, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNettyRPC.1.6.0\lib\net45\DotNettyRPC.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynamitey, Version=2.0.10.189, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynamitey.2.0.10.189\lib\net40\Dynamitey.dll</HintPath>
-    </Reference>
-    <Reference Include="Elasticsearch.Net, Version=6.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elasticsearch.Net.6.8.3\lib\net461\Elasticsearch.Net.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -110,64 +70,16 @@
     <Reference Include="EntityFramework6.Npgsql, Version=6.3.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework6.Npgsql.6.3.0\lib\net45\EntityFramework6.Npgsql.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.10.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Protobuf.3.10.0\lib\net45\Google.Protobuf.dll</HintPath>
-    </Reference>
     <Reference Include="IdHelper, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IdHelper.1.4.1\lib\net45\IdHelper.dll</HintPath>
     </Reference>
-    <Reference Include="IdHelper.Zookeeper, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IdHelper.Zookeeper.1.4.1\lib\net45\IdHelper.Zookeeper.dll</HintPath>
-    </Reference>
-    <Reference Include="ImpromptuInterface, Version=7.0.1.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
-      <HintPath>..\packages\ImpromptuInterface.7.0.1\lib\net40\ImpromptuInterface.dll</HintPath>
+    <Reference Include="IdHelper.Zookeeper, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdHelper.Zookeeper.1.5.0\lib\net461\IdHelper.Zookeeper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Extensions.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.3.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.3.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.3.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.3.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.3.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.3.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.3.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Options, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Options.3.0.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Primitives.3.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil, Version=0.11.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.11.0\lib\net40\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb, Version=0.11.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.11.0\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb, Version=0.11.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.11.0\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks, Version=0.11.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.11.0\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
@@ -177,81 +89,28 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.7\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="Npgsql, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.1.1\lib\net461\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.19.3.1\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\packages\Oracle.ManagedDataAccess.19.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.19.3.0\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
-      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
-    </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.2.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.6.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel" />
-    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ComponentModel.Annotations.4.6.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Drawing.Design" />
-    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.6.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -271,53 +130,59 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ZooKeeperNetEx, Version=3.4.12.4, Culture=neutral, PublicKeyToken=42cd15de36f9b993, processorArchitecture=MSIL">
       <HintPath>..\packages\ZooKeeperNetEx.3.4.12.4\lib\net461\ZooKeeperNetEx.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\fx\admin.css" />
     <Content Include="css\fx\defaultAvatar.png" />
     <Content Include="css\fx\desktop.css" />
-    <Content Include="css\fx\permisson-form.css" />
     <Content Include="css\fx\fx-list.css" />
+    <Content Include="css\fx\permisson-form.css" />
     <Content Include="css\fx\style.min.css" />
+    <Content Include="Download\_.txt" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\business\requestbusiness.js" />
+    <Content Include="Scripts\config.js" />
+    <Content Include="Scripts\util\util.js" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\appx.js" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\basejs\ContextJS\context.bootstrap.css" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\basejs\ContextJS\context.js" />
@@ -795,6 +660,8 @@
     <Content Include="Scripts\vendor\daterangepicker\daterangepicker.js" />
     <Content Include="Scripts\vendor\daterangepicker\moment.js" />
     <Content Include="Scripts\vendor\daterangepicker\moment.min.js" />
+    <Content Include="Scripts\vendor\echarts\echarts.js" />
+    <Content Include="Scripts\vendor\exif\exif.min.js" />
     <Content Include="Scripts\vendor\fastclick\fastclick.js" />
     <Content Include="Scripts\vendor\fastclick\fastclick.min.js" />
     <Content Include="Scripts\vendor\FileSaver\FileSaver.js" />
@@ -843,6 +710,8 @@
     <Content Include="Scripts\vendor\fullcalendar\fullcalendar.print.css" />
     <Content Include="Scripts\vendor\html5Uploader\html5Uploader-extends.js" />
     <Content Include="Scripts\vendor\html5Uploader\html5Uploader.css" />
+    <Content Include="Scripts\vendor\html5Uploader\html5Uploader.js" />
+    <Content Include="Scripts\vendor\html5Uploader\html5Uploader.min.js" />
     <Content Include="Scripts\vendor\html5Uploader\images\upload-sprite.png" />
     <Content Include="Scripts\vendor\iCheck\all.css" />
     <Content Include="Scripts\vendor\iCheck\flat\aero%402x.png" />
@@ -1096,6 +965,7 @@
     <Content Include="Scripts\vendor\layui\lay\modules\tree.js" />
     <Content Include="Scripts\vendor\layui\lay\modules\upload.js" />
     <Content Include="Scripts\vendor\layui\lay\modules\util.js" />
+    <Content Include="Scripts\vendor\md5\md5.min.js" />
     <Content Include="Scripts\vendor\morris\morris.css" />
     <Content Include="Scripts\vendor\morris\morris.js" />
     <Content Include="Scripts\vendor\morris\morris.min.js" />
@@ -1160,32 +1030,11 @@
     <Content Include="Scripts\vendor\slimScroll\jquery.slimscroll.min.js" />
     <Content Include="Scripts\vendor\sparkline\jquery.sparkline.js" />
     <Content Include="Scripts\vendor\sparkline\jquery.sparkline.min.js" />
+    <Content Include="Scripts\vendor\template\template.js" />
     <Content Include="Scripts\vendor\timepicker\bootstrap-timepicker.css" />
     <Content Include="Scripts\vendor\timepicker\bootstrap-timepicker.js" />
     <Content Include="Scripts\vendor\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Scripts\vendor\timepicker\bootstrap-timepicker.min.js" />
-    <Content Include="Download\_.txt" />
-    <Content Include="favicon.ico" />
-    <Content Include="Global.asax" />
-    <Content Include="Scripts\business\requestbusiness.js" />
-    <Content Include="Scripts\config.js" />
-    <Content Include="Config\database.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Config\Province.json" />
-    <Content Include="Config\system.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Config\SystemMenu.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Scripts\util\util.js" />
-    <Content Include="Scripts\vendor\echarts\echarts.js" />
-    <Content Include="Scripts\vendor\exif\exif.min.js" />
-    <Content Include="Scripts\vendor\html5Uploader\html5Uploader.js" />
-    <Content Include="Scripts\vendor\html5Uploader\html5Uploader.min.js" />
-    <Content Include="Scripts\vendor\md5\md5.min.js" />
-    <Content Include="Scripts\vendor\template\template.js" />
     <Content Include="Scripts\vendor\umeditor\dialogs\emotion\emotion.css" />
     <Content Include="Scripts\vendor\umeditor\dialogs\emotion\emotion.js" />
     <Content Include="Scripts\vendor\umeditor\dialogs\emotion\images\0.gif" />
@@ -1289,27 +1138,29 @@
     <Content Include="Scripts\vendor\zTree\zTree.theme.metro.css" />
     <Content Include="Scripts\vendor\zTree\zTree.theme.metro.min.css" />
     <Content Include="Scripts\vendor\zTree\zTreeSelect.js" />
+    <Content Include="Upload\FIle\e4c69020-59bc-4802-a9dc-402a14ecb06d\TIM截图20190622214120.png" />
+    <Content Include="Upload\FIle\f5cca1be-c5fd-485c-80cb-b34f7939198f\27eabceadf6344b7964abf16ef2f49aa.jpg" />
     <Content Include="Upload\FIle\_.txt" />
+    <Content Include="Upload\Img\2019-06-15\78719306-2d62-43bc-8d5d-765d87d31cb6.jpg" />
+    <Content Include="Upload\Img\2019-06-15\79fea74d-4c87-4ff2-be75-5b24ad034397.jpg" />
     <Content Include="Upload\Img\_.txt" />
     <Content Include="Upload\_.txt" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\00Filter\POST请求过滤\PostRequestAttribute.cs" />
-    <Compile Include="App_Start\00Filter\参数非空校验\CheckParamNotEmptyAttribute.cs" />
-    <Compile Include="App_Start\00Filter\对外接口签名校验\CheckSignAttribute.cs" />
     <Compile Include="App_Start\00Filter\AppId权限过滤\CheckAppIdPermissionAttribute.cs" />
     <Compile Include="App_Start\00Filter\AppId权限过滤\IgnoreAppIdPermissionAttribute.cs" />
-    <Compile Include="App_Start\00Filter\后台用户接口权限校验\IgnoreUrlPermissionAttribute.cs" />
-    <Compile Include="App_Start\00Filter\后台用户接口权限校验\CheckUrlPermissionAttribute.cs" />
-    <Compile Include="App_Start\00Filter\登录校验\CheckLoginAttribute.cs" />
+    <Compile Include="App_Start\00Filter\POST请求过滤\PostRequestAttribute.cs" />
     <Compile Include="App_Start\00Filter\全局错误过滤\HandlerGlobalError.cs" />
-    <Compile Include="App_Start\00Filter\登录校验\IgnoreLoginAttribute.cs" />
+    <Compile Include="App_Start\00Filter\参数非空校验\CheckParamNotEmptyAttribute.cs" />
+    <Compile Include="App_Start\00Filter\后台用户接口权限校验\CheckUrlPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\后台用户接口权限校验\IgnoreUrlPermissionAttribute.cs" />
+    <Compile Include="App_Start\00Filter\对外接口签名校验\CheckSignAttribute.cs" />
     <Compile Include="App_Start\00Filter\对外接口签名校验\IgnoreSignAttribute.cs" />
-    <Compile Include="App_Start\01BaseController\BaseController.cs" />
+    <Compile Include="App_Start\00Filter\登录校验\CheckLoginAttribute.cs" />
+    <Compile Include="App_Start\00Filter\登录校验\IgnoreLoginAttribute.cs" />
     <Compile Include="App_Start\01BaseController\BaseApiController.cs" />
+    <Compile Include="App_Start\01BaseController\BaseController.cs" />
     <Compile Include="App_Start\01BaseController\BaseMvcController.cs" />
     <Compile Include="App_Start\02Extentions\Extention.UrlHelper.cs" />
     <Compile Include="App_Start\DependencyViewPage.cs" />
@@ -1341,87 +1192,35 @@
     <Compile Include="Scripts\vendor\umeditor\net\Uploader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Base_SysManage\Views\web.config" />
-    <Content Include="Areas\Base_SysManage\Views\Base_SysRole\Index.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_SysRole\Form.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\RapidDevelopment\Index.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\RapidDevelopment\Form.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_DatabaseLink\Form.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_DatabaseLink\Index.cshtml" />
-    <Content Include="Config\Permission.config" />
-    <Content Include="Areas\Base_SysManage\Views\Base_SysRole\PermissionForm.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_User\ChangePwdForm.cshtml" />
-    <Content Include="Config\UrlPermission.config" />
     <Content Include="Areas\Base_SysManage\Views\Base_AppSecret\Form.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_AppSecret\Index.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_AppSecret\PermissionForm.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_SysLog\Index.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\City\Index.cshtml" />
-    <Content Include="Config\NingboGeojson.json" />
-    <Content Include="Areas\Base_SysManage\Views\Common\ShowBigImg.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_User\Index.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_User\Form.cshtml" />
-    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_DatabaseLink\Form.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_DatabaseLink\Index.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_Department\Form.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_Department\Index.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_SysLog\Index.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_SysRole\Form.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_SysRole\Index.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_SysRole\PermissionForm.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\ChangePwdForm.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\Form.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\Index.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\City\Index.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\Common\ShowBigImg.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\RapidDevelopment\Form.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\RapidDevelopment\Index.cshtml" />
+    <Content Include="Areas\Base_SysManage\Views\web.config" />
+    <Content Include="Config\database.config" />
+    <Content Include="Config\NingboGeojson.json" />
+    <Content Include="Config\Permission.config" />
+    <Content Include="Config\Province.json" />
+    <Content Include="Config\system.config" />
+    <Content Include="Config\SystemMenu.config" />
+    <Content Include="Config\UrlPermission.config" />
     <None Include="packages.config" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Shared\_Layout_List.cshtml" />
-    <Content Include="Views\web.config" />
-    <Content Include="Views\Home\Desktop.cshtml" />
-    <Content Include="Views\Home\Statis.cshtml" />
-    <Content Include="Views\Home\Test.cshtml" />
-    <Content Include="Views\Test\Index.cshtml" />
-    <Content Include="Views\Test\RequestDemo.cshtml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Views\Test\MapDatTest.cshtml" />
-    <Content Include="Views\Test\GetNingboGeojsonForm.cshtml" />
-    <Content Include="Views\Demo\UMEditor.cshtml" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneral-webfont.eot" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneral-webfont.ttf" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneral-webfont.woff" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbol-webfont.eot" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbol-webfont.ttf" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbol-webfont.woff" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbolita-webfont.eot" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbolita-webfont.ttf" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbolita-webfont.woff" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralitalic-webfont.eot" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralitalic-webfont.ttf" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralitalic-webfont.woff" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.eot" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.otf" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.ttf" />
-    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.woff" />
-    <Content Include="Scripts\vendor\umeditor\net\getContent.ashx" />
-    <Content Include="Scripts\vendor\umeditor\net\imageUp.ashx" />
-    <Content Include="Views\Shared\_Layout_Form.cshtml" />
-    <Content Include="Scripts\vendor\datatables\extensions\ColReorder\Readme.md" />
-    <Content Include="Scripts\vendor\datatables\extensions\ColVis\Readme.md" />
-    <Content Include="Scripts\vendor\datatables\extensions\FixedColumns\Readme.md" />
-    <Content Include="Scripts\vendor\datatables\extensions\Responsive\css\dataTables.responsive.scss" />
-    <Content Include="Scripts\vendor\datatables\extensions\Responsive\Readme.md" />
-    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\collection.psd" />
-    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\copy document.psd" />
-    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\file_types.psd" />
-    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\printer.psd" />
-    <Content Include="Scripts\vendor\datatables\extensions\TableTools\Readme.md" />
-    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="Scripts\vendor\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="Scripts\vendor\input-mask\phone-codes\phone-be.json" />
-    <Content Include="Scripts\vendor\input-mask\phone-codes\phone-codes.json" />
-    <Content Include="Scripts\vendor\bootstrap\css\bootstrap-theme.css.map" />
-    <Content Include="Scripts\vendor\bootstrap\css\bootstrap-theme.min.css.map" />
-    <Content Include="Scripts\vendor\bootstrap\css\bootstrap.css.map" />
-    <Content Include="Scripts\vendor\bootstrap\css\bootstrap.min.css.map" />
-    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\alerts.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\background-variant.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\border-radius.less" />
@@ -1452,7 +1251,6 @@
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\text-emphasis.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\text-overflow.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\vendor-prefixes.less" />
-    <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\variables.less" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\basejs\ContextJS\README.md" />
     <Content Include="Scripts\vendor\adminlte\build\js\iframe\basejs\jquery-slimscroll\README.md" />
@@ -1492,7 +1290,6 @@
     <Content Include="Scripts\vendor\adminlte\build\less\select2.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\sidebar-mini.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\sidebar.less" />
-    <Content Include="Scripts\vendor\adminlte\build\less\skins\_all-skins.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\skins\skin-black-light.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\skins\skin-black.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\skins\skin-blue-light.less" />
@@ -1505,6 +1302,7 @@
     <Content Include="Scripts\vendor\adminlte\build\less\skins\skin-red.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\skins\skin-yellow-light.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\skins\skin-yellow.less" />
+    <Content Include="Scripts\vendor\adminlte\build\less\skins\_all-skins.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\small-box.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\social-widgets.less" />
     <Content Include="Scripts\vendor\adminlte\build\less\table.less" />
@@ -1520,19 +1318,76 @@
     <Content Include="Scripts\vendor\adminlte\dist\fonts\ionicons.eot" />
     <Content Include="Scripts\vendor\adminlte\dist\fonts\ionicons.ttf" />
     <Content Include="Scripts\vendor\adminlte\dist\fonts\ionicons.woff" />
+    <Content Include="Scripts\vendor\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="Scripts\vendor\bootstrap\css\bootstrap-theme.min.css.map" />
+    <Content Include="Scripts\vendor\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Scripts\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Scripts\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\vendor\datatables\extensions\ColReorder\Readme.md" />
+    <Content Include="Scripts\vendor\datatables\extensions\ColVis\Readme.md" />
+    <Content Include="Scripts\vendor\datatables\extensions\FixedColumns\Readme.md" />
+    <Content Include="Scripts\vendor\datatables\extensions\Responsive\css\dataTables.responsive.scss" />
+    <Content Include="Scripts\vendor\datatables\extensions\Responsive\Readme.md" />
+    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\collection.psd" />
+    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\copy document.psd" />
+    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\file_types.psd" />
+    <Content Include="Scripts\vendor\datatables\extensions\TableTools\images\psd\printer.psd" />
+    <Content Include="Scripts\vendor\datatables\extensions\TableTools\Readme.md" />
+    <Content Include="Scripts\vendor\FileSaver\FileSaver.min.js.map" />
+    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Scripts\vendor\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Scripts\vendor\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Scripts\vendor\input-mask\phone-codes\phone-be.json" />
+    <Content Include="Scripts\vendor\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Scripts\vendor\layui\font\iconfont.eot" />
     <Content Include="Scripts\vendor\layui\font\iconfont.ttf" />
     <Content Include="Scripts\vendor\layui\font\iconfont.woff" />
-    <Content Include="Views\Demo\TreeGrid.cshtml" />
-    <Content Include="Views\Demo\ZTree.cshtml" />
-    <Content Include="Views\Demo\ZTreeSelect.cshtml" />
-    <Content Include="Views\Demo\UploadFile.cshtml" />
-    <Content Include="Views\Home\Login_VerifyCode.cshtml" />
-    <Content Include="Scripts\vendor\FileSaver\FileSaver.min.js.map" />
+    <Content Include="Scripts\vendor\umeditor\net\getContent.ashx" />
+    <Content Include="Scripts\vendor\umeditor\net\imageUp.ashx" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneral-webfont.eot" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneral-webfont.ttf" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneral-webfont.woff" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbol-webfont.eot" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbol-webfont.ttf" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbol-webfont.woff" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbolita-webfont.eot" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbolita-webfont.ttf" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbolita-webfont.woff" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralitalic-webfont.eot" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralitalic-webfont.ttf" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralitalic-webfont.woff" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.eot" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.otf" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.ttf" />
+    <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.woff" />
+    <Content Include="Upload\FIle\0e95e061-472e-4f8c-bcd0-a73d8f7857d3\ER图1.vsdx" />
+    <Content Include="Views\Demo\ApiSignDemo.cshtml" />
+    <Content Include="Views\Demo\BootstrapPwdBox.cshtml" />
     <Content Include="Views\Demo\DownloadFile.cshtml" />
     <Content Include="Views\Demo\SelectSearch.cshtml" />
-    <Content Include="Views\Demo\BootstrapPwdBox.cshtml" />
-    <Content Include="Views\Demo\ApiSignDemo.cshtml" />
+    <Content Include="Views\Demo\TreeGrid.cshtml" />
+    <Content Include="Views\Demo\UMEditor.cshtml" />
+    <Content Include="Views\Demo\UploadFile.cshtml" />
+    <Content Include="Views\Demo\ZTree.cshtml" />
+    <Content Include="Views\Demo\ZTreeSelect.cshtml" />
+    <Content Include="Views\Home\Desktop.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Login_VerifyCode.cshtml" />
+    <Content Include="Views\Home\Statis.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Shared\_Layout_Form.cshtml" />
+    <Content Include="Views\Shared\_Layout_List.cshtml" />
+    <Content Include="Views\Test\GetNingboGeojsonForm.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Test\MapDatTest.cshtml" />
+    <Content Include="Views\Test\RequestDemo.cshtml" />
+    <Content Include="Views\web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1541,7 +1396,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coldairarrow.Business\03.Coldairarrow.Business.csproj">
@@ -1549,7 +1404,7 @@
       <Name>03.Coldairarrow.Business</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coldairarrow.DataRepository\01.Coldairarrow.DataRepository.csproj">
-      <Project>{01C93A6B-76C5-4B10-B8B9-2F173B5F9441}</Project>
+      <Project>{01c93a6b-76c5-4b10-b8b9-2f173b5f9441}</Project>
       <Name>01.Coldairarrow.DataRepository</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj">
@@ -1562,10 +1417,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Folder Include="App_Start\03Util\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1579,7 +1434,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52016</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:9599/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
@@ -1588,15 +1452,11 @@
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
-  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

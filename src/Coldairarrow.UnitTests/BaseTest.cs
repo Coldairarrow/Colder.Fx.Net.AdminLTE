@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Entity.Base_SysManage;
+using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 
@@ -6,6 +7,11 @@ namespace Coldairarrow.UnitTests
 {
     public class BaseTest
     {
+        static BaseTest()
+        {
+            new IdHelperBootstrapper().SetWorkderId(1).Boot();
+        }
+
         public BaseTest()
         {
             for (int i = 1; i <= 100; i++)

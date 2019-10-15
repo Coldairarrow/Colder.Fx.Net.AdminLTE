@@ -73,8 +73,8 @@
     <Reference Include="IdHelper, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IdHelper.1.4.1\lib\net45\IdHelper.dll</HintPath>
     </Reference>
-    <Reference Include="IdHelper.Zookeeper, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IdHelper.Zookeeper.1.4.1\lib\net45\IdHelper.Zookeeper.dll</HintPath>
+    <Reference Include="IdHelper.Zookeeper, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdHelper.Zookeeper.1.5.0\lib\net461\IdHelper.Zookeeper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
