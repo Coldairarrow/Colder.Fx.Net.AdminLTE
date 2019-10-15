@@ -23,12 +23,24 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 项目名
         /// </summary>
-        public static string ProjectName { get; } = "Colder.Fx.Net.AdminLTE";
+        public static readonly string ProjectName = "Colder.Fx.Net.AdminLTE";
 
         /// <summary>
         /// 网站根地址
         /// </summary>
-        public static string WebRootUrl { get; set; } = "http://localhost:9599";
+        public static string WebRootUrl
+        {
+            get
+            {
+                if (RunModel == RunModel.LocalTest)
+                    return DebugWebRootUrl;
+                else
+                    return PublishWebRootUrl;
+            }
+        }
+
+        public const string PublishWebRootUrl = "http://localhost:9599";
+        public const string DebugWebRootUrl = "http://localhost:9599";
 
         #endregion
 
@@ -37,7 +49,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 运行模式
         /// </summary>
-        public static RunModel RunModel { get; } = RunModel.LocalTest;
+        public static readonly RunModel RunModel = RunModel.LocalTest;
 
         #endregion
 
@@ -46,17 +58,17 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 默认数据库类型
         /// </summary>
-        public static DatabaseType DatabaseType { get; } = DatabaseType.SqlServer;
+        public static readonly DatabaseType DatabaseType = DatabaseType.SqlServer;
 
         /// <summary>
         /// 默认数据库连接名
         /// </summary>
-        public static string DefaultDbConName { get; } = "BaseDb";
+        public static readonly string DefaultDbConName = "BaseDb";
 
         /// <summary>
         /// 默认实体命名空间
         /// </summary>
-        public static string DefaultEntityNamespace { get; } = "Coldairarrow.Entity";
+        public static readonly string DefaultEntityNamespace = "Coldairarrow.Entity";
 
         #endregion
 
@@ -65,17 +77,17 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 默认缓存
         /// </summary>
-        public static CacheType CacheType { get; } = CacheType.SystemCache;
+        public static readonly CacheType CacheType = CacheType.SystemCache;
 
         /// <summary>
         /// Redis配置字符串
         /// </summary>
-        public static string RedisConfig { get; } = "localhost:6379";
+        public static readonly string RedisConfig = "localhost:6379";
 
         /// <summary>
         /// 是否开启Redis缓存
         /// </summary>
-        public static bool OpenRedisCache { get; } = false;
+        public static readonly bool OpenRedisCache = false;
 
         #endregion
 
@@ -84,19 +96,12 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 日志记录方式
         /// </summary>
-        public static LoggerType LoggerType { get; set; } = LoggerType.RDBMS;
+        public static readonly LoggerType LoggerType = LoggerType.RDBMS;
 
         /// <summary>
         /// ElasticSearch服务器配置
         /// </summary>
-        public static Uri[] ElasticSearchNodes { get; set; } = new Uri[] { new Uri("http://localhost:9200/") };
-
-        #endregion
-
-        #region 雪花Id配置
-
-        public static long DatacenterId { get => ConfigHelper.GetValue("DatacenterId").ToString().ToLong(); }
-        public static long WorkerId { get => ConfigHelper.GetValue("WorkerId").ToString().ToLong(); }
+        public static readonly Uri[] ElasticSearchNodes = new Uri[] { new Uri("http://localhost:9200/") };
 
         #endregion
     }
