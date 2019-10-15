@@ -1,5 +1,5 @@
 # Colder.Fx.Net.AdminLTE
-Web后台快速开发框架,.NET452+AdminLTE版本
+Web后台快速开发框架,.NET461+AdminLTE版本
 
 使用方式：https://github.com/Coldairarrow/Colder.Fx.Net.AdminLTE/wiki
 
