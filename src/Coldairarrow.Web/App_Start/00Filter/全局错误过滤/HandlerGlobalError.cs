@@ -10,12 +10,7 @@ namespace Coldairarrow.Web
     /// </summary>
     public class HandlerGlobalError : HandleErrorAttribute, IDependency
     {
-        public HandlerGlobalError()
-        {
-            _logger = DependencyResolver.Current.GetService<ILogger>();
-        }
-
-        ILogger _logger { get; set; }
+        ILogger _logger { get => AutofacHelper.GetService<ILogger>(); }
 
         /// <summary>
         /// 处理系统错误
