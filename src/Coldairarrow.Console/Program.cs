@@ -87,7 +87,6 @@ namespace Coldairarrow.Console1
             var db = DbFactory.GetRepository();
             db.HandleSqlLog = Console.WriteLine;
             var list = db.GetList<Base_User>();
-            
             Console.WriteLine("完成");
             Console.ReadLine();
         }
