@@ -58,7 +58,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 默认数据库类型
         /// </summary>
-        public static readonly DatabaseType DatabaseType = DatabaseType.PostgreSql;
+        public static readonly DatabaseType DatabaseType = DatabaseType.SqlServer;
 
         /// <summary>
         /// 默认数据库连接名
@@ -82,7 +82,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// Redis配置字符串
         /// </summary>
-        public static readonly string RedisConfig = "localhost:6379";
+        public static readonly string RedisConfig = "127.0.0.1:6379;";
 
         /// <summary>
         /// 是否开启Redis缓存

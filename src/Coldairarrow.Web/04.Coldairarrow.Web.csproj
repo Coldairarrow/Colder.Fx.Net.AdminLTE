@@ -1,8 +1,7 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D3BA91DB-6110-43F2-80FA-7584B22074C5}</ProjectGuid>
+    <ProjectGuid>{3A0FB554-F756-45B8-8E73-694FB7A85A7A}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -27,7 +26,6 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,9 +58,6 @@
     <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
@@ -75,25 +70,13 @@
     <Reference Include="EntityFramework6.Npgsql, Version=6.3.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework6.Npgsql.6.3.0\lib\net45\EntityFramework6.Npgsql.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
-    </Reference>
     <Reference Include="IdHelper, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IdHelper.1.4.1\lib\net45\IdHelper.dll</HintPath>
     </Reference>
     <Reference Include="IdHelper.Zookeeper, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IdHelper.Zookeeper.1.5.0\lib\net461\IdHelper.Zookeeper.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
@@ -103,48 +86,33 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Npgsql, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.4.1.1\lib\net461\Npgsql.dll</HintPath>
+    <Reference Include="Npgsql, Version=4.0.10.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.4.0.10\lib\net451\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.19.5.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\packages\Oracle.ManagedDataAccess.19.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.19.3.0\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
-      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Drawing.Design" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Security" />
-    <Reference Include="System.Text.Encodings.Web, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.4.6.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.4.6.0\lib\net461\System.Text.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -156,34 +124,44 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="ZooKeeperNetEx, Version=3.4.12.4, Culture=neutral, PublicKeyToken=42cd15de36f9b993, processorArchitecture=MSIL">
       <HintPath>..\packages\ZooKeeperNetEx.3.4.12.4\lib\net461\ZooKeeperNetEx.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1154,7 +1132,47 @@
     <Content Include="Scripts\vendor\zTree\zTree.theme.metro.css" />
     <Content Include="Scripts\vendor\zTree\zTree.theme.metro.min.css" />
     <Content Include="Scripts\vendor\zTree\zTreeSelect.js" />
+    <Content Include="Upload\FIle\17866178-d307-41ae-ad83-dc6cb67a0755\微信图片_201806250919462.jpg" />
+    <Content Include="Upload\FIle\1f1f4c4a-d3af-401f-b909-7478fe2aaeb3\微信图片_201806250919462.jpg" />
+    <Content Include="Upload\FIle\bd88b5cd-56a2-49ef-b451-b4e3db763d1d\20150118122415_JfvPz.thumb.700_0.jpeg" />
+    <Content Include="Upload\FIle\dc9ff07e-b45d-4cd9-bd0b-1491f7c3daf0\icon_monitor_abnormal.png" />
     <Content Include="Upload\FIle\_.txt" />
+    <Content Include="Upload\Img\039ECC77D3EE0-24EA4449-824F-4A91-AC52-FC2BE30DF2B7.jpg" />
+    <Content Include="Upload\Img\039ECC77D6446-F245584E-4E7F-4109-8E9B-9048EAC0E6DB.jpg" />
+    <Content Include="Upload\Img\039ECC77E48B2-E9EA0680-6CD5-460D-8E1D-B336C133B414.jpg" />
+    <Content Include="Upload\Img\039ECC77E5320-552C51A1-8502-411E-84A2-907010BC1AC5.jpg" />
+    <Content Include="Upload\Img\039ECC77E87BA-B2FF086E-965C-4A05-88B4-C1F2AFF15EE3.jpg" />
+    <Content Include="Upload\Img\039ECC77E9E5D-BDC05F2B-195D-4E18-B9C8-BB43D4FB648F.jpg" />
+    <Content Include="Upload\Img\039ECC77F0C1C-A9ACD53E-D462-4DD1-A38F-ADC1E59419E1.jpg" />
+    <Content Include="Upload\Img\039ECC784A452-8F973D9C-337F-489C-BC02-33C2AF36FA9F.jpg" />
+    <Content Include="Upload\Img\039ECC784AD66-472DC647-BFB2-480A-B641-04EDD33F270B.jpg" />
+    <Content Include="Upload\Img\039ECC784C3F4-A5B138D5-A66D-400B-B0E0-8FF0BB05C24E.jpg" />
+    <Content Include="Upload\Img\039ECC784E95D-E75762D9-6DC1-4619-84B6-CFBFCB3D80B9.jpg" />
+    <Content Include="Upload\Img\039ECC786B390-301981F2-D9DB-40EE-959D-7750BF882E8E.jpg" />
+    <Content Include="Upload\Img\039ECC786B96C-F15FBB45-9705-4619-A638-4A8AE6DC7773.jpg" />
+    <Content Include="Upload\Img\039ECC78A5650-1B24F159-626E-4CB2-9CA5-A2451EEA643A.jpg" />
+    <Content Include="Upload\Img\039ECC78BC83C-6A49FEC7-E8F7-49DA-AE91-44D1D753D629.jpg" />
+    <Content Include="Upload\Img\039ECC78FDAD5-C4488E1D-E48A-49E9-BE82-D8AABEF4D634.jpg" />
+    <Content Include="Upload\Img\039ECC78FE0C1-A24EE411-B874-42F0-A7EA-3606D4BA6C5F.jpg" />
+    <Content Include="Upload\Img\039ECC78FE650-6277E3ED-6BC2-43FB-BEDA-F6E89C38B31A.jpg" />
+    <Content Include="Upload\Img\039ECC78FF95E-03BF6C36-F715-48DC-AD06-573CA2B8AF0A.jpg" />
+    <Content Include="Upload\Img\039ECC7900E2F-8BCEFD2D-8AF0-4611-8765-BE42C2900A9D.jpg" />
+    <Content Include="Upload\Img\039ECC7904E03-7326E95D-4026-4EF6-BE96-2C4D803C5633.jpg" />
+    <Content Include="Upload\Img\039ECC79053DC-39279111-5D16-41B2-B02F-05FF9D9337D2.jpg" />
+    <Content Include="Upload\Img\039ECC790E711-3B03F047-FF27-4880-AC7C-E1D7955BA6D9.jpg" />
+    <Content Include="Upload\Img\039ECC790F536-BFF8FE88-D906-444B-B175-3F7E0F798390.jpg" />
+    <Content Include="Upload\Img\039ECC7931EF5-E135ECBA-9727-4CC8-ACB4-3800245762CE.jpg" />
+    <Content Include="Upload\Img\039ECC79327A9-600E400F-6A4C-41F7-B119-888948F6780C.jpg" />
+    <Content Include="Upload\Img\039ECC793386C-DBF96598-C25E-4EFC-BACF-8B16E0CF9B35.jpg" />
+    <Content Include="Upload\Img\039ECC7937A30-01F4D03B-04A1-4123-AA59-CA90840541C7.jpg" />
+    <Content Include="Upload\Img\039ECC796C680-E9FE99D1-445F-4C62-AAC0-D0CF626F3982.jpg" />
+    <Content Include="Upload\Img\039ECC796D3B7-20703C85-4155-4939-8099-145C76699F57.jpg" />
+    <Content Include="Upload\Img\039ECC796FA0D-49F063F1-AE17-435E-9FD5-11D5E86D6DA8.jpg" />
+    <Content Include="Upload\Img\039ECC797015B-4ABDFC13-DFEC-4012-9115-43F79569DEF6.jpg" />
+    <Content Include="Upload\Img\039ECC7970805-C5B345B1-7586-4402-91ED-8FF76F2FE8BF.jpg" />
+    <Content Include="Upload\Img\039ECC7989FF0-DB004F8B-9185-445B-93A9-A1B173CFBE74.jpg" />
+    <Content Include="Upload\Img\039ECC798A47C-DB9FFB8C-1564-4403-AC4D-97763C4D0F56.jpg" />
+    <Content Include="Upload\Img\2019-03-25\b6430432-f52e-4b36-9485-88565a27e847.jpeg" />
     <Content Include="Upload\Img\_.txt" />
     <Content Include="Upload\_.txt" />
     <Content Include="Web.config" />
@@ -1204,6 +1222,7 @@
     <Compile Include="Scripts\vendor\umeditor\net\Uploader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\web.config" />
     <Content Include="Areas\Base_SysManage\Views\Base_AppSecret\Form.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_AppSecret\Index.cshtml" />
     <Content Include="Areas\Base_SysManage\Views\Base_AppSecret\PermissionForm.cshtml" />
@@ -1231,6 +1250,7 @@
     <Content Include="Config\system.config" />
     <Content Include="Config\SystemMenu.config" />
     <Content Include="Config\UrlPermission.config" />
+    <None Include="packages.config" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\alerts.less" />
     <Content Include="Scripts\vendor\adminlte\build\bootstrap-less\mixins\background-variant.less" />
@@ -1376,6 +1396,7 @@
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.otf" />
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.ttf" />
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.woff" />
+    <Content Include="Upload\FIle\f38c06c6-48ff-447d-84ed-6470318fc50f\558b9123f036698f38c5f4d157afcad4.pdf" />
     <Content Include="Views\Demo\ApiSignDemo.cshtml" />
     <Content Include="Views\Demo\BootstrapPwdBox.cshtml" />
     <Content Include="Views\Demo\DownloadFile.cshtml" />
@@ -1397,8 +1418,6 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Test\MapDatTest.cshtml" />
     <Content Include="Views\Test\RequestDemo.cshtml" />
-    <Content Include="Views\web.config" />
-    <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1408,31 +1427,32 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coldairarrow.Business\03.Coldairarrow.Business.csproj">
-      <Project>{62858a89-da3c-4658-8219-580780d435c9}</Project>
-      <Name>03.Coldairarrow.Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.DataRepository\01.Coldairarrow.DataRepository.csproj">
-      <Project>{01c93a6b-76c5-4b10-b8b9-2f173b5f9441}</Project>
-      <Name>01.Coldairarrow.DataRepository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj">
-      <Project>{544fe3ea-46f2-45f7-9574-d4fea111a9c1}</Project>
-      <Name>02.Coldairarrow.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coldairarrow.Util\00.Coldairarrow.Util.csproj">
-      <Project>{7095b12b-7ff2-4b6b-8c6c-654197edaa34}</Project>
-      <Name>00.Coldairarrow.Util</Name>
-    </ProjectReference>
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Start\03Util\" />
+    <ProjectReference Include="..\Coldairarrow.Business\03.Coldairarrow.Business.csproj">
+      <Project>{1ce3837d-a825-4fbd-be62-c0414afa4efa}</Project>
+      <Name>03.Coldairarrow.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coldairarrow.DataRepository\01.Coldairarrow.DataRepository.csproj">
+      <Project>{72f05f76-e5e7-4614-b72c-bdf070d092bc}</Project>
+      <Name>01.Coldairarrow.DataRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj">
+      <Project>{0912114b-b14f-40e4-888f-e9ab319321c3}</Project>
+      <Name>02.Coldairarrow.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coldairarrow.Util\00.Coldairarrow.Util.csproj">
+      <Project>{cf70761a-69e3-46b5-8a25-0345ec5f40f4}</Project>
+      <Name>00.Coldairarrow.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1451,9 +1471,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52016</DevelopmentServerPort>
+          <DevelopmentServerPort>6606</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:9599/</IISUrl>
+          <IISUrl>http://localhost:6606/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -1467,10 +1487,9 @@
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
