@@ -1,4 +1,5 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -1132,47 +1133,7 @@
     <Content Include="Scripts\vendor\zTree\zTree.theme.metro.css" />
     <Content Include="Scripts\vendor\zTree\zTree.theme.metro.min.css" />
     <Content Include="Scripts\vendor\zTree\zTreeSelect.js" />
-    <Content Include="Upload\FIle\17866178-d307-41ae-ad83-dc6cb67a0755\微信图片_201806250919462.jpg" />
-    <Content Include="Upload\FIle\1f1f4c4a-d3af-401f-b909-7478fe2aaeb3\微信图片_201806250919462.jpg" />
-    <Content Include="Upload\FIle\bd88b5cd-56a2-49ef-b451-b4e3db763d1d\20150118122415_JfvPz.thumb.700_0.jpeg" />
-    <Content Include="Upload\FIle\dc9ff07e-b45d-4cd9-bd0b-1491f7c3daf0\icon_monitor_abnormal.png" />
     <Content Include="Upload\FIle\_.txt" />
-    <Content Include="Upload\Img\039ECC77D3EE0-24EA4449-824F-4A91-AC52-FC2BE30DF2B7.jpg" />
-    <Content Include="Upload\Img\039ECC77D6446-F245584E-4E7F-4109-8E9B-9048EAC0E6DB.jpg" />
-    <Content Include="Upload\Img\039ECC77E48B2-E9EA0680-6CD5-460D-8E1D-B336C133B414.jpg" />
-    <Content Include="Upload\Img\039ECC77E5320-552C51A1-8502-411E-84A2-907010BC1AC5.jpg" />
-    <Content Include="Upload\Img\039ECC77E87BA-B2FF086E-965C-4A05-88B4-C1F2AFF15EE3.jpg" />
-    <Content Include="Upload\Img\039ECC77E9E5D-BDC05F2B-195D-4E18-B9C8-BB43D4FB648F.jpg" />
-    <Content Include="Upload\Img\039ECC77F0C1C-A9ACD53E-D462-4DD1-A38F-ADC1E59419E1.jpg" />
-    <Content Include="Upload\Img\039ECC784A452-8F973D9C-337F-489C-BC02-33C2AF36FA9F.jpg" />
-    <Content Include="Upload\Img\039ECC784AD66-472DC647-BFB2-480A-B641-04EDD33F270B.jpg" />
-    <Content Include="Upload\Img\039ECC784C3F4-A5B138D5-A66D-400B-B0E0-8FF0BB05C24E.jpg" />
-    <Content Include="Upload\Img\039ECC784E95D-E75762D9-6DC1-4619-84B6-CFBFCB3D80B9.jpg" />
-    <Content Include="Upload\Img\039ECC786B390-301981F2-D9DB-40EE-959D-7750BF882E8E.jpg" />
-    <Content Include="Upload\Img\039ECC786B96C-F15FBB45-9705-4619-A638-4A8AE6DC7773.jpg" />
-    <Content Include="Upload\Img\039ECC78A5650-1B24F159-626E-4CB2-9CA5-A2451EEA643A.jpg" />
-    <Content Include="Upload\Img\039ECC78BC83C-6A49FEC7-E8F7-49DA-AE91-44D1D753D629.jpg" />
-    <Content Include="Upload\Img\039ECC78FDAD5-C4488E1D-E48A-49E9-BE82-D8AABEF4D634.jpg" />
-    <Content Include="Upload\Img\039ECC78FE0C1-A24EE411-B874-42F0-A7EA-3606D4BA6C5F.jpg" />
-    <Content Include="Upload\Img\039ECC78FE650-6277E3ED-6BC2-43FB-BEDA-F6E89C38B31A.jpg" />
-    <Content Include="Upload\Img\039ECC78FF95E-03BF6C36-F715-48DC-AD06-573CA2B8AF0A.jpg" />
-    <Content Include="Upload\Img\039ECC7900E2F-8BCEFD2D-8AF0-4611-8765-BE42C2900A9D.jpg" />
-    <Content Include="Upload\Img\039ECC7904E03-7326E95D-4026-4EF6-BE96-2C4D803C5633.jpg" />
-    <Content Include="Upload\Img\039ECC79053DC-39279111-5D16-41B2-B02F-05FF9D9337D2.jpg" />
-    <Content Include="Upload\Img\039ECC790E711-3B03F047-FF27-4880-AC7C-E1D7955BA6D9.jpg" />
-    <Content Include="Upload\Img\039ECC790F536-BFF8FE88-D906-444B-B175-3F7E0F798390.jpg" />
-    <Content Include="Upload\Img\039ECC7931EF5-E135ECBA-9727-4CC8-ACB4-3800245762CE.jpg" />
-    <Content Include="Upload\Img\039ECC79327A9-600E400F-6A4C-41F7-B119-888948F6780C.jpg" />
-    <Content Include="Upload\Img\039ECC793386C-DBF96598-C25E-4EFC-BACF-8B16E0CF9B35.jpg" />
-    <Content Include="Upload\Img\039ECC7937A30-01F4D03B-04A1-4123-AA59-CA90840541C7.jpg" />
-    <Content Include="Upload\Img\039ECC796C680-E9FE99D1-445F-4C62-AAC0-D0CF626F3982.jpg" />
-    <Content Include="Upload\Img\039ECC796D3B7-20703C85-4155-4939-8099-145C76699F57.jpg" />
-    <Content Include="Upload\Img\039ECC796FA0D-49F063F1-AE17-435E-9FD5-11D5E86D6DA8.jpg" />
-    <Content Include="Upload\Img\039ECC797015B-4ABDFC13-DFEC-4012-9115-43F79569DEF6.jpg" />
-    <Content Include="Upload\Img\039ECC7970805-C5B345B1-7586-4402-91ED-8FF76F2FE8BF.jpg" />
-    <Content Include="Upload\Img\039ECC7989FF0-DB004F8B-9185-445B-93A9-A1B173CFBE74.jpg" />
-    <Content Include="Upload\Img\039ECC798A47C-DB9FFB8C-1564-4403-AC4D-97763C4D0F56.jpg" />
-    <Content Include="Upload\Img\2019-03-25\b6430432-f52e-4b36-9485-88565a27e847.jpeg" />
     <Content Include="Upload\Img\_.txt" />
     <Content Include="Upload\_.txt" />
     <Content Include="Web.config" />
@@ -1396,7 +1357,6 @@
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.otf" />
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.ttf" />
     <Content Include="Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.woff" />
-    <Content Include="Upload\FIle\f38c06c6-48ff-447d-84ed-6470318fc50f\558b9123f036698f38c5f4d157afcad4.pdf" />
     <Content Include="Views\Demo\ApiSignDemo.cshtml" />
     <Content Include="Views\Demo\BootstrapPwdBox.cshtml" />
     <Content Include="Views\Demo\DownloadFile.cshtml" />
@@ -1489,6 +1449,7 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
