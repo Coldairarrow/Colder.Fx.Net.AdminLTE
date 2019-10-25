@@ -2,6 +2,7 @@
 using Coldairarrow.Util;
 using NLog;
 using NLog.Targets;
+using System;
 
 namespace Coldairarrow.Business
 {
@@ -15,9 +16,21 @@ namespace Coldairarrow.Business
 
         protected Base_SysLog GetBase_SysLogInfo(LogEventInfo logEventInfo)
         {
+            string id = string.Empty;
+            try
+            {
+                id = IdHelper.GetId();
+            }
+            catch
+            {
+
+            }
+            if (id.IsNullOrEmpty())
+                id = Guid.NewGuid().ToString();
+
             Base_SysLog newLog = new Base_SysLog
             {
-                Id = IdHelper.GetId(),
+                Id = id,
                 Data = logEventInfo.Properties[LoggerConfig.Data] as string,
                 Level = logEventInfo.Level.ToString(),
                 LogContent = logEventInfo.Message,

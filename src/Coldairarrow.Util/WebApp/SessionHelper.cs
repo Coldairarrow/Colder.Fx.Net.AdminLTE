@@ -11,7 +11,7 @@ namespace Coldairarrow.Util
         #region 私有成员
 
         private static string CacheModuleName { get; } = "Session";
-        private static string _sessionId { get => HttpContext.Current.Request.Cookies[SessionCookieName].Value; }
+        private static string _sessionId { get => HttpContext.Current.Request.Cookies[SessionCookieName]?.Value; }
         private static string BuildCacheKey(string sessionKey)
         {
             return $"{GlobalSwitch.ProjectName}_{CacheModuleName}_{_sessionId}_{sessionKey}";

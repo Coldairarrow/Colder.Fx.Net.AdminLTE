@@ -19,7 +19,7 @@ namespace Coldairarrow.Business
             {
                 AddTarget(new NLog.Targets.ColoredConsoleTarget
                 {
-                    Name= LoggerConfig.LoggerName,
+                    Name = LoggerConfig.LoggerName,
                     Layout = layout
                 });
             }
@@ -53,14 +53,21 @@ namespace Coldairarrow.Business
             }
         }
         private NLog.Logger _nLogger { get; } = NLog.LogManager.GetLogger("sysLogger");
-        private IOperator _operator { get; } = AutofacHelper.GetService<IOperator>();
+        private IOperator _operator { get => AutofacHelper.GetService<IOperator>(); }
 
         public void Log(LogLevel logLevel, LogType logType, string msg, string data)
         {
             NLog.LogEventInfo log = new NLog.LogEventInfo(NLog.LogLevel.FromString(logLevel.ToString()), "sysLogger", msg);
             log.Properties[LoggerConfig.Data] = data;
             log.Properties[LoggerConfig.LogType] = logType.ToString();
-            log.Properties[LoggerConfig.OpUserName] = _operator?.Property?.UserName;
+            try
+            {
+                log.Properties[LoggerConfig.OpUserName] = _operator?.Property?.UserName;
+            }
+            catch
+            {
+
+            }
 
             _nLogger.Log(log);
         }
