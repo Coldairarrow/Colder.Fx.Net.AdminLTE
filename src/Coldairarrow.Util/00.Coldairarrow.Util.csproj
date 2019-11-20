@@ -239,6 +239,7 @@
     <Compile Include="Helper\FileZipHelper.cs" />
     <Compile Include="Helper\HttpHelper.cs" />
     <Compile Include="Helper\ImgHelper.cs" />
+    <Compile Include="Helper\ImgVerifyCodeHelper.cs" />
     <Compile Include="Helper\IocHelper.cs" />
     <Compile Include="Helper\IpHelper.cs" />
     <Compile Include="Helper\LinqHelper.cs" />
